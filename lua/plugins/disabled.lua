@@ -1,0 +1,15 @@
+return {
+    { "lukas-reineke/indent-blankline.nvim", enabled = false },
+    { "lewis6991/gitsigns.nvim", enabled = false },
+    { "echasnovski/mini.surround", enabled = false },
+    { "ggandor/leap.nvim", enabled = false },
+    { "rcarriga/nvim-notify", enabled = false },
+    { "mrcjkb/rustaceanvim", enabled = false },
+    -- { "nvim-tree/nvim-tree.lua", enabled = false },
+    { "nvim-neo-tree/neo-tree.nvim", enabled = false },
+    -- { "abecodes/tabout.nvim", enabled = false },
+    -- { "ray-x/lsp_signature.nvim", enabled = false },
+    { "nvim-treesitter/nvim-treesitter-context", enabled = false },
+    -- { "hrsh7th/nvim-cmp", enabled = false },
+    -- { "L3MON4D3/LuaSnip", enabled = false },
+}
