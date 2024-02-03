@@ -1,32 +1,39 @@
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = "InsertEnter",
+    -- event = "InsertEnter",
+    lazy = false,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
+        "chrisgrieser/cmp_yanky",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
     },
     opts = function()
+        local luasnip = require("luasnip")
+        local neotab = require("neotab")
         vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
         local cmp = require("cmp")
-        local defaults = require("cmp.config.default")()
+        local compare = cmp.config.compare
         return {
+            preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
                     border = "none",
                     side_padding = 0,
-                    col_offset = -2,
+                    col_offset = -3,
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
             },
             completion = {
+                autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
                 completeopt = "menu,menuone,noinsert",
             },
             performance = {
                 debounce = 0,
-                throttle = 0,
+                throttle = 5,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 async_budget = 1,
@@ -38,15 +45,27 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                ["<Tab>"] = cmp.mapping(function()
+                    if luasnip.jumpable(1) then
+                        luasnip.jump(1)
+                    else
+                        neotab.tabout()
+                    end
+                end),
                 ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-                -- ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
                 ["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
-                ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
-                ["<C-6>"] = cmp.mapping.close_docs(),
+                -- ["<C-6>"] = cmp.mapping.close_docs(),
+                ["<C-6>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.mapping.close_docs()
+                    else
+                        fallback()
+                    end
+                end),
                 ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 ["<S-CR>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
@@ -62,77 +81,53 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
+                {
+                    name = "cmp_yanky",
+                    keyword_length = 3,
+                    option = {
+                        minLength = 5,
+                    },
+                },
                 { name = "buffer", keyword_length = 3 },
             }),
             formatting = {
                 fields = { "kind", "abbr", "menu" },
-                format = function(_, item)
-                    local icons = {
-                        Array = " ",
-                        Boolean = " 󰨙",
-                        Class = " 󰯳",
-                        Codeium = " 󰘦",
-                        Color = " ",
-                        Control = " ",
-                        Collapsed = " ",
-                        Constant = " 󰏿",
-                        Constructor = " ",
-                        Copilot = " ",
-                        Enum = " 󰯹",
-                        EnumMember = " ",
-                        Event = " ",
-                        Field = " ",
-                        File = " ",
-                        Folder = " ",
-                        Function = " 󰊕",
-                        Interface = " 󰰅",
-                        Key = " ",
-                        Keyword = " ",
-                        Method = " 󰰑",
-                        Module = " ",
-                        Namespace = " 󰦮",
-                        Null = " ",
-                        Number = " 󰰔",
-                        Object = " ",
-                        Operator = " ",
-                        Package = " ",
-                        Property = " ",
-                        Reference = " ",
-                        Snippet = " ",
-                        String = " 󰰣",
-                        Struct = " 󰆼",
-                        TabNine = " 󰏚",
-                        Text = " ",
-                        TypeParameter = " 󰰦",
-                        Unit = " ",
-                        Value = " ",
-                        Variable = " 󰀫",
-                    }
-                    -- item.menu = ""
-                    local ELLIPSIS_CHAR = "…"
-                    local MAX_LABEL_WIDTH = 30
-                    -- local icons = require("lazyvim.config").icons.kinds
-                    if icons[item.kind] then
-                        -- item.kind = icons[item.kind] .. item.kind
-                        item.kind = icons[item.kind]
-                    end
-                    local label = item.abbr
-                    local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
-                    if truncated_label ~= label then
-                        item.abbr = truncated_label .. ELLIPSIS_CHAR
-                    end
-                    return item
-                    -- fields = { "kind", "abbr", "menu" },
-                    -- format = function(entry, vim_item)
-                    --     local kind = require("lspkind").cmp_format({
-                    --         mode = "symbol_text",
-                    --         maxwidth = 50,
-                    --         show_labelDetails = true,
-                    --     })(entry, vim_item)
-                    --     local strings = vim.split(kind.kind, "%s", { trimempty = true })
-                    --     kind.kind = " " .. (strings[1] or "") .. " "
-                    --     kind.menu = "    (" .. (strings[2] or "") .. ")"
-                    --     return kind
+                format = function(entry, vim_item)
+                    local kind = require("lspkind").cmp_format({
+                        mode = "symbol_text",
+                        maxwidth = 40,
+                        -- before = function(entry, vim_item)
+                        --     -- Get the full snippet (and only keep first line)
+                        --     local str = require("cmp.utils.str")
+                        --     local types = require("cmp.types")
+                        --     local word = entry:get_insert_text()
+                        --     if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
+                        --         word = vim.lsp.util.parse_snippet(word)
+                        --     end
+                        --     word = str.oneline(word)
+                        --
+                        --     -- concatenates the string
+                        --     -- local max = 50
+                        --     -- if string.len(word) >= max then
+                        --     -- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
+                        --     -- 	word = before .. "..."
+                        --     -- end
+                        --
+                        --     if
+                        --         entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
+                        --         and string.sub(vim_item.abbr, -1, -1) == "~"
+                        --     then
+                        --         word = word .. "~"
+                        --     end
+                        --     vim_item.abbr = word
+                        --
+                        --     return vim_item
+                        -- end,
+                    })(entry, vim_item)
+                    local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                    kind.kind = " " .. (strings[1] or "") .. " "
+                    kind.menu = "(" .. (strings[3] or "") .. ")"
+                    return kind
                 end,
             },
             experimental = {
@@ -140,19 +135,77 @@ return {
                     hl_group = "CmpGhostText",
                 },
             },
-            sorting = defaults.sorting,
+            sorting = {
+                comparators = {
+                    compare.score,
+                    compare.recently_used,
+                    compare.locality,
+                    compare.offset,
+                    compare.order,
+                },
+            },
         }
     end,
     config = function(_, opts)
         local cmp = require("cmp")
+
+        cmp.setup.filetype({ "markdown" }, {
+            completion = {
+                autocomplete = false,
+            },
+            sources = {
+                { name = "path" },
+                { name = "buffer" },
+            },
+        })
         for _, source in ipairs(opts.sources) do
             source.group_index = source.group_index or 1
         end
-        -- `/` cmdline setup.
         cmp.setup.cmdline("/", {
-            mapping = cmp.mapping.preset.cmdline(),
+            completion = {
+                autocomplete = false,
+            },
+            mapping = cmp.mapping.preset.cmdline({
+                ["<CR>"] = cmp.mapping({
+                    i = cmp.mapping.confirm({ select = true }),
+                    c = cmp.mapping.confirm({ select = false }),
+                }),
+                ["<down>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        else
+                            fallback()
+                        end
+                    end,
+                },
+                ["<up>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end,
+                },
+                ["<C-p>"] = cmp.mapping(function(fallback)
+                    cmp.close()
+                    fallback()
+                end, { "i", "c" }),
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    cmp.close()
+                    fallback()
+                end, { "i", "c" }),
+            }),
             sources = {
                 { name = "buffer" },
+                {
+                    name = "cmp_yanky",
+                    keyword_length = 3,
+                    option = {
+                        minLength = 5,
+                    },
+                },
             },
         })
         cmp.setup.cmdline(":", {
@@ -170,22 +223,72 @@ return {
                         end
                     end,
                 },
-                -- ["<Up>"] = {
-                --     c = function(fallback)
-                --         if cmp.visible() then
-                --             cmp.select_prev_item()
-                --         else
-                --             fallback()
-                --         end
-                --     end,
-                -- },
+                ["<up>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end,
+                },
+                ["<C-e>"] = cmp.mapping.abort(),
+                ["<C-p>"] = cmp.mapping(function(fallback)
+                    cmp.close()
+                    fallback()
+                end, { "i", "c" }),
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    cmp.close()
+                    fallback()
+                end, { "i", "c" }),
             }),
             sources = cmp.config.sources({
-                { name = "path" },
-            }, {
                 { name = "cmdline" },
+                {
+                    name = "cmp_yanky",
+                    keyword_length = 3,
+                    option = {
+                        minLength = 5,
+                    },
+                },
+                { name = "path" },
             }),
         })
         require("cmp").setup(opts)
+        local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
+
+        -- Setup lspconfig.
+        local nvim_lsp = require("lspconfig")
+
+        -- setup languages
+        -- GoLang
+        nvim_lsp["gopls"].setup({
+            cmd = { "gopls" },
+            -- on_attach = on_attach,
+            capabilities = capabilities,
+            settings = {
+                gopls = {
+                    hints = {
+                        assignVariableTypes = true,
+                        compositeLiteralFields = true,
+                        compositeLiteralTypes = true,
+                        constantValues = true,
+                        functionTypeParameters = true,
+                        -- parameterNames = true,
+                        rangeVariableTypes = true,
+                    },
+                    semanticTokens = true,
+                    experimentalPostfixCompletions = false,
+                    analyses = {
+                        unusedparams = true,
+                        shadow = true,
+                    },
+                    staticcheck = false,
+                },
+            },
+            init_options = {
+                usePlaceholders = true,
+            },
+        })
     end,
 }

@@ -1,4 +1,3 @@
-local telescope = require("telescope")
 local sorters = require("telescope.sorters")
 local fzy_sorter = sorters.get_fzy_sorter()
 local filter = vim.tbl_filter
@@ -8,7 +7,6 @@ local filter = vim.tbl_filter
 local function apply_cwd_only_aliases(opts)
     local has_cwd_only = opts.cwd_only ~= nil
     local has_only_cwd = opts.only_cwd ~= nil
-
     if has_only_cwd and not has_cwd_only then
         -- Internally, use cwd_only
         opts.cwd_only = opts.only_cwd

@@ -9,24 +9,80 @@ end
 return {
     "nvim-tree/nvim-tree.lua",
     version = "*",
-    lazy = false,
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
         require("nvim-tree").setup({
+            filesystem_watchers = {
+                enable = false,
+                debounce_delay = 50,
+                ignore_dirs = {},
+            },
             actions = {
                 open_file = {
-                    quit_on_open = true,
+                    quit_on_open = false,
+                },
+                change_dir = {
+                    global = true,
                 },
             },
+            disable_netrw = true,
             sync_root_with_cwd = true,
             respect_buf_cwd = true,
             update_focused_file = {
                 enable = true,
                 update_root = true,
+                ignore_list = {},
             },
             on_attach = my_on_attach,
+            view = {
+                -- debounce_delay = 1000,
+                width = 25,
+                preserve_window_proportions = true,
+                float = {
+                    enable = false,
+                    quit_on_focus_loss = true,
+                    open_win_config = {
+                        relative = "win",
+                        border = "rounded",
+                        width = 35,
+                        height = 31,
+                        row = 30,
+                        col = 30,
+                    },
+                },
+            },
+            renderer = {
+                special_files = {},
+                group_empty = true,
+                icons = {
+                    web_devicons = {
+                        file = { color = false, enable = false },
+                        folder = {
+                            color = false,
+                        },
+                    },
+                    show = {
+                        git = false,
+                        modified = false,
+                        bookmarks = false,
+                    },
+                    glyphs = {
+                        default = "",
+                        folder = {
+                            arrow_closed = ">",
+                            arrow_open = "󱞩",
+                            default = "",
+                            open = "",
+                            empty = "",
+                            empty_open = "",
+                            symlink = "",
+                            symlink_open = "",
+                        },
+                    },
+                },
+            },
         })
     end,
 }

@@ -19,7 +19,6 @@ local function filenameFirst(_, path)
     end
     return string.format("%s\t\t%s", tail, parent)
 end
-
 local function filenameFirstWithoutParent(_, path)
     -- print("path" .. path)
     local tail = vim.fs.basename(path)
@@ -37,7 +36,6 @@ local function filenameFirstForFrecency(_, path)
     -- 获取当前工作目录
     local cwd = vim.fn.getcwd() .. "/"
     -- print("Current working directory: " .. cwd)
-
     -- 将绝对路径转换为相对于当前工作目录的相对路径
     local relative_path = path:gsub("^" .. vim.pesc(cwd), "")
     -- print("Relative path: " .. relative_path)
