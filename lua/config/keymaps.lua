@@ -5,7 +5,8 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gr"
-require("custom.highligh")
+require("custom.highlight")
+-- require("custom.cmp_highlight")
 vim.keymap.del("n", "<leader>w-")
 vim.keymap.del("n", "<leader>ww")
 vim.keymap.del("n", "<leader>wd")
@@ -15,26 +16,26 @@ vim.keymap.del("n", "<leader>w|")
 keymap("n", "<leader>td", function()
     require("dapui").toggle()
 end, { silent = true, noremap = true, desc = "toggle signature" })
-vim.keymap.set("n", "<F3>", function()
+keymap("n", "<F3>", function()
     require("dap").continue()
     require("dapui").toggle()
 end)
-vim.keymap.set("n", "-", function()
+keymap("n", "-", function()
     require("dap").step_over()
 end)
-vim.keymap.set("n", "=", function()
+keymap("n", "=", function()
     require("dap").step_into()
 end)
-vim.keymap.set("n", "+", function()
+keymap("n", "+", function()
     require("dap").step_out()
 end)
-vim.keymap.set("n", "<Leader>bb", function()
+keymap("n", "<Leader>bb", function()
     require("dap").toggle_breakpoint()
 end)
-vim.keymap.set("n", "<Leader>B", function()
+keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end)
-vim.keymap.set("n", "<Leader>lp", function()
+keymap("n", "<Leader>lp", function()
     require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 end)
 -- vim.keymap.set("n", "<Leader>dr", function()
@@ -64,7 +65,6 @@ end)
 keymap("n", "<CR>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
     local line_num = cursor_pos[1] -- 光标所在的行号
-
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
         print("enter fold_start")
@@ -117,7 +117,6 @@ local open = 0
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
     local line_num = cursor_pos[1] -- 光标所在的行号
-
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
         vim.lsp.buf.hover()
@@ -203,7 +202,7 @@ keymap("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 keymap("n", "<c-n>", "<Plug>(YankyNextEntry)")
 keymap({ "n", "i" }, "<C-6>", function()
     require("telescope.builtin").buffers(require("telescope.themes").get_dropdown({
-        initial_mode = "normal",
+        initial_mode = "insert",
         layout_strategy = "horizontal",
         previewer = false,
         bufnr_width = 0,

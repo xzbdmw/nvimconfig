@@ -16,7 +16,7 @@ return {
             },
             telescope = {
                 use_default_mappings = true, -- if default mappings should be used
-                mappings = nil,              -- nil to use default mappings or no mappings (see `use_default_mappings`)
+                mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
             },
         },
         system_clipboard = {
@@ -25,7 +25,7 @@ return {
         highlight = {
             on_put = true,
             on_yank = true,
-            timer = 300,
+            timer = 400,
         },
         preserve_cursor_position = {
             enabled = true,

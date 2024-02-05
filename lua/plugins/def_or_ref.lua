@@ -1,25 +1,26 @@
 local function handle_references_response(result)
     require("telescope.pickers")
-        .new(
-            {},
-            require("telescope.themes").get_dropdown({
-                initial_mode = "normal",
-                path_display = require("custom.path_display").filenameFirstWithoutParent,
-                layout_strategy = "cursor",
-                layout_config = {
-                    width = 0.9,
-                    height = 0.6,
+        .new({}, {
+            initial_mode = "normal",
+            path_display = require("custom.path_display").filenameFirstWithoutParent,
+            layout_strategy = "horizontal",
+            prompt_title = "LSP References",
+            finder = require("telescope.finders").new_table({
+                results = vim.lsp.util.locations_to_items(result, "utf-16"),
+                entry_maker = require("telescope.make_entry").gen_from_quickfix(),
+            }),
+            layout_config = {
+                horizontal = {
+                    width = 0.8,
+                    height = 0.8,
+                    preview_cutoff = 0,
+                    prompt_position = "top",
                     preview_width = 0.6,
                 },
-                prompt_title = "LSP References",
-                finder = require("telescope.finders").new_table({
-                    results = vim.lsp.util.locations_to_items(result, "utf-16"),
-                    entry_maker = require("telescope.make_entry").gen_from_quickfix(),
-                }),
-                previewer = require("telescope.config").values.qflist_previewer({}),
-                push_cursor_on_edit = true,
-            })
-        )
+            },
+            previewer = require("telescope.config").values.qflist_previewer({}),
+            push_cursor_on_edit = true,
+        })
         :find()
 end
 return {

@@ -10,7 +10,7 @@ return {
             [types.insertNode] = {
                 active = {
                     -- highlight the text inside the node red.
-                    hl_group = "CursorLine",
+                    hl_group = "LualineCursorLine",
                 },
                 -- these ext_opts are applied when the node is not active, but
                 -- the snippet still is.

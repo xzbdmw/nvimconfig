@@ -14,7 +14,6 @@ return {
     opts = function()
         local luasnip = require("luasnip")
         local neotab = require("neotab")
-        vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
         local cmp = require("cmp")
         local compare = cmp.config.compare
         return {
@@ -24,7 +23,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
+                    -- winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
             },
             completion = {
@@ -256,7 +255,6 @@ return {
         })
         require("cmp").setup(opts)
         local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
-
         -- Setup lspconfig.
         local nvim_lsp = require("lspconfig")
 
