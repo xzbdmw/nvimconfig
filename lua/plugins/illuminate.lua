@@ -1,6 +1,5 @@
 return {
     "RRethy/vim-illuminate",
-    lazy = false,
     keys = {
         { "<A-p>", false },
     },
@@ -15,5 +14,6 @@ return {
         large_file_overrides = {
             providers = { "lsp", "treesitter", "regex" },
         },
+        modes_denylist = { "i", "v" },
     },
 }

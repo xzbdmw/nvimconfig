@@ -8,15 +8,33 @@ local function my_on_attach(bufnr)
 end
 return {
     "nvim-tree/nvim-tree.lua",
-    version = "*",
+    version = false,
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
+    lazy = false,
     config = function()
         require("nvim-tree").setup({
-            filesystem_watchers = {
+            log = {
+                enable = true,
+                truncate = false,
+                types = {
+                    all = false,
+                    config = false,
+                    copy_paste = false,
+                    dev = false,
+                    diagnostics = false,
+                    git = false,
+                    profile = true,
+                    watcher = false,
+                },
+            },
+            git = {
                 enable = false,
-                debounce_delay = 50,
+            },
+            filesystem_watchers = {
+                enable = true,
+                debounce_delay = 0,
                 ignore_dirs = {},
             },
             actions = {
@@ -37,21 +55,8 @@ return {
             },
             on_attach = my_on_attach,
             view = {
-                -- debounce_delay = 1000,
                 width = 25,
                 preserve_window_proportions = true,
-                float = {
-                    enable = false,
-                    quit_on_focus_loss = true,
-                    open_win_config = {
-                        relative = "win",
-                        border = "rounded",
-                        width = 35,
-                        height = 31,
-                        row = 30,
-                        col = 30,
-                    },
-                },
             },
             renderer = {
                 special_files = {},

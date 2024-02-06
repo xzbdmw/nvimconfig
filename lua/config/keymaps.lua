@@ -5,12 +5,14 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gr"
-require("custom.highlight")
+-- require("custom.highlight")
 -- require("custom.cmp_highlight")
 vim.keymap.del("n", "<leader>w-")
 vim.keymap.del("n", "<leader>ww")
 vim.keymap.del("n", "<leader>wd")
 vim.keymap.del("n", "<leader>w|")
+-- vim.keymap.del({ "n", "x" }, "<space>wÞ")
+-- vim.keymap.del({ "n", "x" }, "gsÞ")
 -- hl(0, "MiniIndentscopeSymbol", { link = "@variable.member" })
 -- hl(0, "IndentBlanklineContextChar", { fg = "#BDBFC9" })
 keymap("n", "<leader>td", function()
@@ -74,9 +76,9 @@ keymap("n", "<CR>", function()
     end
 end)
 vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+vim.keymap.set("n", "zm", require("ufo").closeAllFolds)
 vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
-vim.keymap.set("n", "zm", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+vim.keymap.set("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
 vim.keymap.set("n", "zp", function()
     local winid = require("ufo").peekFoldedLinesUnderCursor()
     if not winid then
@@ -125,9 +127,12 @@ keymap("n", "<Tab>", function()
         end, 100)
     else
         require("ufo").peekFoldedLinesUnderCursor()
+        --[[ vim.defer_fn(function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
+        end, 30) ]]
     end
 end)
-keymap("n", "<leader><leader>w", function()
+keymap("n", "<leader>w", function()
     require("dropbar.api").pick()
 end, opts)
 keymap("n", "<leader>1", function()
@@ -206,7 +211,7 @@ keymap({ "n", "i" }, "<C-6>", function()
         layout_strategy = "horizontal",
         previewer = false,
         bufnr_width = 0,
-        borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+        -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
         layout_config = {
             horizontal = {
                 width = 0.35,
@@ -249,7 +254,7 @@ keymap({ "n", "i" }, "<D-e>", function()
         initial_mode = "insert",
         layout_strategy = "horizontal",
         previewer = false,
-        borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+        -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
         layout_config = {
             horizontal = {
                 width = 0.35,

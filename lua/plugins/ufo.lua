@@ -45,7 +45,7 @@ return {
                 win_config = {
                     border = "none",
                     winblend = 12,
-                    winhighlight = "Ufo:Ufo",
+                    winhighlight = "Ufo:Ufo,CursorLine:FloatCursorLine",
                     maxheight = 20,
                     maxwidth = 40,
                 },

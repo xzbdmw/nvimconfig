@@ -14,10 +14,12 @@ vim.cmd("set nolist")
 -- vim.o.guifont = "hack,Symbols Nerd Font:h20:#e-subpixelantialias:#h-full"
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20"
 vim.opt.linespace = 5
-vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver25,r-cr-v-o:hor7"
+vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver22,r-cr-v-o:hor7"
 vim.opt.swapfile = false
--- vim.g.neovide_transparency = 0.9
+-- vim.g.neovide_transparency = 0.95
 vim.opt.laststatus = 0
+vim.opt.linebreak = true
+
 vim.api.nvim_set_hl(0, "Statusline", { link = "Normal" })
 vim.api.nvim_set_hl(0, "StatuslineNC", { link = "Normal" })
 
@@ -31,12 +33,12 @@ vim.g.neovide_padding_right = 0
 vim.g.neovide_underline_stroke_scale = 1.0
 vim.g.neovide_padding_left = 0
 vim.o.scrolloff = 6
-vim.g.neovide_floating_shadow = true
+vim.g.neovide_floating_shadow = false
 -- vim.opt.whichwrap = "j,k"
-vim.g.neovide_floating_z_height = 0.7
+vim.g.neovide_floating_z_height = 0
 -- vim.o.showtabline = 0
 vim.g.neovide_light_angle_degrees = 0
-vim.g.neovide_light_radius = 120
+vim.g.neovide_light_radius = 0
 vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_command_line = true
 vim.g.neovide_touch_deadzone = 0

@@ -8,6 +8,7 @@ return {
     { "akinsho/bufferline.nvim", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },
     { "neoclide/coc.nvim", enabled = false },
+    { "folke/which-key.nvim", enabled = false },
     { "barbecue", enabled = false },
     { "luukvbaal/nnn.nvim", enabled = false },
     { "jinh0/eyeliner.nvim", enabled = false },
@@ -15,5 +16,11 @@ return {
     { "neanias/everforest-nvim", enabled = false },
     { "rktjmp/lush.nvim", enabled = false },
     { "echasnovski/mini.comment", enabled = false },
+    -- { "akinsho/toggleterm.nvim", enabled = false },
+    -- { "ahmedkhalf/project.nvim", enabled = false },
+    -- { "nvim-tree/nvim-tree.lua", enabled = false },
+    -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
+    -- { "windwp/nvim-autopairs", enabled = false },
     -- { "gbprod/yanky.nvim", enabled = false },
+    --
 }
