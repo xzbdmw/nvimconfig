@@ -5,7 +5,7 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gr"
--- require("custom.highlight")
+require("custom.highlight")
 -- require("custom.cmp_highlight")
 vim.keymap.del("n", "<leader>w-")
 vim.keymap.del("n", "<leader>ww")

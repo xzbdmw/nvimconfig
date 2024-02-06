@@ -33,7 +33,7 @@ return {
                 enable = false,
             },
             filesystem_watchers = {
-                enable = true,
+                enable = false,
                 debounce_delay = 0,
                 ignore_dirs = {},
             },
