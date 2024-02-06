@@ -66,7 +66,7 @@ end)
 -- keymap("n", "<CR>", "zo", opts)
 keymap("n", "<CR>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1] -- 光标所在的行号
+    local line_num = cursor_pos[1]                    -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
         print("enter fold_start")
@@ -118,7 +118,7 @@ end, { silent = true, noremap = true, desc = "toggle signature" })
 local open = 0
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1] -- 光标所在的行号
+    local line_num = cursor_pos[1]                    -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
         vim.lsp.buf.hover()
