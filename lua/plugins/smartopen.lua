@@ -1,7 +1,7 @@
 return {
     "danielfalk/smart-open.nvim",
     event = "VeryLazy",
-    branch = "0.2.x",
+    version = false,
     config = function()
         require("telescope").load_extension("smart_open")
     end,

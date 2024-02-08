@@ -44,14 +44,12 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ["<Tab>"] = cmp.mapping(function()
-                    if luasnip.jumpable(1) then
-                        luasnip.jump(1)
-                    else
-                        neotab.tabout()
+                ["<C-n>"] = cmp.mapping(function()
+                    if luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
                     end
                 end),
-                ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+                -- ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),

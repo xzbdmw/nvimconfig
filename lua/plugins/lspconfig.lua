@@ -82,6 +82,36 @@ return {
             inlay_hints = { enabled = true },
             servers = {
                 -- Ensure mason installs the server
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            -- runtime = {
+                            --     -- LuaJIT in the case of Neovim
+                            --     version = "LuaJIT",
+                            --     pathStrict = true,
+                            --     path = {
+                            --         "lua/?.lua",
+                            --     },
+                            -- },
+                            workspace = {
+                                library = {
+                                    "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
+                                    "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
+                                    "/Users/xzb/Downloads/nvim-macos/share/nvim/runtime/lua/",
+                                    "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
+                                    "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types/lua",
+                                    "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/",
+                                    "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
+                                    "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
+                                    "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
+                                    "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-lspconfig/lua",
+                                },
+                            },
+                        },
+                    },
+                },
                 -- rust_analyzer = {
                 --     enabled = false,
                 --     keys = {

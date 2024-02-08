@@ -2,22 +2,29 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
+local del = vim.keymap.del
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
-lazy_view_config.keys.hover = "gr"
-require("custom.highlight")
+lazy_view_config.keys.hover = "gh"
+-- require("custom.highlight")
 -- require("custom.cmp_highlight")
-vim.keymap.del("n", "<leader>w-")
-vim.keymap.del("n", "<leader>ww")
-vim.keymap.del("n", "<leader>wd")
-vim.keymap.del("n", "<leader>w|")
--- vim.keymap.del({ "n", "x" }, "<space>wÞ")
--- vim.keymap.del({ "n", "x" }, "gsÞ")
+del("n", "<leader>w-")
+del("n", "<leader>ww")
+del("n", "<leader>wd")
+del("n", "<leader>w|")
+del({ "n", "x" }, "<space>wÞ")
+del({ "n", "x" }, "gsÞ")
 -- hl(0, "MiniIndentscopeSymbol", { link = "@variable.member" })
 -- hl(0, "IndentBlanklineContextChar", { fg = "#BDBFC9" })
 keymap("n", "<leader>td", function()
     require("dapui").toggle()
 end, { silent = true, noremap = true, desc = "toggle signature" })
+keymap("n", "<leader>un", function()
+    local noice = require("noice.config")
+    print(noice.options.views.mini.timeout)
+    noice.options.views.mini.timeout = 20000
+    print(noice.options.views.mini.timeout)
+end, opts)
 keymap("n", "<F3>", function()
     require("dap").continue()
     require("dapui").toggle()
@@ -31,55 +38,61 @@ end)
 keymap("n", "+", function()
     require("dap").step_out()
 end)
+keymap("n", "<leader>uf", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zm", true, false, true), "t", true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zr", true, false, true), "t", true)
+end, opts)
 keymap("n", "<Leader>bb", function()
     require("dap").toggle_breakpoint()
 end)
 keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end)
-keymap("n", "<Leader>lp", function()
+--[[ keymap("n", "<Leader>lp", function()
     require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 end)
--- vim.keymap.set("n", "<Leader>dr", function()
---     require("dap").repl.open()
--- end)
--- vim.keymap.set("n", "<Leader>dl", function()
---     require("dap").run_last()
--- end)
--- vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
---     require("dap.ui.widgets").hover()
--- end)
--- vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
---     require("dap.ui.widgets").preview()
--- end)
--- vim.keymap.set("n", "<Leader>df", function()
---     local widgets = require("dap.ui.widgets")
---     widgets.centered_float(widgets.frames)
--- end)
--- vim.keymap.set("n", "<Leader>ds", function()
---     local widgets = require("dap.ui.widgets")
---     widgets.centered_float(widgets.scopes)
--- end)
--- keymap({ "i", "n" }, "<f8>", function()
---     vim.lsp.buf.signature_help()
--- end, opts)
--- keymap("n", "<CR>", "zo", opts)
+vim.keymap.set("n", "<Leader>dr", function()
+    require("dap").repl.open()
+end)
+vim.keymap.set("n", "<Leader>dl", function()
+    require("dap").run_last()
+end)
+vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
+    require("dap.ui.widgets").hover()
+end)
+vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
+    require("dap.ui.widgets").preview()
+end)
+vim.keymap.set("n", "<Leader>df", function()
+    local widgets = require("dap.ui.widgets")
+    widgets.centered_float(widgets.frames)
+end)
+vim.keymap.set("n", "<Leader>ds", function()
+    local widgets = require("dap.ui.widgets")
+    widgets.centered_float(widgets.scopes)
+end)
+keymap({ "i", "n" }, "<f8>", function()
+    vim.lsp.buf.signature_help()
+end, opts)
+keymap("n", "<CR>", "zo", opts)
 keymap("n", "<CR>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1]                    -- 光标所在的行号
+    local line_num = cursor_pos[1] -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
+    print("fold_start: ")
+    print(fold_start)
     if fold_start == -1 then
         print("enter fold_start")
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zo", true, false, true), "n", true)
     else
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
     end
-end)
-vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-vim.keymap.set("n", "zm", require("ufo").closeAllFolds)
-vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
-vim.keymap.set("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
-vim.keymap.set("n", "zp", function()
+end) ]]
+keymap("n", "zR", require("ufo").openAllFolds)
+keymap("n", "zm", require("ufo").closeAllFolds)
+keymap("n", "zr", require("ufo").openFoldsExceptKinds)
+keymap("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+keymap("n", "zp", function()
     local winid = require("ufo").peekFoldedLinesUnderCursor()
     if not winid then
         -- choose one of coc.nvim and nvim lsp
@@ -92,7 +105,7 @@ keymap("", "<D-a>", "ggVG", opts)
 keymap("n", "<up>", "<C-w>k", opts)
 keymap("n", "<left>", "<C-w>h", opts)
 keymap("n", "<right>", "<C-w>l", opts)
-keymap({ "n", "i" }, "<C-c>", "<C-w>w", opts)
+keymap("n", "<Tab>", "<C-w>w", opts)
 keymap("n", "<leader>i", function()
     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
 end, opts)
@@ -118,18 +131,12 @@ end, { silent = true, noremap = true, desc = "toggle signature" })
 local open = 0
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1]                    -- 光标所在的行号
+    local line_num = cursor_pos[1] -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
-        vim.lsp.buf.hover()
-        vim.defer_fn(function()
-            vim.lsp.buf.hover()
-        end, 100)
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>w", true, false, true), "t", true)
     else
         require("ufo").peekFoldedLinesUnderCursor()
-        --[[ vim.defer_fn(function()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
-        end, 30) ]]
     end
 end)
 keymap("n", "<leader>w", function()
@@ -194,19 +201,15 @@ keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 -- yanky
-keymap({ "n", "i" }, "<C-p>", "<Plug>(YankyPreviousEntry)")
-keymap({ "n", "i" }, "<C-n>", "<Plug>(YankyPreviousEntry)")
+keymap({ "n", "x" }, "y", "<Plug>(YankyYank)")
+keymap({ "n", "i" }, "<space>pp", "<Plug>(YankyPreviousEntry)")
+keymap({ "n", "i" }, "<space>nn", "<Plug>(YankyNextEntry)")
 keymap({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-keymap({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
--- keymap({ "v" }, "p", '"_d<Plug>(YankyPutBefore)')
-keymap({ "n", "x" }, "gp", "<Plug>(YankyPutAfterCharwiseJoined)")
 keymap("x", "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" })
-
-keymap({ "v" }, "gp", '"_d<Plug>(YankyPutAfterCharwiseJoined)')
-keymap("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
-keymap("n", "<c-n>", "<Plug>(YankyNextEntry)")
+keymap("n", "p", "<Plug>(YankyPutAfter)")
+keymap({ "n", "x" }, "gp", "<Plug>(YankyPutAfterCharwiseJoined)")
 keymap({ "n", "i" }, "<C-6>", function()
-    require("telescope.builtin").buffers(require("telescope.themes").get_dropdown({
+    require("telescope.builtin").buffers({
         initial_mode = "insert",
         layout_strategy = "horizontal",
         previewer = false,
@@ -220,7 +223,7 @@ keymap({ "n", "i" }, "<C-6>", function()
             preview_cutoff = 0,
             mirror = false,
         },
-    }))
+    })
 end, opts)
 keymap("n", "<space>fa", ":Telescope file_browser<CR>", opts)
 keymap("n", "<space>ha", function()
@@ -248,9 +251,15 @@ keymap("n", "<space>hp", function()
     require("harpoon.ui").nav_prev()
 end, opts)
 keymap("n", "<leader>uz", "<Cmd>Telescope frecency<CR>")
-keymap("c", "<Tab>", "<CR>", opts)
+-- keymap("c", "<Tab>", "<CR>", opts)
 keymap({ "n", "i" }, "<D-e>", function()
-    require("telescope").extensions.smart_open.smart_open(require("telescope.themes").get_dropdown({
+    require("telescope").extensions.smart_open.smart_open({
+        show_scores = false,
+        ignore_patterns = { "*.git/*", "*/tmp/*" },
+        match_algorithm = "fzf",
+        disable_devicons = false,
+        open_buffer_indicators = { previous = "󰎂 ", others = "󱇽 " },
+        prompt_title = "Smart Open",
         initial_mode = "insert",
         layout_strategy = "horizontal",
         previewer = false,
@@ -263,7 +272,22 @@ keymap({ "n", "i" }, "<D-e>", function()
             preview_cutoff = 0,
             mirror = false,
         },
-    }))
+    })
+    --[[ require("telescope").extensions.smart_open.smart_open(require("telescope.themes").get_dropdown({
+        prompt_title = "Smart Open",
+        initial_mode = "insert",
+        layout_strategy = "horizontal",
+        previewer = false,
+        -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+        layout_config = {
+            horizontal = {
+                width = 0.35,
+                height = 0.7,
+            },
+            preview_cutoff = 0,
+            mirror = false,
+        },
+    })) ]]
 end, { noremap = true, silent = true, desc = "find files in cwd" })
 keymap("c", "<CR>", "<Nop>", opts)
 keymap("c", "<f8>", "<CR>", opts)
@@ -274,13 +298,12 @@ keymap("c", "<D-CR>", "<CR>", opts)
 keymap({ "i", "n" }, "<C-e>", function()
     vim.diagnostic.goto_next()
 end, opts)
-keymap("n", "ga", function()
+keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true, desc = "go to sticky scroll" })
 keymap("n", "<D-s>", ":w<CR>", opts)
--- keymap("n", "<C-a>", "<C-w>", opts)
 keymap("i", "<D-s>", "<Esc>:w<CR>a", opts)
-keymap({ "n", "v", "i" }, "<D-c>", "y", opts)
+keymap({ "n", "v", "i" }, "<D-c>", "<Plug>(YankyYank)", opts)
 keymap("n", "<D-v>", "hp", opts)
 keymap("i", "<D-v>", "<Esc>pa", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)

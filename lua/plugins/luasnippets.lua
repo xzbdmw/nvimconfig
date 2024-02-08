@@ -2,41 +2,69 @@ local types = require("luasnip.util.types")
 return {
     "L3MON4D3/LuaSnip",
     -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    version = false,
     -- install jsregexp (optional!).
     build = "make install_jsregexp",
     lazy = true,
-    opts = {
-        ext_opts = {
-            [types.insertNode] = {
-                active = {
-                    -- highlight the text inside the node red.
-                    hl_group = "LualineCursorLine",
+    config = function()
+        local ls = require("luasnip")
+        local sn = ls.snippet_node
+        local s = ls.s
+        local i = ls.insert_node
+        local t = ls.text_node
+        local d = ls.dynamic_node
+        local rep = require("luasnip.extras").rep
+        local fmt = require("luasnip.extras.fmt").fmt
+        local postfix = require("luasnip.extras.postfix").postfix
+        ls.add_snippets("lua", { ls.parser.parse_snippet("expand", "kkkkkk") })
+        ls.add_snippets("lua", { s("req", fmt("local {} = require('{}')", { i(1, "default"), rep(1) })) })
+        ls.add_snippets("lua", { ls.parser.parse_snippet("lf", "local $1 = function($2)\n $0\nend") })
+        ls.add_snippets("lua", {
+            postfix(".var", {
+                d(1, function(_, parent)
+                    return sn(1, t("hello"))
+                    -- return sn(
+                    --     1,
+                    --     fmt("local {} = " .. parent.snippet.env.POSTFIX_MATCH, {
+                    --         i(1, "name"),
+                    --     })
+                    -- )
+                end),
+            }),
+        })
+        ls.setup({
+            history = true,
+            updateevents = "TextChanged,TextChangedI",
+            ext_opts = {
+                [types.insertNode] = {
+                    active = {
+                        -- highlight the text inside the node red.
+                        hl_group = "LualineCursorLine",
+                    },
+                    --[[ these ext_opts are applied when the node is not active, but
+                the snippet still is.
+                passive = {
+                    hl_group = "Unvisited",
+                    -- add virtual text on the line of the node, behind all text.
+                    -- virt_text = { { "virtual text!!", "GruvboxBlue" } },
+                }, ]]
+                    unvisited = {
+                        hl_group = "Unvisited",
+                    },
+                    --[[ visited = {
+                    hl_group = "Unvisited",
+                }, ]]
                 },
-                -- these ext_opts are applied when the node is not active, but
-                -- the snippet still is.
-                -- passive = {
-                --     hl_group = "Unvisited",
-                --     -- add virtual text on the line of the node, behind all text.
-                --     -- virt_text = { { "virtual text!!", "GruvboxBlue" } },
-                -- },
-                -- unvisited = {
-                --     --     -- virt_text = { { "|", "Conceal" } },
-                --     hl_group = "CmpItemKindProperty",
-                --     --     -- virt_text_pos = "inline",
-                -- },
-                -- visited = {
-                --     hl_group = "Unvisited",
-                -- },
+                -- Add this to also have a placeholder in the final tabstop.
+                -- See the discussion below for more context.
+                [types.exitNode] = {
+                    unvisited = {
+                        virt_text = { { "│", "Conceal" } },
+                        virt_text_pos = "inline",
+                    },
+                },
             },
-            -- Add this to also have a placeholder in the final tabstop.
-            -- See the discussion below for more context.
-            [types.exitNode] = {
-                -- unvisited = {
-                --     virt_text = { { "│", "Conceal" } },
-                --     virt_text_pos = "inline",
-                -- },
-            },
-        },
-    },
+        })
+    end,
 }

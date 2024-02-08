@@ -5,6 +5,7 @@ local function my_on_attach(bufnr)
     end
     api.config.mappings.default_on_attach(bufnr)
     vim.keymap.set("n", "<esc>", "<C-w>l", opts("return to origin buffer"))
+    vim.keymap.set("n", "<Tab>", "<C-w>l", opts("return to origin buffer"))
 end
 return {
     "nvim-tree/nvim-tree.lua",

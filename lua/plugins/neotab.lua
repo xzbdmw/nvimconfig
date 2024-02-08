@@ -2,7 +2,7 @@ return {
     "kawre/neotab.nvim",
     event = "InsertEnter",
     opts = {
-        tabkey = "",
+        tabkey = "<Tab>",
         act_as_tab = true,
         behavior = "nested",
         pairs = {

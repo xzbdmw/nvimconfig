@@ -3,6 +3,16 @@ return {
     config = function()
         local noice = require("noice")
         noice.setup({
+            messages = {
+                -- NOTE: If you enable messages, then the cmdline is enabled automatically.
+                -- This is a current Neovim limitation.
+                enabled = true, -- enables the Noice messages UI
+                view = "mini", -- default view for messages
+                view_error = "notify", -- view for errors
+                view_warn = "notify", -- view for warnings
+                view_history = "messages", -- view for :messages
+                view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+            },
             cmdline = {
                 enabled = true, -- enables the Noice cmdline UI
                 view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
@@ -57,7 +67,7 @@ return {
                     },
                     help = {
                         pattern = "^:%s*he?l?p?%s+",
-                        icon = "",
+                        icon = "?",
                         conceal = false,
                         opts = {
                             border = {
@@ -78,6 +88,21 @@ return {
                 },
             },
             lsp = {
+                message = {
+                    -- Messages shown by lsp servers
+                    enabled = true,
+                    view = "mini",
+                    opts = {},
+                },
+                progress = {
+                    enabled = true,
+                    -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
+                    -- See the section on formatting for more details on how to customize.
+                    format = "lsp_progress",
+                    format_done = "lsp_progress_done",
+                    throttle = 1000 / 30, -- frequency to update lsp progress message
+                    view = "mini",
+                },
                 signature = {
                     enabled = false,
                     opts = {
@@ -109,6 +134,10 @@ return {
                         width = 20,
                         height = "auto",
                     },
+                },
+                mini = {
+                    focusable = true,
+                    timeout = 2000,
                 },
             },
         })

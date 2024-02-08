@@ -6,6 +6,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.relativenumber = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+vim.opt.jumpoptions = "stack"
 vim.cmd("set nolist")
 -- vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h20"
 -- vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
@@ -13,7 +14,7 @@ vim.cmd("set nolist")
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20:#e-antialias:#h-normal"
 -- vim.o.guifont = "hack,Symbols Nerd Font:h20:#e-subpixelantialias:#h-full"
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20"
-vim.opt.linespace = 4
+vim.opt.linespace = 5
 vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver22,r-cr-v-o:hor7"
 vim.opt.swapfile = false
 -- vim.g.neovide_transparency = 0.95

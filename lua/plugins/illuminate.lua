@@ -14,6 +14,6 @@ return {
         large_file_overrides = {
             providers = { "lsp", "treesitter", "regex" },
         },
-        modes_denylist = { "i", "v" },
+        modes_denylist = { "i", "v", "x" },
     },
 }

@@ -15,7 +15,8 @@ return {
                 -- this highlight is used to override other highlights
                 -- you can take advantage of its `bg` and set a background throughout your winbar
                 -- (e.g. basename will look like this: { fg = "#c0caf5", bold = true })
-                normal = { bg = "#FAF7E8", fg = "#3D4D56" },
+                -- normal = { bg = "#FAF7E8", fg = "#3D4D56" },
+                normal = { bg = "#24273A", fg = "#CAD3F5" },
 
                 -- these highlights correspond to symbols table from config
                 ellipsis = { fg = "#3D4D56" },
@@ -23,7 +24,7 @@ return {
                 modified = { fg = "#3D4D56" },
 
                 -- these highlights represent the _text_ of three main parts of barbecue
-                dirname = { fg = "#3F4D56" },
+                dirname = { fg = "#CAD3F5" },
                 basename = { bold = true },
                 context = { fg = "#ac8fe4" },
 

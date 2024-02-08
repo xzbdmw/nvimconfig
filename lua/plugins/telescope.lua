@@ -163,11 +163,11 @@ return {
             },
             extensions = {
                 smart_open = {
-                    show_scores = false,
+                    show_scores = true,
                     ignore_patterns = { "*.git/*", "*/tmp/*" },
                     match_algorithm = "fzf",
-                    disable_devicons = false,
-                    open_buffer_indicators = { previous = "👀", others = "🙈" },
+                    disable_devicons = true,
+                    open_buffer_indicators = { previous = "😄", others = "👀" },
                 },
             },
         })

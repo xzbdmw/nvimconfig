@@ -28,7 +28,7 @@ return {
             timer = 400,
         },
         preserve_cursor_position = {
-            enabled = false,
+            enabled = true,
         },
         textobj = {
             enabled = true,
