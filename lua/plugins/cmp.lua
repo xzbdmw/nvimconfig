@@ -45,17 +45,17 @@ return {
             },
             mapping = cmp.mapping.preset.insert({
                 ["<C-n>"] = cmp.mapping(function()
+                    print("hello")
                     if luasnip.expand_or_jumpable() then
                         luasnip.expand_or_jump()
                     end
-                end),
+                end, { "i", "v", "n" }),
                 -- ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
                 ["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
                 ["<C-e>"] = cmp.mapping.abort(),
-                -- ["<C-6>"] = cmp.mapping.close_docs(),
                 ["<C-6>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.mapping.close_docs()
@@ -64,14 +64,6 @@ return {
                     end
                 end),
                 ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                ["<S-CR>"] = cmp.mapping.confirm({
-                    behavior = cmp.ConfirmBehavior.Replace,
-                    select = true,
-                }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                ["<C-CR>"] = function(fallback)
-                    cmp.abort()
-                    fallback()
-                end,
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
@@ -88,38 +80,39 @@ return {
                 { name = "buffer", keyword_length = 3 },
             }),
             formatting = {
+                -- kind is icon, abbr is completion name, menu is [Function]
                 fields = { "kind", "abbr", "menu" },
                 format = function(entry, vim_item)
                     local kind = require("lspkind").cmp_format({
                         mode = "symbol_text",
                         maxwidth = 40,
-                        -- before = function(entry, vim_item)
-                        --     -- Get the full snippet (and only keep first line)
-                        --     local str = require("cmp.utils.str")
-                        --     local types = require("cmp.types")
-                        --     local word = entry:get_insert_text()
-                        --     if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
-                        --         word = vim.lsp.util.parse_snippet(word)
-                        --     end
-                        --     word = str.oneline(word)
-                        --
-                        --     -- concatenates the string
-                        --     -- local max = 50
-                        --     -- if string.len(word) >= max then
-                        --     -- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
-                        --     -- 	word = before .. "..."
-                        --     -- end
-                        --
-                        --     if
-                        --         entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
-                        --         and string.sub(vim_item.abbr, -1, -1) == "~"
-                        --     then
-                        --         word = word .. "~"
-                        --     end
-                        --     vim_item.abbr = word
-                        --
-                        --     return vim_item
-                        -- end,
+                        --[[ before = function(entry, vim_item)
+                            -- Get the full snippet (and only keep first line)
+                            local str = require("cmp.utils.str")
+                            local types = require("cmp.types")
+                            local word = entry:get_insert_text()
+                            if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
+                                word = vim.lsp.util.parse_snippet(word)
+                            end
+                            word = str.oneline(word)
+
+                            -- concatenates the string
+                            -- local max = 50
+                            -- if string.len(word) >= max then
+                            -- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
+                            -- 	word = before .. "..."
+                            -- end
+
+                            if
+                                entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
+                                and string.sub(vim_item.abbr, -1, -1) == "~"
+                            then
+                                word = word .. "~"
+                            end
+                            vim_item.abbr = word
+
+                            return vim_item
+                        end, ]]
                     })(entry, vim_item)
                     local strings = vim.split(kind.kind, "%s", { trimempty = true })
                     kind.kind = " " .. (strings[1] or "") .. " "

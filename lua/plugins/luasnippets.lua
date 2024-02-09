@@ -4,6 +4,13 @@ return {
     -- follow latest release.
     -- version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
     version = false,
+    keys = {
+        {
+            "<Tab>",
+            false,
+        },
+    },
+
     -- install jsregexp (optional!).
     build = "make install_jsregexp",
     lazy = true,
@@ -12,25 +19,41 @@ return {
         local sn = ls.snippet_node
         local s = ls.s
         local i = ls.insert_node
+        local f = ls.function_node
         local t = ls.text_node
         local d = ls.dynamic_node
+        local a = "2123"
         local rep = require("luasnip.extras").rep
         local fmt = require("luasnip.extras.fmt").fmt
         local postfix = require("luasnip.extras.postfix").postfix
-        ls.add_snippets("lua", { ls.parser.parse_snippet("expand", "kkkkkk") })
-        ls.add_snippets("lua", { s("req", fmt("local {} = require('{}')", { i(1, "default"), rep(1) })) })
-        ls.add_snippets("lua", { ls.parser.parse_snippet("lf", "local $1 = function($2)\n $0\nend") })
-        ls.add_snippets("lua", {
-            postfix(".var", {
-                d(1, function(_, parent)
-                    return sn(1, t("hello"))
-                    -- return sn(
-                    --     1,
-                    --     fmt("local {} = " .. parent.snippet.env.POSTFIX_MATCH, {
-                    --         i(1, "name"),
-                    --     })
-                    -- )
-                end),
+        -- ls.add_snippets("lua", { ls.parser.parse_snippet("expand", "kkkkkk") })
+        -- ls.add_snippets("lua", { s("req", fmt("local {} = require('{}')", { i(1, "default"), rep(1) })) })
+        -- ls.add_snippets("lua", { ls.parser.parse_snippet("lf", "local $1 = function($2)\n $0\nend") })
+        ls.add_snippets("go", {
+            postfix(".byte", {
+                f(function(_, parent)
+                    return "[]byte(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+                end, {}),
+            }),
+            postfix(".u32", {
+                f(function(_, parent)
+                    return "uint32(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+                end, {}),
+            }),
+            postfix(".u64", {
+                f(function(_, parent)
+                    return "uint64(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+                end, {}),
+            }),
+            postfix(".i32", {
+                f(function(_, parent)
+                    return "int32(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+                end, {}),
+            }),
+            postfix(".i64", {
+                f(function(_, parent)
+                    return "int64(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+                end, {}),
             }),
         })
         ls.setup({
@@ -60,7 +83,7 @@ return {
                 -- See the discussion below for more context.
                 [types.exitNode] = {
                     unvisited = {
-                        virt_text = { { "│", "Conceal" } },
+                        virt_text = { { "<-", "Conceal" } },
                         virt_text_pos = "inline",
                     },
                 },

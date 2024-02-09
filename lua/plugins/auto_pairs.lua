@@ -2,7 +2,7 @@ return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {
-        enable_moveright = true,
+        enable_moveright = false,
         map_bs = false,
     }, -- this is equalent to setup({}) function
 }

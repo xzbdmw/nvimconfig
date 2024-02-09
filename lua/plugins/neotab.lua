@@ -16,7 +16,7 @@ return {
         },
         exclude = {},
         smart_punctuators = {
-            enabled = true,
+            enabled = false,
             semicolon = {
                 enabled = true,
                 ft = { "rust", "cs", "c", "cpp", "java" },

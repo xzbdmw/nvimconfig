@@ -11,7 +11,7 @@ return {
             },
             transparent_background = false, -- disables setting the background color.
             show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-            term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+            term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
             dim_inactive = {
                 enabled = false, -- dims the background color of inactive window
                 shade = "dark",
@@ -40,13 +40,14 @@ return {
                     ["@lsp.typemod.selfKeyword"] = { fg = colors.red, italic = true },
                     ["@namespace"] = { style = { "nocombine" } },
                     ["@module"] = { style = { "nocombine" } },
-                    CursorLine = { bg = "#1E2030" },
+                    CursorLine = { bg = "#292D3F" },
                     LspInlayHint = { fg = "#6C7086", bg = colors.none },
-                    TreesitterContext = { bg = "#1e1e2e", style = { "bold", "italic" } },
-                    NvimTreeCursorLine = { bg = "#1E2030", style = { "bold" }, fg = "#C6A0F6" },
-                    NvimTreeWinSeparator = { bg = "#1E2030", fg = "#1E2030" },
-                    Folded = { bg = "#303347" },
-                    CursorLineNr = { bg = "#1E2030" },
+                    NvimTreeFileIcon = { fg = "#CAD3F5" },
+                    NvimTreeCursorLine = { bg = "#24273A", style = { "bold" } },
+                    -- NvimTreeWinSeparator = { bg = "#1E2030", fg = "#1e2030" },
+                    Folded = { link = "CursorLine" },
+                    -- CursorLineNr = { bg = "#303347" },
+                    NvimTreeCursorLineNr = { bg = "#24273A" },
                     Visual = { bg = "#304E75", style = { "nocombine" } },
                     CmpGhostText = { fg = "#6C7086", style = { "italic" } },
                     TelescopeMatching = { style = { "bold" } },
