@@ -136,7 +136,7 @@ return {
                     },
                 },
                 mini = {
-                    focusable = true,
+                    focusable = false,
                     timeout = 2000,
                 },
             },

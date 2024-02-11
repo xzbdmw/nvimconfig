@@ -178,7 +178,25 @@ keymap("n", "<Tab>", function()
     local line_num = cursor_pos[1] -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
-        vim.cmd([[
+        local flag = false
+        local current_win = vim.api.nvim_get_current_win()
+        for _, win in pairs(vim.api.nvim_list_wins()) do
+            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            if success then
+                -- print(vim.inspect(win_config))
+                if win_config.relative ~= "" then
+                    if current_win ~= win then
+                        flag = true
+                        vim.api.nvim_set_current_win(win)
+                    else
+                        flag = false
+                        break
+                    end
+                end
+            end
+        end
+        if flag == false then
+            vim.cmd([[
   let w0 = winnr()
   let nok = 1
   while nok
@@ -188,6 +206,7 @@ keymap("n", "<Tab>", function()
     let nok = (n=~'NVimTree') && (w != w0)
   endwhile
 ]])
+        end
     else
         require("ufo").peekFoldedLinesUnderCursor()
     end
