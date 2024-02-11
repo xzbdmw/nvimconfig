@@ -11,7 +11,7 @@ return {
             -- Ignored buffer types (only while resizing)
             ignored_buftypes = { "NvimTree" },
             -- the default number of lines/columns to resize by at a time
-            default_amount = 8,
+            default_amount = 6,
             -- Desired behavior when your cursor is at an edge and you
             -- are moving towards that same edge:
             -- 'wrap' => Wrap to opposite side

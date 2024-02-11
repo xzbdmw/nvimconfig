@@ -28,9 +28,12 @@ vim.api.nvim_create_autocmd("QuitPre", {
         end
     end,
 })
+
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
-    vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+    vim.keymap.set("t", "<esc>", function()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jk", true, false, true), "t", true)
+    end, opts)
     vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
     vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
     vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
@@ -45,4 +48,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
         vim.cmd("NvimTreeToggle")
     end,
+})
+-- walkaroud for incremental selection
+vim.api.nvim_create_augroup("_cmd_win", { clear = true })
+vim.api.nvim_create_autocmd("CmdWinEnter", {
+    callback = function()
+        vim.keymap.del("n", "<CR>", { buffer = true })
+    end,
+    group = "_cmd_win",
 })

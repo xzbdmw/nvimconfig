@@ -1,5 +1,6 @@
 return {
     "nvim-telescope/telescope.nvim",
+    version = false,
     keys = {
         { "<leader>r", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
         -- disable the keymap to grep files
@@ -45,6 +46,41 @@ return {
             })
         end
         local actions = require("telescope.actions")
+        local yank_selected_entry = function(prompt_bufnr)
+            local action_state = require("telescope.actions.state")
+            local entry_display = require("telescope.pickers.entry_display")
+
+            local picker = action_state.get_current_picker(prompt_bufnr)
+            local manager = picker.manager
+
+            local selection_row = picker:get_selection_row()
+            local entry = manager:get_entry(picker:get_index(selection_row))
+            local display, _ = entry_display.resolve(picker, entry)
+
+            actions.close(prompt_bufnr)
+
+            vim.fn.setreg("+", display)
+        end
+        -- yank preview
+        local yank_preview_lines = function(prompt_bufnr)
+            local action_state = require("telescope.actions.state")
+
+            local picker = action_state.get_current_picker(prompt_bufnr)
+            local previewer = picker.previewer
+            local winid = previewer.state.winid
+            local bufnr = previewer.state.bufnr
+
+            local line_start = vim.fn.line("w0", winid)
+            local line_end = vim.fn.line("w$", winid)
+
+            local lines = vim.api.nvim_buf_get_lines(bufnr, line_start, line_end, false)
+
+            local text = table.concat(lines, "\n")
+
+            actions.close(prompt_bufnr)
+
+            vim.fn.setreg("+", text)
+        end
         require("telescope").setup({
             defaults = {
                 initial_mode = "insert",
@@ -71,6 +107,8 @@ return {
                     },
                     n = {
                         ["<C-e>"] = actions.close,
+                        ["Y"] = yank_preview_lines,
+                        ["y"] = yank_selected_entry,
                         ["<C-->"] = actions.preview_scrolling_left,
                         ["<C-=>"] = actions.preview_scrolling_right,
                         s = flash,

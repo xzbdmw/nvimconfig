@@ -1,16 +1,18 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+-- -- Keymaps are automatically loaded on the VeryLazy event
+-- -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
 local del = vim.keymap.del
 local keymap = vim.keymap.set
+
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
-require("custom.highlight")
+-- require("custom.highlight")
 -- require("custom.cmp_highlight")
 del("n", "<leader>w-")
 del("n", "<leader>ww")
 del("n", "<leader>wd")
+del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "gsÞ")
@@ -54,6 +56,16 @@ keymap("n", "<leader>uf", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zm", true, false, true), "t", true)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zr", true, false, true), "t", true)
 end, opts)
+local hl_enable = true
+keymap("n", "<leader>ui", function()
+    if hl_enable then
+        vim.cmd("DisableHL")
+        hl_enable = false
+    else
+        vim.cmd("EnableHL")
+        hl_enable = true
+    end
+end, opts)
 keymap("n", "<Leader>bb", function()
     require("dap").toggle_breakpoint()
 end)
@@ -87,20 +99,19 @@ end)
 keymap({ "i", "n" }, "<f8>", function()
     vim.lsp.buf.signature_help()
 end, opts)
-keymap("n", "<CR>", "zo", opts)
-keymap("n", "<CR>", function()
-    local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1] -- 光标所在的行号
-    local fold_start = vim.fn.foldclosed(line_num)
-    print("fold_start: ")
-    print(fold_start)
-    if fold_start == -1 then
-        print("enter fold_start")
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zo", true, false, true), "n", true)
-    else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
-    end
-end) ]]
+keymap("n", "<CR>", "zo", opts)]]
+
+-- keymap("n", "<CR>", function()
+--     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
+--     local line_num = cursor_pos[1] -- 光标所在的行号
+--     local fold_start = vim.fn.foldclosed(line_num)
+--     if fold_start ~= -1 then
+--         print("enter fold_start")
+--         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zo", true, false, true), "n", true)
+--     else
+--         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("za", true, false, true), "n", true)
+--     end
+-- end)
 keymap("n", "zR", require("ufo").openAllFolds)
 keymap("n", "zm", require("ufo").closeAllFolds)
 keymap("n", "zr", require("ufo").openFoldsExceptKinds)
@@ -203,8 +214,10 @@ for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)` ]]
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<C-->", require("smart-splits").resize_left)
-keymap("n", "<D-j>", require("smart-splits").resize_down)
--- keymap("n", "<f16>", require("smart-splits").resize_up)
+keymap("n", "<leader>vh", require("smart-splits").resize_left)
+keymap("n", "<leader>vj", require("smart-splits").resize_down)
+keymap("n", "<leader>vk", require("smart-splits").resize_up)
+keymap("n", "<leader>vl", require("smart-splits").resize_right)
 keymap("n", "<C-=>", require("smart-splits").resize_right)
 keymap("n", "<leader><leader>h", "<C-w>H", opts)
 keymap("n", "<leader><leader>j", "<C-w>J", opts)

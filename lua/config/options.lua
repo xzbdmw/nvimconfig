@@ -3,11 +3,15 @@
 -- Add any additional options here
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.opt.relativenumber = false
+
+-- vim.opt.number = false
+vim.g.neovide_unlink_border_highlights = false
+-- vim.opt.relativenumber = false
 vim.opt.shiftwidth = 4
+vim.opt.list = false
 vim.opt.tabstop = 4
 vim.opt.jumpoptions = "stack"
-vim.cmd("set nolist")
+
 -- vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h20"
 -- vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20:#e-subpixelantialias:#h-none"

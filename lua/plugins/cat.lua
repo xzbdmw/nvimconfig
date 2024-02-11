@@ -61,10 +61,6 @@ return {
                     illuminatedwordread = { bg = "#32354A" },
                     illuminatedWordText = { bg = "#32354A" },
                     TreesitterContext = { bg = "#24273A", style = { "bold" } },
-                    --[[ Comment = { fg = colors.flamingo },
-                    TabLineSel = { bg = colors.pink },
-                    CmpBorder = { fg = colors.surface2 },
-                    Pmenu = { bg = colors.none }, ]]
                 }
             end,
             integrations = {
