@@ -32,7 +32,7 @@ return {
         local groups = {
             all = {
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
-                LspInlayHint = { fg = "#595655" },
+                LspInlayHint = { fg = "#595655", bg = "none" },
                 IlluminatedWordRead = { bg = "#D2D0D0" },
                 illuminatedwordwrite = { link = "Visual" },
                 MiniIndentscopeSymbol = { link = "Comment" },

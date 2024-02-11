@@ -7,6 +7,7 @@ return {
     { "lukas-reineke/indent-blankline.nvim", enabled = false },
     { "nvim-neo-tree/neo-tree.nvim", enabled = false },
     { "akinsho/bufferline.nvim", enabled = false },
+    { "kawre/neotab.nvim", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },
     -- { "Bekaboo/dropbar.nvim", enabled = false },
     { "norcalli/nvim-colorizer.lua", enabled = false },

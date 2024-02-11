@@ -124,9 +124,17 @@ keymap("n", "zp", function()
         vim.lsp.buf.hover()
     end
 end)
-keymap("n", "<down>", "<C-w>j", opts)
+keymap("i", "<Tab>", function()
+    local col = vim.fn.col(".") - 1
+    if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
+    else
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", true)
+    end
+end, opts)
+-- keymap("n", "<down>", "<C-w>j", opts)
 keymap("", "<D-a>", "ggVG", opts)
-keymap("n", "<up>", "<C-w>k", opts)
+-- keymap("n", "<up>", "<C-w>k", opts)
 keymap("n", "<left>", "<C-w>h", opts)
 keymap("n", "<right>", "<C-w>l", opts)
 keymap("n", "<Tab>", "<C-w>w", opts)
@@ -153,12 +161,33 @@ keymap({ "n", "i", "x" }, "<M-p>", function()
 end, { silent = true, noremap = true, desc = "toggle signature" })
 ]]
 local open = 0
+-- vim.cmd([[
+--   let w0 = winnr()
+--   let nok = 1
+--   while nok
+--     exe 'wincmd '.a:'w'
+--     let w = winnr()
+--     let n = bufname('%')
+--     let nok = (n=~a:'NVimTree') && (w != w0)
+--   endwhile
+-- ]])
+--
+-- 可以在这里替换 'thepattern' 为你想要跳过的窗口的名称模式
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
     local line_num = cursor_pos[1] -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>w", true, false, true), "t", true)
+        vim.cmd([[
+  let w0 = winnr()
+  let nok = 1
+  while nok
+    exe 'wincmd ' 'w'
+    let w = winnr()
+    let n = bufname('%')
+    let nok = (n=~'NVimTree') && (w != w0)
+  endwhile
+]])
     else
         require("ufo").peekFoldedLinesUnderCursor()
     end

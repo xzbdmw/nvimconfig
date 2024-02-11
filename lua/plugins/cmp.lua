@@ -13,7 +13,7 @@ return {
     },
     opts = function()
         local luasnip = require("luasnip")
-        local neotab = require("neotab")
+        -- local neotab = require("neotab")
         local cmp = require("cmp")
         local compare = cmp.config.compare
         return {
@@ -44,6 +44,9 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                ["<f7>"] = cmp.mapping(function()
+                    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+                end),
                 ["<C-n>"] = cmp.mapping(function()
                     print("hello")
                     if luasnip.expand_or_jumpable() then
