@@ -12,7 +12,7 @@ return {
     -- { "Bekaboo/dropbar.nvim", enabled = false },
     { "norcalli/nvim-colorizer.lua", enabled = false },
     -- { "folke/noice.nvim",                           enabled = false },
-    { "echasnovski/mini.indentscope", enabled = false },
+    -- { "echasnovski/mini.indentscope", enabled = false },
     -- { "folke/which-key.nvim", enabled = false },
     { "chomosuke/term-edit.nvim", enabled = false },
     { "shellRaining/hlchunk.nvim", enabled = false },
