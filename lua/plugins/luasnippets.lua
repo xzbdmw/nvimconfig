@@ -57,6 +57,8 @@ return {
             }),
         })
         ls.setup({
+            ext_base_prio = 200,
+            ext_prio_increase = 2,
             history = true,
             updateevents = "TextChanged,TextChangedI",
             ext_opts = {
@@ -64,6 +66,7 @@ return {
                     active = {
                         -- highlight the text inside the node red.
                         hl_group = "LualineCursorLine",
+                        priority = 1,
                     },
                     --[[ these ext_opts are applied when the node is not active, but
                 the snippet still is.
@@ -74,6 +77,7 @@ return {
                 }, ]]
                     unvisited = {
                         hl_group = "Unvisited",
+                        priority = 1,
                     },
                     --[[ visited = {
                     hl_group = "Unvisited",
@@ -83,7 +87,7 @@ return {
                 -- See the discussion below for more context.
                 [types.exitNode] = {
                     unvisited = {
-                        virt_text = { { "<-", "Conceal" } },
+                        virt_text = { { "|", "Conceal" } },
                         virt_text_pos = "inline",
                     },
                 },

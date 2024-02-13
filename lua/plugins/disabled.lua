@@ -31,5 +31,5 @@ return {
     { "neanias/everforest-nvim", enabled = false },
     { "rktjmp/lush.nvim", enabled = false },
     { "echasnovski/mini.comment", enabled = false },
-    -- { "Aasim-A/scrollEOF.nvim", enabled = false },
+    { "Aasim-A/scrollEOF.nvim", enabled = false },
 }
