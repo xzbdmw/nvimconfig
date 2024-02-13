@@ -117,7 +117,7 @@ local function checkSplitAndSetLaststatus()
     end
 end
 
-vim.api.nvim_create_autocmd("WinEnter", {
+vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
 
     callback = function()

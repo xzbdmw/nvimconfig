@@ -8,7 +8,7 @@ return {
 
         bind = true, -- This is mandatory, otherwise border config won't get registered.
         -- If you want to hook lspsaga or other signature handler, pls set to false
-        doc_lines = 8, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
+        doc_lines = 0, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
         -- set to 0 if you DO NOT want any API comments be shown
         -- This setting only take effect in insert mode, it does not affect signature help in normal
         -- mode, 10 by default
@@ -17,7 +17,7 @@ return {
         max_width = 80, -- max_width of signature floating_window, line will be wrapped if exceed max_width
         -- the value need >= 40
         wrap = true, -- allow doc/signature text wrap inside floating_window, useful if your lsp return doc/sig is too long
-        floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
+        floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
 
         floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
         -- will set to true when fully tested, set to false will use whichever side has more space

@@ -12,6 +12,7 @@ return {
     { "nvim-lualine/lualine.nvim", enabled = false },
     { "shortcuts/no-neck-pain.nvim", enabled = false },
     { "nvim-treesitter/nvim-treesitter-context", enabled = false },
+    { "echasnovski/mini.pairs", enabled = false },
     -- { "Bekaboo/dropbar.nvim", enabled = false },
     -- { "norcalli/nvim-colorizer.lua", enabled = false },
     -- { "folke/noice.nvim",                           enabled = false },

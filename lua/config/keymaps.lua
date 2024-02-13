@@ -115,18 +115,18 @@ keymap("n", "<CR>", "zo", opts)]]
 --         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("za", true, false, true), "n", true)
 --     end
 -- end)
--- keymap("n", "zR", require("ufo").openAllFolds)
--- keymap("n", "zm", require("ufo").closeAllFolds)
--- keymap("n", "zr", require("ufo").openFoldsExceptKinds)
--- keymap("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
--- keymap("n", "zp", function()
---     local winid = require("ufo").peekFoldedLinesUnderCursor()
---     if not winid then
---         -- choose one of coc.nvim and nvim lsp
---         vim.fn.CocActionAsync("definitionHover") -- coc.nvim
---         vim.lsp.buf.hover()
---     end
--- end)
+keymap("n", "zR", require("ufo").openAllFolds)
+keymap("n", "zm", require("ufo").closeAllFolds)
+keymap("n", "zr", require("ufo").openFoldsExceptKinds)
+keymap("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+keymap("n", "zp", function()
+    local winid = require("ufo").peekFoldedLinesUnderCursor()
+    if not winid then
+        -- choose one of coc.nvim and nvim lsp
+        vim.fn.CocActionAsync("definitionHover") -- coc.nvim
+        vim.lsp.buf.hover()
+    end
+end)
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then

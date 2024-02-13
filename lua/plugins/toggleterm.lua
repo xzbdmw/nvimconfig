@@ -14,7 +14,7 @@ return {
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
                 -- vim.cmd("set winbar=")
-                vim.cmd("set laststatus=3")
+                -- vim.cmd("set laststatus=3")
             end, -- function to run when the terminal opens
             on_close = function()
                 vim.cmd("set laststatus=0")
@@ -26,7 +26,7 @@ return {
             -- on_exit = fun(t: Terminal, job: number, exit_code: number, name: string) -- function to run when terminal process exits
             -- hide_numbers = true, -- hide the number column in toggleterm buffers
             shade_filetypes = {},
-            autochdir = false, -- when neovim changes it current directory the terminal will change it's own when next it's opened
+            autochdir = true, -- when neovim changes it current directory the terminal will change it's own when next it's opened
             highlights = {
                 -- highlights which map to a highlight group name and a table of it's values
                 -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split

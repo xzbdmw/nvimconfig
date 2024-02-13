@@ -13,10 +13,12 @@ return {
         "hrsh7th/cmp-cmdline",
     },
     opts = function()
-        local luasnip = require("luasnip")
         -- local neotab = require("neotab")
         local cmp = require("cmp")
         local compare = cmp.config.compare
+        -- If you want insert `(` after select function or method item
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         return {
             -- enabled = function()
             --     -- disable completion in comments
@@ -317,7 +319,8 @@ return {
                 },
             },
             init_options = {
-                usePlaceholders = true,
+                usePlaceholders = false,
+                completeFunctionCalls = false,
             },
         })
     end,

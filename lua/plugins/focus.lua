@@ -2,13 +2,13 @@ return {
     "nvim-focus/focus.nvim",
     version = false,
     config = function()
-        -- local ignore_filetypes = { "NvimTree", "toggleterm" }
-        local ignore_filetypes = { "NvimTree" }
+        local ignore_filetypes = { "NvimTree", "toggleterm" }
+        -- local ignore_filetypes = { "NvimTree" }
         local ignore_buftypes = { "nofile", "prompt", "popup" }
 
         local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 
-        vim.api.nvim_create_autocmd("WinEnter", {
+        vim.api.nvim_create_autocmd("BufEnter", {
             group = augroup,
             callback = function(_)
                 if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then

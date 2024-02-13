@@ -85,6 +85,9 @@ return {
                 lua_ls = {
                     settings = {
                         Lua = {
+                            completion = {
+                                callSnippet = "Disable",
+                            },
                             -- runtime = {
                             --     -- LuaJIT in the case of Neovim
                             --     version = "LuaJIT",
