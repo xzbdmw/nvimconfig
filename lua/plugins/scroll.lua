@@ -11,9 +11,9 @@ return {
             -- Whether or not scrollEOF should be enabled in insert mode
             insert_mode = true,
             -- List of filetypes to disable scrollEOF for.
-            disabled_filetypes = {},
+            disabled_filetypes = { "toggleterm", "NvimTree" },
             -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode()
-            disabled_modes = {},
+            disabled_modes = { "t", "nt" },
         })
     end,
 }

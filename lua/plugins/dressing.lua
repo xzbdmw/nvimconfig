@@ -81,9 +81,17 @@ return {
             -- Options for telescope selector
             -- These are passed into the telescope picker directly. Can be used like:
             -- telescope = require('telescope.themes').get_ivy({...})
-            telescope = require("telescope.themes").get_cursor({
+            telescope = {
                 initial_mode = "normal",
-            }),
+                layout_config = {
+                    horizontal = {
+                        width = 0.5,
+                        height = 0.5,
+                        preview_cutoff = 0,
+                        prompt_position = "top",
+                    },
+                },
+            },
         },
     },
 }

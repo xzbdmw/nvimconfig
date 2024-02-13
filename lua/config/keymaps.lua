@@ -9,15 +9,19 @@ local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 -- require("custom.highlight")
 -- require("custom.cmp_highlight")
-del("n", "<leader>w-")
-del("n", "<leader>ww")
-del("n", "<leader>wd")
-del("t", "<esc><esc>")
-del("n", "<leader>w|")
-del({ "n", "x" }, "<space>wÞ")
-del({ "n", "x" }, "gsÞ")
+-- del("n", "<leader>w-")
+-- del("n", "<leader>ww")
+-- del("n", "<leader>wd")
+-- del("t", "<esc><esc>")
+-- del("n", "<leader>w|")
+-- del({ "n", "x" }, "<space>wÞ")
+-- del({ "n", "x" }, "gsÞ")
 -- hl(0, "MiniIndentscopeSymbol", { link = "@variable.member" })
 -- hl(0, "IndentBlanklineContextChar", { fg = "#BDBFC9" })
+-- keymap("n", "<esc>", function()
+--     print("hello")
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc><esc>", true, false, true), "n", true)
+-- end, opts)
 keymap("n", "<leader>td", function()
     require("dapui").toggle()
 end, { silent = true, noremap = true, desc = "toggle signature" })
@@ -112,18 +116,18 @@ keymap("n", "<CR>", "zo", opts)]]
 --         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("za", true, false, true), "n", true)
 --     end
 -- end)
-keymap("n", "zR", require("ufo").openAllFolds)
-keymap("n", "zm", require("ufo").closeAllFolds)
-keymap("n", "zr", require("ufo").openFoldsExceptKinds)
-keymap("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
-keymap("n", "zp", function()
-    local winid = require("ufo").peekFoldedLinesUnderCursor()
-    if not winid then
-        -- choose one of coc.nvim and nvim lsp
-        vim.fn.CocActionAsync("definitionHover") -- coc.nvim
-        vim.lsp.buf.hover()
-    end
-end)
+-- keymap("n", "zR", require("ufo").openAllFolds)
+-- keymap("n", "zm", require("ufo").closeAllFolds)
+-- keymap("n", "zr", require("ufo").openFoldsExceptKinds)
+-- keymap("n", "zM", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+-- keymap("n", "zp", function()
+--     local winid = require("ufo").peekFoldedLinesUnderCursor()
+--     if not winid then
+--         -- choose one of coc.nvim and nvim lsp
+--         vim.fn.CocActionAsync("definitionHover") -- coc.nvim
+--         vim.lsp.buf.hover()
+--     end
+-- end)
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
@@ -132,17 +136,22 @@ keymap("i", "<Tab>", function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", true)
     end
 end, opts)
+keymap("i", "<C-a>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
+end, opts)
 -- keymap("n", "<down>", "<C-w>j", opts)
 keymap("", "<D-a>", "ggVG", opts)
 -- keymap("n", "<up>", "<C-w>k", opts)
 keymap("n", "<left>", "<C-w>h", opts)
 keymap("n", "<right>", "<C-w>l", opts)
-keymap("n", "<Tab>", "<C-w>w", opts)
 keymap("n", "<leader>i", function()
     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
 end, opts)
 keymap({ "x", "v", "n", "i" }, "<f7>", function()
     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+end, opts)
+keymap("", "<C-9>", function()
+    print(vim.fn.mode())
 end, opts)
 keymap("n", "<D-w>", function()
     local win_amount = #vim.api.nvim_tabpage_list_wins(0)
@@ -182,16 +191,17 @@ keymap("n", "<Tab>", function()
         local current_win = vim.api.nvim_get_current_win()
         for _, win in pairs(vim.api.nvim_list_wins()) do
             local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            -- print(vim.inspect(win_config))
             if success then
-                -- print(vim.inspect(win_config))
+                -- if this win is float_win
                 if win_config.relative ~= "" then
-                    if current_win ~= win then
+                    -- if this win isn't current_win
+                    if current_win ~= win and win_config.zindex ~= 20 and win_config.zindex ~= 60 then
+                        -- change flag to indicate that we have change current_win, so no need to cycle
                         flag = true
                         vim.api.nvim_set_current_win(win)
-                    else
-                        flag = false
-                        break
                     end
+                    break
                 end
             end
         end
@@ -276,8 +286,8 @@ keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 -- yanky
 keymap({ "n", "x" }, "y", "<Plug>(YankyYank)")
-keymap({ "n" }, "<space>pp", "<Plug>(YankyPreviousEntry)")
-keymap({ "n" }, "<space>nn", "<Plug>(YankyNextEntry)")
+keymap({ "n" }, "<space>p", "<Plug>(YankyPreviousEntry)")
+keymap({ "n" }, "<space>n", "<Plug>(YankyNextEntry)")
 keymap({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
 keymap("x", "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" })
 keymap("n", "p", "<Plug>(YankyPutAfter)")
@@ -365,7 +375,7 @@ keymap({ "n", "i" }, "<D-e>", function()
 end, { noremap = true, silent = true, desc = "find files in cwd" })
 keymap("c", "<CR>", "<Nop>", opts)
 keymap("c", "<f8>", "<CR>", opts)
-keymap("n", "<leader>nh", function()
+keymap("n", "<leader>sn", function()
     require("noice").cmd("telescope")
 end)
 keymap("c", "<D-CR>", "<CR>", opts)
@@ -375,15 +385,20 @@ end, opts)
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true, desc = "go to sticky scroll" })
-keymap("n", "<D-s>", ":w<CR>", opts)
-keymap("i", "<D-s>", "<Esc>:w<CR>a", opts)
+-- keymap("n", "<D-s>", "<Cmd>w<CR>", opts)
+keymap("n", "<D-s>", function()
+    if vim.bo.modified then
+        vim.api.nvim_command("write")
+    end
+end, opts)
+keymap("i", "<D-s>", "<cmd>w<CR>", opts)
 keymap({ "n", "v", "i" }, "<D-c>", "<Plug>(YankyYank)", opts)
-keymap("n", "<D-v>", "hp", opts)
-keymap("i", "<D-v>", "<Esc>pa", opts)
+keymap("n", "<D-v>", "<Plug>(YankyPutAfter)", opts)
+keymap("i", "<D-v>", '<C-r>"', opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 -- keymap({ "n", "i" }, "<D-w>", ":BufDel<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
-keymap("i", "<D-z>", "<esc>ua", opts)
+keymap("i", "<D-z>", "<Esc>u", opts)
 -- keymap({ "n", "i" }, "<D-1>", ":Neotree filesystem reveal left<CR>", opts)
 keymap({ "n", "c" }, "<D-1>", ":NvimTreeToggle<CR>", opts)
 keymap({ "i", "t" }, "<D-1>", "<cmd>NvimTreeToggle<CR>", opts)

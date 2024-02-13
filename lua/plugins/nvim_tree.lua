@@ -6,6 +6,9 @@ local function my_on_attach(bufnr)
     api.config.mappings.default_on_attach(bufnr)
     vim.keymap.set("n", "<esc>", "<C-w>l", opts("return to origin buffer"))
     vim.keymap.set("n", "<Tab>", "<C-w>l", opts("return to origin buffer"))
+    vim.keymap.set("n", "p", function()
+        api.node.open.preview()
+    end, opts("preview file"))
 end
 return {
     "nvim-tree/nvim-tree.lua",
@@ -16,28 +19,14 @@ return {
     lazy = false,
     config = function()
         require("nvim-tree").setup({
-            log = {
-                enable = true,
-                truncate = false,
-                types = {
-                    all = false,
-                    config = false,
-                    copy_paste = false,
-                    dev = false,
-                    diagnostics = false,
-                    git = false,
-                    profile = true,
-                    watcher = false,
-                },
-            },
             git = {
                 enable = false,
             },
-            filesystem_watchers = {
-                enable = false,
-                debounce_delay = 0,
-                ignore_dirs = {},
-            },
+            -- filesystem_watchers = {
+            --     enable = false,
+            --     debounce_delay = 0,
+            --     ignore_dirs = {},
+            -- },
             actions = {
                 open_file = {
                     quit_on_open = false,

@@ -1,4 +1,3 @@
-local types = require("luasnip.util.types")
 return {
     "L3MON4D3/LuaSnip",
     -- follow latest release.
@@ -15,6 +14,7 @@ return {
     build = "make install_jsregexp",
     lazy = true,
     config = function()
+        local types = require("luasnip.util.types")
         local ls = require("luasnip")
         local sn = ls.snippet_node
         local s = ls.s

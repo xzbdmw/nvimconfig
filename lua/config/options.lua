@@ -6,11 +6,13 @@ vim.g.loaded_netrwPlugin = 1
 
 -- vim.opt.number = false
 vim.g.neovide_unlink_border_highlights = false
--- vim.opt.relativenumber = false
+vim.opt.relativenumber = false
+-- vim.opt.number = false
 vim.opt.shiftwidth = 4
 vim.opt.list = false
 vim.opt.tabstop = 4
 vim.opt.jumpoptions = "stack"
+vim.opt.cmdheight = 0
 
 -- vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h20"
 -- vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
@@ -20,6 +22,7 @@ vim.opt.jumpoptions = "stack"
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20"
 vim.opt.linespace = 5
 vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver22,r-cr-v-o:hor7"
+vim.opt.timeoutlen = 500
 vim.opt.swapfile = false
 -- vim.g.neovide_transparency = 0.95
 vim.opt.laststatus = 0
@@ -45,7 +48,7 @@ vim.g.neovide_floating_z_height = 0
 vim.g.neovide_light_angle_degrees = 0
 vim.g.neovide_light_radius = 0
 vim.g.neovide_cursor_trail_size = 0
-vim.g.neovide_cursor_animate_command_line = true
+vim.g.neovide_cursor_animate_command_line = false
 vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0
@@ -61,6 +64,17 @@ vim.g.rustaceanvim = {
                     },
                     privateEditable = {
                         enable = true,
+                    },
+                },
+                procMacro = {
+                    ignored = {
+                        tokio_macros = {
+                            "main",
+                            "test",
+                        },
+                        tracing_attributes = {
+                            "instrument",
+                        },
                     },
                 },
                 inlayHints = {

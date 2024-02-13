@@ -2,6 +2,7 @@ return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = "InsertEnter",
+    keys = { { "<C-n>", false } },
     lazy = false,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
@@ -17,18 +18,31 @@ return {
         local cmp = require("cmp")
         local compare = cmp.config.compare
         return {
+            -- enabled = function()
+            --     -- disable completion in comments
+            --     local context = require("cmp.config.context")
+            --     -- keep command mode completion enabled when cursor is in a comment
+            --     if vim.api.nvim_get_mode().mode == "c" then
+            --         return true
+            --     else
+            --         return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+            --     end
+            -- end,
             preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    -- winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
             },
             completion = {
                 -- autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
                 completeopt = "menu,menuone,noinsert",
+            },
+            view = {
+                entries = { name = "custom", selection_order = "near_cursor" },
             },
             performance = {
                 debounce = 0,
@@ -47,17 +61,40 @@ return {
                 ["<f7>"] = cmp.mapping(function()
                     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
                 end),
-                ["<C-n>"] = cmp.mapping(function()
-                    print("hello")
-                    if luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    end
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    fallback()
+                    -- print("hello")
+                    -- if luasnip.expand_or_jumpable() then
+                    --     luasnip.expand_or_jump()
+                    -- end
                 end, { "i", "v", "n" }),
                 -- ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
-                ["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
+                -- ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
+                -- ["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
+                ["<down>"] = function(fallback)
+                    if cmp.visible() then
+                        if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                            cmp.select_next_item()
+                        else
+                            cmp.select_prev_item()
+                        end
+                    else
+                        fallback()
+                    end
+                end,
+                ["<up>"] = function(fallback)
+                    if cmp.visible() then
+                        if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                            cmp.select_prev_item()
+                        else
+                            cmp.select_next_item()
+                        end
+                    else
+                        fallback()
+                    end
+                end,
                 ["<C-e>"] = cmp.mapping.abort(),
                 ["<C-6>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then

@@ -5,6 +5,7 @@ return {
         { "<leader>r", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
         -- disable the keymap to grep files
         { "<leader><space>", false },
+        { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         {
             "<C-d>",
             function()

@@ -44,9 +44,14 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-vim.api.nvim_create_autocmd("VimEnter", {
+local bufenter = true
+vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
-        vim.cmd("NvimTreeToggle")
+        if bufenter then
+            vim.cmd("NvimTreeToggle")
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
+            bufenter = false
+        end
     end,
 })
 -- walkaroud for incremental selection
