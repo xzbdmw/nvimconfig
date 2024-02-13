@@ -4,7 +4,6 @@
 local opts = { noremap = true, silent = true }
 local del = vim.keymap.del
 local keymap = vim.keymap.set
-
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 -- require("custom.highlight")
@@ -158,6 +157,36 @@ keymap("n", "<D-w>", function()
     if win_amount == 1 then
         vim.cmd("BufDel")
     else
+        local windows = vim.api.nvim_list_wins()
+        local is_split = false
+
+        for i, win in ipairs(windows) do
+            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            if success then
+                if win_config.relative ~= "" then
+                    goto continue
+                end
+            end
+            local win_height = vim.api.nvim_win_get_height(win)
+            local screen_height = vim.api.nvim_get_option("lines")
+            print("round:")
+            print(i)
+            print("win_height")
+            print(win_height)
+            print("screen_height")
+            print(screen_height)
+            if win_height + 1 < screen_height then
+                is_split = true
+                break
+            end
+            ::continue::
+        end
+
+        if is_split then
+            -- print("hello")
+            -- vim.schedule()
+            vim.cmd("set laststatus=0")
+        end
         vim.cmd("close")
     end
 end)
@@ -270,13 +299,15 @@ resizing splits
 these keymaps will also accept a range,
 for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)` ]]
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
-keymap("n", "<leader>vd", "<cmd>sp<CR>")
-keymap("n", "<C-->", require("smart-splits").resize_left)
-keymap("n", "<leader>vh", require("smart-splits").resize_left)
-keymap("n", "<leader>vj", require("smart-splits").resize_down)
-keymap("n", "<leader>vk", require("smart-splits").resize_up)
-keymap("n", "<leader>vl", require("smart-splits").resize_right)
-keymap("n", "<C-=>", require("smart-splits").resize_right)
+keymap("n", "<leader>vd", function()
+    vim.cmd("sp")
+end)
+-- keymap("n", "<C-->", require("smart-splits").resize_left)
+-- keymap("n", "<leader>vh", require("smart-splits").resize_left)
+-- keymap("n", "<leader>vj", require("smart-splits").resize_down)
+-- keymap("n", "<leader>vk", require("smart-splits").resize_up)
+-- keymap("n", "<leader>vl", require("smart-splits").resize_right)
+-- keymap("n", "<C-=>", require("smart-splits").resize_right)
 keymap("n", "<leader><leader>h", "<C-w>H", opts)
 keymap("n", "<leader><leader>j", "<C-w>J", opts)
 keymap("n", "<leader><leader>k", "<C-w>K", opts)

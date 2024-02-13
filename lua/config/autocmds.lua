@@ -62,3 +62,140 @@ vim.api.nvim_create_autocmd("CmdWinEnter", {
     end,
     group = "_cmd_win",
 })
+
+local function checkSplitAndReSetLaststatus()
+    local windows = vim.api.nvim_list_wins()
+    local is_split = false
+
+    for _, win in ipairs(windows) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            if win_config.relative ~= "" then
+                goto continue
+            end
+        end
+        local win_height = vim.api.nvim_win_get_height(win)
+        local screen_height = vim.api.nvim_get_option("lines")
+        if win_height + 1 < screen_height then
+            is_split = true
+            break
+        end
+        ::continue::
+    end
+
+    if is_split then
+        -- vim.schedule()
+        print("set statue = 0")
+        vim.cmd("set laststatus=0")
+    end
+end
+
+local function checkSplitAndSetLaststatus()
+    local windows = vim.api.nvim_list_wins()
+    local is_split = false
+
+    for _, win in ipairs(windows) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            if win_config.relative ~= "" then
+                goto continue
+            end
+        end
+        local win_height = vim.api.nvim_win_get_height(win)
+        local screen_height = vim.api.nvim_get_option("lines")
+        if win_height + 1 < screen_height then
+            is_split = true
+            break
+        end
+        ::continue::
+    end
+
+    if is_split then
+        -- print("set statue = 3")
+        -- vim.schedule()
+        vim.cmd("set laststatus=3")
+    end
+end
+
+vim.api.nvim_create_autocmd("WinEnter", {
+    pattern = "*",
+
+    callback = function()
+        if vim.bo.filetype == "noice" then
+            return
+        else
+            checkSplitAndSetLaststatus()
+        end
+    end,
+})
+
+local function augroup(name)
+    return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
+vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
+vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("close_with_q_and_status"),
+    pattern = {
+        "PlenaryTestPopup",
+        "help",
+        "lspinfo",
+        "man",
+        "notify",
+        "qf",
+        "query",
+        "spectre_panel",
+        "startuptime",
+        "tsplayground",
+        "neotest-output",
+        "checkhealth",
+        "neotest-summary",
+        "neotest-output-panel",
+    },
+    callback = function(event)
+        vim.bo[event.buf].buflisted = false
+        vim.keymap.set("n", "q", function()
+            local windows = vim.api.nvim_list_wins()
+            local is_split = false
+
+            for i, win in ipairs(windows) do
+                local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+                if success then
+                    if win_config.relative ~= "" then
+                        goto continue
+                    end
+                end
+                local win_height = vim.api.nvim_win_get_height(win)
+                local screen_height = vim.api.nvim_get_option("lines")
+                print("round:")
+                print(i)
+                print("win_height")
+                print(win_height)
+                print("screen_height")
+                print(screen_height)
+                if win_height + 1 < screen_height then
+                    is_split = true
+                    break
+                end
+                ::continue::
+            end
+
+            if is_split then
+                -- print("hello")
+                -- vim.schedule()
+                vim.cmd("set laststatus=0")
+            end
+            vim.cmd("close")
+        end, { buffer = event.buf, silent = true })
+    end,
+})
+-- vim.api.nvim_create_autocmd("WinClosed", {
+--     pattern = "*",
+--
+--     callback = function()
+--         if vim.bo.filetype == "noice" then
+--             return
+--         else
+--             checkSplitAndReSetLaststatus()
+--         end
+--     end,
+-- })

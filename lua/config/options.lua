@@ -28,9 +28,6 @@ vim.opt.swapfile = false
 vim.opt.laststatus = 0
 vim.opt.linebreak = true
 
-vim.api.nvim_set_hl(0, "Statusline", { link = "Normal" })
-vim.api.nvim_set_hl(0, "StatuslineNC", { link = "Normal" })
-
 -- vim.opt.statusline = str
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
@@ -49,6 +46,8 @@ vim.g.neovide_light_angle_degrees = 0
 vim.g.neovide_light_radius = 0
 vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_command_line = false
+local str = string.rep(" ", vim.api.nvim_win_get_width(0))
+vim.opt.statusline = str
 vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0

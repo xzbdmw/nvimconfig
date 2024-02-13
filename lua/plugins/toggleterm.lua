@@ -12,8 +12,15 @@ return {
             end,
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
-            -- on_open = fun(t: Terminal), -- function to run when the terminal opens
-            -- on_close = fun(t: Terminal), -- function to run when the terminal closes
+            on_open = function()
+                -- vim.cmd("set winbar=")
+                vim.cmd("set laststatus=3")
+            end, -- function to run when the terminal opens
+            on_close = function()
+                vim.cmd("set laststatus=0")
+                -- vim.wait(300)
+                -- vim.cmd("set winbar=%{%v:lua.dropbar.get_dropbar_str()%}")
+            end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
             -- on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr
             -- on_exit = fun(t: Terminal, job: number, exit_code: number, name: string) -- function to run when terminal process exits
@@ -46,7 +53,7 @@ return {
             close_on_exit = true, -- close the terminal window when the process exits
             -- Change the default shell. Can be a string or a function returning a string
             shell = vim.o.shell,
-            auto_scroll = true, -- automatically scroll to the bottom on terminal output
+            auto_scroll = false, -- automatically scroll to the bottom on terminal output
             -- This field is only relevant if direction is set to 'float'
             -- float_opts = {
             --   -- The border key is *almost* the same as 'nvim_open_win'
@@ -63,6 +70,12 @@ return {
             --   zindex = <value>,
             --   title_pos = 'left' | 'center' | 'right', position of the title of the floating window
             -- },
+            winbar = {
+                enabled = false,
+                name_formatter = function(term) --  term: Terminal
+                    return term.name
+                end,
+            },
         })
     end,
 }
