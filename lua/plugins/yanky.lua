@@ -1,5 +1,16 @@
 return {
     "gbprod/yanky.nvim",
+    keys = {
+        { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
+        { "<space>p", "<Plug>(YankyPreviousEntry)" },
+        { "<space>n", "<Plug>(YankyNextEntry)" },
+        { "p", "<Plug>(YankyPutAfter)" },
+        { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
+        { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },
+        { "gp", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
+        { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
+        { "<D-v>", "<Plug>(YankyPutAfter)" },
+    },
     opts = {
         ring = {
             history_length = 10,

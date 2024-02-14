@@ -1,5 +1,19 @@
 return {
     "mrjones2014/smart-splits.nvim",
+    keys = {
+        {
+            "<C-->",
+            function()
+                require("smart-splits").resize_left()
+            end,
+        },
+        {
+            "<C-=>",
+            function()
+                require("smart-splits").resize_right()
+            end,
+        },
+    },
     config = function()
         require("smart-splits").setup({
             -- Ignored filetypes (only while resizing)

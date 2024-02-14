@@ -39,6 +39,10 @@ vim.g.neovide_padding_right = 0
 -- vim.g.neovide_underline_stroke_scale = 1.0
 vim.g.neovide_padding_left = 0
 vim.o.scrolloff = 6
+local keymap = vim.keymap.set
+keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+keymap({ "n", "v" }, "<D-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
 vim.g.neovide_floating_shadow = true
 vim.g.neovide_floating_z_height = 10
 vim.g.neovide_light_angle_degrees = 45

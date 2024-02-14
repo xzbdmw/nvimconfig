@@ -1,6 +1,19 @@
+local hl_enable = true
 return {
     "shellRaining/hlchunk.nvim",
     event = { "UIEnter" },
+    keys = {
+        "<leader>ui",
+        function()
+            if hl_enable then
+                vim.cmd("DisableHL")
+                hl_enable = false
+            else
+                vim.cmd("EnableHL")
+                hl_enable = true
+            end
+        end,
+    },
     config = function()
         require("hlchunk").setup({
             chunk = {

@@ -3,6 +3,15 @@ return {
     lazy = false,
     keys = {
         { "<leader>cr", ":IncRename " },
+        {
+            "r",
+            function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "x", true)
+                return ":IncRename "
+            end,
+            expr = true,
+            mode = { "v" },
+        },
     },
 
     config = function()

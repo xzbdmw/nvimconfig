@@ -3,7 +3,6 @@ return {
     version = false,
     keys = {
         { "<leader>r", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
-        -- disable the keymap to grep files
         { "<leader><space>", false },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         {
@@ -26,6 +25,52 @@ return {
                 })
             end,
         },
+        {
+            "<C-6>",
+            function()
+                require("telescope.builtin").buffers({
+                    initial_mode = "insert",
+                    layout_strategy = "horizontal",
+                    previewer = false,
+                    bufnr_width = 0,
+                    -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    layout_config = {
+                        horizontal = {
+                            width = 0.35,
+                            height = 0.7,
+                        },
+                        preview_cutoff = 0,
+                        mirror = false,
+                    },
+                })
+            end,
+            mode = { "n", "i" },
+        },
+        {
+            "<D-e>",
+            function()
+                require("telescope").extensions.smart_open.smart_open({
+                    show_scores = false,
+                    ignore_patterns = { "*.git/*", "*/tmp/*" },
+                    match_algorithm = "fzf",
+                    disable_devicons = false,
+                    open_buffer_indicators = { previous = "󰎂 ", others = "󱇽 " },
+                    prompt_title = "Smart Open",
+                    initial_mode = "insert",
+                    layout_strategy = "horizontal",
+                    previewer = false,
+                    layout_config = {
+                        horizontal = {
+                            width = 0.35,
+                            height = 0.7,
+                        },
+                        preview_cutoff = 0,
+                        mirror = false,
+                    },
+                })
+            end,
+        },
+        { "<D-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", mode = { "n", "i" } },
     },
     config = function()
         local function flash(prompt_bufnr)
@@ -105,8 +150,22 @@ return {
                         ["<C-e>"] = actions.close,
                         ["<C-->"] = actions.preview_scrolling_left,
                         ["<C-=>"] = actions.preview_scrolling_right,
+                        ["<D-v>"] = function()
+                            vim.api.nvim_feedkeys(
+                                vim.api.nvim_replace_termcodes("<C-r>+", true, false, true),
+                                "t",
+                                true
+                            )
+                        end,
                     },
                     n = {
+                        -- ["p"] = function()
+                        --     vim.api.nvim_feedkeys(
+                        --         vim.api.nvim_replace_termcodes("<C-r>+", true, false, true),
+                        --         "t",
+                        --         true
+                        --     )
+                        -- end,
                         ["<C-e>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,

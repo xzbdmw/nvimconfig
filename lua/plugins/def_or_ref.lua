@@ -25,5 +25,13 @@ local function handle_references_response(result)
 end
 return {
     "KostkaBrukowa/definition-or-references.nvim",
+    keys = {
+        {
+            "<leader>d",
+            function()
+                require("definition-or-references").definition_or_references()
+            end,
+        },
+    },
     opts = { notify_options = false, on_references_result = handle_references_response },
 }

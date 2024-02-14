@@ -3,6 +3,50 @@ return {
     dependencies = {
         "kevinhwang91/promise-async",
     },
+    keys = {
+        {
+            "<leader>uf",
+            function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zm", true, false, true), "t", true)
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zr", true, false, true), "t", true)
+            end,
+        },
+        {
+            "zR",
+            function()
+                require("ufo").openAllFolds()
+            end,
+        },
+        {
+            "zm",
+            function()
+                require("ufo").closeAllFolds()
+            end,
+        },
+        {
+            "zr",
+            function()
+                require("ufo").openFoldsExceptKinds()
+            end,
+        },
+        {
+            "zM",
+            function()
+                require("ufo").closeFoldsWith()
+            end,
+        },
+        {
+            "zp",
+            function()
+                local winid = require("ufo").peekFoldedLinesUnderCursor()
+                if not winid then
+                    -- choose one of coc.nvim and nvim lsp
+                    vim.fn.CocActionAsync("definitionHover") -- coc.nvim
+                    vim.lsp.buf.hover()
+                end
+            end,
+        },
+    },
     event = "BufRead",
     config = function()
         vim.o.fillchars = [[eob: ,fold: ,foldsep: ,foldclose:>]]

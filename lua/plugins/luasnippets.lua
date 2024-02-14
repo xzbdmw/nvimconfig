@@ -8,11 +8,27 @@ return {
             "<Tab>",
             false,
         },
+        {
+            "<C-n>",
+            mode = { "i", "s", "n" },
+            function()
+                require("luasnip").jump(1)
+            end,
+            { silent = true },
+        },
+        {
+            "<C-p>",
+            mode = { "i", "s", "n" },
+            function()
+                require("luasnip").jump(-1)
+            end,
+            { silent = true },
+        },
     },
 
     -- install jsregexp (optional!).
     build = "make install_jsregexp",
-    lazy = true,
+    lazy = false,
     config = function()
         local types = require("luasnip.util.types")
         local ls = require("luasnip")

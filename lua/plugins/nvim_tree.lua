@@ -16,6 +16,11 @@ return {
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
+    keys = {
+        { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
+        { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
+        { "<C-f>", "<cmd>NvimTreeFocus<CR>" },
+    },
     lazy = false,
     config = function()
         require("nvim-tree").setup({
