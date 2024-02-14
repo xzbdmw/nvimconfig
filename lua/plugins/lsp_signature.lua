@@ -3,12 +3,15 @@ return {
     dependencies = {
         "RRethy/vim-illuminate",
     },
-    keys = { {
-        "<M-p>",
-        function()
-            require("lsp_signature").toggle_float_win()
-        end,
-    } },
+    keys = {
+        {
+            "<M-p>",
+            function()
+                require("lsp_signature").toggle_float_win()
+            end,
+        },
+    },
+    lazy = false,
     version = false,
     opts = {
         debug = false, -- set to true to enable debug logging

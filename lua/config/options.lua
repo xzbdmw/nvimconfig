@@ -36,6 +36,7 @@ vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
 
+-- vim.g.neovide_cursor_animation_length = 0.13
 -- vim.g.neovide_underline_stroke_scale = 1.0
 vim.g.neovide_padding_left = 0
 vim.o.scrolloff = 6

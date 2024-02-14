@@ -25,6 +25,7 @@ local function handle_references_response(result)
 end
 return {
     "KostkaBrukowa/definition-or-references.nvim",
+    lazy = false,
     keys = {
         {
             "<leader>d",

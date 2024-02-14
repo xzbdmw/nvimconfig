@@ -11,6 +11,7 @@ return {
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
         { "<D-v>", "<Plug>(YankyPutAfter)" },
     },
+    lazy = false,
     opts = {
         ring = {
             history_length = 10,

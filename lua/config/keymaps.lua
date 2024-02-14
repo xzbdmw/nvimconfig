@@ -12,7 +12,7 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del({ "n", "x" }, "<space>wÞ")
-del({ "n", "x" }, "gsÞ")
+-- del({ "n", "x" }, "gsÞ")
 
 -- dap
 --[[ keymap("n", "<leader>td", function()
