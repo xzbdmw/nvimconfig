@@ -83,14 +83,14 @@ return {
         end
 
         require("ufo").setup({
-            close_fold_kinds = { "comment" },
-            -- close_fold_kinds = {},
+            -- close_fold_kinds = { "comment" },
+            close_fold_kinds = {},
             fold_virt_text_handler = handler,
             preview = {
                 win_config = {
                     border = "none",
                     winblend = 12,
-                    winhighlight = "Ufo:Ufo,CursorLine:FloatCursorLine",
+                    winhighlight = "Normal:Ufo,CursorLine:FloatCursorLine",
                     maxheight = 20,
                     maxwidth = 40,
                 },

@@ -11,7 +11,7 @@ return {
     { "rcarriga/nvim-dap-ui", enabled = false },
     { "leoluz/nvim-dap-go", enabled = false },
     { "theHamsta/nvim-dap-virtual-text", enabled = false },
-    { "norcalli/nvim-colorizer.lua", enabled = false },
+    -- { "norcalli/nvim-colorizer.lua", enabled = false },
     -- { "L3MON4D3/LuaSnip", enabled = false },
     -- { "folke/noice.nvim", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },

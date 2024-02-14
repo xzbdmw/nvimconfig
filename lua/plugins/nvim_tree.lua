@@ -27,11 +27,11 @@ return {
             git = {
                 enable = false,
             },
-            -- filesystem_watchers = {
-            --     enable = false,
-            --     debounce_delay = 0,
-            --     ignore_dirs = {},
-            -- },
+            filesystem_watchers = {
+                enable = false,
+                debounce_delay = 0,
+                ignore_dirs = {},
+            },
             actions = {
                 open_file = {
                     quit_on_open = false,

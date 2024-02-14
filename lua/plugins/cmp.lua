@@ -20,16 +20,16 @@ return {
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         return {
-            -- enabled = function()
-            --     -- disable completion in comments
-            --     local context = require("cmp.config.context")
-            --     -- keep command mode completion enabled when cursor is in a comment
-            --     if vim.api.nvim_get_mode().mode == "c" then
-            --         return true
-            --     else
-            --         return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
-            --     end
-            -- end,
+            --[[ enabled = function()
+                -- disable completion in comments
+                local context = require("cmp.config.context")
+                -- keep command mode completion enabled when cursor is in a comment
+                if vim.api.nvim_get_mode().mode == "c" then
+                    return true
+                else
+                    return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+                end
+            end, ]]
             preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
@@ -66,21 +66,29 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.abort()
+                        fallback()
+                    else
+                        fallback()
+                    end
+                end),
+
                 ["<f7>"] = cmp.mapping(function()
                     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
                 end),
+                ["<C-9>"] = cmp.mapping.complete(),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
                     -- print("hello")
                     -- if luasnip.expand_or_jumpable() then
                     --     luasnip.expand_or_jump()
                     -- end
+                    --
                 end, { "i", "v", "n" }),
-                -- ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                -- ["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
-                -- ["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
@@ -114,17 +122,11 @@ return {
                 ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
             }),
             sources = cmp.config.sources({
+                -- { name = "nvim_lsp", trigger_characters = { "&", ":" } },
                 { name = "nvim_lsp" },
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                -- {
-                --     name = "cmp_yanky",
-                --     keyword_length = 3,
-                --     option = {
-                --         minLength = 5,
-                --     },
-                -- },
                 { name = "buffer", keyword_length = 3 },
             }),
             formatting = {
@@ -134,33 +136,6 @@ return {
                     local kind = require("lspkind").cmp_format({
                         mode = "symbol_text",
                         maxwidth = 40,
-                        --[[ before = function(entry, vim_item)
-                            -- Get the full snippet (and only keep first line)
-                            local str = require("cmp.utils.str")
-                            local types = require("cmp.types")
-                            local word = entry:get_insert_text()
-                            if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
-                                word = vim.lsp.util.parse_snippet(word)
-                            end
-                            word = str.oneline(word)
-
-                            -- concatenates the string
-                            -- local max = 50
-                            -- if string.len(word) >= max then
-                            -- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
-                            -- 	word = before .. "..."
-                            -- end
-
-                            if
-                                entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
-                                and string.sub(vim_item.abbr, -1, -1) == "~"
-                            then
-                                word = word .. "~"
-                            end
-                            vim_item.abbr = word
-
-                            return vim_item
-                        end, ]]
                     })(entry, vim_item)
                     local strings = vim.split(kind.kind, "%s", { trimempty = true })
                     kind.kind = " " .. (strings[1] or "") .. " "
@@ -238,13 +213,6 @@ return {
             }),
             sources = {
                 { name = "buffer" },
-                -- {
-                --     name = "cmp_yanky",
-                --     keyword_length = 3,
-                --     option = {
-                --         minLength = 5,
-                --     },
-                -- },
             },
         })
         cmp.setup.cmdline(":", {
@@ -291,13 +259,6 @@ return {
             }),
             sources = cmp.config.sources({
                 { name = "cmdline" },
-                -- {
-                --     name = "cmp_yanky",
-                --     keyword_length = 3,
-                --     option = {
-                --         minLength = 5,
-                --     },
-                -- },
                 { name = "path" },
             }),
         })

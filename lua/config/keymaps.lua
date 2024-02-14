@@ -37,13 +37,20 @@ end)
 keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end) ]]
-
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
+    local line = vim.fn.getline(".") -- 获取当前行的内容
+    local line_len = #line
+    if col == line_len then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
+        return
+    end
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
+        return
     else
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "t", true)
+        return
     end
 end, opts)
 
@@ -150,12 +157,10 @@ keymap("n", "<leader><leader>h", function()
 end, { expr = true })
 keymap("n", "<leader><leader>l", function()
     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>L", true, false, true), "!", true)
-    -- vim.cmd("FocusAutoresize")
     return "<C-w>L<cmd>FocusAutoresize<CR>"
 end, { expr = true })
 keymap("n", "<leader><leader>j", function()
     return "<C-w>J<cmd>FocusAutoresize<CR>"
-    -- require("custom.status").checkSplitAndSetLaststatus()
 end, { expr = true })
 keymap("n", "<leader><leader>k", function()
     return "<C-w>K<cmd>FocusAutoresize<CR>"
@@ -190,7 +195,6 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
-
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
     for _, win in pairs(vim.api.nvim_list_wins()) do
