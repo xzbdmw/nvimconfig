@@ -3,6 +3,7 @@ return {
     config = function()
         local noice = require("noice")
         noice.setup({
+            presets = { inc_rename = true },
             messages = {
                 -- NOTE: If you enable messages, then the cmdline is enabled automatically.
                 -- This is a current Neovim limitation.
@@ -114,9 +115,14 @@ return {
                 hover = {
                     opts = {
                         size = {
-                            max_height = 15,
+                            max_height = 12,
                             max_width = 50,
                         },
+                        border = {
+                            style = "rounded",
+                            padding = { 0, 2 },
+                        },
+                        position = { row = 2, col = 0 },
                     },
                 },
             },

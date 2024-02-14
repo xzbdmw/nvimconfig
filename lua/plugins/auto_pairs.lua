@@ -2,8 +2,8 @@ return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {
-        enable_moveright = false,
-        map_bs = false,
+        enable_moveright = true,
+        map_bs = true,
     }, -- this is equalent to setup({}) function
     -- config = function()
     --     -- If you want insert `(` after select function or method item

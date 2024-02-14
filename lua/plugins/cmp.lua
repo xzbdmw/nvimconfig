@@ -38,6 +38,12 @@ return {
                     col_offset = -3,
                     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
+                documentation = cmp.config.window.bordered({
+                    border = "none",
+                    side_padding = 0,
+                    col_offset = -3,
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                }),
             },
             completion = {
                 -- autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
@@ -265,7 +271,15 @@ return {
                         end
                     end,
                 },
-                ["<C-e>"] = cmp.mapping.abort(),
+                ["<Esc>"] = cmp.mapping({
+                    c = function()
+                        if cmp.visible() then
+                            cmp.close()
+                        else
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+                        end
+                    end,
+                }),
                 ["<C-p>"] = cmp.mapping(function(fallback)
                     cmp.close()
                     fallback()
@@ -277,13 +291,13 @@ return {
             }),
             sources = cmp.config.sources({
                 { name = "cmdline" },
-                {
-                    name = "cmp_yanky",
-                    keyword_length = 3,
-                    option = {
-                        minLength = 5,
-                    },
-                },
+                -- {
+                --     name = "cmp_yanky",
+                --     keyword_length = 3,
+                --     option = {
+                --         minLength = 5,
+                --     },
+                -- },
                 { name = "path" },
             }),
         })

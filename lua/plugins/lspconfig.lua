@@ -26,6 +26,7 @@ return {
             local keys = require("lazyvim.plugins.lsp.keymaps").get()
             -- disable a keymap
             keys[#keys + 1] = { "K", false }
+            keys[#keys + 1] = { "<leader>cr", false }
             -- change a keymap
             --
             keys[#keys + 1] =
@@ -79,7 +80,7 @@ return {
                 formatting_options = nil,
                 timeout_ms = nil,
             },
-            inlay_hints = { enabled = true },
+            inlay_hints = { enabled = false },
             servers = {
                 -- Ensure mason installs the server
                 lua_ls = {
@@ -98,14 +99,12 @@ return {
                             -- },
                             workspace = {
                                 library = {
-                                    "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
-                                    "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
                                     "/Users/xzb/Downloads/nvim-macos/share/nvim/runtime/lua/",
                                     "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
-                                    "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types/lua",
                                     "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/",
-                                    "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
                                     "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
                                     "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
                                     "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",

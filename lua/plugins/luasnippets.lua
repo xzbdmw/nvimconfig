@@ -88,7 +88,7 @@ return {
                 [types.exitNode] = {
                     unvisited = {
                         virt_text = { { "|", "Conceal" } },
-                        virt_text_pos = "inline",
+                        -- virt_text_pos = "inline",
                     },
                 },
             },

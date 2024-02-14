@@ -31,11 +31,18 @@ return {
         }
         local groups = {
             all = {
+                -- RainbowDelimiterRed = { fg = "#ff9999" }, -- 浅红色
+                -- RainbowDelimiterYellow = { fg = "#ffff99" }, -- 浅黄色
+                -- RainbowDelimiterBlue = { fg = "#9999ff" }, -- 浅蓝色
+                -- RainbowDelimiterOrange = { fg = "#ffcc99" }, -- 浅橙色
+                -- RainbowDelimiterGreen = { fg = "#99ff99" }, -- 浅绿色
+                -- RainbowDelimiterViolet = { fg = "#cc99ff" }, -- 浅紫色
+                -- RainbowDelimiterCyan = { fg = "#99ffff" }, -- 浅青色
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
                 LspInlayHint = { fg = "#595655", bg = "none" },
                 illuminatedwordwrite = { link = "Visual" },
                 MiniIndentscopeSymbol = { link = "Comment" },
-                MatchParen = { fg = "#000000" },
+                MatchParen = { fg = "#000000", style = "italic,bold" },
                 TermCursor = { bg = "#5F5695", fg = "#ffffff" },
                 lspFloatWinNormal = { bg = "#F4F1E9" },
                 Normal = { fg = "#000000", bg = "#FAF7E8" },
@@ -83,8 +90,11 @@ return {
                 DropBarIconKindEnum = { fg = "#3b4d56" },
                 DropBarIconUIIndicator = {},
                 DropBarMenuCurrentContext = { link = "DropBarMenuHoverEntry" },
-                NormalFloat = { bg = "#F1EFE1", fg = "#000000" },
-                MyNormalFloat = { bg = "#FBF6E7" },
+                NormalFloat = { bg = "#FAF7E6", fg = "#000000" },
+                MyNormalFloat = { bg = "#FAF7E6" },
+                MyNormalDocFloat = { bg = "#f1efe1" },
+                FloatBorder = { bg = "#FAF7E6" },
+                LspFloatWinBorder = { link = "FloatBorder" },
                 NormalNC = { bg = "#FAF7E8" },
                 CursorLine = { bg = "#EBE8DB" },
                 FloatCursorLine = { bg = "#EBE8DB" },

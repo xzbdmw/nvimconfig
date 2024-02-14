@@ -1,7 +1,7 @@
 return {
     "RRethy/vim-illuminate",
     keys = {
-        { "<A-p>", false },
+        { "<a-p>", false },
     },
     opts = {
         providers = {

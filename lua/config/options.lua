@@ -13,7 +13,6 @@ vim.opt.list = false
 vim.opt.tabstop = 4
 vim.opt.jumpoptions = "stack"
 vim.opt.cmdheight = 0
-
 -- vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h20"
 -- vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
 -- vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20:#e-subpixelantialias:#h-none"
@@ -27,27 +26,25 @@ vim.opt.swapfile = false
 -- vim.g.neovide_transparency = 0.95
 vim.opt.laststatus = 0
 vim.opt.linebreak = true
-
+local str = string.rep(" ", vim.api.nvim_win_get_width(0))
+vim.opt.statusline = str
 -- vim.opt.statusline = str
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
-vim.g.neovide_refresh_rate = 120
+-- vim.g.neovide_refresh_rate = 120
 vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
-vim.g.neovide_underline_stroke_scale = 1.0
+
+-- vim.g.neovide_underline_stroke_scale = 1.0
 vim.g.neovide_padding_left = 0
 vim.o.scrolloff = 6
-vim.g.neovide_floating_shadow = false
--- vim.opt.whichwrap = "j,k"
-vim.g.neovide_floating_z_height = 0
--- vim.o.showtabline = 0
-vim.g.neovide_light_angle_degrees = 0
-vim.g.neovide_light_radius = 0
+vim.g.neovide_floating_shadow = true
+vim.g.neovide_floating_z_height = 10
+vim.g.neovide_light_angle_degrees = 45
+vim.g.neovide_light_radius = 5
 vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_command_line = false
-local str = string.rep(" ", vim.api.nvim_win_get_width(0))
-vim.opt.statusline = str
 vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0
@@ -99,9 +96,9 @@ vim.g.rustaceanvim = {
             replace_builtin_hover = true,
         },
         float_win_config = {
-            border = "none",
+            border = "rounded",
             max_width = 70,
-            max_height = 15,
+            max_height = 12,
             auto_focus = false,
         },
     },
