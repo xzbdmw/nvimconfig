@@ -46,13 +46,6 @@ return {
                 end,
                 mode = { "x", "v", "n", "i" },
             }
-            keys[#keys + 1] = {
-                "<C-a>",
-                function()
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
-                end,
-                mode = { "i" },
-            }
             keys[#keys + 1] =
                 { "<C-a>", vim.lsp.buf.code_action, desc = "Code Action", mode = { "i", "n", "v" }, has = "codeAction" }
             keys[#keys + 1] = { "gr", lsp_references_with_jump }
@@ -60,9 +53,9 @@ return {
                 "gh",
                 function()
                     vim.lsp.buf.hover()
-                    vim.defer_fn(function()
-                        vim.lsp.buf.hover()
-                    end, 100)
+                    -- vim.defer_fn(function()
+                    --     vim.lsp.buf.hover()
+                    -- end, 100)
                 end,
                 desc = "hover in lsp",
             }

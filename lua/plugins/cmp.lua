@@ -7,7 +7,7 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
-        "chrisgrieser/cmp_yanky",
+        -- "chrisgrieser/cmp_yanky",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
@@ -118,13 +118,13 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                {
-                    name = "cmp_yanky",
-                    keyword_length = 3,
-                    option = {
-                        minLength = 5,
-                    },
-                },
+                -- {
+                --     name = "cmp_yanky",
+                --     keyword_length = 3,
+                --     option = {
+                --         minLength = 5,
+                --     },
+                -- },
                 { name = "buffer", keyword_length = 3 },
             }),
             formatting = {
@@ -238,13 +238,13 @@ return {
             }),
             sources = {
                 { name = "buffer" },
-                {
-                    name = "cmp_yanky",
-                    keyword_length = 3,
-                    option = {
-                        minLength = 5,
-                    },
-                },
+                -- {
+                --     name = "cmp_yanky",
+                --     keyword_length = 3,
+                --     option = {
+                --         minLength = 5,
+                --     },
+                -- },
             },
         })
         cmp.setup.cmdline(":", {

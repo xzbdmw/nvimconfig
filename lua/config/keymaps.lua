@@ -145,10 +145,21 @@ keymap({ "n", "i" }, "<D-w>", function()
 end)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
-keymap("n", "<leader><leader>h", "<C-w>H", opts)
-keymap("n", "<leader><leader>j", "<C-w>J", opts)
-keymap("n", "<leader><leader>k", "<C-w>K", opts)
-keymap("n", "<leader><leader>l", "<C-w>L", opts)
+keymap("n", "<leader><leader>h", function()
+    return "<C-w>H<cmd>FocusAutoresize<CR>"
+end, { expr = true })
+keymap("n", "<leader><leader>l", function()
+    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>L", true, false, true), "!", true)
+    -- vim.cmd("FocusAutoresize")
+    return "<C-w>L<cmd>FocusAutoresize<CR>"
+end, { expr = true })
+keymap("n", "<leader><leader>j", function()
+    return "<C-w>J<cmd>FocusAutoresize<CR>"
+    -- require("custom.status").checkSplitAndSetLaststatus()
+end, { expr = true })
+keymap("n", "<leader><leader>k", function()
+    return "<C-w>K<cmd>FocusAutoresize<CR>"
+end, { expr = true })
 
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
@@ -172,8 +183,33 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         if success then
             -- print(vim.inspect(win_config))
             if win_config.relative ~= "" then
+                print(win_config.zindex)
+                -- print(vim.inspect(win_config))
                 vim.api.nvim_win_close(win, true)
             end
         end
     end
 end, opts)
+
+keymap({ "s", "i", "n" }, "<esc>", function()
+    local flag = true
+    for _, win in pairs(vim.api.nvim_list_wins()) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            -- print(vim.inspect(win_config))
+            if
+                win_config.relative ~= "" and win_config.zindex == 45
+                or win_config.zindex == 44
+                or win_config.zindex == 46
+                or win_config.zindex == 47
+            then
+                flag = false
+                vim.api.nvim_win_close(win, true)
+            end
+        end
+    end
+    if flag then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+        vim.cmd("noh")
+    end
+end)
