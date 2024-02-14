@@ -9,6 +9,7 @@ local function my_on_attach(bufnr)
     vim.keymap.set("n", "p", function()
         api.node.open.preview()
     end, opts("preview file"))
+    vim.keymap.set("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 end
 return {
     "nvim-tree/nvim-tree.lua",
@@ -19,7 +20,6 @@ return {
     keys = {
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
-        { "<C-f>", "<cmd>NvimTreeFocus<CR>" },
     },
     lazy = false,
     config = function()
@@ -47,6 +47,15 @@ return {
                 enable = true,
                 update_root = true,
                 ignore_list = {},
+            },
+            filters = {
+                git_ignored = true,
+                dotfiles = false,
+                git_clean = false,
+                no_buffer = false,
+                no_bookmark = false,
+                custom = { ".gitignore", ".git", ".luarc.json" },
+                exclude = {},
             },
             on_attach = my_on_attach,
             view = {
