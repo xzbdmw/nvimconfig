@@ -73,12 +73,12 @@ return {
             "yaml",
         },
         incremental_selection = {
-            enable = true,
+            enable = false,
             keymaps = {
-                init_selection = "<CR>",
-                node_incremental = "<CR>",
+                init_selection = "v",
+                node_incremental = "v",
                 scope_incremental = "<S-CR>",
-                node_decremental = "<BS>",
+                -- node_decremental = "<BS>",
             },
         },
         textobjects = {

@@ -177,16 +177,17 @@ return {
             },
             pickers = {
                 lsp_implementations = {
-                    initial_mode = "normal",
-                    layout_strategy = "vertical",
+                    entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
+                    initial_mode = "insert",
+                    trim_text = true,
+                    reuse_win = true,
                     layout_config = {
-                        vertical = {
-                            prompt_position = "top",
-                            width = 0.7,
+                        horizontal = {
+                            width = 0.9,
                             height = 0.9,
-                            mirror = true,
                             preview_cutoff = 0,
-                            preview_height = 0.55,
+                            prompt_position = "top",
+                            preview_width = 0.55,
                         },
                     },
                 },
@@ -207,6 +208,7 @@ return {
                     },
                 },
                 lsp_dynamic_workspace_symbols = {
+                    disable_coordinates = true,
                     mappings = {
                         i = { ["<c-f>"] = actions.to_fuzzy_refine },
                     },
@@ -222,6 +224,7 @@ return {
                     },
                 },
                 live_grep = {
+                    disable_coordinates = true,
                     layout_config = {
                         horizontal = {
                             width = 0.9,
@@ -250,6 +253,18 @@ return {
                     },
                 },
                 lsp_references = {
+                    -- entry_maker = my_entry_maker(),
+                    trim_text = true,
+                    layout_config = {
+                        horizontal = {
+                            width = 0.9,
+                            height = 0.9,
+                            preview_cutoff = 0,
+                            prompt_position = "top",
+                            preview_width = 0.5,
+                        },
+                    },
+                    disable_coordinates = true,
                     include_declaration = false,
                     push_cursor_on_edit = true,
                 },

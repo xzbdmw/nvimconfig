@@ -3,6 +3,12 @@ return {
     config = function()
         local noice = require("noice")
         noice.setup({
+            routes = {
+                {
+                    filter = { event = "msg_show", find = "'modifiable' is off" },
+                    opts = { skip = true },
+                },
+            },
             presets = { inc_rename = true },
             messages = {
                 -- NOTE: If you enable messages, then the cmdline is enabled automatically.

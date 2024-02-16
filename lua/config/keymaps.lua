@@ -12,7 +12,6 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del({ "n", "x" }, "<space>wÞ")
--- del({ "n", "x" }, "gsÞ")
 
 -- dap
 --[[ keymap("n", "<leader>td", function()
@@ -118,7 +117,7 @@ keymap("n", "<Tab>", function()
         require("ufo").peekFoldedLinesUnderCursor()
     end
 end)
-
+keymap("i", "<C-e>", "<esc>A", opts)
 keymap("", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local win_amount = #vim.api.nvim_tabpage_list_wins(0)
@@ -150,6 +149,13 @@ keymap({ "n", "i" }, "<D-w>", function()
         vim.cmd("close")
     end
 end)
+keymap("v", '"', function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('ma"', true, false, true), "t", true)
+end, opts)
+
+keymap("v", "[", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma[", true, false, true), "t", true)
+end, opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><leader>h", function()

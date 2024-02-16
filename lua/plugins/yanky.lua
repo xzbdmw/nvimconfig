@@ -5,11 +5,11 @@ return {
         { "<space>p", "<Plug>(YankyPreviousEntry)" },
         { "<space>n", "<Plug>(YankyNextEntry)" },
         { "p", "<Plug>(YankyPutAfter)" },
-        { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
         { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },
+        { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
         { "gp", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
-        { "<D-v>", "<Plug>(YankyPutAfter)" },
+        { "<D-v>", "<esc>pa" },
     },
     lazy = false,
     opts = {

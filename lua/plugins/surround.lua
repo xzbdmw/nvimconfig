@@ -1,5 +1,6 @@
 return {
     "echasnovski/mini.surround",
+    lazy = false,
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -26,5 +27,22 @@ return {
     config = function(_, opts)
         -- use gz mappings instead of s to prevent conflict with leap
         require("mini.surround").setup(opts)
+        local keymap = vim.keymap.set
+        local keymap_ops = { noremap = true, silent = true }
+        keymap("v", '"', function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('ma"', true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("v", "[", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma[", true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("v", "{", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma{", true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("v", "(", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma(", true, false, true), "t", true)
+        end, keymap_ops)
     end,
 }

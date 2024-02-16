@@ -9,6 +9,7 @@ return {
             function()
                 require("lsp_signature").toggle_float_win()
             end,
+            mode = { "n" },
         },
     },
     lazy = false,

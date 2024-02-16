@@ -74,11 +74,11 @@ return {
             -- you can always jump to the first match with `<CR>`
             current = true,
             -- show the label after the match
-            after = true, ---@type boolean|number[]
+            after = false, ---@type boolean|number[]
             -- show the label before the match
-            before = false, ---@type boolean|number[]
+            before = true, ---@type boolean|number[]
             -- position of the label extmark
-            style = "overlay", ---@type "eol" | "overlay" | "right_align" | "inline"
+            style = "inline", ---@type "eol" | "overlay" | "right_align" | "inline"
             -- flash tries to re-use labels that were already assigned to a position,
             -- when typing more characters. By default only lower-case labels are re-used.
             reuse = "lowercase", ---@type "lowercase" | "all" | "none"
@@ -100,7 +100,7 @@ return {
         },
         highlight = {
             -- show a backdrop with hl FlashBackdrop
-            backdrop = false,
+            backdrop = true,
             -- Highlight the search matches
             matches = true,
             -- extmark priority
@@ -165,7 +165,7 @@ return {
                 -- hide after jump when not using jump labels
                 autohide = true,
                 -- show jump labels
-                jump_labels = false,
+                jump_labels = true,
                 -- set to `false` to use the current line only
                 multi_line = true,
                 -- When using jump labels, don't use these keys
@@ -200,7 +200,7 @@ return {
                 labels = "abcdefghijklmnopqrstuvwxyz",
                 jump = { pos = "range" },
                 search = { incremental = false },
-                label = { before = false, after = false, style = "inline" },
+                label = { before = true, after = true, style = "inline" },
                 highlight = {
                     backdrop = false,
                     matches = false,

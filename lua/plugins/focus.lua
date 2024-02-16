@@ -1,9 +1,12 @@
 return {
     "nvim-focus/focus.nvim",
     version = false,
+    keys = {
+        { "<leader><leader>m", "<cmd>FocusMaximise<CR>" },
+    },
+    lazy = false,
     config = function()
         local ignore_filetypes = { "NvimTree", "toggleterm" }
-        -- local ignore_filetypes = { "NvimTree" }
         local ignore_buftypes = { "nofile", "prompt", "popup" }
 
         local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })

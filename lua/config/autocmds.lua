@@ -44,16 +44,16 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
--- local bufenter = true
--- vim.api.nvim_create_autocmd("BufEnter", {
---     callback = function()
---         if bufenter then
---             vim.cmd("NvimTreeToggle")
---             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
---             bufenter = false
---         end
---     end,
--- })
+--[[ local bufenter = true
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        if bufenter then
+            vim.cmd("NvimTreeToggle")
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
+            bufenter = false
+        end
+    end,
+}) ]]
 -- walkaroud for incremental selection
 vim.api.nvim_create_augroup("_cmd_win", { clear = true })
 vim.api.nvim_create_autocmd("CmdWinEnter", {
@@ -62,33 +62,6 @@ vim.api.nvim_create_autocmd("CmdWinEnter", {
     end,
     group = "_cmd_win",
 })
-
-local function checkSplitAndReSetLaststatus()
-    local windows = vim.api.nvim_list_wins()
-    local is_split = false
-
-    for _, win in ipairs(windows) do
-        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if success then
-            if win_config.relative ~= "" then
-                goto continue
-            end
-        end
-        local win_height = vim.api.nvim_win_get_height(win)
-        local screen_height = vim.api.nvim_get_option("lines")
-        if win_height + 1 < screen_height then
-            is_split = true
-            break
-        end
-        ::continue::
-    end
-
-    if is_split then
-        -- vim.schedule()
-        print("set statue = 0")
-        vim.cmd("set laststatus=0")
-    end
-end
 
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
@@ -103,8 +76,6 @@ local function checkSplitAndSetLaststatus()
         end
         local win_height = vim.api.nvim_win_get_height(win)
         local screen_height = vim.api.nvim_get_option("lines")
-        -- print(win_height)
-        -- print(screen_height)
         if win_height + 1 < screen_height then
             is_split = true
             break
@@ -113,53 +84,50 @@ local function checkSplitAndSetLaststatus()
     end
 
     if is_split then
-        -- print("set statue = 3")
-        -- vim.schedule()
         vim.cmd("set laststatus=3")
     else
         vim.cmd("set laststatus=0")
     end
 end
--- vim.api.nvim_create_autocmd("BufEnter", {
---     pattern = "*",
---     callback = function()
---         if vim.bo.filetype == "noice" then
---             print("noice")
---             return
---         else
---             checkSplitAndSetLaststatus()
---         end
---     end,
--- })
-
--- vim.api.nvim_create_autocmd("WinEnter", {
---     pattern = "*",
---     callback = function()
---         checkSplitAndSetLaststatus()
---     end,
--- })
+--[[ vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*",
+    callback = function()
+        if vim.bo.filetype == "noice" then
+            print("noice")
+            return
+        else
+            checkSplitAndSetLaststatus()
+        end
+    end,
+})
+vim.api.nvim_create_autocmd("WinEnter", {
+    pattern = "*",
+    callback = function()
+        checkSplitAndSetLaststatus()
+    end,
+}) ]]
 vim.api.nvim_create_autocmd("WinResized", {
     pattern = "*",
     callback = function()
-        -- for _, win in pairs(vim.api.nvim_list_wins()) do
-        --     local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        --     if success then
-        --         -- print(vim.inspect(win_config))
-        --         if win_config.relative ~= "" then
-        --             return
-        --         end
-        --     end
-        -- end
-        -- print("winresieze")
         checkSplitAndSetLaststatus()
+        -- vim.cmd("FocusAutoresize")
     end,
 })
+vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
+vim.api.nvim_create_autocmd({ "BufRead" }, {
+    pattern = {
+        "/Users/xzb/.rustup/toolchains/**/*.rs",
+        "/Users/xzb/.cargo/**/*.rs",
+        "/opt/homebrew/Cellar/**/*.go",
+    },
+    command = "setlocal nomodifiable",
+})
 
-local function augroup(name)
+--[[ local function augroup(name)
     return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
-end
-vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
-vim.api.nvim_create_autocmd("FileType", {
+end ]]
+-- vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
+--[[ vim.api.nvim_create_autocmd("FileType", {
     group = augroup("close_with_q_and_status"),
     pattern = {
         "PlenaryTestPopup",
@@ -205,20 +173,16 @@ vim.api.nvim_create_autocmd("FileType", {
             end
             vim.cmd("close")
         end, { buffer = event.buf, silent = true })
-
-        -- vim.keymap.set("n", "<esc>", function()
-        --     vim.cmd("close")
-        -- end, { buffer = event.buf, silent = true })
     end,
-})
--- vim.api.nvim_create_autocmd("WinClosed", {
---     pattern = "*",
---
---     callback = function()
---         if vim.bo.filetype == "noice" then
---             return
---         else
---             checkSplitAndReSetLaststatus()
---         end
---     end,
--- })
+}) ]]
+--[[ vim.api.nvim_create_autocmd("WinClosed", {
+    pattern = "*",
+
+    callback = function()
+        if vim.bo.filetype == "noice" then
+            return
+        else
+            checkSplitAndReSetLaststatus()
+        end
+    end,
+}) ]]

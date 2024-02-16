@@ -54,7 +54,7 @@ return {
             },
             performance = {
                 debounce = 0,
-                throttle = 5,
+                throttle = 0,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 async_budget = 1,
@@ -112,9 +112,9 @@ return {
                     end
                 end,
                 ["<C-e>"] = cmp.mapping.abort(),
-                ["<C-6>"] = cmp.mapping(function(fallback)
+                ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.mapping.close_docs()
+                        cmp.close_docs()
                     else
                         fallback()
                     end

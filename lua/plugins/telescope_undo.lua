@@ -6,6 +6,7 @@ return {
             dependencies = { "nvim-lua/plenary.nvim" },
         },
     },
+    lazy = false,
     keys = {
         { -- lazy style key map
             "<leader>ux",
