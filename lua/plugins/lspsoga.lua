@@ -1,7 +1,7 @@
 return {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
-    -- commit = "766e67ab3db45ddc11c3142132fbe1220cfeca14",
+    commit = "2198c07124bef27ef81335be511c8abfd75db933",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons",
@@ -9,8 +9,7 @@ return {
     config = function()
         require("lspsaga").setup({
             finder = {
-                left_width = 0.2,
-                -- right_width = 0.6,
+                left_width = 0.3,
                 layout = "float",
                 default = "ref",
                 silent = true,
