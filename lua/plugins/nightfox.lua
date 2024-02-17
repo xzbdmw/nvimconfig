@@ -117,6 +117,7 @@ return {
                 NvimTreeIndentMarker = { bg = "#FAF7E8", fg = "#3B4D56" },
                 NvimTreeRootFolder = { fg = "#3B4D56", style = "italic,bold" },
                 NvimTreeOpenedFileIcon = { fg = "#8094b4" },
+                BookmarkSign = { fg = "#3B7CF3" },
                 NvimTreeCursorLine = { bg = "#EBE8DB", fg = "#000000", style = "italic,bold" },
                 NvimTreeFolderIcon = { fg = "#3B4D56" },
                 NvimTreeFolderName = { fg = "#3B4D56" },

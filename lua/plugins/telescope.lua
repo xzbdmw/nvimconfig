@@ -6,6 +6,27 @@ return {
         { "<leader><space>", false },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         {
+            "ml",
+            function()
+                local bookmark_actions = require("telescope").extensions.vim_bookmarks.actions
+                require("telescope").extensions.vim_bookmarks.all({
+                    initial_mode = "insert",
+                    layout_strategy = "vertical",
+                    layout_config = {
+                        vertical = {
+                            prompt_position = "top",
+                            width = 0.7,
+                            height = 0.9,
+                            mirror = true,
+                            preview_cutoff = 0,
+                            preview_height = 0.55,
+                        },
+                    },
+                })
+            end,
+            desc = "telescope bookmarks",
+        },
+        {
             "<C-d>",
             function()
                 -- require("telescope.builtin").lsp_document_symbols({
@@ -285,7 +306,7 @@ return {
                 },
             },
         })
-        require("telescope").load_extension("bookmarks")
+        -- require("telescope").load_extension("bookmarks")
         require("telescope").load_extension("fzf")
     end,
 }

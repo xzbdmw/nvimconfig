@@ -92,14 +92,6 @@ return {
             buftypes = {},
             filetypes = {},
         },
-        config = function()
-            local del = vim.keymap.del
-            del("n", "<leader>w-")
-            del("n", "<leader>ww")
-            del("n", "<leader>wd")
-            del("t", "<esc><esc>")
-            del("n", "<leader>w|")
-            del({ "n", "x" }, "<space>wÞ")
-        end,
+        config = function() end,
     },
 }

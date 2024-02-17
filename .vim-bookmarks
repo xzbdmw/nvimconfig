@@ -1,0 +1,3 @@
+let l:bm_file_version = 1
+let l:bm_sessions = {'default': {'/Users/xzb/.config/nvim/lua/plugins/nightfox.lua': [{'sign_idx': 9502, 'line_nr': 121, 'content': '                NvimTreeCursorLine = { bg = "#EBE8DB", fg = "#000000", style = "italic,bold" },'},],}}
+let l:bm_current_session = 'default'

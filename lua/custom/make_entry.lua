@@ -71,7 +71,9 @@ local function gen_from_quickfix(opts)
 
     local make_display = function(entry)
         local display_filename = utils.transform_path(opts, entry.filename)
+        print(display_filename)
         local text = entry.text
+        print(text)
         text = vim.trim(text)
         text = text:gsub(".* | ", "")
         entry.text = text

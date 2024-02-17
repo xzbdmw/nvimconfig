@@ -6,6 +6,13 @@ local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 
+local del = vim.keymap.del
+del("n", "<leader>w-")
+del("n", "<leader>ww")
+del("n", "<leader>wd")
+del("t", "<esc><esc>")
+del("n", "<leader>w|")
+del({ "n", "x" }, "<space>wÞ")
 -- dap
 --[[ keymap("n", "<leader>td", function()
     require("dapui").toggle()
@@ -31,12 +38,14 @@ keymap("n", "<Leader>B", function()
 end) ]]
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
+    ---@diagnostic disable-next-line: param-type-mismatch
     local line = vim.fn.getline(".") -- 获取当前行的内容
     local line_len = #line
     if col == line_len then
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
         return
     end
+    ---@diagnostic disable-next-line: param-type-mismatch
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
         return
@@ -93,7 +102,7 @@ keymap("n", "<Tab>", function()
     exe 'wincmd ' 'w'
     let w = winnr()
     let n = bufname('%')
-  let nok = ((n=~'NVimTree') || (n=~'undotree')||(n=~'diff')) && (w != w0)
+  let nok = ( n=~'NVimTree' )   && (w != w0)
   endwhile
 ]])
         elseif flag == false then
@@ -134,6 +143,7 @@ keymap({ "n", "i" }, "<D-w>", function()
                 end
             end
             local win_height = vim.api.nvim_win_get_height(win)
+            ---@diagnostic disable-next-line: deprecated
             local screen_height = vim.api.nvim_get_option("lines")
             if win_height + 1 < screen_height then
                 is_split = true

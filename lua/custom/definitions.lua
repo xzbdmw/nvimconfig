@@ -83,9 +83,11 @@ local function definitions()
                 )
                 return
             else
+                vim.cmd("normal! m'")
                 vim.cmd("Lspsaga finder")
             end
         elseif result and #result >= 2 then
+            vim.cmd("normal! m'")
             vim.cmd("Lspsaga goto_definition")
         end
     end)

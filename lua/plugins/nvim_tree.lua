@@ -70,7 +70,7 @@ return {
                 group_empty = true,
                 icons = {
                     web_devicons = {
-                        file = { color = false, enable = false },
+                        file = { color = true, enable = true },
                         folder = {
                             color = false,
                         },

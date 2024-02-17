@@ -76,6 +76,7 @@ local function checkSplitAndSetLaststatus()
             end
         end
         local win_height = vim.api.nvim_win_get_height(win)
+        ---@diagnostic disable-next-line: deprecated
         local screen_height = vim.api.nvim_get_option("lines")
         if win_height + 1 < screen_height then
             is_split = true
@@ -126,6 +127,7 @@ local function setUndotreeWinSize()
     for _, winHandle in ipairs(winList) do
         if
             api.nvim_win_is_valid(winHandle)
+            ---@diagnostic disable-next-line: deprecated
             and api.nvim_buf_get_option(api.nvim_win_get_buf(winHandle), "filetype") == "undotree"
         then
             api.nvim_win_set_width(winHandle, 33)
@@ -133,6 +135,7 @@ local function setUndotreeWinSize()
     end
 end
 api.nvim_create_user_command("Ut", function()
+    ---@diagnostic disable-next-line: param-type-mismatch
     api.nvim_cmd(api.nvim_parse_cmd("UndotreeToggle", {}), {})
     setUndotreeWinSize()
 end, { desc = "load undotree" })
