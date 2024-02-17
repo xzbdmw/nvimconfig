@@ -263,6 +263,7 @@ return {
             }),
         })
         require("cmp").setup(opts)
+
         local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
         -- Setup lspconfig.
         local nvim_lsp = require("lspconfig")

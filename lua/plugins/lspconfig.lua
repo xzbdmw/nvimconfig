@@ -28,12 +28,6 @@ return {
             keys[#keys + 1] = { "K", false }
             keys[#keys + 1] = { "<leader>cr", false }
             keys[#keys + 1] = {
-                "<C-e>",
-                function()
-                    vim.diagnostic.goto_next()
-                end,
-            }
-            keys[#keys + 1] = {
                 "<leader>i",
                 function()
                     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
@@ -46,8 +40,20 @@ return {
                 end,
                 mode = { "x", "v", "n", "i" },
             }
-            keys[#keys + 1] =
-                { "<C-a>", vim.lsp.buf.code_action, desc = "Code Action", mode = { "i", "n", "v" }, has = "codeAction" }
+            keys[#keys + 1] = {
+                "<C-a>",
+                ":Lspsaga code_action<CR>",
+                desc = "Code Action",
+                mode = { "i", "n", "v" },
+                has = "codeAction",
+            }
+            keys[#keys + 1] = {
+                "<leader>ca",
+                ":Lspsaga code_action<CR>",
+                desc = "Code Action",
+                mode = { "n", "v" },
+                has = "codeAction",
+            }
             keys[#keys + 1] = { "gr", lsp_references_with_jump }
             keys[#keys + 1] = {
                 "gh",

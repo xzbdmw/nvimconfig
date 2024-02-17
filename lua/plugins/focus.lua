@@ -6,7 +6,7 @@ return {
     },
     lazy = false,
     config = function()
-        local ignore_filetypes = { "NvimTree", "toggleterm" }
+        local ignore_filetypes = { "NvimTree", "toggleterm", "undotree", "diff" }
         local ignore_buftypes = { "nofile", "prompt", "popup" }
 
         local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })

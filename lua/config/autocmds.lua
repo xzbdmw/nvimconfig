@@ -4,12 +4,13 @@
 -- auto close
 --
 vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "rust",
-    callback = function()
-        vim.cmd("syntax off")
-    end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = "rust",
+--     callback = function()
+--         vim.cmd("syntax off")
+--     end,
+-- })
+
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
@@ -99,13 +100,8 @@ end
             checkSplitAndSetLaststatus()
         end
     end,
-})
-vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "*",
-    callback = function()
-        checkSplitAndSetLaststatus()
-    end,
 }) ]]
+
 vim.api.nvim_create_autocmd("WinResized", {
     pattern = "*",
     callback = function()
@@ -123,6 +119,23 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
     command = "setlocal nomodifiable",
 })
 
+local api = vim.api
+
+local function setUndotreeWinSize()
+    local winList = api.nvim_list_wins()
+    for _, winHandle in ipairs(winList) do
+        if
+            api.nvim_win_is_valid(winHandle)
+            and api.nvim_buf_get_option(api.nvim_win_get_buf(winHandle), "filetype") == "undotree"
+        then
+            api.nvim_win_set_width(winHandle, 33)
+        end
+    end
+end
+api.nvim_create_user_command("Ut", function()
+    api.nvim_cmd(api.nvim_parse_cmd("UndotreeToggle", {}), {})
+    setUndotreeWinSize()
+end, { desc = "load undotree" })
 --[[ local function augroup(name)
     return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
 end ]]

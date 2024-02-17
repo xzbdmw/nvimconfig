@@ -119,9 +119,10 @@ return {
                     },
                 },
                 hover = {
+                    enabled = true,
                     opts = {
                         size = {
-                            max_height = 12,
+                            max_height = 10,
                             max_width = 50,
                         },
                         border = {

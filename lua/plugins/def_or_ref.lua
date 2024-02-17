@@ -9,18 +9,15 @@ local sorter = make_entry.sorter
 local function handle_references_response(result)
     local locations = vim.lsp.util.locations_to_items(result, "utf-16")
     local filtered_entries = filter_entries(locations)
+
     pickers
         .new({
-            trim_text = true,
-            layout_config = {
-                horizontal = {
-                    width = 0.9,
-                    height = 0.9,
-                    preview_cutoff = 0,
-                    prompt_position = "top",
-                    preview_width = 0.55,
-                },
-            },
+            layout_strategy = "cursor",
+            -- layout_config = {
+            --     width = 0.9,
+            --     height = 0.6,
+            --     preview_width = 0.5,
+            -- },
         }, {
             prompt_title = "LSP References",
             finder = finders.new_table({
@@ -38,6 +35,7 @@ end
 
 return {
     "KostkaBrukowa/definition-or-references.nvim",
+    enabled = false,
     lazy = false,
     keys = {
         {

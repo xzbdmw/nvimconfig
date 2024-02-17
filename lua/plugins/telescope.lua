@@ -8,8 +8,12 @@ return {
         {
             "<C-d>",
             function()
+                -- require("telescope.builtin").lsp_document_symbols({
+                --     symbols = require("lazyvim.config").get_kind_filter(),
+                -- })
+
                 require("telescope.builtin").lsp_document_symbols({
-                    symbols = require("lazyvim.config").get_kind_filter(),
+                    -- symbols = require("lazyvim.config").get_kind_filter(),
                 })
             end,
             desc = "Goto Symbol",
@@ -147,6 +151,9 @@ return {
                 },
                 mappings = {
                     i = {
+                        ["<esc>"] = function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                        end,
                         ["<C-e>"] = actions.close,
                         ["<C-->"] = actions.preview_scrolling_left,
                         ["<C-=>"] = actions.preview_scrolling_right,
@@ -159,13 +166,7 @@ return {
                         end,
                     },
                     n = {
-                        -- ["p"] = function()
-                        --     vim.api.nvim_feedkeys(
-                        --         vim.api.nvim_replace_termcodes("<C-r>+", true, false, true),
-                        --         "t",
-                        --         true
-                        --     )
-                        -- end,
+                        ["<esc>"] = require("telescope.actions").close,
                         ["<C-e>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,

@@ -2,16 +2,9 @@
 -- -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
-local del = vim.keymap.del
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
-del("n", "<leader>w-")
-del("n", "<leader>ww")
-del("n", "<leader>wd")
-del("t", "<esc><esc>")
-del("n", "<leader>w|")
-del({ "n", "x" }, "<space>wÞ")
 
 -- dap
 --[[ keymap("n", "<leader>td", function()
@@ -52,7 +45,9 @@ keymap("i", "<Tab>", function()
         return
     end
 end, opts)
-
+keymap("n", "<C-g>", function()
+    print("gggggg")
+end, opts)
 local function get_non_float_win_count()
     local window_count = #vim.api.nvim_list_wins()
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -98,7 +93,7 @@ keymap("n", "<Tab>", function()
     exe 'wincmd ' 'w'
     let w = winnr()
     let n = bufname('%')
-    let nok = (n=~'NVimTree') && (w != w0)
+  let nok = ((n=~'NVimTree') || (n=~'undotree')||(n=~'diff')) && (w != w0)
   endwhile
 ]])
         elseif flag == false then
@@ -116,8 +111,12 @@ keymap("n", "<Tab>", function()
     else
         require("ufo").peekFoldedLinesUnderCursor()
     end
-end)
+end, { desc = "swicth window" })
 keymap("i", "<C-e>", "<esc>A", opts)
+keymap("n", "<C-e>", function()
+    vim.cmd(":Lspsaga diagnostic_jump_next")
+end, opts)
+
 keymap("", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local win_amount = #vim.api.nvim_tabpage_list_wins(0)
@@ -180,6 +179,7 @@ keymap({ "n", "i" }, "<D-s>", function()
         vim.cmd("write")
     end
 end, opts)
+
 keymap("i", "<D-v>", '<C-r>"', opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
@@ -194,6 +194,7 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         if success then
             -- print(vim.inspect(win_config))
             if win_config.relative ~= "" then
+                print(vim.inspect(win_config))
                 print(win_config.zindex)
                 -- print(vim.inspect(win_config))
                 vim.api.nvim_win_close(win, true)
@@ -201,6 +202,11 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
+keymap("n", "<space>d", function()
+    local def_or_ref = require("custom.definitions")
+    -- local def_or_ref = require("custom.definition-or-references.main")
+    def_or_ref.definition_or_references()
+end)
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -212,6 +218,8 @@ keymap({ "s", "i", "n" }, "<esc>", function()
                 or win_config.zindex == 44
                 or win_config.zindex == 46
                 or win_config.zindex == 47
+                or win_config.zindex == 50
+                or win_config.zindex == 80
             then
                 flag = false
                 vim.api.nvim_win_close(win, true)
