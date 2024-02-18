@@ -4,15 +4,15 @@ local function my_on_attach(bufnr)
         return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end
     api.config.mappings.default_on_attach(bufnr)
-    vim.keymap.set("n", "<esc>", "<C-w>l", opts("return to origin buffer"))
-    vim.keymap.set("n", "<Tab>", "<C-w>l", opts("return to origin buffer"))
-    -- vim.keymap.set("n", "p", function()
-    --     api.fs.paste()
-    -- end, opts("paste"))
-    vim.keymap.set("n", "P", function()
+    local keymap = vim.keymap.set
+    keymap("n", "<esc>", "<C-w>l", opts("return to origin buffer"))
+    keymap("n", "<Tab>", "<C-w>l", opts("return to origin buffer"))
+    keymap("n", "<up>", "k", opts("return to origin buffer"))
+    keymap("n", "<down>", "j", opts("return to origin buffer"))
+    keymap("n", "P", function()
         api.node.open.preview()
     end, opts("preview file"))
-    vim.keymap.set("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 end
 return {
     "nvim-tree/nvim-tree.lua",

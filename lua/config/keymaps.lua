@@ -13,7 +13,9 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del({ "n", "x" }, "<space>wÞ")
--- dap
+
+keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
+keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 --[[ keymap("n", "<leader>td", function()
     require("dapui").toggle()
 end, { silent = true, noremap = true, desc = "toggle signature" })
@@ -177,7 +179,6 @@ end, { expr = true })
 keymap("n", "<leader><leader>k", function()
     return "<C-w>K<cmd>FocusAutoresize<CR>"
 end, { expr = true })
-
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)

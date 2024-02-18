@@ -41,7 +41,7 @@ return {
                 --     guibg = "<VALUE-HERE>",
                 -- },
             },
-            open_mapping = [[<D-k>]],
+            open_mapping = [[<f16>]],
             shade_terminals = false, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
             -- shading_factor = "<number>", -- the percentage by which to lighten terminal background, default: -30 (gets multiplied by -3 if background is light)
             start_in_insert = true,

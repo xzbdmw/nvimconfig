@@ -174,6 +174,9 @@ return {
                                 true
                             )
                         end,
+                        ["<f16>"] = function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Cr>", true, false, true), "t", true)
+                        end,
                     },
                     n = {
                         ["<esc>"] = require("telescope.actions").close,
@@ -182,6 +185,9 @@ return {
                         ["y"] = yank_selected_entry,
                         ["<C-->"] = actions.preview_scrolling_left,
                         ["<C-=>"] = actions.preview_scrolling_right,
+                        ["<f16>"] = function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Cr>", true, false, true), "t", true)
+                        end,
                         s = flash,
                     },
                 },

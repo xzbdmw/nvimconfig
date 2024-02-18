@@ -43,7 +43,7 @@ return {
                 LspInlayHint = { fg = "#595655", bg = "none" },
                 illuminatedwordwrite = { link = "Visual" },
                 MiniIndentscopeSymbol = { link = "Comment" },
-                MatchParen = { fg = "#000000", style = "bold,italic" },
+                MatchParen = { fg = "#000000", style = "italic" },
                 TermCursor = { bg = "#5F5695", fg = "#ffffff" },
                 lspFloatWinNormal = { bg = "#F4F1E9" },
                 Normal = { fg = "#000000", bg = "#FAF7E8" },
