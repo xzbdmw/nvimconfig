@@ -1,10 +1,13 @@
 return {
     "nvim-focus/focus.nvim",
     version = false,
+    -- lazy = false,
+    enabled = false,
     keys = {
         { "<leader><leader>m", "<cmd>FocusMaximise<CR>" },
+        { "<leader><leader>f", "<cmd>FocusAutoresize<CR>" },
     },
-    lazy = false,
+    -- event = "VeryLazy",
     config = function()
         local ignore_filetypes = { "NvimTree", "toggleterm", "undotree", "diff" }
         local ignore_buftypes = { "nofile", "prompt", "popup" }
@@ -40,11 +43,10 @@ return {
             commands = true, -- Create Focus commands
             autoresize = {
                 enable = true, -- Enable or disable auto-resizing of splits
-                width = 0, -- Force width for the focused window
-                height = 0, -- Force height for the focused window
-                minwidth = 0, -- Force minimum width for the unfocused window
-                minheight = 0, -- Force minimum height for the unfocused window
-                height_quickfix = 10, -- Set the height of quickfix panel
+                -- width = 0, -- Force width for the focused window
+                -- height = 0, -- Force height for the focused window
+                -- minheight = 0, -- Force minimum height for the unfocused window
+                -- height_quickfix = 10, -- Set the height of quickfix panel
             },
             split = {
                 bufnew = false, -- Create blank buffer for new split windows

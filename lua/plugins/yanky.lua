@@ -9,7 +9,6 @@ return {
         { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
         { "gp", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
-        { "<D-v>", "<esc>pa" },
     },
     lazy = false,
     opts = {

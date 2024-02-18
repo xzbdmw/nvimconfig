@@ -195,7 +195,7 @@ keymap({ "n", "i" }, "<D-s>", function()
     end
 end, opts)
 
-keymap("i", "<D-v>", '<C-r>"', opts)
+keymap("i", "<D-v>", "<C-r>1", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<Esc>u", opts)

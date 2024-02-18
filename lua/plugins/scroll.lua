@@ -1,6 +1,11 @@
 return {
     "Aasim-A/scrollEOF.nvim",
-    event = { "CursorMoved", "WinScrolled" },
+    dependencies = {
+        "xzbdmw/neovim-project",
+    },
+    -- enabled = false,
+    lazy = false,
+    -- event = "VeryLazy",
     opts = {},
     config = function()
         -- Default settings

@@ -1,5 +1,6 @@
 return {
     "MattesGroeger/vim-bookmarks",
+    enabled = false,
     config = function()
         vim.g.bookmark_sign = ""
         vim.g.bookmark_save_per_working_dir = 1

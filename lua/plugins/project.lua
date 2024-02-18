@@ -34,6 +34,7 @@ return {
             -- Don't calculate root dir on specific directories
             -- Ex: { "~/.cargo/*", ... }
             exclude_dirs = {
+                "/usr/local/share/nvim/runtime/doc/",
                 "/Users/xzb/.rustup/*",
                 "/Users/xzb/.local/share/*",
                 "~/.cargo/*",

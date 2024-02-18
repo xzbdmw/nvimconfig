@@ -1,9 +1,11 @@
 return {
     "xzbdmw/neovim-project",
+    -- enabled = false,
     opts = {
         last_session_on_startup = false,
         projects = { -- define project roots
             "~/Project/rust/*",
+            "~/Project/Go/*",
             "~/.config/*",
         },
         session_manager_opts = {
@@ -19,14 +21,6 @@ return {
                 "qf",
                 "toggleterm",
             },
-        },
-    },
-    keys = {
-        {
-            "<D-`>",
-            function()
-                vim.cmd("NeovimProjectLoadRecent")
-            end,
         },
     },
     init = function()

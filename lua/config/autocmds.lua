@@ -71,12 +71,12 @@ vim.api.nvim_create_autocmd("FileType", {
         "neotest-output",
         "checkhealth",
         "neotest-summary",
-        "vim",
+        -- "vim",
         "neotest-output-panel",
         "toggleterm",
     },
     callback = function(event)
-        vim.bo[event.buf].buflisted = false
+        -- vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
@@ -126,7 +126,6 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 })
 
 local api = vim.api
-
 local function setUndotreeWinSize()
     local winList = api.nvim_list_wins()
     for _, winHandle in ipairs(winList) do
@@ -152,6 +151,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
     callback = function()
+        -- vim.o.scrolloff = 6
         require("nvim-tree.api").tree.toggle({ focus = false })
         -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     end,

@@ -104,6 +104,7 @@ return {
                 LualineCursorLine = { bg = "#EBE8DB" },
                 FzfLuaBorder = { fg = "#BDBFC9" },
                 FzfLuaHeaderText = { link = "TelescopeTitle" },
+                ArrowCurrentFile = { link = "Comment" },
                 MyCursorLine = { bg = "#D1D8D8" },
                 illuminatedWordText = { bg = "#D2D0D0" },
                 illuminatedWordRead = { bg = "#D2D0D0" },
