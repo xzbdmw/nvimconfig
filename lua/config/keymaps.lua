@@ -54,9 +54,6 @@ keymap("i", "<Tab>", function()
         return
     end
 end, opts)
-keymap("n", "<C-g>", function()
-    print("gggggg")
-end, opts)
 local function get_non_float_win_count()
     local window_count = #vim.api.nvim_list_wins()
     for _, win in pairs(vim.api.nvim_list_wins()) do

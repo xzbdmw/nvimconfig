@@ -71,9 +71,9 @@ local function gen_from_quickfix(opts)
 
     local make_display = function(entry)
         local display_filename = utils.transform_path(opts, entry.filename)
-        print(display_filename)
+        -- print(display_filename)
         local text = entry.text
-        print(text)
+        -- print(text)
         text = vim.trim(text)
         text = text:gsub(".* | ", "")
         entry.text = text
@@ -89,6 +89,7 @@ local function gen_from_quickfix(opts)
 
     local get_filename = get_filename_fn()
     return function(entry)
+        -- print(vim.inspect(entry))
         local filename = vim.F.if_nil(entry.filename, get_filename(entry.bufnr))
         return make_entry.set_default_entry_mt({
             value = entry,

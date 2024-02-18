@@ -2,9 +2,15 @@ return {
     "nvim-telescope/telescope.nvim",
     version = false,
     keys = {
-        { "<leader>r", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
         { "<leader><space>", false },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
+        { "<leader>ff", false },
+        { "<leader>fr", false },
+        { "<leader>sg", false },
+        -- {"<leader>ss",function ()
+        --
+        --     vim.cmd("Telescope ")
+        -- end}
         {
             "ml",
             function()
@@ -25,30 +31,6 @@ return {
                 })
             end,
             desc = "telescope bookmarks",
-        },
-        {
-            "<C-d>",
-            function()
-                -- require("telescope.builtin").lsp_document_symbols({
-                --     symbols = require("lazyvim.config").get_kind_filter(),
-                -- })
-
-                require("telescope.builtin").lsp_document_symbols({
-                    -- symbols = require("lazyvim.config").get_kind_filter(),
-                })
-            end,
-            desc = "Goto Symbol",
-        },
-        {
-            "<leader>ff",
-            function()
-                require("telescope.builtin").grep_string({
-                    path_display = { "smart" },
-                    only_sort_text = true,
-                    word_match = "-w",
-                    search = "",
-                })
-            end,
         },
         {
             "<C-6>",
@@ -95,7 +77,14 @@ return {
                 })
             end,
         },
-        { "<D-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", mode = { "n", "i" } },
+        {
+            "<D-f>",
+            function()
+                vim.cmd("normal! m'")
+                vim.cmd("Telescope current_buffer_fuzzy_find")
+            end,
+            mode = { "n", "i" },
+        },
     },
     config = function()
         local function flash(prompt_bufnr)
@@ -246,6 +235,7 @@ return {
                     },
                 },
                 live_grep = {
+                    -- entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
                     disable_coordinates = true,
                     layout_config = {
                         horizontal = {

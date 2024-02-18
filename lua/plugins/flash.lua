@@ -170,7 +170,7 @@ return {
                 multi_line = true,
                 -- When using jump labels, don't use these keys
                 -- This allows using those keys directly after the motion
-                label = { exclude = "hjkliardc" },
+                label = { exclude = "yhjkliardc" },
                 -- by default all keymaps are enabled, but you can disable some of them,
                 -- by removing them from the list.
                 -- If you rather use another key, you can map them
