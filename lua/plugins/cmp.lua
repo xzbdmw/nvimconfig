@@ -217,7 +217,14 @@ return {
         })
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline({
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                        fallback()
+                    end
+                end, { "i", "s" }),
                 ["<CR>"] = cmp.mapping({
+
                     i = cmp.mapping.confirm({ select = true }),
                     c = cmp.mapping.confirm({ select = false }),
                 }),
@@ -257,6 +264,9 @@ return {
                     fallback()
                 end, { "i", "c" }),
             }),
+            -- completion = {
+            --     completeopt = "menu,menuone,noselect",
+            -- },
             sources = cmp.config.sources({
                 { name = "cmdline" },
                 { name = "path" },
