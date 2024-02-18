@@ -2,7 +2,7 @@ return {
     "xzbdmw/neovim-project",
     -- enabled = false,
     opts = {
-        last_session_on_startup = false,
+        last_session_on_startup = true,
         projects = { -- define project roots
             "~/Project/rust/*",
             "~/Project/Go/*",

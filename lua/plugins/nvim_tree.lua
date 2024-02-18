@@ -23,6 +23,8 @@ return {
     keys = {
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
+        { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
+        { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
     },
     lazy = false,
     config = function()

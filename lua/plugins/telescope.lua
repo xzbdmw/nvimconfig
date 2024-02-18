@@ -199,7 +199,7 @@ return {
                                 true
                             )
                         end,
-                        ["<f16>"] = function()
+                        ["<f17>"] = function()
                             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Cr>", true, false, true), "t", true)
                         end,
                     },

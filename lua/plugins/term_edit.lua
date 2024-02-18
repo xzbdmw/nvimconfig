@@ -1,6 +1,7 @@
 return {
     "chomosuke/term-edit.nvim",
     ft = "toggleterm",
+    enabled = false,
     version = false,
     lazy = false,
     config = function()

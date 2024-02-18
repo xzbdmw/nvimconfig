@@ -13,6 +13,7 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del({ "n", "x" }, "<space>wÞ")
+del({ "n", "x" }, "<space>qÞ")
 --[[ exports = {
     ["neovim-project"] = project_history,
     history = project_history,
@@ -21,6 +22,8 @@ del({ "n", "x" }, "<space>wÞ")
 keymap({ "i", "n" }, "<D-9>", function()
     vim.cmd("NeovimProjectLoadRecent")
 end, opts)
+keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
+del("n", "<leader>qq")
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 --[[ keymap("n", "<leader>td", function()

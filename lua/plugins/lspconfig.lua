@@ -137,14 +137,38 @@ return {
                         },
                     },
                 },
-                -- rust_analyzer = {
-                --     enabled = false,
-                --     keys = {
-                --         { "K", false },
-                --         { "<leader>cR", "<cmd>RustCodeAction<cr>", desc = "Code Action (Rust)" },
-                --         { "<leader>dr", false },
-                --     },
-                -- },
+                rust_analyzer = {
+                    settings = {
+                        ["rust-analyzer"] = {
+                            completion = {
+                                callable = {
+                                    snippets = "add_parentheses",
+                                },
+                                fullFunctionSignatures = {
+                                    enable = true,
+                                },
+                                privateEditable = {
+                                    enable = true,
+                                },
+                            },
+                            procMacro = {
+                                ignored = {
+                                    tokio_macros = {
+                                        "main",
+                                        "test",
+                                    },
+                                    tracing_attributes = {
+                                        "instrument",
+                                    },
+                                },
+                            },
+                            inlayHints = {
+                                parameterHints = false,
+                                closureReturnTypeHints = "with_block",
+                            },
+                        },
+                    },
+                },
                 tsserver = { enabled = false },
             },
         },

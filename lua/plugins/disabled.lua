@@ -21,7 +21,6 @@ return {
     -- { "shortcuts/no-neck-pain.nvim", enabled = false },
     -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
     { "echasnovski/mini.pairs", enabled = false },
-    { "chomosuke/term-edit.nvim", enabled = false },
     { "shellRaining/hlchunk.nvim", enabled = false },
     { "neoclide/coc.nvim", enabled = false },
     { "folke/neodev.nvim", enabled = false },
