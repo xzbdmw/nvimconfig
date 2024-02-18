@@ -8,6 +8,14 @@ return {
                     filter = { event = "msg_show", find = "'modifiable' is off" },
                     opts = { skip = true },
                 },
+                {
+                    filter = { event = "msg_show", find = "winminwidth" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "%--" },
+                    opts = { skip = true },
+                },
             },
             presets = { inc_rename = true },
             messages = {

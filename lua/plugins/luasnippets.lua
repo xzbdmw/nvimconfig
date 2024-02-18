@@ -17,7 +17,7 @@ return {
             { silent = true },
         },
         {
-            "<C-p>",
+            "<A-N>",
             mode = { "i", "s", "n" },
             function()
                 require("luasnip").jump(-1)

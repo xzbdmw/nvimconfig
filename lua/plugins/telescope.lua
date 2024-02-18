@@ -6,10 +6,6 @@ return {
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         { "<leader>ff", false },
         { "<leader>fr", false },
-        -- {"<leader>ss",function ()
-        --
-        --     vim.cmd("Telescope ")
-        -- end}
         {
             "ml",
             function()
@@ -53,9 +49,39 @@ return {
             mode = { "n", "i" },
         },
         {
+            "<C-p>",
+            function()
+                require("telescope").extensions["neovim-project"].history({
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            width = 0.35,
+                            height = 0.7,
+                        },
+                    },
+                })
+            end,
+        },
+        {
+            "<leader><leader>p",
+            function()
+                require("telescope").extensions["neovim-project"].discover({
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            width = 0.7,
+                            height = 0.7,
+                        },
+                    },
+                })
+            end,
+            desc = "discover project",
+        },
+        {
             "<D-e>",
             function()
                 require("telescope").extensions.smart_open.smart_open({
+                    -- cwd_only = true,
                     show_scores = false,
                     ignore_patterns = { "*.git/*", "*/tmp/*" },
                     match_algorithm = "fzf",
@@ -286,12 +312,22 @@ return {
                     push_cursor_on_edit = true,
                 },
                 buffers = {
+                    show_all_buffers = false,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,
                     sort_lastused = true,
                 },
             },
             extensions = {
+                ["neovim-project"] = {
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            width = 0.35,
+                            height = 0.7,
+                        },
+                    },
+                },
                 smart_open = {
                     show_scores = true,
                     ignore_patterns = { "*.git/*", "*/tmp/*" },

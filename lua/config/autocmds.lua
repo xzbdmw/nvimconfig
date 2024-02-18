@@ -145,3 +145,14 @@ api.nvim_create_user_command("Ut", function()
     api.nvim_cmd(api.nvim_parse_cmd("UndotreeToggle", {}), {})
     setUndotreeWinSize()
 end, { desc = "load undotree" })
+
+local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
+
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "SessionLoadPost",
+    group = config_group,
+    callback = function()
+        require("nvim-tree.api").tree.toggle({ focus = false })
+        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    end,
+})
