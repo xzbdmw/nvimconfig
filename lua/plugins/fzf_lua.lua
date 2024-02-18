@@ -25,12 +25,6 @@ return {
             end,
             desc = "recent files",
         },
-        {
-            "<leader>sg",
-            function()
-                vim.cmd("FzfLua live_grep_native")
-            end,
-        },
     },
     config = function()
         local actions = require("fzf-lua.actions")

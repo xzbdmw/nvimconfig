@@ -6,7 +6,6 @@ return {
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         { "<leader>ff", false },
         { "<leader>fr", false },
-        { "<leader>sg", false },
         -- {"<leader>ss",function ()
         --
         --     vim.cmd("Telescope ")
