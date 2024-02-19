@@ -7,6 +7,12 @@ local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 local del = vim.keymap.del
 del("n", "<leader>w-")
+del("n", "<leader>fn")
+del("n", "<leader>ft")
+del("n", "<leader>fT")
+del("n", "<leader>bb")
+del("n", "<leader>bD")
+del("n", "<leader>bd")
 del("n", "<leader>ww")
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
@@ -115,7 +121,7 @@ keymap("n", "<Tab>", function()
   let w0 = winnr()
   let nok = 1
   while nok
- echo "Hello from MyFunction!"
+    exe 'wincmd ' 'w'
     let w = winnr()
     let n = bufname('%')
   let nok = ( n=~'NVimTree' )   && (w != w0)
@@ -145,14 +151,11 @@ end, opts)
 
 keymap("", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
-    local win_amount = #vim.api.nvim_tabpage_list_wins(0)
     local nvimtree_present = false
-
     -- 遍历所有窗口
-    for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    for _, win_id in ipairs(vim.api.nvim_list_wins()) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
         local buf_name = vim.api.nvim_buf_get_name(buf_id)
-
         -- 检查是否存在 NvimTree
         if string.find(buf_name, "NvimTree") then
             nvimtree_present = true
@@ -161,6 +164,9 @@ keymap({ "n", "i" }, "<D-w>", function()
     end
 
     -- 如果窗口数量为 1 或者任意窗口包含 NvimTree
+    -- print("NvimTree present: " .. tostring(nvimtree_present))
+    -- print("Window amount after: " .. win_amount)
+    local win_amount = get_non_float_win_count()
     if win_amount == 1 or (nvimtree_present and win_amount == 2) then
         vim.cmd("BufDel")
     else

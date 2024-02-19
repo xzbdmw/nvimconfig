@@ -3,8 +3,13 @@ return {
     version = false,
     keys = {
         { "<leader><space>", false },
-        { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
+        { "<leader>r", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
+        { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "telescope buffers" },
         { "<leader>ff", false },
+        { "<leader>fb", false },
+        { "<leader>fc", false },
+        { "<leader>fF", false },
+        { "<leader>fR", false },
         { "<leader>fr", false },
         {
             "ml",

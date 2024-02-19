@@ -12,14 +12,14 @@ return {
             desc = "Goto Symbol",
         },
         {
-            "<leader>ff",
+            "<leader>f",
             function()
                 vim.cmd("FzfLua files")
             end,
             desc = "searh files in cwd",
         },
         {
-            "<leader>fr",
+            "<leader><leader>r",
             function()
                 vim.cmd("FzfLua oldfiles")
             end,
@@ -75,7 +75,7 @@ return {
                     -- applies only when scrollbar = 'float'
                     scrollchars = { "█", "" }, -- scrollbar chars ({ <full>, <empty> }
                     -- applies only when scrollbar = 'border'
-                    delay = 10, -- delay(ms) displaying the preview
+                    delay = 0, -- delay(ms) displaying the preview
                     -- prevents lag on fast scrolling
                     winopts = { -- builtin previewer window options
                         number = true,
