@@ -1,9 +1,11 @@
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = "InsertEnter",
+    -- event = "InsertEnter",
+
+    event = "VeryLazy",
     keys = { { "<C-n>", false } },
-    lazy = false,
+    -- lazy = false,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -66,15 +68,6 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.abort()
-                        fallback()
-                    else
-                        fallback()
-                    end
-                end),
-
                 ["<f7>"] = cmp.mapping(function()
                     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
                 end),
@@ -217,12 +210,12 @@ return {
         })
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline({
-                ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                        fallback()
-                    end
-                end, { "i", "s" }),
+                -- ["<Tab>"] = cmp.mapping(function(fallback)
+                --     if cmp.visible() then
+                --         cmp.select_next_item()
+                --         fallback()
+                --     end
+                -- end, { "i", "s" }),
                 ["<CR>"] = cmp.mapping({
 
                     i = cmp.mapping.confirm({ select = true }),

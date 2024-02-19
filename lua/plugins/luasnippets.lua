@@ -1,34 +1,30 @@
 return {
     "L3MON4D3/LuaSnip",
-    -- follow latest release.
-    -- version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
     version = false,
-    keys = {
-        {
-            "<Tab>",
-            false,
-        },
-        {
-            "<C-n>",
-            mode = { "i", "s", "n" },
-            function()
-                require("luasnip").jump(1)
-            end,
-            { silent = true },
-        },
-        {
-            "<A-N>",
-            mode = { "i", "s", "n" },
-            function()
-                require("luasnip").jump(-1)
-            end,
-            { silent = true },
-        },
-    },
+    keys = function()
+        return {
+            {
+                "<C-n>",
+                mode = { "i", "s", "n" },
+                function()
+                    require("luasnip").jump(1)
+                end,
+                { silent = true },
+            },
+            {
+                "<A-N>",
+                mode = { "i", "s", "n" },
+                function()
+                    require("luasnip").jump(-1)
+                end,
+                { silent = true },
+            },
+        }
+    end,
 
     -- install jsregexp (optional!).
     build = "make install_jsregexp",
-    lazy = false,
+    -- lazy = false,
     config = function()
         local types = require("luasnip.util.types")
         local ls = require("luasnip")
@@ -104,7 +100,7 @@ return {
                 [types.exitNode] = {
                     unvisited = {
                         virt_text = { { "|", "Conceal" } },
-                        -- virt_text_pos = "inline",
+                        virt_text_pos = "inline",
                     },
                 },
             },

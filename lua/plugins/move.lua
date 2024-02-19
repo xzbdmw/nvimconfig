@@ -1,6 +1,6 @@
 return {
     "fedepujol/move.nvim",
-    lazy = false,
+    event = "VeryLazy",
     keys = {
         { "<down>", "<cmd>MoveLine(1)<CR>", desc = "move line down" },
         { "<up>", "<cmd>MoveLine(-1)<CR>", desc = "move line up" },

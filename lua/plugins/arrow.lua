@@ -1,6 +1,6 @@
 return {
     "otavioschwanck/arrow.nvim",
-    lazy = false,
+    event = "VeryLazy",
     keys = {
         {
             "H",

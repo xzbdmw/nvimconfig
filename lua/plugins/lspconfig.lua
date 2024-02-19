@@ -21,7 +21,7 @@ end
 return {
     {
         "neovim/nvim-lspconfig",
-        lazy = false,
+        -- lazy = false,
         init = function()
             local keys = require("lazyvim.plugins.lsp.keymaps").get()
             -- disable a keymap

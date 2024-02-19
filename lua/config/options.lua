@@ -6,7 +6,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 -- vim.opt.number = false
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
--- vim.g.sessionoptions = "blank,buffers,globals,options,curdir,folds,winpos,winsize"
+vim.g.sessionoptions = "buffers,globals,options,curdir,winpos,winsize"
 -- vim.g.sessionoptions = "buffers"
 vim.g.neovide_unlink_border_highlights = false
 vim.opt.relativenumber = false

@@ -1,6 +1,7 @@
 return {
     "echasnovski/mini.surround",
-    lazy = false,
+    -- lazy = false,
+    event = "VeryLazy",
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)

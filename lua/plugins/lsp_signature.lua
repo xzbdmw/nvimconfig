@@ -13,6 +13,7 @@ return {
         },
     },
     lazy = false,
+    -- event = "VeryLazy",
     version = false,
     opts = {
         debug = false, -- set to true to enable debug logging
