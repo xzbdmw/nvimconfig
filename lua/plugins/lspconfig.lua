@@ -137,44 +137,44 @@ return {
                         },
                     },
                 },
-                rust_analyzer = {
-                    settings = {
-                        ["rust-analyzer"] = {
-                            checkOnSave = true,
-                            check = {
-                                enable = true,
-                                command = "clippy",
-                                features = "all",
-                            },
-                            completion = {
-                                callable = {
-                                    snippets = "add_parentheses",
-                                },
-                                fullFunctionSignatures = {
-                                    enable = true,
-                                },
-                                privateEditable = {
-                                    enable = true,
-                                },
-                            },
-                            procMacro = {
-                                ignored = {
-                                    tokio_macros = {
-                                        "main",
-                                        "test",
-                                    },
-                                    tracing_attributes = {
-                                        "instrument",
-                                    },
-                                },
-                            },
-                            inlayHints = {
-                                parameterHints = false,
-                                closureReturnTypeHints = "with_block",
-                            },
-                        },
-                    },
-                },
+                -- rust_analyzer = {
+                --     settings = {
+                --         ["rust-analyzer"] = {
+                --             checkOnSave = true,
+                --             check = {
+                --                 enable = true,
+                --                 command = "clippy",
+                --                 features = "all",
+                --             },
+                --             completion = {
+                --                 callable = {
+                --                     snippets = "add_parentheses",
+                --                 },
+                --                 fullFunctionSignatures = {
+                --                     enable = true,
+                --                 },
+                --                 privateEditable = {
+                --                     enable = true,
+                --                 },
+                --             },
+                --             procMacro = {
+                --                 ignored = {
+                --                     tokio_macros = {
+                --                         "main",
+                --                         "test",
+                --                     },
+                --                     tracing_attributes = {
+                --                         "instrument",
+                --                     },
+                --                 },
+                --             },
+                --             inlayHints = {
+                --                 parameterHints = false,
+                --                 closureReturnTypeHints = "with_block",
+                --             },
+                --         },
+                --     },
+                -- },
                 tsserver = { enabled = false },
             },
         },

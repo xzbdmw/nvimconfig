@@ -19,7 +19,7 @@ return {
             desc = "searh files in cwd",
         },
         {
-            "<leader><leader>r",
+            "<leader>r",
             function()
                 vim.cmd("FzfLua oldfiles")
             end,
@@ -481,7 +481,7 @@ return {
                 prompt = "History> ",
                 cwd_only = false,
                 stat_file = true, -- verify files exist on disk
-                include_current_session = false, -- include bufs from current session
+                include_current_session = true, -- include bufs from current session
             },
             buffers = {
                 prompt = "Buffers> ",

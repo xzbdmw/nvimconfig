@@ -51,6 +51,7 @@ return {
             respect_buf_cwd = true,
             update_focused_file = {
                 enable = true,
+                -- cause cwd to change
                 -- update_cwd = true,
                 ignore_list = {},
             },
