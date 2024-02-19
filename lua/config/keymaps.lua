@@ -5,7 +5,6 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
-
 local del = vim.keymap.del
 del("n", "<leader>w-")
 del("n", "<leader>ww")
@@ -19,6 +18,8 @@ del({ "n", "x" }, "<space>qÞ")
     history = project_history,
     discover = project_discover,
   }, ]]
+keymap("n", "D", "d$", opts)
+keymap("n", "Y", "y$", opts)
 keymap({ "i", "n" }, "<D-9>", function()
     vim.cmd("NeovimProjectLoadRecent")
 end, opts)
@@ -104,17 +105,23 @@ keymap("n", "<Tab>", function()
                 end
             end
         end
+        -- if window_count == 1 then
+        --     return
+        -- end
+        -- 当前有两个以上窗口的时候 忽略nvimtree
         if flag == false and window_count ~= 2 then
+            print(window_count)
             vim.cmd([[
   let w0 = winnr()
   let nok = 1
   while nok
-    exe 'wincmd ' 'w'
+ echo "Hello from MyFunction!"
     let w = winnr()
     let n = bufname('%')
   let nok = ( n=~'NVimTree' )   && (w != w0)
   endwhile
 ]])
+        -- 当前有两个窗口的时候,可以切换到nvimtree
         elseif flag == false then
             vim.cmd([[
   let w0 = winnr()
@@ -139,7 +146,22 @@ end, opts)
 keymap("", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local win_amount = #vim.api.nvim_tabpage_list_wins(0)
-    if win_amount == 1 then
+    local nvimtree_present = false
+
+    -- 遍历所有窗口
+    for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf_id = vim.api.nvim_win_get_buf(win_id)
+        local buf_name = vim.api.nvim_buf_get_name(buf_id)
+
+        -- 检查是否存在 NvimTree
+        if string.find(buf_name, "NvimTree") then
+            nvimtree_present = true
+            break
+        end
+    end
+
+    -- 如果窗口数量为 1 或者任意窗口包含 NvimTree
+    if win_amount == 1 or (nvimtree_present and win_amount == 2) then
         vim.cmd("BufDel")
     else
         local windows = vim.api.nvim_list_wins()

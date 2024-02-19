@@ -1,6 +1,8 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
+
+vim.g.root_spec = { "cwd" }
 vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -9,7 +11,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.sessionoptions = "buffers,globals,options,curdir,winpos,winsize"
 -- vim.g.sessionoptions = "buffers"
 vim.g.neovide_unlink_border_highlights = false
-vim.opt.relativenumber = false
+-- vim.opt.relativenumber = false
 -- vim.opt.number = false
 vim.opt.shiftwidth = 4
 vim.opt.list = false

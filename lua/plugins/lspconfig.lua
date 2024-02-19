@@ -140,6 +140,12 @@ return {
                 rust_analyzer = {
                     settings = {
                         ["rust-analyzer"] = {
+                            checkOnSave = true,
+                            check = {
+                                enable = true,
+                                command = "clippy",
+                                features = "all",
+                            },
                             completion = {
                                 callable = {
                                     snippets = "add_parentheses",

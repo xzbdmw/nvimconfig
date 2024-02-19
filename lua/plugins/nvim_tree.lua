@@ -16,6 +16,7 @@ local function my_on_attach(bufnr)
 end
 return {
     "nvim-tree/nvim-tree.lua",
+    -- enabled = false,
     version = false,
     -- dependencies = {
     --     "nvim-tree/nvim-web-devicons",
@@ -41,16 +42,16 @@ return {
                 open_file = {
                     quit_on_open = false,
                 },
-                change_dir = {
-                    global = true,
-                },
+                -- change_dir = {
+                --     global = true,
+                -- },
             },
             disable_netrw = true,
             sync_root_with_cwd = true,
             respect_buf_cwd = true,
             update_focused_file = {
                 enable = true,
-                update_root = true,
+                -- update_cwd = true,
                 ignore_list = {},
             },
             filters = {
