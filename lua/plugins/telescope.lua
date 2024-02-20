@@ -72,7 +72,7 @@ return {
             mode = { "n", "i" },
         },
         {
-            "<C-p>",
+            "<leader>e",
             function()
                 require("telescope").extensions["neovim-project"].history({
                     layout_strategy = "horizontal",
