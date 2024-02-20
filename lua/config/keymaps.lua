@@ -19,6 +19,7 @@ del({ "n", "x" }, "<space>qÞ")
     discover = project_discover,
   }, ]]
 keymap("n", "D", "d$", opts)
+keymap("i", "<C-d>", "<C-w>", opts)
 keymap("n", "Y", "y$", opts)
 keymap({ "i", "n" }, "<D-9>", function()
     vim.cmd("NeovimProjectLoadRecent")

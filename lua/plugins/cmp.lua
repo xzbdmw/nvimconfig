@@ -81,7 +81,7 @@ return {
                     --
                 end, { "i", "v", "n" }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
