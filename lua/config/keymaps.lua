@@ -224,9 +224,7 @@ keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 keymap({ "n", "i" }, "<D-s>", function()
-    if vim.bo.modified then
-        vim.cmd("write")
-    end
+    vim.cmd("write")
 end, opts)
 
 keymap("i", "<D-v>", "<C-r>1", opts)

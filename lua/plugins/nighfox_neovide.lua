@@ -31,18 +31,11 @@ return {
         }
         local groups = {
             all = {
-                -- RainbowDelimiterRed = { fg = "#ff9999" }, -- 浅红色
-                -- RainbowDelimiterYellow = { fg = "#ffff99" }, -- 浅黄色
-                -- RainbowDelimiterBlue = { fg = "#9999ff" }, -- 浅蓝色
-                -- RainbowDelimiterOrange = { fg = "#ffcc99" }, -- 浅橙色
-                -- RainbowDelimiterGreen = { fg = "#99ff99" }, -- 浅绿色
-                -- RainbowDelimiterViolet = { fg = "#cc99ff" }, -- 浅紫色
-                -- RainbowDelimiterCyan = { fg = "#99ffff" }, -- 浅青色
-                -- DiagnosticVirtualTextWarn = { fg = "#EA9D34", bg = "#FAF7E8" },
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
                 LspInlayHint = { fg = "#595655", bg = "none" },
                 illuminatedwordwrite = { link = "Visual" },
                 MiniIndentscopeSymbol = { link = "Comment" },
+                Directory = { link = "Comment" },
                 MatchParen = { fg = "#000000", style = "bold,italic" },
                 TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },
                 lspFloatWinNormal = { bg = "#F4F1E9" },
@@ -178,6 +171,7 @@ return {
                 Search = { bg = "#FAF0AA" },
                 TelescopeParent = { link = "TelescopeTitle" },
                 TelescopeSelection = { bg = "#D1D8D8" },
+                hl_bookmarks_csl = { link = "TelescopeMatching" },
                 TelescopeMatching = { bg = "#b8cece" },
                 TelescopeResultsComment = { fg = "#000000" },
                 TelescopeResultsLineNr = { fg = "#000000" },

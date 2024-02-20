@@ -11,14 +11,14 @@ return {
                 end,
                 { silent = true },
             },
-            {
-                "<A-N>",
-                mode = { "i", "s", "n" },
-                function()
-                    require("luasnip").jump(-1)
-                end,
-                { silent = true },
-            },
+            -- {
+            --     "<C->",
+            --     mode = { "i", "s", "n" },
+            --     function()
+            --         require("luasnip").jump(-1)
+            --     end,
+            --     { silent = true },
+            -- },
         }
     end,
 

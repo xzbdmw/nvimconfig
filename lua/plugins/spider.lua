@@ -1,4 +1,5 @@
 return {
+    enabled = false,
     "chrisgrieser/nvim-spider",
     config = function()
         vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>", { desc = "Spider-w" })

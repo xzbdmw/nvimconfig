@@ -36,7 +36,7 @@ return {
                         pattern = "^:",
                         icon = "> ",
                         lang = "vim",
-                        conceal = false,
+                        conceal = true,
                         opts = {
                             border = {
                                 style = "rounded",
@@ -57,14 +57,14 @@ return {
                         pattern = "^/",
                         icon = "?",
                         lang = "regex",
-                        conceal = false,
+                        conceal = true,
                     },
-                    filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = false },
+                    filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
                         icon = "",
                         lang = "lua",
-                        conceal = false,
+                        conceal = true,
                         opts = {
                             border = {
                                 style = "rounded",
@@ -83,7 +83,7 @@ return {
                     help = {
                         pattern = "^:%s*he?l?p?%s+",
                         icon = "?",
-                        conceal = false,
+                        conceal = true,
                         opts = {
                             border = {
                                 style = "rounded",

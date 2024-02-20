@@ -448,13 +448,31 @@ function telescopePickers.prettyWorkspaceSymbols(localOptions)
     require("telescope.builtin").lsp_dynamic_workspace_symbols(options)
 end
 
-function telescopePickers.prettyBuffersPicker(localOptions)
+function telescopePickers.prettyBuffersPicker(previewer)
+    local localOptions = {}
+    if previewer then
+        localOptions = {
+            initial_mode = "insert",
+            layout_strategy = "horizontal",
+            previewer = false,
+            bufnr_width = 0,
+            -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+            layout_config = {
+                horizontal = {
+                    width = 0.35,
+                    height = 0.7,
+                },
+                preview_cutoff = 0,
+                mirror = false,
+            },
+        }
+    end
     if localOptions ~= nil and type(localOptions) ~= "table" then
         print("Options must be a table.")
         return
     end
 
-    options = localOptions or {}
+    local options = localOptions or {}
 
     local originalEntryMaker = make_entry.gen_from_buffer(options)
 
@@ -464,8 +482,7 @@ function telescopePickers.prettyBuffersPicker(localOptions)
         local displayer = telescopeEntryDisplayModule.create({
             separator = " ",
             items = {
-                { width = fileTypeIconWidth },
-                { width = nil },
+                { width = 1 },
                 { width = nil },
                 { remaining = true },
             },
@@ -479,8 +496,7 @@ function telescopePickers.prettyBuffersPicker(localOptions)
             return displayer({
                 { icon, iconHighlight },
                 tailForDisplay,
-                { "(" .. entry.bufnr .. ")", "TelescopeResultsNumber" },
-                { path, "TelescopeResultsComment" },
+                { path, "Comment" },
             })
         end
 

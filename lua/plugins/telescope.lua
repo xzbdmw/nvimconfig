@@ -3,6 +3,7 @@ return {
     version = false,
     keys = {
         { "<leader><space>", false },
+        { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         {
             "<leader>ff",
@@ -10,11 +11,17 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("file")
             end,
         },
-
         {
             "<leader>ss",
             function()
                 require("custom.telescope-pikers").prettyWorkspaceSymbols()
+            end,
+        },
+
+        {
+            "<leader>fb",
+            function()
+                require("custom.telescope-pikers").prettyBuffersPicker(false)
             end,
         },
         {
@@ -53,26 +60,12 @@ return {
         {
             "<C-6>",
             function()
-                require("telescope.builtin").buffers({
-                    initial_mode = "insert",
-                    layout_strategy = "horizontal",
-                    previewer = false,
-                    bufnr_width = 0,
-                    -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
-                    layout_config = {
-                        horizontal = {
-                            width = 0.35,
-                            height = 0.7,
-                        },
-                        preview_cutoff = 0,
-                        mirror = false,
-                    },
-                })
+                require("custom.telescope-pikers").prettyBuffersPicker(true)
             end,
             mode = { "n", "i" },
         },
         {
-            "<leader>e",
+            "<C-p>",
             function()
                 require("telescope").extensions["neovim-project"].history({
                     layout_strategy = "horizontal",
@@ -104,7 +97,6 @@ return {
             "<D-e>",
             function()
                 require("telescope").extensions.smart_open.smart_open({
-                    -- cwd_only = true,
                     show_scores = false,
                     ignore_patterns = { "*.git/*", "*/tmp/*" },
                     match_algorithm = "fzf",
