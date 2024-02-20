@@ -42,16 +42,11 @@ return {
             }
             keys[#keys + 1] = {
                 "<C-a>",
-                ":Lspsaga code_action<CR>",
+                function()
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
+                end,
                 desc = "Code Action",
                 mode = { "i", "n", "v" },
-                has = "codeAction",
-            }
-            keys[#keys + 1] = {
-                "<leader>ca",
-                ":Lspsaga code_action<CR>",
-                desc = "Code Action",
-                mode = { "n", "v" },
                 has = "codeAction",
             }
             keys[#keys + 1] = { "gr", lsp_references_with_jump }

@@ -68,6 +68,14 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible then
+                        cmp.abort()
+                        fallback()
+                    else
+                        fallback()
+                    end
+                end),
                 ["<f7>"] = cmp.mapping(function()
                     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
                 end),

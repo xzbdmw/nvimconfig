@@ -249,11 +249,11 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
-keymap("n", "<space>d", function()
-    local def_or_ref = require("custom.definitions")
-    -- local def_or_ref = require("custom.definition-or-references.main")
-    def_or_ref.definition_or_references()
-end)
+-- keymap("n", "<leader>d", function()
+--     -- local def_or_ref = require("custom.definitions")
+--     local def_or_ref = require("custom.definition-or-references.main")
+--     def_or_ref.definition_or_references()
+-- end)
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
     for _, win in pairs(vim.api.nvim_list_wins()) do

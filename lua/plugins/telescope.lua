@@ -311,7 +311,7 @@ return {
                     },
                 },
                 lsp_references = {
-                    entry_maker = require("custom.make_entry").gen_from_quickfix(),
+                    -- entry_maker = require("custom.make_entry").gen_from_quickfix(),
                     trim_text = true,
                     layout_config = {
                         horizontal = {
@@ -327,7 +327,7 @@ return {
                     push_cursor_on_edit = true,
                 },
                 buffers = {
-                    show_all_buffers = false,
+                    show_all_buffers = true,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,
                     sort_lastused = true,

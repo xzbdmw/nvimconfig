@@ -6,7 +6,12 @@ local config = require("custom.definition-or-references.config")
 local DefinitionOrReferences = {}
 
 function DefinitionOrReferences.definition_or_references()
+    config.get_config().before_start_callback()
+    methods.clear_references()
+    methods.clear_definitions()
+    -- sending references request before definitons to parallelize both requests
     definitions()
+    references.send_references_request()
 end
 
 return DefinitionOrReferences

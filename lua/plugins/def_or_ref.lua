@@ -12,12 +12,17 @@ local function handle_references_response(result)
 
     pickers
         .new({
-            layout_strategy = "cursor",
-            -- layout_config = {
-            --     width = 0.9,
-            --     height = 0.6,
-            --     preview_width = 0.5,
-            -- },
+            layout_strategy = "vertical",
+            layout_config = {
+                vertical = {
+                    prompt_position = "top",
+                    width = 0.55,
+                    height = 0.9,
+                    mirror = true,
+                    preview_cutoff = 0,
+                    preview_height = 0.55,
+                },
+            },
         }, {
             prompt_title = "LSP References",
             finder = finders.new_table({
@@ -35,7 +40,6 @@ end
 
 return {
     "KostkaBrukowa/definition-or-references.nvim",
-    enabled = false,
     lazy = false,
     keys = {
         {

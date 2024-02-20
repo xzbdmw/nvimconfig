@@ -79,6 +79,7 @@ local function gen_from_quickfix(opts)
         text = vim.trim(text)
         text = text:gsub(".* | ", "")
         entry.text = text
+        display_filename = vim.trim(display_filename) .. " -> " .. entry.lnum .. "  "
         local displayer = entry_display.create({
             separator = " ",
             items = {

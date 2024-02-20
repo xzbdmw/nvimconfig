@@ -63,32 +63,74 @@ end
 
 local function definitions()
     local current_cursor = vim.api.nvim_win_get_cursor(0)
+    local lnum = vim.api.nvim_win_get_cursor(0)[1]
+    local filepath = vim.api.nvim_buf_get_name(0)
     local current_bufnr = vim.fn.bufnr("%")
     -- vim.print(vim.inspect(make_params()))
     -- vim.print(methods.definitions.name)
     vim.lsp.buf_request(0, methods.definitions.name, make_params(), function(err, result, context, _)
         -- print("result" .. vim.inspect(result))
         methods.definitions.is_pending = false
-
         methods.definitions.result = result
 
         -- I assume that the we care about only one (first) definition
-        if result and #result > 0 and #result < 2 then
+        if result and #result <= 2 then
+            -- print("enter 1")
+            -- print("first branch")
             local first_definition = result[1]
-
+            -- print(vim.inspect(first_definition))
             if cursor_not_on_result(current_bufnr, current_cursor, first_definition) then
+                print("cursor_not_on_result")
                 vim.lsp.util.jump_to_location(
                     first_definition,
                     vim.lsp.get_client_by_id(context.client_id).offset_encoding
                 )
                 return
-            else
+            else --如果不止有一个definition 那就去找reference 如果只有一个reference 直接跳过去
                 vim.cmd("normal! m'")
-                vim.cmd("Lspsaga finder")
+                vim.lsp.buf_request(0, "textDocument/references", make_params(), function(err, result, ctx, _)
+                    local locations = {}
+                    if result then
+                        local results = vim.lsp.util.locations_to_items(
+                            result,
+                            vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
+                        )
+                        locations = vim.tbl_filter(function(v)
+                            -- Remove current line from result
+                            return not (v.filename == filepath and v.lnum == lnum)
+                        end, vim.F.if_nil(results, {}))
+                    end
+                    if vim.tbl_isempty(locations) then
+                        return
+                    end
+
+                    local utils = require("telescope.utils")
+                    if #locations == 1 then
+                        local location = locations[1]
+                        local bufnr = 0
+                        if location.filename then
+                            local uri = location.filename
+                            if not utils.is_uri(uri) then
+                                uri = vim.uri_from_fname(uri)
+                            end
+                            local a = 1
+                            print(a)
+                            bufnr = vim.uri_to_bufnr(uri)
+                        end
+                        vim.cmd("normal! m'")
+                        vim.api.nvim_win_set_buf(0, bufnr)
+                        vim.api.nvim_win_set_cursor(0, { location.lnum, location.col - 1 })
+                        return
+                    else
+                        vim.cmd("Lspsaga finder")
+                    end
+                end)
+                -- vim.cmd("Lspsaga finder")
             end
-        elseif result and #result >= 2 then
+        else
+            print("enter 3")
             vim.cmd("normal! m'")
-            vim.cmd("Lspsaga goto_definition")
+            vim.cmd("Lspsaga finder")
         end
     end)
 
