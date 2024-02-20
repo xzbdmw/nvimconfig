@@ -1,6 +1,6 @@
 return {
     "tomasky/bookmarks.nvim",
-    enabled = false,
+    -- enabled = false,
     config = function()
         require("bookmarks").setup({
             -- sign_priority = 8,  --set bookmark sign priority to cover other sign

@@ -4,13 +4,31 @@ return {
     keys = {
         { "<leader><space>", false },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
-        { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "telescope buffers" },
-        { "<leader>ff", false },
-        { "<leader>fb", false },
-        { "<leader>fc", false },
-        { "<leader>fF", false },
-        { "<leader>fR", false },
-        { "<leader>fr", false },
+        {
+            "<leader>ff",
+            function()
+                require("custom.telescope-pikers").prettyFilesPicker("file")
+            end,
+        },
+
+        {
+            "<leader>ss",
+            function()
+                require("custom.telescope-pikers").prettyWorkspaceSymbols()
+            end,
+        },
+        {
+            "<leader>fr",
+            function()
+                require("custom.telescope-pikers").prettyFilesPicker("old_files")
+            end,
+        },
+        {
+            "<leader>sg",
+            function()
+                require("custom.telescope-pikers").prettyGrepPicker()
+            end,
+        },
         {
             "ml",
             function()
@@ -271,7 +289,7 @@ return {
                     },
                 },
                 live_grep = {
-                    -- entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
+                    entry_maker = require("custom.make_entry").gen_from_vimgrep_lib(),
                     disable_coordinates = true,
                     layout_config = {
                         horizontal = {
@@ -301,7 +319,7 @@ return {
                     },
                 },
                 lsp_references = {
-                    -- entry_maker = my_entry_maker(),
+                    entry_maker = require("custom.make_entry").gen_from_quickfix(),
                     trim_text = true,
                     layout_config = {
                         horizontal = {

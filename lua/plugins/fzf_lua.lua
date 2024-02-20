@@ -12,19 +12,19 @@ return {
             desc = "Goto Symbol",
         },
         {
-            "<leader>f",
+            "<leader>fz",
             function()
                 vim.cmd("FzfLua files")
             end,
             desc = "searh files in cwd",
         },
-        {
-            "<leader>r",
-            function()
-                vim.cmd("FzfLua oldfiles")
-            end,
-            desc = "recent files",
-        },
+        -- {
+        --     "<leader>fr",
+        --     function()
+        --         vim.cmd("FzfLua oldfiles")
+        --     end,
+        --     desc = "recent files",
+        -- },
     },
     config = function()
         local actions = require("fzf-lua.actions")

@@ -32,14 +32,14 @@ vim.api.nvim_create_autocmd("QuitPre", {
         end
     end,
 })
-vim.cmd([[
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent! loadview
-augroup END
-]])
-vim.cmd([[set viewoptions-=curdir]])
+-- vim.cmd([[
+-- augroup remember_folds
+--   autocmd!
+--   autocmd BufWinLeave *.* mkview
+--   autocmd BufWinEnter *.* silent! loadview
+-- augroup END
+-- ]])
+-- vim.cmd([[set viewoptions-=curdir]])
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)

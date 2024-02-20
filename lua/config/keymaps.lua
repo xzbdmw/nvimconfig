@@ -7,12 +7,6 @@ local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 local del = vim.keymap.del
 del("n", "<leader>w-")
-del("n", "<leader>fn")
-del("n", "<leader>ft")
-del("n", "<leader>fT")
-del("n", "<leader>bb")
-del("n", "<leader>bD")
-del("n", "<leader>bd")
 del("n", "<leader>ww")
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
@@ -102,9 +96,16 @@ keymap("n", "<Tab>", function()
                 -- if this win is float_win
                 if win_config.relative ~= "" then
                     -- if this win isn't current_win
-                    if current_win ~= win and win_config.zindex ~= 20 and win_config.zindex ~= 60 then
+                    if
+                        current_win ~= win
+                        and win_config.zindex ~= 20
+                        and win_config.zindex ~= 60
+                        and win_config.zindex ~= 51
+                        and win_config.zindex ~= 52
+                    then
                         -- change flag to indicate that we have change current_win, so no need to cycle
                         flag = true
+                        print(win_config.zindex)
                         vim.api.nvim_set_current_win(win)
                     end
                     break
