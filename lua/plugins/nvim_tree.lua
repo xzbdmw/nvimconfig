@@ -1,5 +1,8 @@
 local function my_on_attach(bufnr)
     local api = require("nvim-tree.api")
+    api.events.subscribe(api.events.Event.FileCreated, function(file)
+        vim.cmd("edit " .. file.fname)
+    end)
     local function opts(desc)
         return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end

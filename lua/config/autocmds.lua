@@ -52,9 +52,10 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 -- local bufenter = true
--- vim.api.nvim_create_autocmd("BufEnter", {
+-- vim.api.nvim_create_autocmd("VimEnter", {
 --     callback = function()
 --         if bufenter then
+--             print("hello")
 --             vim.cmd("NvimTreeToggle")
 --             -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
 --             bufenter = false
@@ -152,14 +153,37 @@ api.nvim_create_user_command("Ut", function()
     setUndotreeWinSize()
 end, { desc = "load undotree" })
 
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--     pattern = "NvimTree*",
+--     callback = function()
+--         local api = require("nvim-tree.api")
+--         local view = require("nvim-tree.view")
+--         print("hello")
+--         if not view.is_visible() then
+--             api.tree.open()
+--         end
+--     end,
+-- })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-
+--
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
     callback = function()
         -- vim.cmd("Lazy reload vim-bookmarks")
+        -- print("Hello")
         require("nvim-tree.api").tree.toggle({ focus = false })
         -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    end,
+})
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+    callback = function()
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            -- Don't save while there's any 'nofile' buffer open.
+            if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
+                return
+            end
+        end
+        require("session_manager").save_current_session()
     end,
 })

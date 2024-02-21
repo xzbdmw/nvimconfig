@@ -6,13 +6,13 @@ local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 local del = vim.keymap.del
-del("n", "<leader>w-")
-del("n", "<leader>ww")
-del("n", "<leader>wd")
-del("t", "<esc><esc>")
-del("n", "<leader>w|")
-del({ "n", "x" }, "<space>wÞ")
-del({ "n", "x" }, "<space>qÞ")
+-- del("n", "<leader>w-")
+-- del("n", "<leader>ww")
+-- del("n", "<leader>wd")
+-- del("t", "<esc><esc>")
+-- del("n", "<leader>w|")
+-- del({ "n", "x" }, "<space>wÞ")
+-- del({ "n", "x" }, "<space>qÞ")
 --[[ exports = {
     ["neovim-project"] = project_history,
     history = project_history,

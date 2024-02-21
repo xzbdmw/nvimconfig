@@ -8,7 +8,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 -- vim.opt.number = false
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,terminal,winsize,winpos"
+-- vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,terminal,winsize,winpos"
 
 -- vim.o.sessionoptions = "buffers,curdir"
 -- vim.cmd("set sessionoptions=buffers,curdir")
