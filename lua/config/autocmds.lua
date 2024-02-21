@@ -3,10 +3,9 @@
 -- Add any additional autocmds here
 -- auto close
 --
-vim.cmd("set background=light")
 vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
 vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
-
+vim.cmd("syntax off")
 -- vim.api.nvim_create_autocmd("FileType", {
 --     pattern = "rust",
 --     callback = function()
@@ -159,7 +158,6 @@ vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
     callback = function()
-        -- vim.o.scrolloff = 6
         -- vim.cmd("Lazy reload vim-bookmarks")
         require("nvim-tree.api").tree.toggle({ focus = false })
         -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)

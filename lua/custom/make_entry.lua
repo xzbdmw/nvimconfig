@@ -3,7 +3,6 @@ local utils = require("telescope.utils")
 local sorters = require("telescope.sorters")
 local conf = require("telescope.config").values
 local fuzzy_sorter = sorters.get_generic_fuzzy_sorter()
-
 -- sorter that moves less important entries to the bottom
 local sorter = sorters.Sorter:new({
     scoring_function = function(_, prompt, line, entry, cb_add, cb_filter)

@@ -1,5 +1,5 @@
 return {
-    "xzbdmw/neovim-project",
+    "coffebar/neovim-project",
     -- enabled = false,
     opts = {
         last_session_on_startup = true,

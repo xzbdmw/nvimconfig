@@ -23,6 +23,7 @@ local function clear_references()
 end
 
 local function clear_definitions()
+	local a = 5
     if methods.definitions.is_pending then
         methods.definitions.cancel_function()
     end

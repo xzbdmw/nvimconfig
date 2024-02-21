@@ -3,6 +3,7 @@ return {
     dependencies = {
         "kevinhwang91/promise-async",
     },
+    enabled = false,
     keys = {
         {
             "<leader>uf",

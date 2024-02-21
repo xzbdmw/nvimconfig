@@ -3,7 +3,7 @@ return {
     { "lewis6991/gitsigns.nvim", enabled = false },
     { "ggandor/leap.nvim", enabled = false },
     { "rcarriga/nvim-notify", enabled = false },
-    -- { "nvimdev/dashboard-nvim", enabled = false },
+    { "nvimdev/dashboard-nvim", enabled = false },
     { "mg979/vim-visual-multi", enabled = false },
     { "folke/persistence.nvim", enabled = false },
     { "lukas-reineke/indent-blankline.nvim", enabled = false },
