@@ -91,11 +91,6 @@ return {
                 ["<C-9>"] = cmp.mapping.complete(),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
-                    -- print("hello")
-                    -- if luasnip.expand_or_jumpable() then
-                    --     luasnip.expand_or_jump()
-                    -- end
-                    --
                 end, { "i", "v", "n" }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),

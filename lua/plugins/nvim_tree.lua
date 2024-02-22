@@ -73,6 +73,7 @@ return {
                 preserve_window_proportions = true,
             },
             renderer = {
+                highlight_opened_files = "name",
                 special_files = {},
                 group_empty = true,
                 icons = {

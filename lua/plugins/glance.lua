@@ -3,6 +3,24 @@ return {
     config = function()
         local glance = require("glance")
         local actions = glance.actions
+        --[[ 
+        local height = 18
+        local namespace = vim.api.nvim_create_namespace("GlancePlaceHolder")
+        local place_holder = {}
+        for _ = 1, height, 1 do
+            place_holder[#place_holder + 1] = { { "", "Error" } }
+        end
+        local id = 0
+
+        local function after_close()
+            vim.api.nvim_buf_del_extmark(0, namespace, id)
+        end
+
+        local function before_open(results, open)
+            local lnum = vim.api.nvim_win_get_cursor(0)[1]
+            id = vim.api.nvim_buf_set_extmark(0, namespace, lnum - 1, 0, { virt_lines = place_holder })
+            open(results)
+        end ]]
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,
@@ -42,7 +60,6 @@ return {
                     ["k"] = actions.previous, -- Bring the cursor to the previous item in the list
                     ["<Down>"] = actions.next,
                     ["<Up>"] = actions.previous,
-                    ["<Tab>"] = actions.next_location, -- Bring the cursor to the next location skipping groups in the list
                     ["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
                     ["<C-u>"] = actions.preview_scroll_win(5),
                     ["<C-d>"] = actions.preview_scroll_win(-5),
@@ -67,7 +84,17 @@ return {
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
                 },
             },
-            hooks = {},
+            hooks = {
+                before_open = function(results, open, jump, _)
+                    if #results == 2 then
+                        jump(results[2]) -- argument is optional
+                    elseif #results == 1 then
+                        print("no reference")
+                    else
+                        open(results) -- argument is optional
+                    end
+                end,
+            },
             folds = {
                 fold_closed = ">",
                 fold_open = "󱞩",

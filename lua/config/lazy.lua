@@ -1,61 +1,12 @@
-local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-
-vim.cmd([[
-    highlight FolderHi ctermfg=Green guifg=Green
-    highlight FilenameHi ctermfg=Yellow guifg=Yellow
-]])
-vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = "*",
-    callback = function()
-        if vim.api.nvim_win_get_config(0).relative ~= "" then
-            return
-        end
-        -- local relative_path = vim.fn.expand("%:~:.")
-        -- if relative_path ~= "" then
-        --     vim.opt_local.winbar = " " .. relative_path
-        -- else
-        --     vim.opt_local.winbar = nil
-        -- end
-        local path = vim.fn.expand("%:~:.:h")
-        local filename = vim.fn.expand("%:t")
-        if path ~= "" and filename ~= "" then
-            vim.wo.winbar = "  %#WinbarFolder#"
-                .. path
-                .. "%#WinbarFolder#/"
-                .. "%#NvimTreeFolderName#"
-                .. filename
-                .. "%*"
-        elseif filename ~= "" then
-            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
-        else
-            vim.wo.winbar = ""
-        end
-    end,
-})
-vim.cmd([[
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent! loadview
-augroup END
-]])
-vim.cmd([[set viewoptions-=curdir]])
-
-vim.api.nvim_create_autocmd({ "User" }, {
-    pattern = "SessionLoadPost",
-    group = config_group,
-    callback = function()
-        require("nvim-tree.api").tree.toggle({ focus = false })
-    end,
-})
+require("my.autocmds")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  -- bootstrap lazy.nvim
-  -- stylua: ignore
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+    -- bootstrap lazy.nvim
+    -- stylua: ignore
+    vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
+        lazypath })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
-
 require("lazy").setup({
     spec = {
         -- add LazyVim and import its plugins

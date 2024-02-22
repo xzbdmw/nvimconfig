@@ -9,7 +9,6 @@ local sorter = make_entry.sorter
 local function handle_references_response(result)
     local locations = vim.lsp.util.locations_to_items(result, "utf-16")
     local filtered_entries = filter_entries(locations)
-
     pickers
         .new({
             layout_strategy = "vertical",
@@ -39,7 +38,7 @@ local function handle_references_response(result)
 end
 
 return {
-    "KostkaBrukowa/definition-or-references.nvim",
+    "xzbdmw/definition-or-references.nvim",
     lazy = false,
     keys = {
         {
