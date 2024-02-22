@@ -2,7 +2,9 @@ return {
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = false,
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    enabled = false,
+    lazy = false,
     dependencies = {
         "SmiteshP/nvim-navic",
         -- "nvim-tree/nvim-web-devicons", -- optional dependency
@@ -13,19 +15,19 @@ return {
                 -- this highlight is used to override other highlights
                 -- you can take advantage of its `bg` and set a background throughout your winbar
                 -- (e.g. basename will look like this: { fg = "#c0caf5", bold = true })
-                normal = { bg = "#FAF7E8", fg = "#3D4D56" },
+                -- normal = { bg = "#FAF7E8", fg = "#3D4D56" },
                 -- normal = { bg = "#24273A", fg = "#CAD3F5" },
 
                 -- these highlights correspond to symbols table from config
-                ellipsis = { fg = "#3D4D56" },
-                separator = { fg = "#3D4D56" },
-                modified = { fg = "#3D4D56" },
+                -- ellipsis = { fg = "#3D4D56" },
+                -- separator = { fg = "#3D4D56" },
+                -- modified = { fg = "#3D4D56" },
 
                 -- these highlights represent the _text_ of three main parts of barbecue
-                dirname = { fg = "#3D4D56" },
-                basename = { bold = true, italic = true },
-                context = { fg = "#ac8fe4" },
-
+                -- dirname = { fg = "#3D4D56" },
+                -- basename = { bold = true, italic = true },
+                -- context = { fg = "#ac8fe4" },
+                --
                 -- -- these highlights are used for context/navic icons
                 -- context_file = { fg = "#ac8fe4" },
                 -- context_module = { fg = "#ac8fe4" },

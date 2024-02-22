@@ -201,6 +201,10 @@ return {
                 },
                 mappings = {
                     i = {
+                        ["<CR>"] = function()
+                            vim.cmd([[:stopinsert]])
+                            vim.cmd([[call feedkeys("\<CR>")]])
+                        end,
                         ["<esc>"] = function()
                             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
                         end,

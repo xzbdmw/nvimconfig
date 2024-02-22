@@ -1,3 +1,21 @@
+local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
+
+vim.cmd([[
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave *.* mkview
+  autocmd BufWinEnter *.* silent! loadview
+augroup END
+]])
+vim.cmd([[set viewoptions-=curdir]])
+
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "SessionLoadPost",
+    group = config_group,
+    callback = function()
+        require("nvim-tree.api").tree.toggle({ focus = false })
+    end,
+})
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim

@@ -12,7 +12,7 @@ return {
         icons = {
             enable = true,
             kinds = {
-                use_devicons = false,
+                use_devicons = true,
                 symbols = {
                     Array = "  ",
                     Boolean = " 󰨙 ",

@@ -1,3 +1,4 @@
+local luasnip = require("luasnip")
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -44,7 +45,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
             },
             completion = {

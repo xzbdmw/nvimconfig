@@ -48,6 +48,9 @@ return {
     -- -@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
     opts = {
+        disable = function(_, bufnr) -- Disable in files with more than 5K
+            return vim.api.nvim_buf_line_count(bufnr) > 5000
+        end,
         highlight = { enable = true, disable = { "markdown", "javascript" } },
         indent = { enable = true },
         ensure_installed = {

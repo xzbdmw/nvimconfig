@@ -1,8 +1,9 @@
 return {
+    enabled = false,
     "kawre/neotab.nvim",
     event = "InsertEnter",
     opts = {
-        tabkey = "<Tab>",
+        tabkey = "",
         act_as_tab = true,
         behavior = "nested",
         pairs = {

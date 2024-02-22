@@ -5,7 +5,9 @@ return {
         last_session_on_startup = true,
         projects = { -- define project roots
             "~/Project/rust/*",
+            "~/Project/vim/*",
             "~/Project/Go/*",
+            "/Users/xzb/Documents/xzbdmw的副本/*",
             "~/.config/*",
         },
         session_manager_opts = {

@@ -1,9 +1,84 @@
 return {
     "kevinhwang91/nvim-ufo",
+    -- enabled = false,
     dependencies = {
         "kevinhwang91/promise-async",
     },
+    lazy = false,
+    init = function()
+        -- INFO fold commands usually change the foldlevel, which fixes folds, e.g.
+        -- auto-closing them after leaving insert mode, however ufo does not seem to
+        -- have equivalents for zr and zm because there is no saved fold level.
+        -- Consequently, the vim-internal fold levels need to be disabled by setting
+        -- them to 99
+        vim.opt.foldlevel = 99
+        vim.opt.foldlevelstart = 99
+    end,
     keys = {
+
+        {
+            "zm",
+            function()
+                require("ufo").closeAllFolds()
+            end,
+            desc = " 󱃄 Close All Folds",
+        },
+        {
+            "zk",
+            function()
+                require("ufo").goPreviousClosedFold()
+            end,
+            desc = " 󱃄 Goto Prev Fold",
+        },
+        {
+            "zj",
+            function()
+                require("ufo").goNextClosedFold()
+            end,
+            desc = " 󱃄 Goto Next Fold",
+        },
+        {
+            "zr",
+            function()
+                require("ufo").openFoldsExceptKinds({ "comment", "imports" })
+            end,
+            desc = " 󱃄 Open All Regular Folds",
+        },
+        {
+            "zR",
+            function()
+                require("ufo").openFoldsExceptKinds({})
+            end,
+            desc = " 󱃄 Open All Folds",
+        },
+        {
+            "z1",
+            function()
+                require("ufo").closeFoldsWith(1)
+            end,
+            desc = " 󱃄 Close L1 Folds",
+        },
+        {
+            "z2",
+            function()
+                require("ufo").closeFoldsWith(2)
+            end,
+            desc = " 󱃄 Close L2 Folds",
+        },
+        {
+            "z3",
+            function()
+                require("ufo").closeFoldsWith(3)
+            end,
+            desc = " 󱃄 Close L3 Folds",
+        },
+        {
+            "z4",
+            function()
+                require("ufo").closeFoldsWith(4)
+            end,
+            desc = " 󱃄 Close L4 Folds",
+        },
         {
             "<leader>uf",
             function()
@@ -49,11 +124,14 @@ return {
     },
     event = "BufRead",
     config = function()
-        vim.o.fillchars = [[eob: ,fold: ,foldsep: ,foldclose:>]]
         vim.o.foldcolumn = "1" -- '0' is not bad
         vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
         vim.o.foldlevelstart = 99
         vim.o.foldenable = true
+
+        -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+        vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+        vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
         local handler = function(virtText, lnum, endLnum, width, truncate)
             local newVirtText = {}
             local suffix = (" 󰁂 %d "):format(endLnum - lnum)

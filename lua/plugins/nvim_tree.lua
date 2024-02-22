@@ -15,7 +15,7 @@ local function my_on_attach(bufnr)
     keymap("n", "P", function()
         api.node.open.preview()
     end, opts("preview file"))
-    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+    vim.keymap.set("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 end
 return {
     "nvim-tree/nvim-tree.lua",

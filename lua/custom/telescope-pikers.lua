@@ -67,6 +67,7 @@ function telescopePickers.prettyFilesPicker(ftype)
         }
     else
         pickerAndOptions = {
+            cwd_only = false,
             picker = "oldfiles",
             options = {
 

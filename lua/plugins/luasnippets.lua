@@ -1,8 +1,18 @@
 return {
     "L3MON4D3/LuaSnip",
     version = false,
+
     keys = function()
         return {
+            --[[ {
+                "<Tab>",
+                function()
+                    return "<Plug>(neotab-out-luasnip)"
+                end,
+                expr = true,
+                silent = true,
+                mode = "i",
+            }, ]]
             {
                 "<C-n>",
                 mode = { "i", "s", "n" },
@@ -11,20 +21,17 @@ return {
                 end,
                 { silent = true },
             },
-            -- {
-            --     "<C->",
-            --     mode = { "i", "s", "n" },
-            --     function()
-            --         require("luasnip").jump(-1)
-            --     end,
-            --     { silent = true },
-            -- },
+            --[[ {
+                "<C->",
+                mode = { "i", "s", "n" },
+                function()
+                    require("luasnip").jump(-1)
+                end,
+                { silent = true },
+            }, ]]
         }
     end,
-
-    -- install jsregexp (optional!).
     build = "make install_jsregexp",
-    -- lazy = false,
     config = function()
         local types = require("luasnip.util.types")
         local ls = require("luasnip")
@@ -34,7 +41,6 @@ return {
         local f = ls.function_node
         local t = ls.text_node
         local d = ls.dynamic_node
-        local a = "2123"
         local rep = require("luasnip.extras").rep
         local fmt = require("luasnip.extras.fmt").fmt
         local postfix = require("luasnip.extras.postfix").postfix
@@ -97,12 +103,12 @@ return {
                 },
                 -- Add this to also have a placeholder in the final tabstop.
                 -- See the discussion below for more context.
-                [types.exitNode] = {
+                --[[ [types.exitNode] = {
                     unvisited = {
                         virt_text = { { "|", "Conceal" } },
                         virt_text_pos = "inline",
                     },
-                },
+                }, ]]
             },
         })
     end,

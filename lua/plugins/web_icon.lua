@@ -1,5 +1,6 @@
 return {
     "nvim-tree/nvim-web-devicons",
+    event = "VeryLazy",
     config = function()
         require("nvim-web-devicons").setup({
             -- your personnal icons can go here (to override)
@@ -14,7 +15,7 @@ return {
                 },
                 rs = {
                     icon = "󱘗",
-                    color = "#000000",
+                    color = "#C58C6E",
                     cterm_color = "65",
                     name = "Rust",
                 },

@@ -6,19 +6,15 @@ local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 local del = vim.keymap.del
--- del("n", "<leader>w-")
--- del("n", "<leader>ww")
--- del("n", "<leader>wd")
--- del("t", "<esc><esc>")
--- del("n", "<leader>w|")
--- del({ "n", "x" }, "<space>wÞ")
--- del({ "n", "x" }, "<space>qÞ")
---[[ exports = {
-    ["neovim-project"] = project_history,
-    history = project_history,
-    discover = project_discover,
-  }, ]]
+del("n", "<leader>w-")
+del("n", "<leader>ww")
+del("n", "<leader>wd")
+del("t", "<esc><esc>")
+del("n", "<leader>w|")
+del({ "n", "x" }, "<space>wÞ")
+del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
+-- keymap()
 keymap("i", "<C-d>", "<C-w>", opts)
 keymap("n", "Y", "y$", opts)
 keymap({ "i", "n" }, "<D-9>", function()
@@ -50,6 +46,7 @@ end)
 keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end) ]]
+
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -68,7 +65,6 @@ keymap("i", "<Tab>", function()
         return
     end
 end, opts)
-
 local function get_non_float_win_count()
     local window_count = #vim.api.nvim_list_wins()
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -81,7 +77,6 @@ local function get_non_float_win_count()
     end
     return window_count
 end
-
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
     local line_num = cursor_pos[1] -- 光标所在的行号
@@ -92,6 +87,7 @@ keymap("n", "<Tab>", function()
         local current_win = vim.api.nvim_get_current_win()
         for _, win in pairs(vim.api.nvim_list_wins()) do
             local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            local success
             -- print(vim.inspect(win_config))
             if success then
                 -- if this win is float_win
@@ -150,7 +146,6 @@ keymap("i", "<C-e>", "<esc>A", opts)
 keymap("n", "<C-e>", function()
     vim.cmd(":Lspsaga diagnostic_jump_next")
 end, opts)
-
 keymap("", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local nvimtree_present = false
@@ -224,9 +219,10 @@ keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 keymap({ "n", "i" }, "<D-s>", function()
-    vim.cmd("write")
+    if vim.bo.modified then
+        vim.cmd("write")
+    end
 end, opts)
-
 keymap("i", "<D-v>", "<C-r>1", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
@@ -235,6 +231,7 @@ keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
+keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
@@ -249,11 +246,11 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
--- keymap("n", "<leader>d", function()
---     -- local def_or_ref = require("custom.definitions")
---     local def_or_ref = require("custom.definition-or-references.main")
---     def_or_ref.definition_or_references()
--- end)
+--[[ keymap("n", "<leader>d", function()
+    -- local def_or_ref = require("custom.definitions")
+    local def_or_ref = require("custom.definition-or-references.main")
+    def_or_ref.definition_or_references()
+end) ]]
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
     for _, win in pairs(vim.api.nvim_list_wins()) do

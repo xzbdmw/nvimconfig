@@ -6,13 +6,6 @@
 vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
 vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
 vim.cmd("syntax off")
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = "rust",
---     callback = function()
---         vim.cmd("syntax off")
---     end,
--- })
-
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
@@ -31,14 +24,7 @@ vim.api.nvim_create_autocmd("QuitPre", {
         end
     end,
 })
--- vim.cmd([[
--- augroup remember_folds
---   autocmd!
---   autocmd BufWinLeave *.* mkview
---   autocmd BufWinEnter *.* silent! loadview
--- augroup END
--- ]])
--- vim.cmd([[set viewoptions-=curdir]])
+
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
@@ -48,20 +34,21 @@ function _G.set_terminal_keymaps()
     vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
     vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 end
-
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
--- local bufenter = true
--- vim.api.nvim_create_autocmd("VimEnter", {
---     callback = function()
---         if bufenter then
---             print("hello")
---             vim.cmd("NvimTreeToggle")
---             -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
---             bufenter = false
---         end
---     end,
--- })
+
+--[[local bufenter = true
+ vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+        if bufenter then
+            print("hello")
+            vim.cmd("NvimTreeToggle")
+            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
+            bufenter = false
+        end
+    end,
+}) ]]
+
 -- walkaroud for incremental selection
 vim.api.nvim_create_augroup("_cmd_win", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
@@ -84,11 +71,10 @@ vim.api.nvim_create_autocmd("FileType", {
         "toggleterm",
     },
     callback = function(event)
-        -- vim.bo[event.buf].buflisted = false
+        vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
-
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
     local is_split = false
@@ -132,7 +118,6 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
     },
     command = "setlocal nomodifiable",
 })
-
 local api = vim.api
 local function setUndotreeWinSize()
     local winList = api.nvim_list_wins()
@@ -146,26 +131,23 @@ local function setUndotreeWinSize()
         end
     end
 end
-
 api.nvim_create_user_command("Ut", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     api.nvim_cmd(api.nvim_parse_cmd("UndotreeToggle", {}), {})
     setUndotreeWinSize()
 end, { desc = "load undotree" })
-
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---     pattern = "NvimTree*",
---     callback = function()
---         local api = require("nvim-tree.api")
---         local view = require("nvim-tree.view")
---         print("hello")
---         if not view.is_visible() then
---             api.tree.open()
---         end
---     end,
--- })
+--[[ vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = "NvimTree*",
+    callback = function()
+        local api = require("nvim-tree.api")
+        local view = require("nvim-tree.view")
+        print("hello")
+        if not view.is_visible() then
+            api.tree.open()
+        end
+    end,
+}) ]]
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
---
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
@@ -176,7 +158,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
         -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     end,
 })
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+--[[ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     callback = function()
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             -- Don't save while there's any 'nofile' buffer open.
@@ -186,4 +168,4 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         end
         require("session_manager").save_current_session()
     end,
-})
+}) ]]

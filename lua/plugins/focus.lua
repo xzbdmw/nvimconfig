@@ -46,8 +46,8 @@ return {
                 enable = true, -- Enable or disable auto-resizing of splits
                 -- width = 50, -- Force width for the focused window
                 -- height = 50, -- Force height for the focused window
-                -- minwidth = 50, -- Force minimum width for the unfocused window
-                -- minheight = 50, -- Force minimum height for the unfocused window
+                -- minwidth = 3, -- Force minimum width for the unfocused window
+                -- minheight = 3, -- Force minimum height for the unfocused window
                 -- height_quickfix = 10, -- Set the height of quickfix panel
             },
             split = {
