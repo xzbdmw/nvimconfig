@@ -11,7 +11,7 @@ del("n", "<leader>ww")
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
-del({ "n", "x" }, "<space>wÞ")
+-- del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
 -- keymap()
@@ -223,7 +223,7 @@ keymap({ "n", "i" }, "<D-s>", function()
         vim.cmd("write")
     end
 end, opts)
-keymap("i", "<D-v>", "<C-r>1", opts)
+keymap("i", "<D-v>", "<esc>pa", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<Esc>u", opts)
@@ -267,6 +267,8 @@ keymap({ "s", "i", "n" }, "<esc>", function()
             then
                 flag = false
                 vim.api.nvim_win_close(win, true)
+            elseif win_config.zindex == 10 then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
             end
         end
     end

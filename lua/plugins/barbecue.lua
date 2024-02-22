@@ -1,9 +1,9 @@
 return {
     "utilyre/barbecue.nvim",
     name = "barbecue",
+    enabled = false,
     version = false,
     -- event = "VeryLazy",
-    enabled = false,
     lazy = false,
     dependencies = {
         "SmiteshP/nvim-navic",
@@ -102,5 +102,7 @@ return {
                 Variable = " 󰄛 ",
             },
         })
+        vim.api.nvim_set_hl(0, "barbecue_dirname", { fg = "#8F98B8" })
+        vim.api.nvim_set_hl(0, "barbecue_basename", { fg = "#CAD3F5" })
     end,
 }

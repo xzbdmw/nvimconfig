@@ -69,6 +69,14 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                ["<space>"] = cmp.mapping(function(fallback)
+                    if cmp.visible then
+                        cmp.abort()
+                        fallback()
+                    else
+                        fallback()
+                    end
+                end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible then
                         cmp.abort()
@@ -151,12 +159,12 @@ return {
                 },
             },
             sorting = {
+                compare.order,
                 comparators = {
                     compare.score,
                     compare.recently_used,
                     compare.locality,
                     compare.offset,
-                    compare.order,
                 },
             },
         }

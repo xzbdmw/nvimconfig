@@ -158,6 +158,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
         -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     end,
 })
+
 --[[ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     callback = function()
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do

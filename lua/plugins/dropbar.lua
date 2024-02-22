@@ -3,6 +3,16 @@ return {
     dependencies = {
         "nvim-telescope/telescope-fzf-native.nvim",
     },
+    enabled = false,
+    lazy = false,
+    keys = {
+        {
+            "<space>w",
+            function()
+                require("dropbar.api").pick()
+            end,
+        },
+    },
     opts = {
         bar = {
             pick = {
@@ -10,10 +20,10 @@ return {
             },
         },
         icons = {
-            enable = true,
+            enable = false,
             kinds = {
                 use_devicons = true,
-                symbols = {
+                --[[ symbols = {
                     Array = "  ",
                     Boolean = " 󰨙 ",
                     Class = " 󰯳 ",
@@ -53,6 +63,47 @@ return {
                     Unit = " 󱜥 ",
                     Value = "  ",
                     Variable = " 󰄛 ",
+                }, ]]
+                symbols = {
+                    Array = "",
+                    Boolean = "",
+                    Class = "",
+                    Codeium = "",
+                    Color = "",
+                    Control = "",
+                    Collapsed = "",
+                    Constant = "",
+                    Constructor = "",
+                    Copilot = "",
+                    Enum = "",
+                    EnumMember = "",
+                    Event = "",
+                    Field = "",
+                    File = "",
+                    Folder = "",
+                    Function = "",
+                    Interface = "",
+                    Key = "",
+                    Keyword = "",
+                    Method = "",
+                    Module = "",
+                    Namespace = "",
+                    Null = "",
+                    Number = "",
+                    Object = "",
+                    Operator = "",
+                    Package = "",
+                    Property = "",
+                    Reference = "",
+                    Snippet = "",
+                    String = "",
+                    Struct = "",
+                    TabNine = "",
+                    Text = "",
+                    TypeParameter = "",
+                    Unit = "",
+                    Value = "",
+                    Variable = "",
                 },
             },
             ui = {
@@ -69,6 +120,7 @@ return {
         menu = {
             keymaps = {
                 ["h"] = "<C-w>c",
+                ["<esc>"] = "<C-w>c",
                 ["left"] = "<C-w>c",
                 ["p"] = "<C-w>c",
             },

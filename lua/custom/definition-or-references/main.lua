@@ -11,7 +11,7 @@ function DefinitionOrReferences.definition_or_references()
     methods.clear_definitions()
     -- sending references request before definitons to parallelize both requests
     definitions()
-    references.send_references_request()
+    -- references.send_references_request()
 end
 
 return DefinitionOrReferences

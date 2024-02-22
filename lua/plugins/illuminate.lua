@@ -9,6 +9,10 @@ return {
             "treesitter",
             "regex",
         },
+        filetypes_denylist = {
+            "Glance",
+            "fugitive",
+        },
         delay = 1,
         large_file_cutoff = 2000,
         large_file_overrides = {

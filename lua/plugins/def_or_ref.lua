@@ -49,5 +49,10 @@ return {
             end,
         },
     },
-    opts = { notify_options = false, on_references_result = handle_references_response },
+    opts = {
+        notify_options = false,
+        on_references_result = function()
+            vim.cmd("Glance references")
+        end,
+    },
 }
