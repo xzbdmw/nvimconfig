@@ -2,21 +2,16 @@ local luasnip = require("luasnip")
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    -- event = "InsertEnter",
-
     event = "VeryLazy",
     keys = { { "<C-n>", false } },
-    -- lazy = false,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
-        -- "chrisgrieser/cmp_yanky",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
     },
     opts = function()
-        -- local neotab = require("neotab")
         local cmp = require("cmp")
         local compare = cmp.config.compare
         -- If you want insert `(` after select function or method item
@@ -166,7 +161,6 @@ return {
     end,
     config = function(_, opts)
         local cmp = require("cmp")
-
         cmp.setup.filetype({ "markdown" }, {
             completion = {
                 autocomplete = false,
@@ -278,7 +272,6 @@ return {
             }),
         })
         require("cmp").setup(opts)
-
         local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
         -- Setup lspconfig.
         local nvim_lsp = require("lspconfig")

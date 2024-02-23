@@ -113,7 +113,6 @@ return {
                 WinBarNC = { bg = "#FAF7E8", fg = "#3B4D56", style = "italic,bold" },
                 NvimTreeNormal = { bg = "#FAF7E8", fg = "#3B4D56" },
                 NvimTreeNormalFloat = { bg = "#FAF7E8", fg = "#3B4D56" },
-                -- NvimTreeIndentMarker = { bg = "#FAF7E8", fg = "#3B4D56" },
                 NvimTreeRootFolder = { fg = "#3B4D56", style = "italic,bold" },
                 NvimTreeOpenedFileIcon = { fg = "#8094b4" },
                 BookmarkSign = { fg = "#3B7CF3" },

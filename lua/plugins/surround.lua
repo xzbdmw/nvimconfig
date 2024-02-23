@@ -1,7 +1,7 @@
 return {
     "echasnovski/mini.surround",
     -- lazy = false,
-    enabled = false,
+    -- enabled = false,
     event = "VeryLazy",
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
@@ -31,21 +31,21 @@ return {
         require("mini.surround").setup(opts)
         local keymap = vim.keymap.set
         local keymap_ops = { noremap = true, silent = true }
-        -- keymap("x", '"', function()
-        --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('ma"', true, false, true), "t", true)
-        -- end, keymap_ops)
-        --
-        -- keymap("x", "[", function()
-        --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma[", true, false, true), "t", true)
-        -- end, keymap_ops)
-        --
-        -- keymap("x", "{", function()
-        --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma{", true, false, true), "t", true)
-        -- end, keymap_ops)
-        --
-        -- keymap("x", "(", function()
-        --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma(", true, false, true), "t", true)
-        -- end, keymap_ops)
+        keymap("x", '"', function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('ma"', true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("x", "[", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma[", true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("x", "{", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma{", true, false, true), "t", true)
+        end, keymap_ops)
+
+        keymap("x", "(", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma(", true, false, true), "t", true)
+        end, keymap_ops)
         local del = vim.keymap.del
         del("n", "gsh")
         del("n", "gshn")

@@ -1,7 +1,6 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
-
 vim.g.root_spec = { "cwd" }
 vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
@@ -9,10 +8,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
 vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos"
-
-vim.g.neovide_unlink_border_highlights = false
 vim.opt.relativenumber = false
--- vim.opt.number = false
 vim.opt.shiftwidth = 4
 vim.opt.list = false
 vim.opt.tabstop = 4
@@ -26,39 +22,37 @@ vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20" ]]
 vim.opt.linespace = 5
 vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver18,r-cr-v-o:hor7"
 vim.opt.timeoutlen = 500
-vim.opt.swapfile = false
-vim.g.neovide_transparency = 0.9
 vim.opt.laststatus = 0
--- vim.opt.linebreak = true
+vim.o.scrolloff = 6
+vim.opt.swapfile = false
 local str = string.rep(" ", vim.api.nvim_win_get_width(0))
 vim.opt.statusline = str
--- vim.opt.statusline = str
+vim.g.loaded_matchparen = 1
+-- vim.opt.linebreak = true
+
+-- Neovide
+vim.g.neovide_unlink_border_highlights = false
+vim.g.neovide_transparency = 0.92
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
--- vim.g.neovide_refresh_rate = 120
 vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
-vim.g.loaded_matchparen = 1
+vim.g.neovide_padding_left = 0
 -- vim.g.neovide_cursor_animation_length = 0.08
 -- vim.g.neovide_underline_stroke_scale = 1.0
-vim.g.neovide_padding_left = 0
-vim.o.scrolloff = 6
-vim.o.scrolloff = 6
-local keymap = vim.keymap.set
-keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
-keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
-keymap({ "n", "v" }, "<D-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
 vim.g.neovide_floating_shadow = true
 vim.g.neovide_floating_z_height = 10
 vim.g.neovide_light_angle_degrees = 45
 vim.g.neovide_light_radius = 5
-vim.g.neovide_cursor_trail_size = 0
+-- vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_command_line = false
 vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0
 vim.g.neovide_hide_mouse_when_typing = true
+
+-- rustaceanvim
 vim.g.rustaceanvim = {
     server = {
         standalone = false,

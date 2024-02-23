@@ -1,5 +1,6 @@
 return {
     "dnlhc/glance.nvim",
+    lazy = false,
     config = function()
         local glance = require("glance")
         local actions = glance.actions
@@ -12,9 +13,9 @@ return {
         end
         local id = 0
 
-        local function after_close()
+        lcal function after_close()
             vim.api.nvim_buf_del_extmark(0, namespace, id)
-        end
+        en
 
         local function before_open(results, open)
             local lnum = vim.api.nvim_win_get_cursor(0)[1]
@@ -28,7 +29,7 @@ return {
             -- By default glance will open preview "embedded" within your active window
             -- when `detached` is enabled, glance will render above all existing windows
             -- and won't be restiricted by the width of your active window
-            detached = true,
+            detached = false,
 
             -- Or use a function to enable `detached` only when the active window is too small
             -- (default behavior)
@@ -79,8 +80,8 @@ return {
                 },
                 preview = {
                     ["q"] = actions.close,
-                    ["<C-n>"] = actions.next_location,
-                    ["<C-p>"] = actions.previous_location,
+                    ["n"] = actions.next_location,
+                    ["N"] = actions.previous_location,
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
                 },
             },

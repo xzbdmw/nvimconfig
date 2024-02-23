@@ -14,7 +14,10 @@ del("n", "<leader>w|")
 -- del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
--- keymap()
+
+keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+keymap({ "n", "v" }, "<D-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("i", "<C-d>", "<C-w>", opts)
 keymap("n", "Y", "y$", opts)
 keymap({ "i", "n" }, "<D-9>", function()
@@ -87,7 +90,6 @@ keymap("n", "<Tab>", function()
         local current_win = vim.api.nvim_get_current_win()
         for _, win in pairs(vim.api.nvim_list_wins()) do
             local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-            local success
             -- print(vim.inspect(win_config))
             if success then
                 -- if this win is float_win
@@ -102,7 +104,7 @@ keymap("n", "<Tab>", function()
                     then
                         -- change flag to indicate that we have change current_win, so no need to cycle
                         flag = true
-                        print(win_config.zindex)
+                        -- print(win_config.zindex)
                         vim.api.nvim_set_current_win(win)
                     end
                     break
@@ -193,13 +195,7 @@ keymap({ "n", "i" }, "<D-w>", function()
         vim.cmd("close")
     end
 end)
-keymap("v", '"', function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('ma"', true, false, true), "t", true)
-end, opts)
 
-keymap("v", "[", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma[", true, false, true), "t", true)
-end, opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><leader>h", function()
@@ -219,9 +215,9 @@ keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 keymap({ "n", "i" }, "<D-s>", function()
-    if vim.bo.modified then
-        vim.cmd("write")
-    end
+    -- if vim.bo.modified then
+    vim.cmd("write")
+    -- end
 end, opts)
 keymap("i", "<D-v>", "<esc>pa", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
@@ -232,6 +228,8 @@ keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+local a = 5
+local b = 6
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)

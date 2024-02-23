@@ -38,8 +38,10 @@ return {
             custom_highlights = function(colors)
                 return {
                     ["@lsp.typemod.selfKeyword"] = { fg = colors.red, italic = true },
+                    ["@lsp.type.selfTypeKeyword"] = { fg = colors.red, style = { "italic" } },
                     ["@namespace"] = { style = { "nocombine" } },
                     ["@module"] = { style = { "nocombine" } },
+                    TreesitterContextLineNumber = { link = "NvimTreeNormal" },
                     CursorLine = { bg = "#292D3F" },
                     WinbarFolder = { fg = "#8F98B8" },
                     WinbarFileName = { fg = "#cad3f5" },
@@ -71,7 +73,6 @@ return {
                     illuminatedwordwrite = { bg = "#253C59" },
                     illuminatedwordread = { bg = "#32354A" },
                     illuminatedWordText = { bg = "#32354A" },
-                    -- TreesitterContext = { bg = "#24273A", style = { "bold" } },
                 }
             end,
             integrations = {
@@ -81,7 +82,7 @@ return {
                 nvimtree = true,
                 treesitter = true,
                 notify = false,
-                flash = false,
+                flash = true,
                 mini = {
                     enabled = true,
                     indentscope_color = "",

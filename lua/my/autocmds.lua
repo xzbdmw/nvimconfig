@@ -1,8 +1,3 @@
--- Autocmds are automatically loaded on the VeryLazy event
--- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
--- Add any additional autocmds here
--- auto close
---
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
@@ -73,6 +68,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
+
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
     local is_split = false
@@ -107,6 +103,7 @@ vim.api.nvim_create_autocmd("WinResized", {
         -- vim.cmd("FocusAutoresize")
     end,
 })
+
 vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
 vim.api.nvim_create_autocmd({ "BufRead" }, {
     pattern = {
@@ -116,6 +113,7 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
     },
     command = "setlocal nomodifiable",
 })
+
 local api = vim.api
 local function setUndotreeWinSize()
     local winList = api.nvim_list_wins()
@@ -129,52 +127,33 @@ local function setUndotreeWinSize()
         end
     end
 end
+
 api.nvim_create_user_command("Ut", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     api.nvim_cmd(api.nvim_parse_cmd("UndotreeToggle", {}), {})
     setUndotreeWinSize()
 end, { desc = "load undotree" })
---[[ vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = "NvimTree*",
-    callback = function()
-        local api = require("nvim-tree.api")
-        local view = require("nvim-tree.view")
-        print("hello")
-        if not view.is_visible() then
-            api.tree.open()
-        end
-    end,
-}) ]]
+
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
     callback = function()
-        -- vim.cmd("Lazy reload vim-bookmarks")
-        -- print("Hello")
         require("nvim-tree.api").tree.toggle({ focus = false })
-        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     end,
 })
 
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 
-vim.cmd([[
-    highlight FolderHi ctermfg=Green guifg=Green
-    highlight FilenameHi ctermfg=Yellow guifg=Yellow
-]])
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
+        if vim.bo.filetype == "NvimTree" then
+            return
+        end
         if vim.api.nvim_win_get_config(0).relative ~= "" then
             return
         end
-        -- local relative_path = vim.fn.expand("%:~:.")
-        -- if relative_path ~= "" then
-        --     vim.opt_local.winbar = " " .. relative_path
-        -- else
-        --     vim.opt_local.winbar = nil
-        -- end
         local path = vim.fn.expand("%:~:.:h")
         local filename = vim.fn.expand("%:t")
         if path ~= "" and filename ~= "" then
@@ -186,6 +165,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
         end
     end,
 })
+
 vim.cmd([[
 augroup remember_folds
   autocmd!

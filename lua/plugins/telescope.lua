@@ -164,7 +164,6 @@ return {
         -- yank preview
         local yank_preview_lines = function(prompt_bufnr)
             local action_state = require("telescope.actions.state")
-
             local picker = action_state.get_current_picker(prompt_bufnr)
             local previewer = picker.previewer
             local winid = previewer.state.winid
@@ -178,11 +177,11 @@ return {
             local text = table.concat(lines, "\n")
 
             actions.close(prompt_bufnr)
-
             vim.fn.setreg("+", text)
         end
         require("telescope").setup({
             defaults = {
+                winblend = 0,
                 initial_mode = "insert",
                 path_display = require("custom.path_display").filenameFirstWithoutParent,
                 file_sorter = require("custom.file_sorter").file_sorter,

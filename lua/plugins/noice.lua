@@ -133,11 +133,11 @@ return {
                             max_height = 10,
                             max_width = 50,
                         },
-                        border = {
-                            style = "rounded",
-                            padding = { 0, 2 },
-                        },
-                        position = { row = 2, col = 0 },
+                        -- border = {
+                        --     style = "rounded",
+                        --     padding = { 0, 2 },
+                        -- },
+                        -- position = { row = 2, col = 0 },
                     },
                 },
             },
