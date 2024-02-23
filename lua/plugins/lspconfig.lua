@@ -51,22 +51,23 @@ return {
             }
             keys[#keys + 1] = { "gr", lsp_references_with_jump }
             keys[#keys + 1] = {
+                "<C-e>",
+                function()
+                    vim.diagnostic.goto_next()
+                end,
+                desc = "go to next location",
+            }
+            keys[#keys + 1] = {
                 "gh",
                 function()
                     vim.lsp.buf.hover()
-                    -- vim.defer_fn(function()
-                    --     vim.lsp.buf.hover()
-                    -- end, 100)
+                    --[[ vim.defer_fn(function()
+                        vim.lsp.buf.hover()
+                    end, 100) ]]
                 end,
                 desc = "hover in lsp",
             }
         end,
-        -- dependencies = function()
-        --     return {
-        --         "mason.nvim",
-        --         "williamboman/mason-lspconfig.nvim",
-        --     }
-        -- end,
         opts = {
             diagnostics = {
                 underline = false,

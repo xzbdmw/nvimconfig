@@ -1,3 +1,23 @@
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*",
+    callback = function()
+        if vim.bo.filetype == "NvimTree" then
+            return
+        end
+        if vim.api.nvim_win_get_config(0).relative ~= "" then
+            return
+        end
+        local path = vim.fn.expand("%:~:.:h")
+        local filename = vim.fn.expand("%:t")
+        if path ~= "" and filename ~= "" then
+            vim.wo.winbar = "  %#WinbarFolder#" .. path .. "%#WinbarFolder#/" .. "%#WinbarFileName#" .. filename .. "%*"
+        elseif filename ~= "" then
+            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
+        else
+            vim.wo.winbar = ""
+        end
+    end,
+})
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 vim.cmd([[
 augroup remember_folds

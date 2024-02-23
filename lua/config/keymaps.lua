@@ -49,7 +49,7 @@ end)
 keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end) ]]
-
+keymap("n", "ge", "g;", opts)
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch

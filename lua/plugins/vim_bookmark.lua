@@ -1,7 +1,7 @@
 return {
     {
         "MattesGroeger/vim-bookmarks",
-        lazy = false,
+        event = "VeryLazy",
         config = function()
             vim.g.bookmark_sign = ""
             vim.g.bookmark_save_per_working_dir = 1
@@ -10,6 +10,8 @@ return {
     },
     {
         "kdnk/bookmarks-cycle-through.nvim",
+        enabled = false,
+        event = "VeryLazy",
         dependencies = {
             "MattesGroeger/vim-bookmarks",
         },
@@ -28,6 +30,7 @@ return {
     },
     {
         "xzbdmw/telescope-vim-bookmarks.nvim",
+        event = "VeryLazy",
         -- enabled = false,
         config = function()
             require("telescope").load_extension("vim_bookmarks")
