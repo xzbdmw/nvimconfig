@@ -23,7 +23,7 @@ return {
         window = { -- controls the appearance and position of an arrow window (see nvim_open_win() for all options)
             width = "auto",
             height = "auto",
-            row = 10,
+            row = 8,
             col = "auto",
             border = "rounded",
         },
