@@ -48,8 +48,9 @@ return {
                 bottom_char = "―",
             },
             list = {
-                position = "left", -- Position of the list window 'left'|'right'
-                width = 0.25, -- 33% width relative to the active window, min 0.1, max 0.5
+                position = "right", -- Position of the list window 'left'|'right'
+                -- width = 0.19, -- 33% width relative to the active window, min 0.1, max 0.5
+                width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
             },
             theme = { -- This feature might not work properly in nvim-0.7.2
                 enable = true, -- Will generate colors for the plugin based on your current colorscheme
