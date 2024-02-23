@@ -330,6 +330,12 @@ return {
                     push_cursor_on_edit = true,
                 },
                 buffers = {
+                    initial_mode = "normal",
+                    mappings = {
+                        n = {
+                            ["d"] = "delete_buffer",
+                        },
+                    },
                     show_all_buffers = true,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,

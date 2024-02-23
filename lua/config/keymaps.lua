@@ -116,7 +116,7 @@ keymap("n", "<Tab>", function()
         -- end
         -- 当前有两个以上窗口的时候 忽略nvimtree
         if flag == false and window_count ~= 2 then
-            print(window_count)
+            -- print(window_count)
             vim.cmd([[
   let w0 = winnr()
   let nok = 1

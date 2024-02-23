@@ -15,7 +15,6 @@ vim.api.nvim_create_autocmd({ "User" }, {
         require("nvim-tree.api").tree.toggle({ focus = false })
     end,
 })
-require("my.autocmds")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     -- bootstrap lazy.nvim
