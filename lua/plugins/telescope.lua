@@ -111,7 +111,6 @@ return {
                             width = 0.35,
                             height = 0.7,
                         },
-                        preview_cutoff = 0,
                         mirror = false,
                     },
                 })
@@ -336,7 +335,7 @@ return {
                             ["d"] = "delete_buffer",
                         },
                     },
-                    show_all_buffers = true,
+                    show_all_buffers = false,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,
                     sort_lastused = true,

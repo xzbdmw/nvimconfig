@@ -127,7 +127,7 @@ keymap("n", "<Tab>", function()
   let nok = ( n=~'NVimTree' )   && (w != w0)
   endwhile
 ]])
-        -- 当前有两个窗口的时候,可以切换到nvimtree
+            -- 当前有两个窗口的时候,可以切换到nvimtree
         elseif flag == false then
             vim.cmd([[
   let w0 = winnr()
@@ -219,7 +219,7 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
     -- end
 end, opts)
-keymap("i", "<D-v>", "<esc>pa", opts)
+keymap("i", "<D-v>", "<C-r>1", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<Esc>u", opts)
@@ -228,8 +228,6 @@ keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
-local a = 5
-local b = 6
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)

@@ -1,9 +1,10 @@
 return {
     "catppuccin/nvim",
     name = "catppuccin",
-    priority = 1000,
+    -- priority = 1000,
     config = function()
         require("catppuccin").setup({
+            compile_path = vim.fn.stdpath("cache") .. "/cat",
             flavour = "macchiato", -- latte, frappe, macchiato, mocha
             background = { -- :h background
                 light = "latte",
@@ -39,12 +40,18 @@ return {
                 return {
                     ["@lsp.typemod.selfKeyword"] = { fg = colors.red, italic = true },
                     ["@lsp.type.selfTypeKeyword"] = { fg = colors.red, style = { "italic" } },
+                    ["@lsp.typemod.decorator"] = { link = "special" },
                     ["@namespace"] = { style = { "nocombine" } },
                     ["@module"] = { style = { "nocombine" } },
-                    -- TreesitterContextLineNumber = { link = "NvimTreeNormal" },
+                    TreesitterContextLineNumber = { fg = "#494D64" },
                     CursorLine = { bg = "#292D3F" },
+                    Comment = { link = "NvimTreeFolderIcon" },
                     WinbarFolder = { fg = "#8F98B8" },
                     WinbarFileName = { link = "NvimTreeRootFolder" },
+                    ["@function.builtin"] = { link = "Function" },
+                    ["@punctuation.bracket"] = { link = "Comment" },
+                    ["@punctuation.special.rust"] = { link = "Comment" },
+                    String = { fg = "#92be83" },
                     FzfLuaBorder = { link = "TelescopeBorder" },
                     GlancePreviewMatch = { fg = "#ffffff", bg = "#304E75" },
                     GlanceListMatch = { fg = "#8AADF4" },
@@ -65,12 +72,13 @@ return {
                     Visual = { bg = "#304E75", style = { "nocombine" } },
                     NvimTreeWinSeparator = { link = "WinSeparator" },
                     CmpGhostText = { fg = "#6C7086", style = { "italic" } },
+                    CmpItemMenu = { link = "Comment" },
                     TelescopeMatching = { style = { "bold" } },
                     TelescopeNormal = { style = { "nocombine" } },
                     TelescopeSelection = { style = { "nocombine" } },
                     MyNormalFloat = { bg = "#1e2030" },
                     MyCursorLine = { bg = "#2E4A6F" },
-                    MatchParen = { fg = "#F0C6C6", style = { "italic" } },
+                    MatchParen = { fg = "#F0C6C6", style = { "italic" }, bg = colors.none },
                     LualineCursorLine = { bg = "#2A2B3C" },
                     Unvisited = { bg = "#34344F" },
                     MiniIndentscopeSymbol = { fg = "#6C7086" },
@@ -96,6 +104,6 @@ return {
         })
 
         -- setup must be called before loading
-        vim.cmd.colorscheme("catppuccin")
+        -- vim.cmd.colorscheme("catppuccin")
     end,
 }

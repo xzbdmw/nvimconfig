@@ -7,7 +7,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
-vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos"
+vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos,resize"
 vim.opt.relativenumber = false
 vim.opt.shiftwidth = 4
 vim.opt.list = false
@@ -103,8 +103,9 @@ vim.g.rustaceanvim = {
         float_win_config = {
             border = "rounded",
             max_width = 70,
-            max_height = 12,
+            max_height = 10,
             auto_focus = false,
+            winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
         },
     },
 }

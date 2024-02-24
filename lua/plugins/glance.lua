@@ -48,7 +48,7 @@ return {
                 bottom_char = "―",
             },
             list = {
-                position = "right", -- Position of the list window 'left'|'right'
+                position = "left", -- Position of the list window 'left'|'right'
                 -- width = 0.19, -- 33% width relative to the active window, min 0.1, max 0.5
                 width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
             },
@@ -88,6 +88,9 @@ return {
             },
             hooks = {
                 before_open = function(results, open, jump, _)
+                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#15182A" })
+                    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#15182A" })
+                    vim.api.nvim_set_hl(0, "GlanceListCursorLine", { bg = "#212635" })
                     if #results == 2 then
                         jump(results[2]) -- argument is optional
                     elseif #results == 1 then
@@ -95,6 +98,12 @@ return {
                     else
                         open(results) -- argument is optional
                     end
+                end,
+                before_close = function()
+                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#24273A" })
+                    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#1e2030" })
+
+                    vim.api.nvim_set_hl(0, "Normal", { bg = "#24273A" })
                 end,
             },
             folds = {

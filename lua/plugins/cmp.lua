@@ -1,4 +1,3 @@
-local luasnip = require("luasnip")
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -131,7 +130,8 @@ return {
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
-                fields = { "kind", "abbr", "menu" },
+                -- fields = { "kind", "abbr", "menu" },
+                fields = { "kind", "abbr" },
                 format = function(entry, vim_item)
                     local kind = require("lspkind").cmp_format({
                         mode = "symbol_text",
@@ -139,7 +139,7 @@ return {
                     })(entry, vim_item)
                     local strings = vim.split(kind.kind, "%s", { trimempty = true })
                     kind.kind = " " .. (strings[1] or "") .. " "
-                    kind.menu = "(" .. (strings[3] or "") .. ")"
+                    -- kind.menu = "(" .. (strings[3] or "") .. ")"
                     return kind
                 end,
             },
@@ -216,12 +216,12 @@ return {
         })
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline({
-                -- ["<Tab>"] = cmp.mapping(function(fallback)
-                --     if cmp.visible() then
-                --         cmp.select_next_item()
-                --         fallback()
-                --     end
-                -- end, { "i", "s" }),
+                --[[ ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                        fallback()
+                    end
+                end, { "i", "s" }), ]]
                 ["<CR>"] = cmp.mapping({
 
                     i = cmp.mapping.confirm({ select = true }),
@@ -263,9 +263,9 @@ return {
                     fallback()
                 end, { "i", "c" }),
             }),
-            -- completion = {
-            --     completeopt = "menu,menuone,noselect",
-            -- },
+            --[[ completion = {
+                completeopt = "menu,menuone,noselect",
+            }, ]]
             sources = cmp.config.sources({
                 { name = "cmdline" },
                 { name = "path" },

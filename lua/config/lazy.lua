@@ -22,8 +22,8 @@ local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A globa
 vim.cmd([[
 augroup remember_folds
   autocmd!
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent! loadview
+  autocmd BufLeave *.* mkview
+  autocmd BufEnter *.* silent! loadview
 augroup END
 ]])
 vim.cmd([[set viewoptions-=curdir]])
@@ -63,7 +63,7 @@ require("lazy").setup({
         version = false, -- always use the latest git commit
         -- version = "*", -- try installing the latest stable version for plugins that support semver
     },
-    install = { colorscheme = { "tokyonight", "habamax" } },
+    -- install = { colorscheme = { "tokyonight", "habamax" } },
     checker = { enabled = true }, -- automatically check for plugin updates
     performance = {
         rtp = {
