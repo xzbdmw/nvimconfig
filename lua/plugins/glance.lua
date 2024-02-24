@@ -52,7 +52,7 @@ return {
                 width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
             },
             theme = { -- This feature might not work properly in nvim-0.7.2
-                enable = true, -- Will generate colors for the plugin based on your current colorscheme
+                enable = false, -- Will generate colors for the plugin based on your current colorscheme
                 mode = "darken", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
             },
             mappings = {
@@ -88,9 +88,8 @@ return {
             hooks = {
                 before_open = function(results, open, jump, _)
                     vim.cmd("normal! m'")
-                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#15182A" })
-                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#15182A" })
-                    -- vim.api.nvim_set_hl(0, "GlanceListCursorLine", { bg = "#212635" })
+                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { link = "MyGlancePreviewBeforeContextLine" })
+                    vim.api.nvim_set_hl(0, "TreesitterContext", { link = "MyGlancePreviewBeforeContext" })
                     if #results == 2 then
                         jump(results[2]) -- argument is optional
                     elseif #results == 1 then
@@ -100,10 +99,9 @@ return {
                     end
                 end,
                 before_close = function()
-                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#24273A" })
-                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#1e2030" })
-                    --
-                    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#24273A" })
+                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { link = "MyGlancePreviewAfterContextLine" })
+                    vim.api.nvim_set_hl(0, "TreesitterContext", { link = "MyGlancePreviewAfterContext" })
+                    vim.api.nvim_set_hl(0, "Normal", { bg = "#faf7e8" })
                 end,
             },
             folds = {

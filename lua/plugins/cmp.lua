@@ -39,7 +39,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
                 }),
             },
             completion = {

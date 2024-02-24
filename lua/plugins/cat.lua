@@ -57,6 +57,7 @@ return {
                     GlanceListMatch = { fg = "#8AADF4" },
                     GlanceListCursorLine = { bg = "#212635" },
                     GlanceListNormal = { fg = "#8F98B8", bg = "#15182A" },
+                    GlancePreviewNormal = { bg = "#1A1E30" },
                     LspInlayHint = { fg = "#6C7086", bg = colors.none },
                     NvimTreeOpenedFile = { fg = "#cad3f5" },
                     NvimTreeFolderName = { link = "Directory" },
