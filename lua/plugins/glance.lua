@@ -25,7 +25,6 @@ return {
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,
-
             -- By default glance will open preview "embedded" within your active window
             -- when `detached` is enabled, glance will render above all existing windows
             -- and won't be restiricted by the width of your active window
@@ -88,9 +87,10 @@ return {
             },
             hooks = {
                 before_open = function(results, open, jump, _)
-                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#15182A" })
-                    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#15182A" })
-                    vim.api.nvim_set_hl(0, "GlanceListCursorLine", { bg = "#212635" })
+                    vim.cmd("normal! m'")
+                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#15182A" })
+                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#15182A" })
+                    -- vim.api.nvim_set_hl(0, "GlanceListCursorLine", { bg = "#212635" })
                     if #results == 2 then
                         jump(results[2]) -- argument is optional
                     elseif #results == 1 then
@@ -100,10 +100,10 @@ return {
                     end
                 end,
                 before_close = function()
-                    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#24273A" })
-                    vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#1e2030" })
-
-                    vim.api.nvim_set_hl(0, "Normal", { bg = "#24273A" })
+                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "#494D64", bg = "#24273A" })
+                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#1e2030" })
+                    --
+                    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#24273A" })
                 end,
             },
             folds = {

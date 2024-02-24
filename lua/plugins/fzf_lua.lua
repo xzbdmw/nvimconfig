@@ -1,5 +1,6 @@
 return {
     "ibhagwan/fzf-lua",
+    -- enabled = false,
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
     event = "VeryLazy",
@@ -18,13 +19,6 @@ return {
             end,
             desc = "searh files in cwd",
         },
-        -- {
-        --     "<leader>fr",
-        --     function()
-        --         vim.cmd("FzfLua oldfiles")
-        --     end,
-        --     desc = "recent files",
-        -- },
     },
     config = function()
         local actions = require("fzf-lua.actions")
@@ -62,7 +56,7 @@ return {
                     wrap = "nowrap", -- wrap|nowrap
                     hidden = "nohidden", -- hidden|nohidden
                     vertical = "down:45%", -- up|down:size
-                    horizontal = "right:60%", -- right|left:size
+                    horizontal = "left:40%", -- right|left:size
                     layout = "flex", -- horizontal|vertical|flex
                     flip_columns = 120, -- #cols to switch to horizontal on flex
                     -- Only used with the builtin previewer:
@@ -95,7 +89,7 @@ return {
                     --   vim.keymap.set("t", "<C-j>", "<Down>", { silent = true, buffer = true })
                 end,
                 -- called once *after* the fzf interface is closed
-                -- on_close = function() ... end
+                on_close = function() end,
             },
             keymap = {
                 -- These override the default tables completely

@@ -1,7 +1,7 @@
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
-        if vim.bo.filetype == "NvimTree" then
+        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
             return
         end
         if vim.api.nvim_win_get_config(0).relative ~= "" then
@@ -19,13 +19,37 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-vim.cmd([[
-augroup remember_folds
-  autocmd!
-  autocmd BufLeave *.* mkview
-  autocmd BufEnter *.* silent! loadview
-augroup END
-]])
+local config_group = vim.api.nvim_create_augroup("remember_folds", {}) -- A global group for all your config autocommands
+vim.api.nvim_create_autocmd({ "BufLeave" }, {
+    pattern = "*",
+    callback = function()
+        if vim.bo.filetype == "fzf" then
+            return
+        else
+            vim.cmd.mkview({ mods = { emsg_silent = true } })
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = "*",
+    callback = function()
+        if vim.bo.filetype == "fzf" then
+            return
+        else
+            vim.cmd.loadview({ mods = { emsg_silent = true } })
+        end
+    end,
+})
+
+-- vim.cmd([[
+-- augroup remember_folds
+--   autocmd!
+--   autocmd BufLeave *.* mkview
+--   autocmd BufEnter *.* silent! loadview
+-- augroup END
+-- ]])
+
 vim.cmd([[set viewoptions-=curdir]])
 
 vim.api.nvim_create_autocmd({ "User" }, {
@@ -36,6 +60,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     end,
 })
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+---@diagnostic disable-next-line: undefined-field
 if not vim.loop.fs_stat(lazypath) then
     -- bootstrap lazy.nvim
     -- stylua: ignore

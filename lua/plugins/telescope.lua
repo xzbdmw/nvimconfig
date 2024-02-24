@@ -11,6 +11,14 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("file")
             end,
         },
+        -- {
+        --     "<C-d>",
+        --     function()
+        --         -- require("custom.telescope-pikers").prettyDocumentSymbols()
+        --
+        --         vim.cmd("Telescope lsp_document_symbols")
+        --     end,
+        -- },
         {
             "<leader>ss",
             function()
