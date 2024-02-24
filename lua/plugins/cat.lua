@@ -77,7 +77,7 @@ return {
                     TelescopeNormal = { style = { "nocombine" } },
                     TelescopeSelection = { style = { "nocombine" } },
                     MyNormalFloat = { bg = "#1e2030" },
-                    MyCursorLine = { bg = "#2E4A6F" },
+                    MyCursorLine = { bg = "#283E5B" },
                     MatchParen = { fg = "#F0C6C6", style = { "italic" }, bg = colors.none },
                     LualineCursorLine = { bg = "#2A2B3C" },
                     Unvisited = { bg = "#34344F" },
