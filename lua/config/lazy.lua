@@ -19,7 +19,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-local config_group = vim.api.nvim_create_augroup("remember_folds", {}) -- A global group for all your config autocommands
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
