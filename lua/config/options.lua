@@ -32,7 +32,7 @@ vim.g.loaded_matchparen = 1
 
 -- Neovide
 vim.g.neovide_unlink_border_highlights = false
-vim.g.neovide_transparency = 0.9
+-- vim.g.neovide_transparency = 0.9
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
 vim.g.neovide_padding_top = 0

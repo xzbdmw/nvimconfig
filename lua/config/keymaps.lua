@@ -14,7 +14,6 @@ del("n", "<leader>w|")
 -- del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
-
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
@@ -164,8 +163,6 @@ keymap({ "n", "i" }, "<D-w>", function()
     end
 
     -- 如果窗口数量为 1 或者任意窗口包含 NvimTree
-    -- print("NvimTree present: " .. tostring(nvimtree_present))
-    -- print("Window amount after: " .. win_amount)
     local win_amount = get_non_float_win_count()
     if win_amount == 1 or (nvimtree_present and win_amount == 2) then
         vim.cmd("BufDel")
@@ -203,7 +200,6 @@ keymap("n", "<leader><leader>h", function()
     return "<C-w>H<cmd>FocusAutoresize<CR>"
 end, { expr = true })
 keymap("n", "<leader><leader>l", function()
-    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>L", true, false, true), "!", true)
     return "<C-w>L<cmd>FocusAutoresize<CR>"
 end, { expr = true })
 keymap("n", "<leader><leader>j", function()
@@ -233,11 +229,9 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
         if success then
-            -- print(vim.inspect(win_config))
             if win_config.relative ~= "" then
                 print(vim.inspect(win_config))
                 print(win_config.zindex)
-                -- print(vim.inspect(win_config))
                 vim.api.nvim_win_close(win, true)
             end
         end

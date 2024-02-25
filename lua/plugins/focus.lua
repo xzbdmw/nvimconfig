@@ -1,14 +1,11 @@
 return {
     "nvim-focus/focus.nvim",
     version = false,
-    -- event = "VeryLazy",
     lazy = false,
-    -- enabled = false,
     keys = {
         { "<leader><leader>m", "<cmd>FocusMaximise<CR>" },
         { "<leader><leader>f", "<cmd>FocusAutoresize<CR>" },
     },
-    -- event = "VeryLazy",
     config = function()
         local ignore_filetypes = { "NvimTree", "toggleterm", "undotree", "diff" }
         local ignore_buftypes = { "nofile", "prompt", "popup" }

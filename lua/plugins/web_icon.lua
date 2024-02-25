@@ -19,12 +19,12 @@ return {
                     cterm_color = "65",
                     name = "Rust",
                 },
-                go = {
-                    icon = "",
-                    color = "#4D9DB2",
-                    cterm_color = "65",
-                    name = "Go",
-                },
+                -- go = {
+                --     icon = "",
+                --     color = "#4D9DB2",
+                --     cterm_color = "65",
+                --     name = "Go",
+                -- },
             },
             -- globally enable different highlight colors per icon (default to true)
             -- if set to false all icons will have the default icon's color
