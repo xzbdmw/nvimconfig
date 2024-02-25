@@ -39,7 +39,7 @@ vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
 vim.g.neovide_padding_left = 0
--- vim.g.neovide_cursor_animation_length = 0.08
+vim.g.neovide_cursor_animation_length = 0.08
 -- vim.g.neovide_underline_stroke_scale = 1.0
 vim.g.neovide_floating_shadow = true
 vim.g.neovide_floating_z_height = 10
@@ -60,9 +60,9 @@ vim.g.rustaceanvim = {
             -- rust-analyzer language server configuration
             ["rust-analyzer"] = {
                 completion = {
-                    callable = {
-                        snippets = "add_parentheses",
-                    },
+                    -- callable = {
+                    --     snippets = "add_parentheses",
+                    -- },
                     fullFunctionSignatures = {
                         enable = true,
                     },

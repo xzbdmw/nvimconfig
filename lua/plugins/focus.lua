@@ -8,21 +8,22 @@ return {
     },
     config = function()
         local ignore_filetypes = { "NvimTree", "toggleterm", "undotree", "diff" }
-        local ignore_buftypes = { "nofile", "prompt", "popup" }
+        -- local ignore_buftypes = { "nofile", "prompt", "popup" }
+        local ignore_buftypes = { "prompt", "popup" }
 
         local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = augroup,
-            callback = function(_)
-                if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-                    vim.w.focus_disable = true
-                else
-                    vim.w.focus_disable = false
-                end
-            end,
-            desc = "Disable focus autoresize for BufType",
-        })
+        -- vim.api.nvim_create_autocmd("BufEnter", {
+        --     group = augroup,
+        --     callback = function(_)
+        --         if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
+        --             vim.w.focus_disable = true
+        --         else
+        --             vim.w.focus_disable = false
+        --         end
+        --     end,
+        --     desc = "Disable focus autoresize for BufType",
+        -- })
 
         vim.api.nvim_create_autocmd("FileType", {
             group = augroup,

@@ -51,13 +51,6 @@ return {
             }
             keys[#keys + 1] = { "gr", lsp_references_with_jump }
             keys[#keys + 1] = {
-                "<C-e>",
-                function()
-                    vim.diagnostic.goto_next()
-                end,
-                desc = "go to next location",
-            }
-            keys[#keys + 1] = {
                 "gh",
                 function()
                     vim.lsp.buf.hover()
@@ -105,9 +98,9 @@ return {
                 lua_ls = {
                     settings = {
                         Lua = {
-                            completion = {
-                                callSnippet = "Disable",
-                            },
+                            -- completion = {
+                            --     callSnippet = "Disable",
+                            -- },
                             -- runtime = {
                             --     -- LuaJIT in the case of Neovim
                             --     version = "LuaJIT",

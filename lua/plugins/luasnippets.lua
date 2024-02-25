@@ -15,20 +15,20 @@ return {
             }, ]]
             {
                 "<C-n>",
-                mode = { "i", "s", "n" },
+                mode = { "i", "s" },
                 function()
                     require("luasnip").jump(1)
                 end,
                 { silent = true },
             },
-            --[[ {
-                "<C->",
-                mode = { "i", "s", "n" },
+            {
+                "<C-p>",
+                mode = { "i", "s" },
                 function()
                     require("luasnip").jump(-1)
                 end,
                 { silent = true },
-            }, ]]
+            },
         }
     end,
     build = "make install_jsregexp",
@@ -81,11 +81,11 @@ return {
             updateevents = "TextChanged,TextChangedI",
             ext_opts = {
                 [types.insertNode] = {
-                    active = {
-                        -- highlight the text inside the node red.
-                        hl_group = "LualineCursorLine",
-                        priority = 1,
-                    },
+                    -- active = {
+                    --     -- highlight the text inside the node red.
+                    --     hl_group = "LualineCursorLine",
+                    --     priority = 1,
+                    -- },
                     --[[ these ext_opts are applied when the node is not active, but
                 the snippet still is.
                 passive = {
