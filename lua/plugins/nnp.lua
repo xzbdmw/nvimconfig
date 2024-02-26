@@ -4,27 +4,31 @@ return {
         {
             "<leader>gz",
             function()
-                vim.cmd("NoNeckPain")
                 if open == 0 then
+                    vim.cmd("FocusDisable")
                     vim.opt.number = false
                     open = 1
                 else
+                    vim.cmd("FocusEnable")
                     vim.opt.number = true
                     open = 0
                 end
+                vim.cmd("NoNeckPain")
             end,
         },
         {
             "<D-2>",
             function()
-                vim.cmd("NoNeckPain")
                 if open == 0 then
+                    vim.cmd("FocusDisable")
                     vim.opt.number = false
                     open = 1
                 else
+                    vim.cmd("FocusEnable")
                     vim.opt.number = true
                     open = 0
                 end
+                vim.cmd("NoNeckPain")
             end,
         },
     },

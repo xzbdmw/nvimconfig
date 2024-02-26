@@ -1,6 +1,8 @@
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
+        local telescopeUtilities = require("telescope.utils")
+        local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
         if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
             return
         end
@@ -10,7 +12,20 @@ vim.api.nvim_create_autocmd("BufEnter", {
         local path = vim.fn.expand("%:~:.:h")
         local filename = vim.fn.expand("%:t")
         if path ~= "" and filename ~= "" then
-            vim.wo.winbar = "  %#WinbarFolder#" .. path .. "%#WinbarFolder#/" .. "%#WinbarFileName#" .. filename .. "%*"
+            -- vim.wo.winbar = "  %#WinbarFolder#" .. path .. "%#WinbarFolder#/" .. "%#WinbarFileName#" .. filename .. "%*"
+            vim.wo.winbar = " "
+                .. "%#NvimTreeFolderName#"
+                .. " "
+                .. path
+                .. "%#Comment#"
+                .. " => "
+                .. "%#"
+                .. iconHighlight
+                .. "#"
+                .. icon
+                .. " %#WinbarFileName#"
+                .. filename
+                .. "%*"
         elseif filename ~= "" then
             vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
         else

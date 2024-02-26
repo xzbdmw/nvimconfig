@@ -6,6 +6,12 @@ return {
         { "<space>n", "<Plug>(YankyNextEntry)" },
         { "p", "<Plug>(YankyPutAfter)" },
         { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },
+        {
+            "[p",
+            '"0<Plug>(YankyPutBefore)',
+            { desc = "Paste last yanked text without copying replaced text" },
+            mode = { "x" },
+        },
         { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" } },
         { "gp", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },

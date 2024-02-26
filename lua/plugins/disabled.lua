@@ -4,7 +4,7 @@ return {
     { "ggandor/leap.nvim", enabled = false },
     { "rcarriga/nvim-notify", enabled = false },
     { "nvimdev/dashboard-nvim", enabled = false },
-    { "mg979/vim-visual-multi", enabled = false },
+    -- { "mg979/vim-visual-multi", enabled = false },
     { "folke/persistence.nvim", enabled = false },
     { "lukas-reineke/indent-blankline.nvim", enabled = false },
     { "nvim-neo-tree/neo-tree.nvim", enabled = false },

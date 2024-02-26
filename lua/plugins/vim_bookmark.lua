@@ -1,6 +1,7 @@
 return {
     {
         "MattesGroeger/vim-bookmarks",
+        enabled = false,
         event = "VeryLazy",
         config = function()
             vim.g.bookmark_sign = ""
@@ -30,6 +31,8 @@ return {
     },
     {
         "xzbdmw/telescope-vim-bookmarks.nvim",
+
+        enabled = false,
         event = "VeryLazy",
         -- enabled = false,
         config = function()

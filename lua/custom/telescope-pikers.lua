@@ -365,6 +365,7 @@ function telescopePickers.prettyDocumentSymbols(localOptions)
     end
     local options = localOptions or {}
     local originalEntryMaker = make_entry.gen_from_lsp_symbols(options)
+
     options.entry_maker = function(line)
         local originalEntryTable = originalEntryMaker(line)
 

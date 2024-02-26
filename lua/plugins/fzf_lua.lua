@@ -70,7 +70,7 @@ return {
                     -- applies only when scrollbar = 'float'
                     scrollchars = { "█", "" }, -- scrollbar chars ({ <full>, <empty> }
                     -- applies only when scrollbar = 'border'
-                    delay = 0, -- delay(ms) displaying the preview
+                    delay = 2, -- delay(ms) displaying the preview
                     -- prevents lag on fast scrolling
                     winopts = { -- builtin previewer window options
                         number = true,

@@ -229,7 +229,7 @@ return {
                         end,
                     },
                     n = {
-                        ["<esc>"] = require("telescope.actions").close,
+                        ["<esc>"] = actions.close,
                         ["<C-e>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,
