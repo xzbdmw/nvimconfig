@@ -11,9 +11,11 @@ del("n", "<leader>ww")
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
--- del({ "n", "x" }, "<space>wÞ")
+del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
+keymap("n", "Q", "qa", opts)
+keymap("n", "q", "<Nop>", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
@@ -99,12 +101,13 @@ keymap("n", "<Tab>", function()
                         current_win ~= win
                         and win_config.zindex ~= 20
                         and win_config.zindex ~= 60
+                        and win_config.width ~= 1
                         and win_config.zindex ~= 51
                         and win_config.zindex ~= 52
                     then
                         -- change flag to indicate that we have change current_win, so no need to cycle
                         flag = true
-                        -- print(win_config.zindex)
+                        print(vim.inspect(win_config))
                         vim.api.nvim_set_current_win(win)
                     end
                     break
@@ -195,6 +198,50 @@ keymap({ "n", "i" }, "<D-w>", function()
     end
 end)
 
+keymap({ "n" }, "<leader>w", function()
+    local nvimtree_present = false
+    -- 遍历所有窗口
+    for _, win_id in ipairs(vim.api.nvim_list_wins()) do
+        local buf_id = vim.api.nvim_win_get_buf(win_id)
+        local buf_name = vim.api.nvim_buf_get_name(buf_id)
+        -- 检查是否存在 NvimTree
+        if string.find(buf_name, "NvimTree") then
+            nvimtree_present = true
+            break
+        end
+    end
+
+    -- 如果窗口数量为 1 或者任意窗口包含 NvimTree
+    local win_amount = get_non_float_win_count()
+    if win_amount == 1 or (nvimtree_present and win_amount == 2) then
+        vim.cmd("BufDel")
+    else
+        local windows = vim.api.nvim_list_wins()
+        local is_split = false
+
+        for _, win in ipairs(windows) do
+            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            if success then
+                if win_config.relative ~= "" then
+                    goto continue
+                end
+            end
+            local win_height = vim.api.nvim_win_get_height(win)
+            ---@diagnostic disable-next-line: deprecated
+            local screen_height = vim.api.nvim_get_option("lines")
+            if win_height + 1 < screen_height then
+                is_split = true
+                break
+            end
+            ::continue::
+        end
+
+        if is_split then
+            vim.cmd("set laststatus=0")
+        end
+        vim.cmd("close")
+    end
+end)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><leader>h", function()

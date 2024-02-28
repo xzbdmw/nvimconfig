@@ -303,7 +303,8 @@ return {
                 },
             },
             init_options = {
-                usePlaceholders = false,
+                -- usePlaceholders = false,
+                usePlaceholders = true,
                 completeFunctionCalls = false,
             },
         })

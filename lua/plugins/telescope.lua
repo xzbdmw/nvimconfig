@@ -194,8 +194,9 @@ return {
                 file_sorter = require("custom.file_sorter").file_sorter,
                 sorting_strategy = "ascending",
                 layout_strategy = "horizontal",
-                -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
-                borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+                -- borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
+                -- borderchars = { "", "", "", "", "", "", "", "" },
+                -- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
                 layout_config = {
                     horizontal = {
                         width = 0.8,

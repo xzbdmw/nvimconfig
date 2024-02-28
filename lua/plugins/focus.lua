@@ -15,7 +15,10 @@ return {
 
         vim.api.nvim_create_autocmd("BufEnter", {
             group = augroup,
-            callback = function(_)
+            callback = function(event)
+                if vim.bo.buftype == "nofile" then
+                    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+                end
                 if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
                     vim.w.focus_disable = true
                 else

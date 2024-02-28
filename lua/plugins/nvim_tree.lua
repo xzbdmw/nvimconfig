@@ -45,6 +45,16 @@ return {
                 open_file = {
                     quit_on_open = false,
                 },
+                file_popup = {
+                    open_win_config = {
+                        width = 60,
+                        col = 10,
+                        row = 4,
+                        relative = "cursor",
+                        border = "rounded",
+                        -- style = "minimal",
+                    },
+                },
                 -- change_dir = {
                 --     global = true,
                 -- },
@@ -67,6 +77,7 @@ return {
                 custom = { ".gitignore", ".git", ".luarc.json" },
                 exclude = {},
             },
+
             on_attach = my_on_attach,
             view = {
                 width = 25,

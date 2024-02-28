@@ -25,7 +25,7 @@ return {
             height = "auto",
             row = 8,
             col = "auto",
-            border = "rounded",
+            border = "none",
         },
     },
 }

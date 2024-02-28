@@ -1,6 +1,7 @@
 return {
     "stevearc/dressing.nvim",
     event = "VeryLazy",
+    -- enabled = false,
     opts = {
         input = {
             -- Set to false to disable the vim.ui.input implementation
@@ -22,7 +23,7 @@ return {
             start_in_insert = true,
 
             -- These are passed to nvim_open_win
-            border = "none",
+            border = "rounded",
             -- 'editor' and 'win' will default to being centered
             relative = "cursor",
 
@@ -32,7 +33,7 @@ return {
             -- min_width and max_width can be a list of mixed types.
             -- min_width = {20, 0.2} means "the greater of 20 columns or 20% of total"
             max_width = { 140, 0.9 },
-            min_width = { 20, 0.2 },
+            min_width = { 30, 0.2 },
 
             buf_options = {},
             win_options = {

@@ -2,7 +2,7 @@ return {
     "EdenEast/nightfox.nvim",
     config = function()
         local options = {
-            dim_inactive = false,
+            dim_inactive = true,
             -- module_default = false,
         }
         local palettes = {
@@ -89,7 +89,7 @@ return {
                 MyGlancePreviewBeforeContextLine = { fg = "#777A89", bg = "#f1efe1", style = "bold,italic" },
                 MyGlancePreviewAfterContext = { bg = "#faf7e8", style = "bold" },
                 MyGlancePreviewAfterContextLine = { fg = "#777A89", bg = "#faf7e8", style = "bold,italic" },
-                GlancePreviewNormal = { link = "MyNormalDocFloat" },
+                -- GlancePreviewNormal = { link = "MyNormalDocFloat" },
                 DropBarMenuCurrentContext = { link = "DropBarMenuHoverEntry" },
                 -- barbecue_normal = { link = "Normal" },
                 barbecue_dirname = { fg = "#3b4d56" },
@@ -134,7 +134,7 @@ return {
                 CmpItemAbbrMatch = { fg = "#000000", style = "bold" },
                 CmpItemAbbrMatchFuzzy = { fg = "#000000", style = "bold" },
                 CmpGhostText = { fg = "#595655", style = "italic" },
-                TreesitterContext = { fg = "#777A89", bg = "#FAF7E8", style = "bold" },
+                TreesitterContext = { fg = "#777A89", bg = "#FAF7E8", style = "bold,italic" },
                 TreesitterContextLineNumber = { fg = "#777A89", style = "bold,italic" },
                 Unvisited = { bg = "#C6C9C7" },
                 Visited = { bg = "#9EA3AC" },

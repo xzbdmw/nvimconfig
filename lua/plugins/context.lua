@@ -8,8 +8,13 @@ return {
             end,
             desc = "go to sticky scroll",
         },
+        {
+            "<leader>uc",
+            "<cmd>TSContextToggle<CR>",
+        },
     },
     opts = {
-        line_numbers = true,
+        enable = false,
+        line_numbers = false,
     },
 }

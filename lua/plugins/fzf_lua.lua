@@ -43,7 +43,9 @@ return {
                 -- to manually draw the border characters around the preview
                 -- window, can be set to 'false' to remove all borders or to
                 -- 'none', 'single', 'double', 'thicc' (+cc) or 'rounded' (default)
-                border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+                -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+
                 -- requires neovim > v0.9.0, passed as is to `nvim_open_win`
                 -- can be sent individually to any provider to set the win title
                 -- title         = "Title",
@@ -79,6 +81,7 @@ return {
                         cursorlineopt = "both",
                         cursorcolumn = false,
                         signcolumn = "no",
+                        winblend = 0,
                         list = false,
                         foldenable = false,
                         foldmethod = "manual",

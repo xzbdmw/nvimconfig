@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd("FileType", {
         "neotest-output",
         "checkhealth",
         "neotest-summary",
-        -- "vim",
+        "vim",
         "neotest-output-panel",
         "toggleterm",
     },
