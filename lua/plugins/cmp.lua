@@ -278,35 +278,35 @@ return {
 
         -- setup languages
         -- GoLang
-        -- nvim_lsp["gopls"].setup({
-        --     cmd = { "gopls" },
-        --     -- on_attach = on_attach,
-        --     capabilities = capabilities,
-        --     settings = {
-        --         gopls = {
-        --             hints = {
-        --                 assignVariableTypes = true,
-        --                 compositeLiteralFields = true,
-        --                 compositeLiteralTypes = true,
-        --                 constantValues = true,
-        --                 functionTypeParameters = true,
-        --                 -- parameterNames = true,
-        --                 rangeVariableTypes = true,
-        --             },
-        --             semanticTokens = true,
-        --             experimentalPostfixCompletions = false,
-        --             analyses = {
-        --                 unusedparams = true,
-        --                 shadow = true,
-        --             },
-        --             staticcheck = false,
-        --         },
-        --     },
-        --     init_options = {
-        --         -- usePlaceholders = false,
-        --         usePlaceholders = true,
-        --         completeFunctionCalls = false,
-        --     },
-        -- })
+        nvim_lsp["gopls"].setup({
+            cmd = { "gopls" },
+            -- on_attach = on_attach,
+            capabilities = capabilities,
+            settings = {
+                gopls = {
+                    hints = {
+                        assignVariableTypes = true,
+                        compositeLiteralFields = true,
+                        compositeLiteralTypes = true,
+                        constantValues = true,
+                        functionTypeParameters = true,
+                        -- parameterNames = true,
+                        rangeVariableTypes = true,
+                    },
+                    semanticTokens = true,
+                    experimentalPostfixCompletions = false,
+                    analyses = {
+                        unusedparams = true,
+                        shadow = true,
+                    },
+                    staticcheck = false,
+                },
+            },
+            init_options = {
+                -- usePlaceholders = false,
+                usePlaceholders = true,
+                completeFunctionCalls = false,
+            },
+        })
     end,
 }

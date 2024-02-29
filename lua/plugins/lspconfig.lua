@@ -116,14 +116,14 @@ return {
                             completion = {
                                 callSnippet = "Disable",
                             },
-                            -- runtime = {
-                            --     -- LuaJIT in the case of Neovim
-                            --     version = "LuaJIT",
-                            --     pathStrict = true,
-                            --     path = {
-                            --         "lua/?.lua",
-                            --     },
-                            -- },
+                            --[[ runtime = {
+                                -- LuaJIT in the case of Neovim
+                                version = "LuaJIT",
+                                pathStrict = true,
+                                path = {
+                                    "lua/?.lua",
+                                },
+                            }, ]]
                             workspace = {
                                 library = {
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
@@ -139,44 +139,44 @@ return {
                         },
                     },
                 },
-                -- rust_analyzer = {
-                --     settings = {
-                --         ["rust-analyzer"] = {
-                --             checkOnSave = true,
-                --             check = {
-                --                 enable = true,
-                --                 command = "clippy",
-                --                 features = "all",
-                --             },
-                --             completion = {
-                --                 callable = {
-                --                     snippets = "add_parentheses",
-                --                 },
-                --                 fullFunctionSignatures = {
-                --                     enable = true,
-                --                 },
-                --                 privateEditable = {
-                --                     enable = true,
-                --                 },
-                --             },
-                --             procMacro = {
-                --                 ignored = {
-                --                     tokio_macros = {
-                --                         "main",
-                --                         "test",
-                --                     },
-                --                     tracing_attributes = {
-                --                         "instrument",
-                --                     },
-                --                 },
-                --             },
-                --             inlayHints = {
-                --                 parameterHints = false,
-                --                 closureReturnTypeHints = "with_block",
-                --             },
-                --         },
-                --     },
-                -- },
+                --[[ rust_analyzer = {
+                    settings = {
+                        ["rust-analyzer"] = {
+                            checkOnSave = true,
+                            check = {
+                                enable = true,
+                                command = "clippy",
+                                features = "all",
+                            },
+                            completion = {
+                                callable = {
+                                    snippets = "add_parentheses",
+                                },
+                                fullFunctionSignatures = {
+                                    enable = true,
+                                },
+                                privateEditable = {
+                                    enable = true,
+                                },
+                            },
+                            procMacro = {
+                                ignored = {
+                                    tokio_macros = {
+                                        "main",
+                                        "test",
+                                    },
+                                    tracing_attributes = {
+                                        "instrument",
+                                    },
+                                },
+                            },
+                            inlayHints = {
+                                parameterHints = false,
+                                closureReturnTypeHints = "with_block",
+                            },
+                        },
+                    },
+                }, ]]
                 tsserver = { enabled = false },
             },
         },
