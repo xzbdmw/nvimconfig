@@ -9,6 +9,18 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "_watch" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "notify", find = "VenvSelect" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "jdtls" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "winminwidth" },
                     opts = { skip = true },
                 },
@@ -127,16 +139,22 @@ return {
                     },
                 },
                 hover = {
+                    view = nil,
                     enabled = true,
+                    win_options = {
+                        wrap = true,
+                        linebreak = true,
+                        winblend = 10,
+                    },
                     opts = {
                         size = {
                             max_height = 10,
                             max_width = 50,
                         },
-                        -- border = {
-                        --     style = "rounded",
-                        --     padding = { 0, 2 },
-                        -- },
+                        border = {
+                            style = "none",
+                            padding = { 0, 1 },
+                        },
                         -- position = { row = 2, col = 0 },
                     },
                 },

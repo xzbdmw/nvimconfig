@@ -7,6 +7,8 @@ return {
             "~/Project/rust/*",
             "~/Project/vim/*",
             "~/Project/Go/*",
+            "~/Project/java/*",
+            "~/Project/Python/*",
             "/Users/xzb/Documents/xzbdmw的副本/*",
             "~/.config/*",
         },

@@ -54,6 +54,7 @@ return {
         highlight = { enable = true, disable = { "markdown", "javascript" } },
         indent = { enable = true },
         ensure_installed = {
+            "java",
             "bash",
             "c",
             "diff",

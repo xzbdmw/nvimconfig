@@ -77,6 +77,16 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function(_)
+        local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
+        if venv ~= "" then
+            require("venv-selector").retrieve_from_cache()
+        end
+    end,
+})
+
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
     local is_split = false

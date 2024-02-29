@@ -94,13 +94,28 @@ return {
             },
             inlay_hints = { enabled = false },
             servers = {
+                pylance = {
+                    settings = {
+                        python = {
+                            -- pythonPath = "/usr/bin/python3",
+                            analysis = {
+                                inlayHints = {
+                                    variableTypes = true,
+                                    functionReturnTypes = true,
+                                    callArgumentNames = true,
+                                    pytestParameters = true,
+                                },
+                            },
+                        },
+                    },
+                },
                 -- Ensure mason installs the server
                 lua_ls = {
                     settings = {
                         Lua = {
-                            -- completion = {
-                            --     callSnippet = "Disable",
-                            -- },
+                            completion = {
+                                callSnippet = "Disable",
+                            },
                             -- runtime = {
                             --     -- LuaJIT in the case of Neovim
                             --     version = "LuaJIT",
