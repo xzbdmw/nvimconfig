@@ -2,22 +2,24 @@ return {
     "gbprod/yanky.nvim",
     keys = {
         { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
+
         { "<space>p", "<Plug>(YankyPreviousEntry)" },
         { "<space>n", "<Plug>(YankyNextEntry)" },
+
         { "p", "<Plug>(YankyPutAfter)" },
+        { "P", "<Plug>(YankyPutBefore)" },
+
+        { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
+        { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
+
+        -- visual mode paste
         { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },
-        -- {
-        --     "[p",
-        --     '"0<Plug>(YankyPutBefore)',
-        --     { desc = "Paste last yanked text without copying replaced text" },
-        --     mode = { "x" },
-        -- },
-        { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
-        { "P", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
-        { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
-        { "P", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
-        { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
+
+        -- force paste the same line
+        { "<leader>P", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
+
+        -- text object
         {
             "[p",
             function()
