@@ -76,14 +76,14 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
-
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "s:i",
     callback = function()
+        -- vim.defer_fn(function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-9>", true, false, true), "m", true)
+        -- end, 10)
     end,
 })
-
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = { "*:V", "*:no" },
     callback = function()

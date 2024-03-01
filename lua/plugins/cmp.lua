@@ -43,7 +43,7 @@ return {
                 }),
             },
             completion = {
-                -- autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
+                -- autocomplete = { require("cmp.types").cmp.TriggerEvent.InsertEnter },
                 completeopt = "menu,menuone,noinsert",
             },
             view = {
@@ -272,7 +272,7 @@ return {
             }),
         })
         require("cmp").setup(opts)
-        local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
+        --[[ local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
         -- Setup lspconfig.
         local nvim_lsp = require("lspconfig")
 
@@ -307,6 +307,6 @@ return {
                 usePlaceholders = true,
                 completeFunctionCalls = true,
             },
-        })
+        }) ]]
     end,
 }

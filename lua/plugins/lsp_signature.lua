@@ -1,6 +1,5 @@
 return {
     "ray-x/lsp_signature.nvim",
-    enabled = false,
     dependencies = {
         "RRethy/vim-illuminate",
     },
@@ -13,7 +12,7 @@ return {
             mode = { "n" },
         },
     },
-    -- lazy = false,
+    lazy = false,
     event = "VeryLazy",
     version = false,
     opts = {
