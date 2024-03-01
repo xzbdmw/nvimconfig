@@ -305,7 +305,7 @@ return {
             init_options = {
                 -- usePlaceholders = false,
                 usePlaceholders = true,
-                completeFunctionCalls = false,
+                completeFunctionCalls = true,
             },
         })
     end,

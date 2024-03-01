@@ -57,7 +57,7 @@ return {
             zindex = 1000, -- positive value to position WhichKey above other floating windows.
         },
         layout = {
-            height = { min = 4, max = 25 }, -- min and max height of the columns
+            height = { min = 4, max = 10 }, -- min and max height of the columns
             width = { min = 20, max = 50 }, -- min and max width of the columns
             spacing = 3, -- spacing between columns
             align = "left", -- align columns left, center or right
@@ -76,8 +76,8 @@ return {
             "g`",
             "g'",
             -- registers
-            '"',
-            "<c-r>",
+            -- '"',
+            -- "<c-r>",
             -- spelling
             "z=",
         },

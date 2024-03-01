@@ -77,6 +77,13 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "s:i",
+    callback = function()
+        require("cmp").complete()
+    end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
     callback = function(_)
