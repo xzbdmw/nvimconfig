@@ -84,6 +84,20 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = { "*:V", "*:no" },
+    callback = function()
+        vim.opt.relativenumber = true
+    end,
+})
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = { "no:*", "V:*" },
+    callback = function()
+        vim.opt.relativenumber = false
+    end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
     callback = function(_)
