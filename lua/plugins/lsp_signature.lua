@@ -1,5 +1,6 @@
 return {
     "ray-x/lsp_signature.nvim",
+    enabled = false,
     dependencies = {
         "RRethy/vim-illuminate",
     },
@@ -12,8 +13,8 @@ return {
             mode = { "n" },
         },
     },
-    lazy = false,
-    -- event = "VeryLazy",
+    -- lazy = false,
+    event = "VeryLazy",
     version = false,
     opts = {
         debug = false, -- set to true to enable debug logging

@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "s:i",
     callback = function()
-        require("cmp").complete()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-9>", true, false, true), "m", true)
     end,
 })
 

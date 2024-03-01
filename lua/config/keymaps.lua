@@ -147,12 +147,9 @@ keymap("n", "<Tab>", function()
         require("ufo").peekFoldedLinesUnderCursor()
     end
 end, { desc = "swicth window" })
-
 keymap("i", "<C-e>", "<esc>A", opts)
-keymap("n", "<C-e>", function()
-    vim.diagnostic.goto_next()
-end, opts)
-keymap("", "<D-a>", "ggVG", opts)
+keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+keymap("", "<d-a>", "ggvG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local nvimtree_present = false
     -- 遍历所有窗口
