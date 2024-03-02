@@ -1,5 +1,6 @@
 return {
     "ThePrimeagen/harpoon",
+    enabled = false,
     keys = {
         {
             "<space>ha",

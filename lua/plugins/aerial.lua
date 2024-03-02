@@ -22,8 +22,8 @@ return {
                 -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
                 -- min_width and max_width can be a list of mixed types.
                 -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-                max_width = { 40, 0.2 },
-                width = 25,
+                max_width = 0.3,
+                width = nil,
                 min_width = 15,
 
                 -- key-value pairs of window-local options for aerial window (e.g. winhl)
@@ -100,7 +100,7 @@ return {
 
             -- When true, don't load aerial until a command or function is called
             -- Defaults to true, unless `on_attach` is provided, then it defaults to false
-            lazy_load = true,
+            lazy_load = false,
 
             -- Disable aerial on files with this many lines
             disable_max_lines = 10000,
@@ -111,16 +111,17 @@ return {
             -- A list of all symbols to display. Set to false to display all symbols.
             -- This can be a filetype map (see :help aerial-filetype-map)
             -- To see all available values, see :help SymbolKind
-            filter_kind = {
-                "Class",
-                "Constructor",
-                "Enum",
-                "Function",
-                "Interface",
-                "Module",
-                "Method",
-                "Struct",
-            },
+            -- filter_kind = {
+            --     "Class",
+            --     "Constructor",
+            --     "Enum",
+            --     "Function",
+            --     "Interface",
+            --     "Module",
+            --     "Method",
+            --     "Struct",
+            -- },
+            filter_kind = false,
 
             -- Determines line highlighting mode when multiple splits are visible.
             -- split_width   Each open window will have its cursor location marked in the
@@ -141,7 +142,7 @@ return {
 
             -- When jumping to a symbol, highlight the line for this many ms.
             -- Set to false to disable
-            highlight_on_jump = 300,
+            highlight_on_jump = false,
 
             -- Jump to symbol in source window when the cursor moves
             autojump = true,
@@ -254,7 +255,7 @@ return {
             update_events = "TextChanged,InsertLeave",
 
             -- Show box drawing characters for the tree hierarchy
-            show_guides = false,
+            show_guides = true,
 
             -- Customize the characters used when show_guides = true
             guides = {
