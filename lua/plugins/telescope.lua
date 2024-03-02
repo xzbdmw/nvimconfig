@@ -247,16 +247,18 @@ return {
                 lsp_implementations = {
                     entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
                     initial_mode = "insert",
+                    layout_strategy = "vertical",
                     trim_text = true,
                     reuse_win = true,
                     layout_config = {
-                        horizontal = {
-                            width = 0.9,
+                        vertical = {
+                            width = 0.8,
                             height = 0.9,
                             preview_cutoff = 0,
                             prompt_position = "top",
-                            preview_width = 0.55,
+                            preview_width = 0.5,
                         },
+                        mirror = true,
                     },
                 },
                 diagnostics = {
@@ -296,7 +298,7 @@ return {
                     disable_coordinates = true,
                     layout_config = {
                         horizontal = {
-                            width = 0.9,
+                            width = 0.8,
                             height = 0.9,
                             preview_cutoff = 0,
                             prompt_position = "top",

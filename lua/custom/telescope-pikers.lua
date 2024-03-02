@@ -194,7 +194,7 @@ function telescopePickers.prettyGrepPicker(pickerAndOptions)
             layout_config = {
                 vertical = {
                     prompt_position = "top",
-                    width = 0.9,
+                    width = 0.8,
                     height = 0.9,
                     mirror = true,
                     preview_cutoff = 0,
