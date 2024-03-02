@@ -44,7 +44,7 @@ return {
                 bottom_char = "―",
             },
             list = {
-                position = "right", -- Position of the list window 'left'|'right'
+                position = "left", -- Position of the list window 'left'|'right'
                 -- width = 0.19, -- 33% width relative to the active window, min 0.1, max 0.5
                 width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
             },

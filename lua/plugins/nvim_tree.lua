@@ -74,7 +74,7 @@ return {
                 git_clean = false,
                 no_buffer = false,
                 no_bookmark = false,
-                custom = { ".gitignore", ".git", ".luarc.json" },
+                custom = { ".idea", ".gitignore", ".git", ".luarc.json" },
                 exclude = {},
             },
 

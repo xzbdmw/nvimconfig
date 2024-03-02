@@ -31,6 +31,7 @@ return {
         }
         local groups = {
             all = {
+                NormalNC = { link = "Normal" },
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
                 LspInlayHint = { fg = "#595655", bg = "none" },
                 illuminatedwordwrite = { link = "Visual" },
@@ -88,6 +89,8 @@ return {
                 DropBarIconKindEnum = { fg = "#3b4d56" },
                 DropBarIconUIIndicator = {},
                 MyGlancePreviewBeforeContext = { bg = "#f1efe1", style = "bold,italic" },
+                GlanceListMatch = { fg = "#000000", bg = "#FCF0A1" },
+                GlancePreviewMatch = { fg = "#000000", bg = "#FCF0A1" },
                 MyGlancePreviewBeforeContextLine = { fg = "#777A89", bg = "#f1efe1", style = "bold,italic" },
                 MyGlancePreviewAfterContext = { bg = "#faf7e8", style = "bold,italic" },
                 MyGlancePreviewAfterContextLine = { fg = "#777A89", bg = "#faf7e8", style = "bold,italic" },
@@ -101,7 +104,6 @@ return {
                 MyNormalDocFloat = { bg = "#f1efe1" },
                 FloatBorder = { bg = "#FAF7E6" },
                 LspFloatWinBorder = { link = "FloatBorder" },
-                NormalNC = { bg = "#FAF7E8" },
                 CursorLine = { bg = "#EBE8DB" },
                 FloatCursorLine = { bg = "#EBE8DB" },
                 LualineCursorLine = { bg = "#EBE8DB" },
