@@ -19,7 +19,7 @@ return {
                 Field = "  ",
                 File = "  ",
                 Folder = "  ",
-                Function = " 󰊕 ",
+                Function = " 󰡱 ",
                 Interface = " 󰰅 ",
                 Key = "  ",
                 Keyword = " 󱕴 ",

@@ -9,6 +9,7 @@ vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
 vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos,resize"
 vim.opt.relativenumber = false
+vim.opt.pumblend = 0
 vim.opt.shiftwidth = 4
 vim.opt.list = false
 vim.opt.tabstop = 4

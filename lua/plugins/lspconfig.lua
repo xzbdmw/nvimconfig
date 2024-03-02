@@ -41,7 +41,7 @@ return {
                 mode = { "x", "v", "n", "i" },
             }
             keys[#keys + 1] = {
-                "<M-CR>",
+                "<C-a>",
                 function()
                     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
                     vim.cmd([[:stopinsert]])

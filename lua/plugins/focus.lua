@@ -7,7 +7,7 @@ return {
         { "<leader><leader>f", "<cmd>FocusAutoresize<CR>" },
     },
     config = function()
-        local ignore_filetypes = { "NvimTree", "toggleterm", "undotree", "diff", "no-neck-pain" }
+        local ignore_filetypes = { "aerial", "NvimTree", "toggleterm", "undotree", "diff", "no-neck-pain" }
         -- local ignore_buftypes = { "nofile", "prompt", "popup" }
         local ignore_buftypes = { "prompt", "popup" }
 

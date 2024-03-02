@@ -1,5 +1,4 @@
--- -- Keymaps are automatically loaded on the VeryLazy event
--- -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- -- Keymaps are automatically loaded on the VeryLazy event-- -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
@@ -12,8 +11,8 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>w|")
 del("n", "<leader>qq")
-del({ "n", "x" }, "<space>wÞ")
-del({ "n", "x" }, "<space>qÞ")
+-- del({ "n", "x" }, "<space>wÞ")
+-- del({ "n", "x" }, "<space>qÞ")
 keymap("n", "D", "d$", opts)
 keymap("n", "Q", "qa", opts)
 keymap("n", "q", "<Nop>", opts)

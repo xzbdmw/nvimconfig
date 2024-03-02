@@ -1,6 +1,5 @@
 return {
     "nvimdev/lspsaga.nvim",
-    -- enabled = false,
     event = "LspAttach",
     commit = "2198c07124bef27ef81335be511c8abfd75db933",
     dependencies = {
@@ -10,6 +9,7 @@ return {
     config = function()
         require("lspsaga").setup({
             finder = {
+                enable = false,
                 --[[ filter = {
                     ["textDocument/references"] = function(item)
                         local lnum = vim.api.nvim_win_get_cursor(0)[1]

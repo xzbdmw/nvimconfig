@@ -7,6 +7,9 @@ return {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons",
     },
+    keys = {
+        { "<D-3>", "<cmd>AerialToggle<CR>" },
+    },
     config = function()
         -- Call the setup function to change the default behavior
         require("aerial").setup({
@@ -20,8 +23,8 @@ return {
                 -- min_width and max_width can be a list of mixed types.
                 -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
                 max_width = { 40, 0.2 },
-                width = nil,
-                min_width = 10,
+                width = 25,
+                min_width = 15,
 
                 -- key-value pairs of window-local options for aerial window (e.g. winhl)
                 win_opts = {},
@@ -35,7 +38,7 @@ return {
                 -- Determines where the aerial window will be opened
                 --   edge   - open aerial at the far right/left of the editor
                 --   window - open aerial to the right/left of the current window
-                placement = "window",
+                placement = "edge",
 
                 -- When the symbols change, resize the aerial window (within min/max constraints) to fit
                 resize_to_content = true,
