@@ -151,25 +151,26 @@ keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap("", "<d-a>", "ggvG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local nvimtree_present = false
-    print("win_count:")
-    print(#vim.api.nvim_list_wins())
     local aerial_present = false
+    local term_present = false
     -- 遍历所有窗口
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
         ---@diagnostic disable-next-line: deprecated
         local filetype = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win_id), "filetype")
-        local buf_id = vim.api.nvim_win_get_buf(win_id)
-        local buf_name = vim.api.nvim_buf_get_name(buf_id)
         -- 检查是否存在 NvimTree
-        if string.find(buf_name, "NvimTree") then
+        if filetype == "NvimTree" then
             nvimtree_present = true
         end
 
         if filetype == "aerial" then
             aerial_present = true
         end
-        if nvimtree_present and aerial_present then
-            print("all true")
+
+        if filetype == "toggleterm" then
+            term_present = true
+        end
+
+        if nvimtree_present and aerial_present and term_present then
             break
         end
     end
@@ -178,9 +179,13 @@ keymap({ "n", "i" }, "<D-w>", function()
     local win_amount = get_non_float_win_count()
     if
         win_amount == 1
-        or (nvimtree_present and win_amount == 2)
+        or (win_amount == 2 and nvimtree_present)
         or (win_amount == 2 and aerial_present)
+        or (win_amount == 2 and term_present)
         or (win_amount == 3 and nvimtree_present and aerial_present)
+        or (win_amount == 3 and nvimtree_present and term_present)
+        or (win_amount == 3 and aerial_present and term_present)
+        or (win_amount == 4 and nvimtree_present and aerial_present and term_present)
     then
         vim.cmd("BufDel")
     else
