@@ -11,14 +11,14 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("file")
             end,
         },
-        -- {
-        --     "<C-d>",
-        --     function()
-        --         -- require("custom.telescope-pikers").prettyDocumentSymbols()
-        --
-        --         vim.cmd("Telescope lsp_document_symbols")
-        --     end,
-        -- },
+        --[[ {
+            "<C-d>",
+            function()
+                -- require("custom.telescope-pikers").prettyDocumentSymbols()
+
+                vim.cmd("Telescope lsp_document_symbols")
+            end,
+        }, ]]
         {
             "<leader>ss",
             function()
@@ -207,9 +207,18 @@ return {
                 sorting_strategy = "ascending",
                 layout_strategy = "horizontal",
                 borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
-                -- borderchars = { "", "", "", "", "", "", "", "" },
                 -- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+
                 layout_config = {
+                    horizontal = {
+                        width = 0.9,
+                        height = 0.9,
+                        preview_cutoff = 0,
+                        prompt_position = "top",
+                        preview_width = 0.7,
+                    },
+                },
+                --[[ layout_config = {
                     horizontal = {
                         width = 0.8,
                         height = 0.8,
@@ -217,7 +226,7 @@ return {
                         prompt_position = "top",
                         preview_width = 0.6,
                     },
-                },
+                }, ]]
                 mappings = {
                     i = {
                         ["<C-d>"] = function()
@@ -390,6 +399,17 @@ return {
                     disable_devicons = true,
                     open_buffer_indicators = { previous = "😄", others = "👀" },
                 },
+                -- undo = {
+                --     layout_config = {
+                --         horizontal = {
+                --             width = 0.9,
+                --             height = 0.9,
+                --             preview_cutoff = 0,
+                --             prompt_position = "top",
+                --             preview_width = 0.4,
+                --         },
+                --     },
+                -- },
             },
         })
         -- require("telescope").load_extension("bookmarks")
