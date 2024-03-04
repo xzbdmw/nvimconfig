@@ -22,7 +22,16 @@ return {
             id = vim.api.nvim_buf_set_extmark(0, namespace, lnum - 1, 0, { virt_lines = place_holder })
             open(results)
         end ]]
-
+        local function closeIfNormal()
+            local mode = vim.api.nvim_get_mode()
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            print([==[function#closeIfNormal mode:]==], vim.inspect(mode)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            if mode.mode == "n" then
+                actions.close()
+            else
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
+            end
+        end
         local function openFileAtSamePosition()
             -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
@@ -33,7 +42,8 @@ return {
             local filename = vim.fn.expand("%:p")
 
             -- 关闭当前窗口
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("q", true, false, true), "t", true)
+            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("q", true, false, true), "t", true)
+            actions.close()
             local uri = vim.uri_from_fname(filename)
             local bufnr = vim.uri_to_bufnr(uri)
             vim.schedule(function()
@@ -98,9 +108,8 @@ return {
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
-                    ["<C-CR>"] = function()
-                        openFileAtSamePosition()
-                    end,
+                    ["<C-CR>"] = openFileAtSamePosition,
+                    ["<esc>"] = closeIfNormal,
                     ["q"] = actions.close,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,

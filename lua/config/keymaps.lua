@@ -148,7 +148,7 @@ keymap("n", "<Tab>", function()
     end
 end, { desc = "swicth window" })
 keymap("i", "<C-e>", "<esc>A", opts)
-keymap("i", "<C-CR>", "<esc>o", opts)
+keymap("i", "<C-CR>", "<CR>", opts)
 keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
