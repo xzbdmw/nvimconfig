@@ -22,7 +22,7 @@ return {
         verbose = false, -- show debug line number
         bind = true, -- This is mandatory, otherwise border config won't get registered.
         -- If you want to hook lspsaga or other signature handler, pls set to false
-        doc_lines = 0, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
+        doc_lines = 10, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
         -- set to 0 if you DO NOT want any API comments be shown
         -- This setting only take effect in insert mode, it does not affect signature help in normal
         -- mode, 10 by default
@@ -38,7 +38,7 @@ return {
         -- this setting will be helpful if you do not want the PUM and floating win overlap
 
         -- floating_window_off_x = -11, -- adjust float windows x position.
-        floating_window_off_x = -1, -- adjust float windows x position.
+        floating_window_off_x = 0, -- adjust float windows x position.
         -- can be either a number or function
         floating_window_off_y = 0, -- adjust float windows y position. e.g -2 move window up 2 lines; 2 move down 2 lines
         -- can be either number or function, see examples
@@ -65,7 +65,7 @@ return {
 
         padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
 
-        transparency = 10, -- disabled by default, allow floating win transparent value 1~100
+        transparency = 0, -- disabled by default, allow floating win transparent value 1~100
         shadow_blend = 36, -- if you using shadow as border use this set the opacity
         shadow_guibg = "Black", -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
         timer_interval = 1, -- default timer check interval set to lower value if you want to reduce latency

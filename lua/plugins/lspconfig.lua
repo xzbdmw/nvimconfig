@@ -140,7 +140,7 @@ return {
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
                                     "/Users/xzb/Downloads/nvim-macos/share/nvim/runtime/lua/",
-                                    "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
