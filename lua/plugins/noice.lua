@@ -51,7 +51,7 @@ return {
                         conceal = true,
                         opts = {
                             border = {
-                                style = "rounded",
+                                style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
@@ -70,6 +70,20 @@ return {
                         icon = "?",
                         lang = "regex",
                         conceal = true,
+                        opts = {
+                            border = {
+                                style = "none",
+                                padding = { 0, 1 },
+                            },
+                            position = {
+                                row = "30%",
+                                col = "50%",
+                            },
+                            size = {
+                                width = 40,
+                                height = "auto",
+                            },
+                        }, -- global options for the cmdline. See section on views
                     },
                     filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
                     lua = {
@@ -79,7 +93,7 @@ return {
                         conceal = true,
                         opts = {
                             border = {
-                                style = "rounded",
+                                style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
@@ -98,7 +112,7 @@ return {
                         conceal = true,
                         opts = {
                             border = {
-                                style = "rounded",
+                                style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {

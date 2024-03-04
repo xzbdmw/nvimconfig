@@ -39,6 +39,7 @@ return {
                 Directory = { link = "Comment" },
                 MatchParen = { fg = "#000000", style = "italic" },
                 AerialLine = { link = "NvimTreeCursorLine" },
+                Substitute = { bg = "#FCF0A1", fg = "#000000", style = "bold" },
                 -- I have the same problem and more
                 AerialGuide = { link = "Comment" },
                 TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },

@@ -179,6 +179,7 @@ return {
             actions.close(prompt_bufnr)
 
             vim.fn.setreg("1", display)
+            vim.fn.setreg("*", display)
         end
         -- yank preview
         local yank_preview_lines = function(prompt_bufnr)
