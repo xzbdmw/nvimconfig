@@ -153,6 +153,7 @@ keymap("n", "<Tab>", function()
         require("ufo").peekFoldedLinesUnderCursor()
     end
 end, { desc = "swicth window" })
+
 keymap("i", "<CR>", function()
     local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -188,8 +189,10 @@ keymap("i", "<C-d>", "<C-g>u<C-w>", opts)
 keymap("i", "<C-u>", "<C-g>u<C-u>", opts)
 keymap("i", ".", "<C-g>u.", opts)
 keymap("i", ",", "<C-g>u,", opts)
-keymap("i", "<C-CR>", "<CR>", opts)
+keymap("i", "<space>", "<C-g>u<space>", opts)
+keymap("i", "<C-r>", "<C-g>u<C-r>", opts)
 
+keymap("i", "<C-CR>", "<CR>", opts)
 keymap("i", "<C-e>", "<esc>A", opts)
 -- keymap("i", "<C-CR>", "<CR>", opts)
 keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
@@ -326,7 +329,7 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
     -- end
 end, opts)
-keymap("i", "<D-v>", "<C-r>1", opts)
+keymap("i", "<D-v>", "<C-g>u<C-r>1", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<C-o>u", opts)
