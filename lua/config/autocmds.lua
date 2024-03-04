@@ -54,6 +54,7 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 vim.api.nvim_create_augroup("_cmd_win", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {
+        "txt",
         "PlenaryTestPopup",
         "help",
         "lspinfo",

@@ -15,15 +15,14 @@ local function my_on_attach(bufnr)
     keymap("n", "P", function()
         api.node.open.preview()
     end, opts("preview file"))
-    vim.keymap.set("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+    keymap({ "n", "i" }, "<D-n>", function()
+        api.fs.create()
+    end, { desc = "create new file" })
 end
 return {
     "nvim-tree/nvim-tree.lua",
-    -- enabled = false,
     version = false,
-    -- dependencies = {
-    --     "nvim-tree/nvim-web-devicons",
-    -- },
     keys = {
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
@@ -77,7 +76,6 @@ return {
                 custom = { ".idea", ".gitignore", ".git", ".luarc.json" },
                 exclude = {},
             },
-
             on_attach = my_on_attach,
             view = {
                 width = 25,

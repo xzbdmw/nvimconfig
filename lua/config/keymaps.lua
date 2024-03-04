@@ -9,10 +9,12 @@ del("n", "<leader>w-")
 del("n", "<leader>ww")
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
+del("n", "<leader>fn")
 del("n", "<leader>w|")
 del("n", "<leader>qq")
 -- del({ "n", "x" }, "<space>wÞ")
 -- del({ "n", "x" }, "<space>qÞ")
+
 keymap("n", "D", "d$", opts)
 keymap("n", "Q", "qa", opts)
 keymap("n", "q", "<Nop>", opts)
@@ -82,7 +84,6 @@ local function get_non_float_win_count()
 end
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    vim.api.nvim_win_get_cursor(0)
     local line_num = cursor_pos[1] -- 光标所在的行号
     local fold_start = vim.fn.foldclosed(line_num)
     if fold_start == -1 then
@@ -290,7 +291,11 @@ keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
+
+--nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
+
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)

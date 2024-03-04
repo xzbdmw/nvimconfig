@@ -156,7 +156,6 @@ return {
         local yank_selected_entry = function(prompt_bufnr)
             local action_state = require("telescope.actions.state")
             local entry_display = require("telescope.pickers.entry_display")
-
             local picker = action_state.get_current_picker(prompt_bufnr)
             local manager = picker.manager
 

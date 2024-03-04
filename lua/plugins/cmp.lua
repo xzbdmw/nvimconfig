@@ -50,7 +50,7 @@ return {
                 entries = { name = "custom", selection_order = "near_cursor" },
             },
             performance = {
-                debounce = 0,
+                debounce = 1,
                 throttle = 0,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
@@ -126,7 +126,7 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                { name = "buffer", keyword_length = 3 },
+                { name = "buffer", keyword_length = 2 },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
