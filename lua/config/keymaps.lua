@@ -291,6 +291,10 @@ keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
+
+--mini.ai
+keymap("v", "iq", 'i"', opts)
+keymap("v", "aq", 'a"', opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
