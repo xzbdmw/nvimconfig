@@ -1,0 +1,137 @@
+
+{ {
+    range = {
+      ["end"] = {
+        character = 9,
+        line = 24
+      },
+      start = {
+        character = 8,
+        line = 24
+      }
+    },
+    uri = "file:///Users/xzb/Project/Rust/bicask/src/fio/file_io.rs"
+  }, {
+    range = {
+      ["end"] = {
+        character = 17,
+        line = 23
+      },
+      start = {
+        character = 16,
+        line = 23
+      }
+    },
+    uri = "file:///Users/xzb/Project/Rust/bicask/src/fio/file_io.rs"
+  } }
+{ {
+    range = {
+      ["end"] = {
+        character = 9,
+        line = 24
+      },
+      start = {
+        character = 8,
+        line = 24
+      }
+    },
+    uri = "file:///Users/xzb/Project/Rust/bicask/src/fio/file_io.rs"
+  }, {
+    range = {
+      ["end"] = {
+        character = 17,
+        line = 23
+      },
+      start = {
+        character = 16,
+        line = 23
+      }
+    },
+    uri = "file:///Users/xzb/Project/Rust/bicask/src/fio/file_io.rs"
+  } }
+{ {
+    range = {
+      ["end"] = {
+        character = 15,
+        line = 13
+      },
+      start = {
+        character = 14,
+        line = 13
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/plugins/cmp.lua"
+  }, {
+    range = {
+      ["end"] = {
+        character = 9,
+        line = 14
+      },
+      start = {
+        character = 8,
+        line = 14
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/plugins/cmp.lua"
+  } }
+{ {
+    range = {
+      ["end"] = {
+        character = 15,
+        line = 13
+      },
+      start = {
+        character = 14,
+        line = 13
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/plugins/cmp.lua"
+  }, {
+    range = {
+      ["end"] = {
+        character = 9,
+        line = 14
+      },
+      start = {
+        character = 8,
+        line = 14
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/plugins/cmp.lua"
+  } }
+"lua/plugins/cmp.lua" 312L, 11793B
+21 lines yanked
+"lua/plugins/glance.lua" 140L, 6620B
+{ {
+    range = {
+      ["end"] = {
+        character = 35,
+        line = 33
+      },
+      start = {
+        character = 15,
+        line = 33
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/custom/definitions.lua"
+  }, {
+    range = {
+      ["end"] = {
+        character = 35,
+        line = 81
+      },
+      start = {
+        character = 15,
+        line = 81
+      }
+    },
+    uri = "file:///Users/xzb/.config/nvim/lua/custom/definitions.lua"
+  } }
+"lua/plugins/glance.lua" 143L, 6754B
+21 fewer lines
+"lua/plugins/glance.lua" 121L, 5422B
+11 lines yanked
+"lua/plugins/glance.lua" 133L, 6007B
+"lua/plugins/glance.lua" 133L, 6006B
+135 lines yanked
+"~/.config/nvim/lua/plugins/lsp.txt" 137L, 62231B

@@ -83,16 +83,20 @@ return {
                 },
             },
             hooks = {
-                before_open = function(results, open, jump, _)
-                    vim.cmd("normal! m'")
-                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { link = "MyGlancePreviewBeforeContextLine" })
-                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { link = "MyGlancePreviewBeforeContext" })
-                    if #results == 2 then
-                        jump(results[2]) -- argument is optional
-                    elseif #results == 1 then
-                        print("no reference")
+                before_open = function(result, open, jump, _)
+                    local lnum = vim.api.nvim_win_get_cursor(0)[1]
+                    local locations = {}
+                    if #result == 2 then
+                        locations = vim.tbl_filter(function(v)
+                            return not (v.range.start.line + 1 == lnum)
+                        end, vim.F.if_nil(result, {}))
+                        vim.cmd("normal! m'")
+                        jump(locations[1])
                     else
-                        open(results) -- argument is optional
+                        vim.cmd("normal! m'")
+                        open(result) -- argument is optional
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "t", true)
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
                 before_close = function()

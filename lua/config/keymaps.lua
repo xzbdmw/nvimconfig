@@ -216,7 +216,6 @@ keymap({ "n", "i" }, "<D-w>", function()
         vim.cmd("close")
     end
 end)
-
 keymap({ "n" }, "<leader>w", function()
     local nvimtree_present = false
     -- 遍历所有窗口
