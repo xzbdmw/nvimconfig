@@ -14,7 +14,12 @@ del("n", "<leader>w|")
 del("n", "<leader>qq")
 -- del({ "n", "x" }, "<space>wÞ")
 -- del({ "n", "x" }, "<space>qÞ")
-
+-- keymap({ "v", "i" }, "<C-5>", function()
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, false, true), "n", true)
+--     -- require("luasnip").jump(1)
+--
+--     -- return "<C-n>"
+-- end)
 keymap("n", "D", "d$", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "v" }, "L", "$", opts)
@@ -24,7 +29,6 @@ keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_s
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("n", "U", "<C-r>", opts)
-keymap("i", "<C-d>", "<C-w>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap({ "n", "v" }, "c", '"_c', opts)
@@ -149,8 +153,45 @@ keymap("n", "<Tab>", function()
         require("ufo").peekFoldedLinesUnderCursor()
     end
 end, { desc = "swicth window" })
-keymap("i", "<C-e>", "<esc>A", opts)
+keymap("i", "<CR>", function()
+    local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
+    ---@diagnostic disable-next-line: param-type-mismatch
+    local char = vim.fn.getline("."):sub(col, col)
+    if col > 0 and (char == "{" or char == "(") then
+        return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
+    else
+        return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
+    end
+end, { expr = true })
+
+keymap("i", "<bs>", function()
+    local pairs = {
+        ['"'] = '"',
+        ["'"] = "'",
+        ["["] = "]",
+        ["{"] = "}",
+        ["("] = ")",
+        ["<"] = ">",
+    }
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    row = row - 1 -- Lua中的索引从1开始，而API使用的是从0开始的索引
+    local line = vim.api.nvim_get_current_line()
+    local before = line:sub(col, col) -- 获取光标前的字符
+    local after = line:sub(col + 1, col + 1) -- 获取光标后的字符
+    if pairs[before] and pairs[before] == after then -- 检查前后是否为双引号
+        return "<right><C-g>u<bs><bs>"
+    else
+        return "<C-g>u<bs>"
+    end
+end, { expr = true })
+keymap("i", "<C-d>", "<C-g>u<C-w>", opts)
+keymap("i", "<C-u>", "<C-g>u<C-u>", opts)
+keymap("i", ".", "<C-g>u.", opts)
+keymap("i", ",", "<C-g>u,", opts)
 keymap("i", "<C-CR>", "<CR>", opts)
+
+keymap("i", "<C-e>", "<esc>A", opts)
+-- keymap("i", "<C-CR>", "<CR>", opts)
 keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
@@ -288,7 +329,7 @@ end, opts)
 keymap("i", "<D-v>", "<C-r>1", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 keymap("n", "<D-z>", "u", opts)
-keymap("i", "<D-z>", "<Esc>u", opts)
+keymap("i", "<D-z>", "<C-o>u", opts)
 keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<M-w>", "<c-w>", opts)

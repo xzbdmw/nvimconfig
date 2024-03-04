@@ -62,6 +62,14 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
+                --[[ ["<S-CR>"] = cmp.mapping(function()
+                    require("luasnip").jump(1)
+                    vim.api.nvim_feedkeys(
+                        vim.api.nvim_replace_termcodes("<Del><cmd>write<CR>o", true, false, true),
+                        "t",
+                        true
+                    )
+                end), ]]
                 ["<space>"] = cmp.mapping(function(fallback)
                     if cmp.visible then
                         cmp.abort()

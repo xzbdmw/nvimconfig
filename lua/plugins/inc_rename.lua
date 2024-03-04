@@ -10,7 +10,7 @@ return {
                 return ":IncRename "
             end,
             expr = true,
-            mode = { "v" },
+            mode = { "x" },
         },
     },
 
