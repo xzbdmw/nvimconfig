@@ -39,10 +39,12 @@ return {
                 Directory = { link = "Comment" },
                 MatchParen = { fg = "#000000", style = "italic" },
                 AerialLine = { link = "NvimTreeCursorLine" },
+                -- I have the same problem and more
                 AerialGuide = { link = "Comment" },
                 TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },
                 lspFloatWinNormal = { bg = "#F4F1E9" },
                 Normal = { fg = "#000000", bg = "#FAF7E8" },
+                -- Normal = { fg = "#3B3B3C", bg = "#ffffff" },
                 TelscopeNormal = { fg = "#000000" },
                 Comment = { fg = "#7E7D7D" },
                 Ufo = { link = "MyNormalDocFloat" },

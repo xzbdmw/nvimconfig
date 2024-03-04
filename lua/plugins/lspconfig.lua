@@ -58,6 +58,7 @@ return {
                     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
                     vim.cmd("Lspsaga code_action")
                 end,
+                mode = { "n", "v" },
                 desc = "Code Action",
                 has = "codeAction",
             }

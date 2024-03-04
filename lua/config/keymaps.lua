@@ -149,7 +149,7 @@ keymap("n", "<Tab>", function()
 end, { desc = "swicth window" })
 keymap("i", "<C-e>", "<esc>A", opts)
 keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
-keymap("", "<d-a>", "ggvG", opts)
+keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local nvimtree_present = false
     local aerial_present = false
@@ -289,12 +289,10 @@ keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<Esc>u", opts)
 keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
+keymap("n", "<M-w>", "<c-w>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 
---mini.ai
-keymap("v", "iq", 'i"', opts)
-keymap("v", "aq", 'a"', opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })

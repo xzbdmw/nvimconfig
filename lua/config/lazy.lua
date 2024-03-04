@@ -43,7 +43,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+
+--[[ vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
         if vim.bo.filetype == "fzf" then
@@ -52,9 +53,9 @@ vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
             vim.cmd.mkview({ mods = { emsg_silent = true } })
         end
     end,
-})
+}) ]]
 
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+--[[ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     pattern = "*",
     callback = function()
         if vim.bo.filetype == "fzf" then
@@ -63,7 +64,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
             vim.cmd.loadview({ mods = { emsg_silent = true } })
         end
     end,
-})
+}) ]]
 
 -- vim.cmd([[
 -- augroup remember_folds
