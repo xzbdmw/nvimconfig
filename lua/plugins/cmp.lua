@@ -118,10 +118,7 @@ return {
                         fallback()
                     end
                 end),
-                -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                ["<CR>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
             }),
             sources = cmp.config.sources({
                 -- { name = "nvim_lsp", trigger_characters = { "&", ":" } },
@@ -226,13 +223,10 @@ return {
                     end
                 end, { "i", "s" }), ]]
 
-                ["<CR>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                -- ["<CR>"] = cmp.mapping({
-                --     i = cmp.mapping.confirm({ select = true }),
-                --     c = cmp.mapping.confirm({ select = false }),
-                -- }),
+                ["<CR>"] = cmp.mapping({
+                    i = cmp.mapping.confirm({ select = true }),
+                    c = cmp.mapping.confirm({ select = false }),
+                }),
                 ["<Down>"] = {
                     c = function(fallback)
                         if cmp.visible() then

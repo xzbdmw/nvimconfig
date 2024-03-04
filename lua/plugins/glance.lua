@@ -22,6 +22,29 @@ return {
             id = vim.api.nvim_buf_set_extmark(0, namespace, lnum - 1, 0, { virt_lines = place_holder })
             open(results)
         end ]]
+
+        local function openFileAtSamePosition()
+            -- 获取当前光标位置
+            local cursor = vim.api.nvim_win_get_cursor(0)
+            local lnum = cursor[1]
+            local col = cursor[2]
+
+            -- 获取当前编辑的文件名
+            local filename = vim.fn.expand("%:p")
+
+            -- 关闭当前窗口
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("q", true, false, true), "t", true)
+            local uri = vim.uri_from_fname(filename)
+            local bufnr = vim.uri_to_bufnr(uri)
+            vim.schedule(function()
+                vim.api.nvim_win_set_buf(0, bufnr)
+            end)
+            -- 重新打开文件，并跳转到相同的位置
+            -- 需要延迟执行，因为立即打开文件可能会因为窗口关闭操作而出现问题
+            vim.schedule(function()
+                vim.api.nvim_win_set_cursor(0, { lnum, col })
+            end)
+        end
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,
@@ -44,7 +67,7 @@ return {
                 bottom_char = "―",
             },
             list = {
-                position = "left", -- Position of the list window 'left'|'right'
+                position = "right", -- Position of the list window 'left'|'right'
                 -- width = 0.19, -- 33% width relative to the active window, min 0.1, max 0.5
                 width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
             },
@@ -58,7 +81,6 @@ return {
                     ["k"] = actions.previous, -- Bring the cursor to the previous item in the list
                     ["<Down>"] = actions.next,
                     ["<Up>"] = actions.previous,
-                    ["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
                     ["<C-u>"] = actions.preview_scroll_win(5),
                     ["<C-d>"] = actions.preview_scroll_win(-5),
                     ["v"] = actions.jump_vsplit,
@@ -76,6 +98,9 @@ return {
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
+                    ["<C-CR>"] = function()
+                        openFileAtSamePosition()
+                    end,
                     ["q"] = actions.close,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
