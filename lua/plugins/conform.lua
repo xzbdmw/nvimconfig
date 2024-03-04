@@ -14,6 +14,7 @@ return {
                 fish = { "fish_indent" },
                 sh = { "shfmt" },
                 json = { "fixjson" },
+                python = { "ruff-lsp" },
             },
             -- The options you set here will be merged with the builtin formatters.
             -- You can also define any custom formatters here.

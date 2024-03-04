@@ -76,6 +76,19 @@ return {
             "<C-p>",
             function()
                 require("telescope").extensions["neovim-project"].history({
+                    --[[ attach_mappings = function(_, map)
+                        map("i", "<C-d>", function(_prompt_bufnr)
+                            print("You typed asdf")
+                        end)
+
+                        map({ "i", "n" }, "<C-r>", function(_prompt_bufnr)
+                            print("You typed <C-r>")
+                        end, { desc = "desc for which key" })
+
+                        -- needs to return true if you want to map default_mappings and
+                        -- false if not
+                        return true
+                    end, ]]
                     layout_strategy = "horizontal",
                     layout_config = {
                         horizontal = {
@@ -207,6 +220,16 @@ return {
                 },
                 mappings = {
                     i = {
+                        ["<C-d>"] = function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>", true, false, true), "t", true)
+                        end,
+                        ["<C-u>"] = function()
+                            vim.api.nvim_feedkeys(
+                                vim.api.nvim_replace_termcodes("<C-CR>", true, false, true),
+                                "t",
+                                true
+                            )
+                        end,
                         ["<CR>"] = function()
                             vim.cmd([[:stopinsert]])
                             vim.cmd([[call feedkeys("\<CR>")]])
@@ -219,7 +242,7 @@ return {
                         ["<C-=>"] = actions.preview_scrolling_right,
                         ["<D-v>"] = function()
                             vim.api.nvim_feedkeys(
-                                vim.api.nvim_replace_termcodes("<C-r>+", true, false, true),
+                                vim.api.nvim_replace_termcodes("<C-r>1", true, false, true),
                                 "t",
                                 true
                             )
@@ -230,7 +253,6 @@ return {
                     },
                     n = {
                         ["<esc>"] = actions.close,
-                        ["<C-e>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,
                         ["<C-->"] = actions.preview_scrolling_left,

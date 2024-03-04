@@ -108,7 +108,7 @@ return {
             },
             indent_lines = {
                 enable = true,
-                icon = "|",
+                icon = " ",
             },
             winbar = {
                 enable = true, -- Available strating from nvim-0.8+

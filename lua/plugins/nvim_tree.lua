@@ -73,7 +73,7 @@ return {
                 git_clean = false,
                 no_buffer = false,
                 no_bookmark = false,
-                custom = { ".idea", ".gitignore", ".git", ".luarc.json" },
+                custom = { "__pycache__", ".idea", ".gitignore", ".git", ".luarc.json" },
                 exclude = {},
             },
             on_attach = my_on_attach,

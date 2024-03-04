@@ -211,6 +211,10 @@ return {
                             },
                             staticcheck = false,
                         },
+                        -- init_options = {
+                        --     usePlaceholders = true,
+                        --     completeFunctionCalls = true,
+                        -- },
                     },
                 },
             },

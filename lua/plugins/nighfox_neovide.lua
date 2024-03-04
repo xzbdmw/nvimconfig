@@ -156,7 +156,7 @@ return {
                 CmpItemKindReference = { fg = "#000000", bg = "#D4BB6C" },
                 CmpItemKindFunction = { fg = "#000000", bg = "#A377BF" },
                 CmpItemKindStruct = { fg = "#000000", bg = "#B5585F" },
-                CmpItemKindClass = { fg = "#000000", bg = "#A377BF" },
+                CmpItemKindClass = { fg = "#000000", bg = "#B5585F" },
                 CmpItemKindModule = { fg = "#000000", bg = "#D4BB6C" },
                 CmpItemKindOperator = { fg = "#000000", bg = "#A377BF" },
                 CmpItemKindVariable = { fg = "#000000", bg = "#7E8294" },
