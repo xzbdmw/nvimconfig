@@ -40,12 +40,12 @@ return {
 
         -- Print var
 
-        vim.keymap.set({ "x", "n" }, "<leader>rv", function()
+        vim.keymap.set({ "x", "n" }, "<leader>vp", function()
             require("refactoring").debug.print_var()
         end)
         -- Supports both visual and normal mode
 
-        vim.keymap.set("n", "<leader>rc", function()
+        vim.keymap.set("n", "<leader>vc", function()
             require("refactoring").debug.cleanup({})
         end)
         -- Supports only normal mode

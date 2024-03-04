@@ -17,6 +17,8 @@ del("n", "<leader>qq")
 
 keymap("n", "D", "d$", opts)
 keymap("n", "Q", "qa", opts)
+keymap({ "n", "v" }, "L", "$", opts)
+keymap({ "n", "v" }, "H", "^", opts)
 keymap("n", "q", "<Nop>", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")

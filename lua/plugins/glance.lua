@@ -113,6 +113,7 @@ return {
                     ["q"] = actions.close,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
+                    ["<C-f>"] = actions.enter_win("list"),
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
                 },
             },
