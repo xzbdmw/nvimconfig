@@ -12,14 +12,14 @@ del("t", "<esc><esc>")
 del("n", "<leader>fn")
 del("n", "<leader>w|")
 del("n", "<leader>qq")
--- del({ "n", "x" }, "<space>wÞ")
--- del({ "n", "x" }, "<space>qÞ")
--- keymap({ "v", "i" }, "<C-5>", function()
---     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, false, true), "n", true)
---     -- require("luasnip").jump(1)
---
---     -- return "<C-n>"
--- end)
+--[[ del({ "n", "x" }, "<space>wÞ")
+del({ "n", "x" }, "<space>qÞ")
+keymap({ "v", "i" }, "<C-5>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, false, true), "n", true)
+    -- require("luasnip").jump(1)
+
+    -- return "<C-n>"
+end) ]]
 keymap("n", "D", "d$", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "v" }, "L", "$", opts)
@@ -165,7 +165,7 @@ keymap("i", "<CR>", function()
     end
 end, { expr = true })
 
-keymap("i", "<bs>", function()
+--[[ keymap("i", "<bs>", function()
     local pairs = {
         ['"'] = '"',
         ["'"] = "'",
@@ -184,7 +184,7 @@ keymap("i", "<bs>", function()
     else
         return "<C-g>u<bs>"
     end
-end, { expr = true })
+end, { expr = true }) ]]
 keymap("i", "<C-d>", "<C-g>u<C-w>", opts)
 keymap("i", "<C-u>", "<C-g>u<C-u>", opts)
 keymap("i", ".", "<C-g>u.", opts)
@@ -275,7 +275,6 @@ keymap({ "n" }, "<leader>w", function()
             break
         end
     end
-
     -- 如果窗口数量为 1 或者任意窗口包含 NvimTree
     local win_amount = get_non_float_win_count()
     if win_amount == 1 or (nvimtree_present and win_amount == 2) then
