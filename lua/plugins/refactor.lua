@@ -42,10 +42,13 @@ return {
 
         vim.keymap.set({ "x", "n" }, "<leader>vp", function()
             require("refactoring").debug.print_var()
+            -- vim.schedule(function()
+            --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
+            -- end)
         end)
         -- Supports both visual and normal mode
 
-        vim.keymap.set("n", "<leader>vc", function()
+        vim.keymap.set("n", "<leader>cc", function()
             require("refactoring").debug.cleanup({})
         end)
         -- Supports only normal mode
