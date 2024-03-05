@@ -1,5 +1,6 @@
 return {
     "ray-x/lsp_signature.nvim",
+    enabled = false,
     dependencies = {
         "RRethy/vim-illuminate",
     },

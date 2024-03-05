@@ -6,8 +6,8 @@ return {
         sign_priority = 8, -- sign priority
         -- keywords recognized as todo comments
         keywords = {
-            DEBUG_VAR = { icon = "󰄛 ", color = "info" },
-            DEBUG_FUN = { icon = "󰡱 ", color = "default" },
+            VAR = { icon = "󰄛 ", color = "info" },
+            FUN = { icon = "󰡱 ", color = "default" },
             FIX = {
                 icon = " ", -- icon used for the sign, and in search results
                 color = "error", -- can be a hex color, or a named color (see below)
@@ -35,7 +35,7 @@ return {
             multiline_pattern = "^.", -- lua pattern to match the next multiline from the start of the matched keyword
             multiline_context = 10, -- extra lines that will be re-evaluated when changing a line
             before = "", -- "fg" or "bg" or empty
-            keyword = "bg", -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
+            keyword = "fg", -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
             after = "fg", -- "fg" or "bg" or empty
             pattern = [[(KEYWORDS)\s*]],
             comments_only = true, -- uses treesitter to match keywords in comments only

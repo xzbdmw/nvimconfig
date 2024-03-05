@@ -113,7 +113,6 @@ keymap("n", "<Tab>", function()
                     then
                         -- change flag to indicate that we have change current_win, so no need to cycle
                         flag = true
-                        print(vim.inspect(win_config))
                         vim.api.nvim_set_current_win(win)
                     end
                     break
@@ -354,11 +353,16 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
---[[ keymap("n", "<leader>d", function()
-    -- local def_or_ref = require("custom.definitions")
-    local def_or_ref = require("custom.definition-or-references.main")
+
+keymap("x", "<bs>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)
+end, opts)
+
+keymap("n", "<leader>d", function()
+    local def_or_ref = require("custom.definitions")
+    -- local def_or_ref = require("custom.definition-or-references.main")
     def_or_ref.definition_or_references()
-end) ]]
+end)
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
     for _, win in pairs(vim.api.nvim_list_wins()) do

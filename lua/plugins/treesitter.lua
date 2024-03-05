@@ -51,9 +51,10 @@ return {
         disable = function(_, bufnr) -- Disable in files with more than 5K
             return vim.api.nvim_buf_line_count(bufnr) > 5000
         end,
-        highlight = { enable = true, disable = { "markdown", "javascript" } },
+        highlight = { enable = true, disable = { "markdown" } },
         indent = { enable = true },
         ensure_installed = {
+            "vue",
             "java",
             "bash",
             "c",
@@ -78,12 +79,12 @@ return {
             "yaml",
         },
         incremental_selection = {
-            enable = false,
+            enable = true,
             keymaps = {
-                init_selection = "v",
-                node_incremental = "v",
-                scope_incremental = "<S-CR>",
-                -- node_decremental = "<BS>",
+                init_selection = "<CR>",
+                node_incremental = "<CR>",
+                -- scope_incremental = "<S-CR>",
+                node_decremental = "<C-d>",
             },
         },
         textobjects = {

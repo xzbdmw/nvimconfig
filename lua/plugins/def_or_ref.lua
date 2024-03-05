@@ -40,6 +40,7 @@ end
 return {
     "xzbdmw/definition-or-references.nvim",
     lazy = false,
+    enabled = false,
     keys = {
         {
             "<leader>d",
@@ -49,7 +50,7 @@ return {
         },
     },
     opts = {
-        notify_options = false,
+        notify_options = true,
         on_references_result = function()
             vim.cmd("Glance references")
         end,

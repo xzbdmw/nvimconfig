@@ -107,6 +107,10 @@ return {
             },
             inlay_hints = { enabled = false },
             servers = {
+                volar = {
+                    enabled = true,
+                    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+                },
                 pylance = {
                     settings = {
                         python = {
@@ -189,7 +193,7 @@ return {
                         },
                     },
                 }, ]]
-                tsserver = { enabled = false },
+                tsserver = { enabled = true },
                 gopls = {
                     settings = {
                         gopls = {

@@ -24,8 +24,6 @@ return {
         end ]]
         local function closeIfNormal()
             local mode = vim.api.nvim_get_mode()
-            -- __AUTO_GENERATED_PRINT_VAR_START__
-            print([==[function#closeIfNormal mode:]==], vim.inspect(mode)) -- __AUTO_GENERATED_PRINT_VAR_END__
             if mode.mode == "n" then
                 actions.close()
             else
@@ -108,7 +106,7 @@ return {
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
-                    ["<C-CR>"] = openFileAtSamePosition,
+                    ["<CR>"] = openFileAtSamePosition,
                     ["<esc>"] = closeIfNormal,
                     ["q"] = actions.close,
                     ["n"] = actions.next_location,
@@ -121,6 +119,10 @@ return {
                 before_open = function(result, open, jump, _)
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
+                    if #result == 1 then
+                        print("no reference")
+                        return
+                    end
                     if #result == 2 then
                         locations = vim.tbl_filter(function(v)
                             return not (v.range.start.line + 1 == lnum)

@@ -185,15 +185,6 @@ api.nvim_create_user_command("Ut", function()
     setUndotreeWinSize()
 end, { desc = "load undotree" })
 
-local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-vim.api.nvim_create_autocmd({ "User" }, {
-    pattern = "SessionLoadPost",
-    group = config_group,
-    callback = function()
-        require("nvim-tree.api").tree.toggle({ focus = false })
-    end,
-})
-
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     callback = function()
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
