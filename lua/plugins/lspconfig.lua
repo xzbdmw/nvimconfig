@@ -108,8 +108,16 @@ return {
             inlay_hints = { enabled = false },
             servers = {
                 volar = {
-                    enabled = true,
-                    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+                    init_options = {
+                        typescript = {
+                            tsdk = "/Users/xzb/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib",
+
+                            -- /Users/xzb/.local/share/nvim/mason/packages/vetur-vls/node_modules/vls/node_modules/typescript/lib/lib.es5.d.ts
+                            -- Alternative location if installed as root:
+                            -- tsdk = '/usr/local/lib/node_modules/typescript/lib'
+                        },
+                    },
+                    -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
                 },
                 pylance = {
                     settings = {
@@ -193,7 +201,24 @@ return {
                         },
                     },
                 }, ]]
-                tsserver = { enabled = true },
+                tsserver = {
+                    enabled = false,
+                    -- cmd = lsp_containers.command("tsserver"),
+                    init_options = {
+                        plugins = {
+                            {
+                                name = "@vue/typescript-plugin",
+                                location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
+                                languages = { "typescript", "vue" },
+                            },
+                        },
+                    },
+                    filetypes = {
+                        "javascript",
+                        "typescript",
+                        "vue",
+                    },
+                },
                 gopls = {
                     settings = {
                         gopls = {

@@ -14,6 +14,9 @@ return {
                 fish = { "fish_indent" },
                 sh = { "shfmt" },
                 json = { "fixjson" },
+                vue = { "prettier" },
+                -- javascript = { "prettier" },
+                -- typescript = { "prettier" },
                 python = { "ruff-lsp" },
             },
             -- The options you set here will be merged with the builtin formatters.

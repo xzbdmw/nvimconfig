@@ -93,8 +93,8 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "v", "n" }),
-                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                -- ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                -- ["<C-f>"] = cmp.mapping.scroll_docs(4),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
@@ -278,6 +278,7 @@ return {
                 { name = "path" },
             }),
         })
+
         require("cmp").setup(opts)
         --[[ local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
         -- Setup lspconfig.
