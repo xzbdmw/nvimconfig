@@ -202,17 +202,17 @@ return {
                     },
                 }, ]]
                 tsserver = {
-                    enabled = false,
+                    enabled = true,
                     -- cmd = lsp_containers.command("tsserver"),
-                    init_options = {
-                        plugins = {
-                            {
-                                name = "@vue/typescript-plugin",
-                                location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
-                                languages = { "typescript", "vue" },
-                            },
-                        },
-                    },
+                    -- init_options = {
+                    --     plugins = {
+                    --         {
+                    --             name = "@vue/typescript-plugin",
+                    --             location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
+                    --             languages = { "typescript", "vue" },
+                    --         },
+                    --     },
+                    -- },
                     filetypes = {
                         "javascript",
                         "typescript",

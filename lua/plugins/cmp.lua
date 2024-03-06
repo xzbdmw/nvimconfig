@@ -1,5 +1,6 @@
 return {
     "hrsh7th/nvim-cmp",
+    -- enabled = false,
     version = false, -- last release is way too old
     event = "VeryLazy",
     keys = { { "<C-n>", false } },
@@ -50,11 +51,11 @@ return {
             },
             performance = {
                 debounce = 1,
-                throttle = 0,
+                throttle = 1,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
-                async_budget = 1,
-                max_view_entries = 200,
+                -- async_budget = 1,
+                max_view_entries = 30,
             },
             snippet = {
                 expand = function(args)
@@ -133,7 +134,7 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                { name = "buffer", keyword_length = 2 },
+                -- { name = "buffer", keyword_length = 2 },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
@@ -154,6 +155,7 @@ return {
                 ghost_text = {
                     hl_group = "CmpGhostText",
                 },
+                -- ghost_text = false,
             },
             sorting = {
                 compare.order,

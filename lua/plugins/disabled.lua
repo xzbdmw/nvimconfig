@@ -23,7 +23,7 @@ return {
     -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
     { "echasnovski/mini.pairs", enabled = false },
     { "shellRaining/hlchunk.nvim", enabled = false },
-    { "neoclide/coc.nvim", enabled = false },
+    -- { "neoclide/coc.nvim", enabled = false },
     { "folke/neodev.nvim", enabled = false },
     { "folke/neoconf.nvim", enabled = false },
     -- { "barbecue", enabled = false },

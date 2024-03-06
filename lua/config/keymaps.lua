@@ -184,6 +184,9 @@ end, { expr = true })
         return "<C-g>u<bs>"
     end
 end, { expr = true }) ]]
+keymap("c", "<C-d>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>", true, false, true), "t", true)
+end, opts)
 keymap("i", "<C-d>", "<C-g>u<C-w>", opts)
 keymap("i", "<C-u>", "<C-g>u<C-u>", opts)
 keymap("i", ".", "<C-g>u.", opts)
