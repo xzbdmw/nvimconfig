@@ -38,8 +38,8 @@ return {
         local function closeIfNormal()
             local mode = vim.api.nvim_get_mode()
             if mode.mode == "n" then
-                vim.cmd("TSContextToggle")
-                vim.defer_fn(actions.close, 1)
+                -- vim.cmd("TSContextToggle")
+                actions.close()
             else
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
             end
@@ -126,7 +126,7 @@ return {
                 preview = {
                     ["<CR>"] = openFileAtSamePosition,
                     ["<esc>"] = closeIfNormal,
-                    ["q"] = close_with_q,
+                    ["q"] = actions.close,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
@@ -135,10 +135,10 @@ return {
             },
             hooks = {
                 before_open = function(result, open, jump, _)
-                    ts_enabled_or_not()
-                    if ts_enabled == false then
-                        vim.cmd("TSContextEnable")
-                    end
+                    -- ts_enabled_or_not()
+                    -- if ts_enabled == false then
+                    --     vim.cmd("TSContextEnable")
+                    -- end
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
                     if result ~= nil and result[1].range == nil then
@@ -164,9 +164,9 @@ return {
                     end
                 end,
                 before_close = function()
-                    if ts_enabled ~= true then
-                        vim.cmd("TSContextDisable")
-                    end
+                    -- if ts_enabled ~= true then
+                    --     vim.cmd("TSContextDisable")
+                    -- end
                 end,
             },
             folds = {
