@@ -97,9 +97,9 @@ return {
                         hl_group = "Unvisited",
                         priority = 1,
                     },
-                    --[[ visited = {
-                    hl_group = "Unvisited",
-                }, ]]
+                    -- visited = {
+                    --     hl_group = "Unvisited",
+                    -- },
                 },
                 -- Add this to also have a placeholder in the final tabstop.
                 -- See the discussion below for more context.

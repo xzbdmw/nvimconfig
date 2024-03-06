@@ -33,6 +33,7 @@ return {
             all = {
                 NormalNC = { link = "Normal" },
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
+                -- NoiceCmdlinePopupBorder = { fg = "#ff0000" },
                 LspInlayHint = { fg = "#595655", bg = "none" },
                 illuminatedwordwrite = { link = "Visual" },
                 MiniIndentscopeSymbol = { link = "Comment" },
