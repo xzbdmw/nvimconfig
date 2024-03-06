@@ -41,6 +41,13 @@ return {
                 mode = { "x", "v", "n", "i" },
             }
             keys[#keys + 1] = {
+                "gi",
+                function()
+                    vim.cmd("Glance implementations")
+                end,
+                mode = { "x", "v", "n", "i" },
+            }
+            keys[#keys + 1] = {
                 "<C-a>",
                 function()
                     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)

@@ -22,13 +22,31 @@ return {
             id = vim.api.nvim_buf_set_extmark(0, namespace, lnum - 1, 0, { virt_lines = place_holder })
             open(results)
         end ]]
+        local ts_enabled = false
+        local function ts_enabled_or_not()
+            for _, win in pairs(vim.api.nvim_list_wins()) do
+                local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+                if success then
+                    -- print(vim.inspect(win_config))
+                    if win_config.relative ~= "" and win_config.zindex == 20 then
+                        ts_enabled = true
+                        return
+                    end
+                end
+            end
+        end
         local function closeIfNormal()
             local mode = vim.api.nvim_get_mode()
             if mode.mode == "n" then
-                actions.close()
+                vim.cmd("TSContextToggle")
+                vim.defer_fn(actions.close, 1)
             else
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
             end
+        end
+        local function close_with_q()
+            vim.cmd("TSContextToggle")
+            vim.defer_fn(actions.close, 1)
         end
         local function openFileAtSamePosition()
             -- 获取当前光标位置
@@ -77,7 +95,7 @@ return {
             list = {
                 position = "right", -- Position of the list window 'left'|'right'
                 -- width = 0.19, -- 33% width relative to the active window, min 0.1, max 0.5
-                width = 0.24, -- 33% width relative to the active window, min 0.1, max 0.5
+                width = 0.25, -- 33% width relative to the active window, min 0.1, max 0.5
             },
             theme = { -- This feature might not work properly in nvim-0.7.2
                 enable = false, -- Will generate colors for the plugin based on your current colorscheme
@@ -108,7 +126,7 @@ return {
                 preview = {
                     ["<CR>"] = openFileAtSamePosition,
                     ["<esc>"] = closeIfNormal,
-                    ["q"] = actions.close,
+                    ["q"] = close_with_q,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
@@ -117,8 +135,17 @@ return {
             },
             hooks = {
                 before_open = function(result, open, jump, _)
+                    ts_enabled_or_not()
+                    if ts_enabled == false then
+                        vim.cmd("TSContextEnable")
+                    end
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
+                    if result ~= nil and result[1].range == nil then
+                        open(result)
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
+                        return
+                    end
                     if #result == 1 then
                         print("no reference")
                         return
@@ -137,15 +164,15 @@ return {
                     end
                 end,
                 before_close = function()
-                    -- vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { link = "MyGlancePreviewAfterContextLine" })
-                    -- vim.api.nvim_set_hl(0, "TreesitterContext", { link = "MyGlancePreviewAfterContext" })
-                    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#faf7e8" })
+                    if ts_enabled ~= true then
+                        vim.cmd("TSContextDisable")
+                    end
                 end,
             },
             folds = {
                 fold_closed = ">",
                 fold_open = "󱞩",
-                folded = true, -- Automatically fold list on startup
+                folded = false, -- Automatically fold list on startup
             },
             indent_lines = {
                 enable = true,

@@ -216,7 +216,7 @@ return {
                         height = 0.9,
                         preview_cutoff = 0,
                         prompt_position = "top",
-                        preview_width = 0.7,
+                        preview_width = 0.65,
                     },
                 },
                 --[[ layout_config = {
@@ -230,6 +230,7 @@ return {
                 }, ]]
                 mappings = {
                     i = {
+                        ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                         ["<C-d>"] = function()
                             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>", true, false, true), "t", true)
                         end,
@@ -262,6 +263,7 @@ return {
                         end,
                     },
                     n = {
+                        ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                         ["<esc>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,
@@ -281,9 +283,10 @@ return {
                     layout_strategy = "vertical",
                     trim_text = true,
                     reuse_win = true,
+                    previewer = false,
                     layout_config = {
                         vertical = {
-                            width = 0.8,
+                            width = 0.6,
                             height = 0.9,
                             preview_cutoff = 0,
                             prompt_position = "top",

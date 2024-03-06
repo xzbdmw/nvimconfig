@@ -33,7 +33,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:Normal",
                 }),
                 documentation = cmp.config.window.bordered({
                     border = "none",
@@ -42,6 +42,7 @@ return {
                     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
                 }),
             },
+
             completion = {
                 -- autocomplete = { require("cmp.types").cmp.TriggerEvent.InsertEnter },
                 completeopt = "menu,menuone,noinsert",
@@ -50,12 +51,12 @@ return {
                 entries = { name = "custom", selection_order = "near_cursor" },
             },
             performance = {
-                debounce = 1,
-                throttle = 1,
+                debounce = 0,
+                throttle = 5,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 -- async_budget = 1,
-                max_view_entries = 30,
+                max_view_entries = 7,
             },
             snippet = {
                 expand = function(args)

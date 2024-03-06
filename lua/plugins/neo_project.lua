@@ -7,6 +7,8 @@ return {
             "~/Project/rust/*",
             "~/Project/vim/*",
             "~/Project/Go/*",
+
+            "/Users/xzb/.local/share/nvim/lazy/*",
             "~/Project/java/*",
             "~/Project/Typescript/*",
             "~/Project/Python/*",

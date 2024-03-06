@@ -5,6 +5,12 @@ local methods = {
         cancel_function = nil,
         result = nil,
     },
+    implementation = {
+        name = "textDocument/implementation",
+        is_pending = false,
+        cancel_function = nil,
+        result = nil,
+    },
     references = {
         name = "textDocument/references",
         is_pending = false,
@@ -31,29 +37,96 @@ local function clear_definitions()
     methods.definitions.result = nil
 end
 
-local function cursor_not_on_result(bufnr, cursor, result)
+local function deep_compare(tbl1, tbl2)
+    if tbl1 == tbl2 then
+        return true
+    elseif type(tbl1) == "table" and type(tbl2) == "table" then
+        for key1, value1 in pairs(tbl1) do
+            local value2 = tbl2[key1]
+
+            if value2 == nil then
+                -- avoid the type call for missing keys in tbl2 by directly comparing with nil
+                return false
+            elseif value1 ~= value2 then
+                if type(value1) == "table" and type(value2) == "table" then
+                    if not deep_compare(value1, value2) then
+                        return false
+                    end
+                else
+                    return false
+                end
+            end
+        end
+
+        -- check for missing keys in tbl1
+        for key2, _ in pairs(tbl2) do
+            if tbl1[key2] == nil then
+                return false
+            end
+        end
+
+        return true
+    end
+
+    return false
+end
+local function cursor_not_on_result(_, _, result)
     if result == nil then
         return true
     end
-    local target_uri = result.targetUri or result.uri
-    local target_range = result.targetRange or result.range
-
-    local target_bufnr = vim.uri_to_bufnr(target_uri)
-    local target_row_start = target_range.start.line + 1
-    local target_row_end = target_range["end"].line + 1
-    local target_col_start = target_range.start.character + 1
-    local target_col_end = target_range["end"].character + 1
-
-    local current_bufnr = bufnr
-    local current_range = cursor
-    local current_row = current_range[1]
-    local current_col = current_range[2] + 1 -- +1 because if cursor highlights first character its a column behind
-
-    return target_bufnr ~= current_bufnr
-        or current_row < target_row_start
-        or current_row > target_row_end
-        or (current_row == target_row_start and current_col < target_col_start)
-        or (current_row == target_row_end and current_col > target_col_end)
+    if deep_compare(result.originSelectionRange, result.targetSelectionRange) then
+        return false
+    else
+        return true
+    end
+    -- local target_uri = result.targetUri or result.uri
+    -- local target_range = result.targetRange or result.range
+    -- -- VAR
+    -- print([==[cursor_not_on_result target_range:]==], vim.inspect(target_range)) -- VAR
+    --
+    -- -- local target_bufnr = vim.uri_to_bufnr(target_uri)
+    -- local target_row_start = target_range.start.line + 1
+    -- -- VAR
+    -- print([==[cursor_not_on_result target_row_start:]==], vim.inspect(target_row_start)) -- VAR
+    -- -- local target_row_end = target_range["end"].line + 1
+    -- -- local target_col_start = target_range.start.character + 1
+    -- -- local target_col_end = target_range["end"].character + 1
+    --
+    -- -- local current_bufnr = bufnr
+    -- local current_range = cursor
+    -- -- VAR
+    -- print([==[cursor_not_on_result current_range:]==], vim.inspect(current_range)) -- VAR
+    -- local current_row = current_range[1]
+    -- -- VAR
+    -- print([==[cursor_not_on_result current_row:]==], vim.inspect(current_row)) -- VAR
+    -- -- local current_col = current_range[2] + 1 -- +1 because if cursor highlights first character its a column behind
+    --
+    -- -- cursor_not_on_result target_uri: "file:///Users/xzb/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/raw_vec.rs"
+    -- -- cursor_not_on_result target_range: {
+    -- --   ["end"] = {
+    -- --     character = 1,
+    -- --     line = 384
+    -- --   },
+    -- --   start = {
+    -- --     character = 0,
+    -- --     line = 118
+    -- --   }
+    -- -- }
+    -- -- cursor_not_on_result target_bufnr: 67
+    -- -- cursor_not_on_result target_row_start: 119
+    -- -- cursor_not_on_result target_row_end: 385
+    -- -- cursor_not_on_result target_col_start: 1
+    -- -- cursor_not_on_result target_col_end: 2
+    -- -- cursor_not_on_result current_bufnr: 67
+    -- -- cursor_not_on_result current_range: { 145, 8 }
+    -- -- cursor_not_on_result current_row: 145
+    -- -- cursor_not_on_result current_col: 9
+    -- -- return target_bufnr ~= current_bufnr
+    -- --     or current_row < target_row_start
+    -- --     or current_row > target_row_end
+    -- --     or (current_row == target_row_start and current_col < target_col_start)
+    -- --     or (current_row == target_row_end and current_col > target_col_end)
+    -- return current_row ~= target_row_start + 1
 end
 
 local function make_params()
@@ -65,7 +138,7 @@ end
 local function definitions()
     local current_cursor = vim.api.nvim_win_get_cursor(0)
     local current_bufnr = vim.fn.bufnr("%")
-    vim.lsp.buf_request(0, methods.definitions.name, make_params(), function(err, result, context, _)
+    vim.lsp.buf_request(0, methods.definitions.name, make_params(), function(_, result, context, _)
         methods.definitions.is_pending = false
         methods.definitions.result = result
         if result == nil or #result == 0 then
@@ -73,22 +146,20 @@ local function definitions()
         end
         -- I assume that the we care about only one (first) definition
         if result and #result <= 2 then
-            -- -- FUN
-            -- print([==[enter 1]==]) -- FUN
             local first_definition = result[1]
             if cursor_not_on_result(current_bufnr, current_cursor, first_definition) then
-                -- -- FUN
-                -- print("cursor_not_on_result") -- FUN
+                -- print("jump")
                 vim.lsp.util.jump_to_location(
                     first_definition,
                     vim.lsp.get_client_by_id(context.client_id).offset_encoding
                 )
                 return
             else --如果不止有2个definition 那就去找reference 如果只有一个reference 直接跳过去
+                -- print("else branch")
                 vim.cmd("Glance references")
             end
         else
-            print("enter 3")
+            -- print("enter 3")
             vim.cmd("Glance references")
         end
     end)

@@ -91,7 +91,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "*:s",
     callback = function()
         if selection_mode == false then
-            vim.api.nvim_set_hl(0, "Visual", { bg = "#A4B8C2" })
+            vim.api.nvim_set_hl(0, "Visual", { bg = "#BEC4C2" })
             selection_mode = true
         end
     end,

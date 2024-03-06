@@ -16,7 +16,7 @@ return {
         vim.api.nvim_create_autocmd("BufEnter", {
             group = augroup,
             callback = function(event)
-                if vim.bo.buftype == "nofile" then
+                if vim.bo.buftype == "nofile" and vim.bo.filetype ~= "glance" then
                     vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
                 end
                 if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
