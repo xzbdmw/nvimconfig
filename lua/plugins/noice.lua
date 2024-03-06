@@ -13,6 +13,14 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "room" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "BufLeave" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "notify", find = "VenvSelect" },
                     opts = { skip = true },
                 },
@@ -157,7 +165,7 @@ return {
                     enabled = true,
                     win_options = {
                         wrap = true,
-                        linebreak = true,
+                        linebreak = false,
                         winblend = 10,
                     },
                     opts = {

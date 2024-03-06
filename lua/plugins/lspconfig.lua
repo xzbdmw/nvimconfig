@@ -67,6 +67,8 @@ return {
                 "gh",
                 function()
                     vim.lsp.buf.hover()
+
+                    -- vim.cmd("Lspsaga hover_doc")
                     --[[ vim.defer_fn(function()
                         vim.lsp.buf.hover()
                     end, 100) ]]

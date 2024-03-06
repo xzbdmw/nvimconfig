@@ -32,6 +32,10 @@ return {
                     toggle_or_open = "<CR>",
                 },
             },
+            hover = {
+                max_width = 0.3,
+                max_height = 0.4,
+            },
             symbol_in_winbar = {
                 enable = false,
             },
