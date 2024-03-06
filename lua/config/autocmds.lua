@@ -85,6 +85,27 @@ vim.api.nvim_create_autocmd("ModeChanged", {
         -- end, 10)
     end,
 })
+
+local selection_mode = false
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "*:s",
+    callback = function()
+        if selection_mode == false then
+            vim.api.nvim_set_hl(0, "Visual", { bg = "#A4B8C2" })
+            selection_mode = true
+        end
+    end,
+})
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "*:v",
+    callback = function()
+        if selection_mode then
+            vim.api.nvim_set_hl(0, "Visual", { bg = "#d0d8d8" })
+            selection_mode = false
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = { "*:V", "*:no" },
     callback = function()
