@@ -85,7 +85,6 @@ vim.api.nvim_create_autocmd("ModeChanged", {
         -- end, 10)
     end,
 })
-
 local selection_mode = false
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "*:s",

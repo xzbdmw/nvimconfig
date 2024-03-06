@@ -89,7 +89,7 @@ local function definitions()
             end
         else
             print("enter 3")
-            vim.cmd("Glance definitions")
+            vim.cmd("Glance references")
         end
     end)
 

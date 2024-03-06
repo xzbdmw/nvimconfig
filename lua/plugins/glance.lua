@@ -132,7 +132,7 @@ return {
                     else
                         vim.cmd("normal! m'")
                         open(result) -- argument is optional
-                        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "t", true)
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "t", true)
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
