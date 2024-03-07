@@ -38,14 +38,13 @@ return {
         local function closeIfNormal()
             local mode = vim.api.nvim_get_mode()
             if mode.mode == "n" then
-                -- vim.cmd("TSContextToggle")
-                actions.close()
+                vim.defer_fn(actions.close, 1)
             else
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
             end
         end
         local function close_with_q()
-            vim.cmd("TSContextToggle")
+            -- vim.cmd("TSContextToggle")
             vim.defer_fn(actions.close, 1)
         end
         local function openFileAtSamePosition()
@@ -117,16 +116,16 @@ return {
                     ["l"] = actions.open_fold,
                     ["h"] = actions.close_fold,
                     ["<Tab>"] = actions.enter_win("preview"), -- Focus preview window
-                    ["q"] = actions.close,
-                    ["Q"] = actions.close,
-                    ["<Esc>"] = actions.close,
+                    ["q"] = close_with_q,
+                    ["Q"] = close_with_q,
+                    ["<Esc>"] = close_with_q,
                     ["<C-q>"] = actions.quickfix,
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
                     ["<CR>"] = openFileAtSamePosition,
                     ["<esc>"] = closeIfNormal,
-                    ["q"] = actions.close,
+                    ["q"] = close_with_q,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
@@ -163,11 +162,12 @@ return {
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
-                before_close = function()
-                    -- if ts_enabled ~= true then
-                    --     vim.cmd("TSContextDisable")
-                    -- end
-                end,
+                -- before_close = function()
+                --     vim.cmd("TSContextDisable")
+                -- end,
+                -- after_close = function()
+                --     vim.cmd("TSContextEnable")
+                -- end,
             },
             folds = {
                 fold_closed = ">",

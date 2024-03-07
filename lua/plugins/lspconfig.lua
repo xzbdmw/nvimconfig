@@ -169,6 +169,11 @@ return {
                                     -- "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",
                                 },
                             },
+                            hint = {
+                                enable = true,
+                                ["setType"] = true,
+                                ["paramType"] = true,
+                            },
                         },
                     },
                 },
