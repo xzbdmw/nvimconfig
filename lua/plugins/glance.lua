@@ -4,37 +4,6 @@ return {
     config = function()
         local glance = require("glance")
         local actions = glance.actions
-        --[[ 
-        local height = 18
-        local namespace = vim.api.nvim_create_namespace("GlancePlaceHolder")
-        local place_holder = {}
-        for _ = 1, height, 1 do
-            place_holder[#place_holder + 1] = { { "", "Error" } }
-        end
-        local id = 0
-
-        lcal function after_close()
-            vim.api.nvim_buf_del_extmark(0, namespace, id)
-        en
-
-        local function before_open(results, open)
-            local lnum = vim.api.nvim_win_get_cursor(0)[1]
-            id = vim.api.nvim_buf_set_extmark(0, namespace, lnum - 1, 0, { virt_lines = place_holder })
-            open(results)
-        end ]]
-        local ts_enabled = false
-        local function ts_enabled_or_not()
-            for _, win in pairs(vim.api.nvim_list_wins()) do
-                local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-                if success then
-                    -- print(vim.inspect(win_config))
-                    if win_config.relative ~= "" and win_config.zindex == 20 then
-                        ts_enabled = true
-                        return
-                    end
-                end
-            end
-        end
         local function closeIfNormal()
             local mode = vim.api.nvim_get_mode()
             if mode.mode == "n" then
@@ -134,10 +103,6 @@ return {
             },
             hooks = {
                 before_open = function(result, open, jump, _)
-                    -- ts_enabled_or_not()
-                    -- if ts_enabled == false then
-                    --     vim.cmd("TSContextEnable")
-                    -- end
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
                     if result ~= nil and result[1].range == nil then
@@ -162,12 +127,6 @@ return {
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
-                -- before_close = function()
-                --     vim.cmd("TSContextDisable")
-                -- end,
-                -- after_close = function()
-                --     vim.cmd("TSContextEnable")
-                -- end,
             },
             folds = {
                 fold_closed = ">",

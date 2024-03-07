@@ -33,7 +33,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:Normal",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
                 }),
                 documentation = cmp.config.window.bordered({
                     border = "none",
