@@ -13,20 +13,20 @@ return {
 
         local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = augroup,
-            callback = function(event)
-                if vim.bo.buftype == "nofile" and vim.bo.filetype ~= "glance" then
-                    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-                end
-                if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-                    vim.w.focus_disable = true
-                else
-                    vim.w.focus_disable = false
-                end
-            end,
-            desc = "Disable focus autoresize for BufType",
-        })
+        -- vim.api.nvim_create_autocmd("BufEnter", {
+        --     group = augroup,
+        --     callback = function(event)
+        --         if vim.bo.buftype == "nofile" and vim.bo.filetype ~= "glance" then
+        --             vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+        --         end
+        --         if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
+        --             vim.w.focus_disable = true
+        --         else
+        --             vim.w.focus_disable = false
+        --         end
+        --     end,
+        --     desc = "Disable focus autoresize for BufType",
+        -- })
 
         vim.api.nvim_create_autocmd("FileType", {
             group = augroup,

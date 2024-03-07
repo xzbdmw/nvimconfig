@@ -33,7 +33,7 @@ return {
                     border = "none",
                     side_padding = 0,
                     col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
                 documentation = cmp.config.window.bordered({
                     border = "none",
@@ -51,8 +51,8 @@ return {
                 entries = { name = "custom", selection_order = "near_cursor" },
             },
             performance = {
-                debounce = 0,
-                throttle = 5,
+                debounce = 0.1,
+                throttle = 0.1,
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 -- async_budget = 1,

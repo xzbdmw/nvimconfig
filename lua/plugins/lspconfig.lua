@@ -45,7 +45,6 @@ return {
                 function()
                     vim.cmd("Glance implementations")
                 end,
-                mode = { "x", "v", "n", "i" },
             }
             keys[#keys + 1] = {
                 "<C-a>",
@@ -146,10 +145,10 @@ return {
                 lua_ls = {
                     settings = {
                         Lua = {
-                            -- completion = {
-                            --     callSnippet = "Disable",
-                            -- },
-                            --[[ runtime = {
+                            --[[ completion = {
+                                callSnippet = "Disable",
+                            },
+                            runtime = {
                                 -- LuaJIT in the case of Neovim
                                 version = "LuaJIT",
                                 pathStrict = true,
@@ -217,16 +216,16 @@ return {
                 }, ]]
                 tsserver = {
                     enabled = true,
-                    -- cmd = lsp_containers.command("tsserver"),
-                    -- init_options = {
-                    --     plugins = {
-                    --         {
-                    --             name = "@vue/typescript-plugin",
-                    --             location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
-                    --             languages = { "typescript", "vue" },
-                    --         },
-                    --     },
-                    -- },
+                    --[[ cmd = lsp_containers.command("tsserver"),
+                    init_options = {
+                        plugins = {
+                            {
+                                name = "@vue/typescript-plugin",
+                                location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
+                                languages = { "typescript", "vue" },
+                            },
+                        },
+                    }, ]]
                     filetypes = {
                         "javascript",
                         "typescript",
@@ -255,10 +254,10 @@ return {
                             },
                             staticcheck = false,
                         },
-                        -- init_options = {
-                        --     usePlaceholders = true,
-                        --     completeFunctionCalls = true,
-                        -- },
+                        --[[ init_options = {
+                            usePlaceholders = true,
+                            completeFunctionCalls = true,
+                        }, ]]
                     },
                 },
             },

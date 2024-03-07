@@ -104,7 +104,7 @@ return {
                 barbecue_dirname = { fg = "#3b4d56" },
                 barbecue_ellipsis = { link = "barbecue_dirname" },
                 NormalFloat = { bg = "#FAF7E6", fg = "#000000" },
-                MyNormalFloat = { bg = "#f1efe1" },
+                MyNormalFloat = { bg = "#FAF7E6" },
                 MyNormalDocFloat = { bg = "#f1efe1" },
                 FloatBorder = { bg = "#FAF7E6" },
                 LspFloatWinBorder = { link = "FloatBorder" },

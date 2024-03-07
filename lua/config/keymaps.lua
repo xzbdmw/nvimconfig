@@ -12,8 +12,8 @@ del("t", "<esc><esc>")
 del("n", "<leader>fn")
 del("n", "<leader>w|")
 del("n", "<leader>qq")
---[[ del({ "n", "x" }, "<space>wÞ")
 del({ "n", "x" }, "<space>qÞ")
+--[[ del({ "n", "x" }, "<space>wÞ")
 keymap({ "v", "i" }, "<C-5>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, false, true), "n", true)
     -- require("luasnip").jump(1)
@@ -69,6 +69,7 @@ keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end) ]]
 keymap("n", "ge", "g;", opts)
+keymap("v", "<leader>gb", "gcgbkgb", opts)
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
