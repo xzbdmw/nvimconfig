@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd("QuitPre", {
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+    vim.keymap.set("t", "<C-d>", [[<C-w>]], opts)
     vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
     vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
     vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
@@ -196,27 +197,6 @@ vim.api.nvim_create_autocmd("WinResized", {
         -- vim.cmd("FocusAutoresize")
     end,
 })
--- vim.api.nvim_create_autocmd("BufLeave", {
---     pattern = "*",
---     callback = function()
---         if vim.bo.filetype == "lua" then
---             return
---         end
---         -- print(vim.bo.filetype)
---         if vim.bo.filetype == "TelescopePrompt" then
---             vim.cmd("TSContextEnable")
---             vim.g.neovide_floating_z_height = 0
---         end
---     end,
--- })
--- vim.api.nvim_create_autocmd({ "User" }, {
---     pattern = "TelescopeFindPre",
---     callback = function()
---         -- print("hello")
---         vim.g.neovide_floating_z_height = 10
---         -- print(vim.g.neovide_floating_z_height)
---     end,
--- })
 vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
 vim.api.nvim_create_autocmd({ "BufRead" }, {
     pattern = {

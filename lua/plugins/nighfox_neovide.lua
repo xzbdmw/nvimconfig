@@ -146,7 +146,7 @@ return {
                 CmpGhostText = { fg = "#595655", style = "italic" },
                 TreesitterContext = { fg = "#AFB3C1", bg = "#FAF7E8", style = "bold,italic" },
                 TreesitterContextBottom = { sp = "#E8E7E0", style = "underline" },
-                TreesitterContextLineNumber = { fg = "#AEB3C2", style = "bold,italic" },
+                TreesitterContextLineNumber = { fg = "#AEB3C2" },
                 Unvisited = { link = "illuminatedWordRead" },
                 Visited = { bg = "#9EA3AC" },
                 CmpItemKindField = { fg = "#000000", bg = "#B5585F" },
