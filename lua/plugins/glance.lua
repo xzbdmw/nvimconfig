@@ -103,6 +103,7 @@ return {
             },
             hooks = {
                 before_open = function(result, open, jump, _)
+                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#E8E7E0", underline = true })
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
                     if result ~= nil and result[1].range == nil then
@@ -123,9 +124,11 @@ return {
                     else
                         vim.cmd("normal! m'")
                         open(result) -- argument is optional
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "t", true)
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
+                end,
+                before_close = function()
+                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", {})
                 end,
             },
             folds = {

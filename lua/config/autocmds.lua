@@ -86,6 +86,27 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+-- vim.api.nvim_create_autocmd("ModeChanged", {
+--     pattern = "*:i",
+--     callback = function()
+--         if vim.bo.filetype ~= "TelescopePrompt" then
+--             vim.cmd("TSContextDisable")
+--             vim.defer_fn(function()
+--                 vim.g.neovide_floating_z_height = 10
+--             end, 100)
+--         end
+--     end,
+-- })
+-- vim.api.nvim_create_autocmd("ModeChanged", {
+--     pattern = "*:n",
+--     callback = function()
+--         if vim.bo.filetype ~= "TelescopePrompt" then
+--             vim.g.neovide_floating_z_height = 0
+--             vim.cmd("TSContextEnable")
+--         end
+--     end,
+-- })
+
 local selection_mode = false
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "*:s",
@@ -175,7 +196,27 @@ vim.api.nvim_create_autocmd("WinResized", {
         -- vim.cmd("FocusAutoresize")
     end,
 })
-
+-- vim.api.nvim_create_autocmd("BufLeave", {
+--     pattern = "*",
+--     callback = function()
+--         if vim.bo.filetype == "lua" then
+--             return
+--         end
+--         -- print(vim.bo.filetype)
+--         if vim.bo.filetype == "TelescopePrompt" then
+--             vim.cmd("TSContextEnable")
+--             vim.g.neovide_floating_z_height = 0
+--         end
+--     end,
+-- })
+-- vim.api.nvim_create_autocmd({ "User" }, {
+--     pattern = "TelescopeFindPre",
+--     callback = function()
+--         -- print("hello")
+--         vim.g.neovide_floating_z_height = 10
+--         -- print(vim.g.neovide_floating_z_height)
+--     end,
+-- })
 vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
 vim.api.nvim_create_autocmd({ "BufRead" }, {
     pattern = {

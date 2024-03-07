@@ -34,7 +34,7 @@ vim.g.loaded_matchparen = 1
 
 -- Neovide
 vim.g.neovide_unlink_border_highlights = false
--- vim.g.neovide_transparency = 0.9
+vim.g.neovide_transparency = 1
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
 vim.g.neovide_padding_top = 0
@@ -43,10 +43,10 @@ vim.g.neovide_padding_right = 0
 vim.g.neovide_padding_left = 0
 vim.g.neovide_cursor_animation_length = 0.06
 vim.g.neovide_floating_shadow = true
-
-vim.g.neovide_underline_stroke_scale = 2.0
-vim.g.neovide_floating_z_height = 5
-vim.g.neovide_light_angle_degrees = 250
+vim.g.neovide_underline_stroke_scale = 2
+vim.g.neovide_no_multigrid_zindex = 20
+vim.g.neovide_floating_z_height = 10
+vim.g.neovide_light_angle_degrees = 180
 -- vim.g.neovide_light_radius = 90
 vim.g.neovide_cursor_trail_size = 0.4
 vim.g.neovide_cursor_animate_command_line = false

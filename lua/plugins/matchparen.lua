@@ -1,4 +1,5 @@
 return {
+    enabled = false,
     event = "VeryLazy",
     "monkoose/matchparen.nvim",
     config = function()

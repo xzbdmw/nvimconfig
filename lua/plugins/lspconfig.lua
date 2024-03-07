@@ -47,6 +47,12 @@ return {
                 end,
             }
             keys[#keys + 1] = {
+                "gr",
+                function()
+                    vim.cmd("Glance references")
+                end,
+            }
+            keys[#keys + 1] = {
                 "<C-a>",
                 function()
                     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
@@ -68,7 +74,6 @@ return {
                 desc = "Code Action",
                 has = "codeAction",
             }
-            keys[#keys + 1] = { "gr", lsp_references_with_jump }
             keys[#keys + 1] = {
                 "gh",
                 function()

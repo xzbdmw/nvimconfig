@@ -174,7 +174,6 @@ function telescopePickers.prettyFilesPicker(ftype)
         print("Picker is not supported by Pretty Find Files")
     end
 end
-
 -- Generates a Grep Search picker but beautified
 -- ----------------------------------------------
 -- This is a wrapping function used to modify the appearance of pickers that provide Grep Search

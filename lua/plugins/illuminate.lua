@@ -10,10 +10,12 @@ return {
             "regex",
         },
         filetypes_denylist = {
-            "Glance",
+            -- "Glance",
             "fugitive",
         },
         delay = 1,
+        under_cursor = true,
+        min_count_to_highlight = 0,
         large_file_cutoff = 2000,
         large_file_overrides = nil,
         modes_denylist = { "i", "v", "x" },

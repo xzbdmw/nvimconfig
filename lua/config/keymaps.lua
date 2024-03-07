@@ -165,16 +165,16 @@ keymap("n", "<Tab>", function()
     end
 end, { desc = "swicth window" })
 
-keymap("i", "<CR>", function()
-    local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
-    ---@diagnostic disable-next-line: param-type-mismatch
-    local char = vim.fn.getline("."):sub(col, col)
-    if col > 0 and (char == "{" or char == "(") then
-        return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
-    else
-        return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
-    end
-end, { expr = true })
+-- keymap("i", "<CR>", function()
+--     local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
+--     ---@diagnostic disable-next-line: param-type-mismatch
+--     local char = vim.fn.getline("."):sub(col, col)
+--     if col > 0 and (char == "{" or char == "(") then
+--         return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
+--     else
+--         return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
+--     end
+-- end, { expr = true })
 
 --[[ keymap("i", "<bs>", function()
     local pairs = {
@@ -350,8 +350,8 @@ keymap("n", "<leader>j", "<C-o>", opts)
 keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
 keymap("n", "<M-w>", "<c-w>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
-keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 
+keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
