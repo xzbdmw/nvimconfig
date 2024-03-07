@@ -246,9 +246,9 @@ return {
                             vim.cmd([[:stopinsert]])
                             vim.cmd([[call feedkeys("\<CR>")]])
                         end,
-                        -- ["<esc>"] = function()
-                        --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-                        -- end,
+                        ["<esc>"] = function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                        end,
                         ["<C-->"] = actions.preview_scrolling_left,
                         ["<C-=>"] = actions.preview_scrolling_right,
                         ["<D-v>"] = function()
@@ -264,7 +264,7 @@ return {
                     },
                     n = {
                         ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
-                        -- ["<esc>"] = actions.close,
+                        ["<esc>"] = actions.close,
                         ["Y"] = yank_preview_lines,
                         ["y"] = yank_selected_entry,
                         ["<C-->"] = actions.preview_scrolling_left,

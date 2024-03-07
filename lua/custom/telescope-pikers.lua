@@ -197,7 +197,7 @@ function telescopePickers.prettyGrepPicker(pickerAndOptions)
                     height = 0.9,
                     mirror = true,
                     preview_cutoff = 0,
-                    preview_height = 0.55,
+                    preview_height = 0.45,
                 },
             },
         },

@@ -127,9 +127,6 @@ return {
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
-                before_close = function()
-                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", {})
-                end,
             },
             folds = {
                 fold_closed = ">",

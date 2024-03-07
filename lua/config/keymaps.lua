@@ -320,6 +320,7 @@ keymap({ "n" }, "<leader>w", function()
         vim.cmd("close")
     end
 end)
+
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
