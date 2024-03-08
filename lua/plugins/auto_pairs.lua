@@ -15,7 +15,7 @@ return {
         -- 添加自动配对规则使得 <> 成为自动配对的字符
         npairs.add_rules({
             Rule("<", ">", "-vim") -- 这里假设我们不想在 Vim 脚本文件中启用这个规则
-                :with_pair(function(opts)
+                :with_pair(function()
                     -- local line = opts.line
                     -- local cur_pos = opts.col
                     -- -- 检查是否在 <> 内部有其他字符，如果有，则不添加配对
