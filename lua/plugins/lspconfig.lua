@@ -35,7 +35,7 @@ return {
                 end,
             }
             keys[#keys + 1] = {
-                "<space>fd",
+                "<space>sd",
                 function()
                     vim.lsp.buf.type_definition()
                 end,

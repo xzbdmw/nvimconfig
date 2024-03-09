@@ -23,7 +23,7 @@ return {
             find = "mf", -- Find surrounding (to the right)
             find_left = "mF", -- Find surrounding (to the left)
             replace = "mr", -- Replace surrounding
-            update_n_lines = "<space>mn", -- Update `n_lines`
+            update_n_lines = "<leader>mn", -- Update `n_lines`
         },
     },
     config = function(_, opts)

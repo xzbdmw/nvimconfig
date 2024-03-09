@@ -3,8 +3,8 @@ return {
     keys = {
         { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
 
-        { "<space>p", "<Plug>(YankyPreviousEntry)" },
-        { "<space>n", "<Plug>(YankyNextEntry)" },
+        { "<leader>p", "<Plug>(YankyPreviousEntry)" },
+        { "<leader>n", "<Plug>(YankyNextEntry)" },
 
         { "p", "<Plug>(YankyPutAfter)" },
         { "P", "<Plug>(YankyPutBefore)" },

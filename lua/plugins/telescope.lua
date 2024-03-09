@@ -5,6 +5,7 @@ return {
         { "<leader><space>", false },
         { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
+        { "<leader>sd", false },
         {
             "<leader>ff",
             function()
@@ -423,7 +424,7 @@ return {
                             ["d"] = "delete_buffer",
                         },
                     },
-                    show_all_buffers = true,
+                    show_all_buffers = false,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,
                     sort_lastused = true,

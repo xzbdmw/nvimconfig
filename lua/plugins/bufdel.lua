@@ -32,6 +32,6 @@ return {
             -- end,
             quit = false, -- quit Neovim when last buffer is closed
         })
-        vim.keymap.set("n", "<space>D", "<cmd>BufDelOthers<CR>")
+        vim.keymap.set("n", "<leader>D", "<cmd>BufDelOthers<CR>")
     end,
 }
