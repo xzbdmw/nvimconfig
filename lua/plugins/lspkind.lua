@@ -9,7 +9,7 @@ return {
                 Codeium = " 󰘦 ",
                 Color = "  ",
                 Control = "  ",
-                Collapsed = "  ",
+                Collapsed = " > ",
                 Constant = " 󰯱 ",
                 Constructor = "  ",
                 Copilot = "  ",

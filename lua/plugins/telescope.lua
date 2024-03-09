@@ -38,6 +38,49 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("old_files")
             end,
         },
+
+        {
+            "<C-p>",
+            function()
+                require("telescope").extensions["neovim-project"].history({
+                    --[[ attach_mappings = function(_, map)
+                        map("i", "<C-d>", function(_prompt_bufnr)
+                            print("You typed asdf")
+                        end)
+
+                        map({ "i", "n" }, "<C-r>", function(_prompt_bufnr)
+                            print("You typed <C-r>")
+                        end, { desc = "desc for which key" })
+
+                        -- needs to return true if you want to map default_mappings and
+                        -- false if not
+                        return true
+                    end, ]]
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            width = 0.35,
+                            height = 0.7,
+                        },
+                    },
+                })
+            end,
+        },
+        {
+            "<leader><leader>p",
+            function()
+                require("telescope").extensions["neovim-project"].discover({
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            width = 0.7,
+                            height = 0.7,
+                        },
+                    },
+                })
+            end,
+            desc = "discover project",
+        },
         {
             "<leader>sg",
             function()

@@ -48,24 +48,39 @@ vim.g.neovide_no_multigrid_zindex = 20
 vim.g.neovide_floating_z_height = 10
 vim.g.neovide_light_angle_degrees = 180
 -- vim.g.neovide_light_radius = 90
-vim.g.neovide_cursor_trail_size = 0.4
+vim.g.neovide_cursor_trail_size = 0
+vim.g.neovide_cursor_animate_in_insert_mode = true
 vim.g.neovide_cursor_animate_command_line = false
 vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0
 vim.g.neovide_hide_mouse_when_typing = true
-
 vim.g.rustaceanvim = {
     server = {
+        standalone = true,
         settings = {
             -- rust-analyzer language server configuration
             ["rust-analyzer"] = {
                 completion = {
+                    -- callable = {
+                    --     snippets = "add_parentheses",
+                    -- },
                     fullFunctionSignatures = {
                         enable = true,
                     },
                     privateEditable = {
                         enable = true,
+                    },
+                },
+                procMacro = {
+                    ignored = {
+                        tokio_macros = {
+                            "main",
+                            "test",
+                        },
+                        tracing_attributes = {
+                            "instrument",
+                        },
                     },
                 },
                 inlayHints = {
@@ -90,65 +105,9 @@ vim.g.rustaceanvim = {
         float_win_config = {
             border = "none",
             max_width = 70,
-            max_height = 15,
+            max_height = 10,
             auto_focus = false,
+            winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
         },
     },
 }
--- rustaceanvim
--- vim.g.rustaceanvim = {
---     server = {
---         standalone = true,
---         settings = {
---             -- rust-analyzer language server configuration
---             ["rust-analyzer"] = {
---                 completion = {
---                     -- callable = {
---                     --     snippets = "add_parentheses",
---                     -- },
---                     fullFunctionSignatures = {
---                         enable = true,
---                     },
---                     privateEditable = {
---                         enable = true,
---                     },
---                 },
---                 procMacro = {
---                     ignored = {
---                         tokio_macros = {
---                             "main",
---                             "test",
---                         },
---                         tracing_attributes = {
---                             "instrument",
---                         },
---                     },
---                 },
---                 inlayHints = {
---                     parameterHints = false,
---                     closureReturnTypeHints = "with_block",
---                 },
---                 workspace = {
---                     symbol = {
---                         search = {
---                             -- scope = "workspace_and_dependencies",
---                             -- scope = "workspace",
---                         },
---                     },
---                 },
---             },
---         },
---     },
---     tools = {
---         hover_actions = {
---             replace_builtin_hover = true,
---         },
---         float_win_config = {
---             border = "none",
---             max_width = 70,
---             max_height = 10,
---             auto_focus = false,
---             winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
---         },
---     },
--- }

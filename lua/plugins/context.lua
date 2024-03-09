@@ -1,5 +1,6 @@
 return {
     "nvim-treesitter/nvim-treesitter-context",
+    -- enabled = false,
     commit = "a5d16fd7639da37009e7c43eea4a932ccece2162",
     keys = {
         {

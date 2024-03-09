@@ -1,5 +1,6 @@
 return {
     "coffebar/neovim-project",
+    -- commit = "33a5d6ef5f9e035470c80cbec0bbfe23e776543c",
     -- enabled = false,
     opts = {
         last_session_on_startup = true,

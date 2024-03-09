@@ -1,23 +1,3 @@
-local function lsp_references_with_jump()
-    -- 在当前位置设置一个标记
-    vim.cmd("normal! m'")
-
-    -- 调用 Telescope lsp_references
-    -- vim.cmd("Telescope lsp_references")
-
-    require("telescope.builtin").lsp_references({
-        layout_strategy = "cursor",
-        -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
-        layout_config = {
-            cursor = {
-                width = 0.9,
-                height = 0.5,
-                preview_width = 0.5,
-            },
-        },
-    })
-end
-
 return {
     {
         "neovim/nvim-lspconfig",
@@ -47,9 +27,15 @@ return {
                 end,
             }
             keys[#keys + 1] = {
-                "gr",
+                "<leader><C-d>",
                 function()
                     vim.cmd("Glance references")
+                end,
+            }
+            keys[#keys + 1] = {
+                "<space>fd",
+                function()
+                    vim.lsp.buf.type_definition()
                 end,
             }
             keys[#keys + 1] = {

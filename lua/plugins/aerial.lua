@@ -8,7 +8,7 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     keys = {
-        { "<D-3>", "<cmd>AerialToggle<CR>" },
+        { "<D-3>", "<cmd>AerialToggle!<CR>" },
     },
     config = function()
         -- Call the setup function to change the default behavior
@@ -22,9 +22,9 @@ return {
                 -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
                 -- min_width and max_width can be a list of mixed types.
                 -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-                max_width = 0.3,
-                width = nil,
-                min_width = 15,
+                max_width = 30,
+                width = 30,
+                min_width = 30,
 
                 -- key-value pairs of window-local options for aerial window (e.g. winhl)
                 win_opts = {},
@@ -111,17 +111,18 @@ return {
             -- A list of all symbols to display. Set to false to display all symbols.
             -- This can be a filetype map (see :help aerial-filetype-map)
             -- To see all available values, see :help SymbolKind
-            -- filter_kind = {
-            --     "Class",
-            --     "Constructor",
-            --     "Enum",
-            --     "Function",
-            --     "Interface",
-            --     "Module",
-            --     "Method",
-            --     "Struct",
-            -- },
-            filter_kind = false,
+            filter_kind = {
+                "Class",
+                "Constructor",
+                "Enum",
+                "Function",
+                "Interface",
+                "Module",
+                "Method",
+                "Struct",
+                "Object",
+            },
+            -- filter_kind = false,
 
             -- Determines line highlighting mode when multiple splits are visible.
             -- split_width   Each open window will have its cursor location marked in the
@@ -255,7 +256,7 @@ return {
             update_events = "TextChanged,InsertLeave",
 
             -- Show box drawing characters for the tree hierarchy
-            show_guides = true,
+            show_guides = false,
 
             -- Customize the characters used when show_guides = true
             guides = {

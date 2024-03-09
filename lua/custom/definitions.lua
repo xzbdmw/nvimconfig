@@ -70,35 +70,30 @@ local function deep_compare(tbl1, tbl2)
 
     return false
 end
-local function cursor_not_on_result(_, _, result)
+local function cursor_not_on_result(_, cursor, result)
     if result == nil then
         return true
     end
-    if deep_compare(result.originSelectionRange, result.targetSelectionRange) then
-        return false
-    else
-        return true
+    if result.originSelectionRange then
+        return not deep_compare(result.originSelectionRange, result.targetSelectionRange)
+    end
+    if result.range then
+        local targetline = result.range.start.line + 1
+        local current_line = cursor[1]
+        return targetline ~= current_line
     end
     -- local target_uri = result.targetUri or result.uri
     -- local target_range = result.targetRange or result.range
-    -- -- VAR
-    -- print([==[cursor_not_on_result target_range:]==], vim.inspect(target_range)) -- VAR
     --
     -- -- local target_bufnr = vim.uri_to_bufnr(target_uri)
     -- local target_row_start = target_range.start.line + 1
-    -- -- VAR
-    -- print([==[cursor_not_on_result target_row_start:]==], vim.inspect(target_row_start)) -- VAR
     -- -- local target_row_end = target_range["end"].line + 1
     -- -- local target_col_start = target_range.start.character + 1
     -- -- local target_col_end = target_range["end"].character + 1
     --
     -- -- local current_bufnr = bufnr
     -- local current_range = cursor
-    -- -- VAR
-    -- print([==[cursor_not_on_result current_range:]==], vim.inspect(current_range)) -- VAR
     -- local current_row = current_range[1]
-    -- -- VAR
-    -- print([==[cursor_not_on_result current_row:]==], vim.inspect(current_row)) -- VAR
     -- -- local current_col = current_range[2] + 1 -- +1 because if cursor highlights first character its a column behind
     --
     -- -- cursor_not_on_result target_uri: "file:///Users/xzb/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/raw_vec.rs"

@@ -1,5 +1,8 @@
 return {
     "stevearc/dressing.nvim",
+    dependencies = {
+        { "nvim-telescope/telescope.nvim" },
+    },
     event = "VeryLazy",
     -- enabled = false,
     opts = {
@@ -82,15 +85,15 @@ return {
             -- Options for telescope selector
             -- These are passed into the telescope picker directly. Can be used like:
             -- telescope = require('telescope.themes').get_ivy({...})
-            telescope = require("telescope.themes").get_cursor({
-                borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
-                initial_mode = "normal",
-                layout_config = {
-                    width = 0.3,
-                    height = 0.3,
-                    prompt_position = "top",
-                },
-            }),
+            -- telescope = require("telescope.themes").get_cursor({
+            --     borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
+            --     initial_mode = "normal",
+            --     layout_config = {
+            --         width = 0.3,
+            --         height = 0.3,
+            --         prompt_position = "top",
+            --     },
+            -- }),
         },
     },
 }

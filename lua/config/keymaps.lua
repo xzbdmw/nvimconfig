@@ -5,14 +5,14 @@ local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 local del = vim.keymap.del
-del("n", "<leader>w-")
-del("n", "<leader>ww")
-del("n", "<leader>wd")
-del("t", "<esc><esc>")
-del("n", "<leader>fn")
-del("n", "<leader>w|")
-del("n", "<leader>qq")
-del({ "n", "x" }, "<space>qÞ")
+-- del("n", "<leader>w-")
+-- del("n", "<leader>ww")
+-- del("n", "<leader>wd")
+-- del("t", "<esc><esc>")
+-- del("n", "<leader>fn")
+-- del("n", "<leader>w|")
+-- del("n", "<leader>qq")
+-- del({ "n", "x" }, "<space>qÞ")
 --[[ del({ "n", "x" }, "<space>wÞ")
 keymap({ "v", "i" }, "<C-5>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, false, true), "n", true)
@@ -26,7 +26,7 @@ keymap("n", "Q", "qa", opts)
 keymap({ "n", "v" }, "L", "$", opts)
 keymap({ "n", "v" }, "H", "^", opts)
 
-keymap("n", "q", "<Nop>", opts)
+-- keymap("n", "q", "<Nop>", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
@@ -100,6 +100,30 @@ local function get_non_float_win_count()
     end
     return window_count
 end
+
+local start_time = nil
+local end_time = nil
+-- 注册BufLeave事件，在离开当前buffer时记录时间
+vim.api.nvim_create_autocmd("BufLeave", {
+    callback = function()
+        start_time = os.clock()
+        print("开始切换Buffer")
+    end,
+})
+vim.keymap.set("n", "gd", function()
+    vim.lsp.buf.definition()
+end)
+-- 注册BufEnter事件，在进入新的buffer时记录时间
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        print("asdasdasd")
+        end_time = os.clock()
+        if start_time then
+            local elapsed_time = end_time - start_time
+            print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
+        end
+    end,
+})
 keymap("n", "<Tab>", function()
     local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
     local line_num = cursor_pos[1] -- 光标所在的行号
@@ -377,8 +401,9 @@ end, opts)
 
 keymap("n", "<leader>d", function()
     local def_or_ref = require("custom.definitions")
-    -- local def_or_ref = require("custom.definition-or-references.main")
+    -- -- local def_or_ref = require("custom.definition-or-references.main")
     def_or_ref.definition_or_references()
+    -- vim.lsp.buf.definition()
 end)
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true

@@ -168,6 +168,7 @@ return {
                 CmpItemKindFile = { fg = "#000000", bg = "#7E8294" },
                 CmpItemKindUnit = { fg = "#000000", bg = "#D4A959" },
                 CmpItemKindSnippet = { fg = "#000000", bg = "#7E8294" },
+                RustIcon = { fg = "#C58C6E" },
                 CmpItemKindFolder = { fg = "#000000", bg = "#D4A959" },
                 CmpItemKindMethod = { fg = "#000000", bg = "#6C8ED4" },
                 CmpItemKindValue = { fg = "#000000", bg = "#6C8ED4" },

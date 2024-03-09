@@ -23,6 +23,7 @@ end
 return {
     "nvim-tree/nvim-tree.lua",
     version = false,
+    -- enabled = false,
     keys = {
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
@@ -78,7 +79,7 @@ return {
             },
             on_attach = my_on_attach,
             view = {
-                width = 35,
+                width = 30,
                 preserve_window_proportions = true,
             },
             renderer = {

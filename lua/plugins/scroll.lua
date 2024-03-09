@@ -3,7 +3,6 @@ return {
     dependencies = {
         "xzbdmw/neovim-project",
     },
-    -- enabled = false,
     lazy = false,
     -- event = "VeryLazy",
     opts = {},
