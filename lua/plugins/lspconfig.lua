@@ -1,3 +1,4 @@
+_G.reference = false
 return {
     {
         "neovim/nvim-lspconfig",
@@ -29,6 +30,7 @@ return {
             keys[#keys + 1] = {
                 "<leader><C-d>",
                 function()
+                    _G.reference = true
                     vim.cmd("Glance references")
                 end,
             }

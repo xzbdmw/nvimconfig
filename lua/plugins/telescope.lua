@@ -423,7 +423,7 @@ return {
                             ["d"] = "delete_buffer",
                         },
                     },
-                    show_all_buffers = false,
+                    show_all_buffers = true,
                     path_display = require("custom.path_display").filenameFirst,
                     sort_mru = true,
                     sort_lastused = true,

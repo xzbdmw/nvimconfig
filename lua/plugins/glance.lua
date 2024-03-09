@@ -13,6 +13,7 @@ return {
                     vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
                     _G.glancebuffer = {} -- 重置glancebuffer
                 end
+                _G.reference = false
                 vim.defer_fn(actions.close, 1)
             else
                 vim.keymap.set("v", "<CR>", function()
@@ -37,6 +38,7 @@ return {
             vim.keymap.set("n", "<CR>", function()
                 vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
             end)
+            _G.reference = false
             vim.defer_fn(actions.close, 1)
         end
 
@@ -60,6 +62,7 @@ return {
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
             end
             _G.glancebuffer = {} -- 重置glancebuffer
+            _G.reference = false
             actions.close()
             local uri = vim.uri_from_fname(filename)
             local bufnr = vim.uri_to_bufnr(uri)
@@ -164,6 +167,10 @@ return {
                     else
                         vim.cmd("normal! m'")
                         open(result) -- argument is optional
+                        if _G.reference == false then
+                            print("false")
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "n", true)
+                        end
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,

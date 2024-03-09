@@ -1,6 +1,7 @@
 return {
     "nvim-focus/focus.nvim",
     version = false,
+    enabled = false,
     lazy = false,
     keys = {
         { "<leader><leader>m", "<cmd>FocusMaximise<CR>" },
