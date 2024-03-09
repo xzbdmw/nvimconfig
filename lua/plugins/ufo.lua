@@ -36,15 +36,15 @@ return {
             end,
             desc = " 󱃄 Goto Next Fold",
         },
+        -- {
+        --     "<leader>o",
+        --     function()
+        --         require("ufo").openFoldsExceptKinds({ "comment", "imports" })
+        --     end,
+        --     desc = " 󱃄 Open All Regular Folds",
+        -- },
         {
-            "zr",
-            function()
-                require("ufo").openFoldsExceptKinds({ "comment", "imports" })
-            end,
-            desc = " 󱃄 Open All Regular Folds",
-        },
-        {
-            "zR",
+            "<leader>o",
             function()
                 require("ufo").openFoldsExceptKinds({})
             end,

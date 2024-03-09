@@ -22,7 +22,11 @@ local function update_winbar_cache()
     local telescopeUtilities = require("telescope.utils")
     local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
     local path = vim.fn.expand("%:~:.:h")
+
+    local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
     local filename = vim.fn.expand("%:t")
+
+    local cwd = vim.fn.getcwd()
     pre_filename = filename
     if path == nil or filename == nil then
         return
@@ -32,19 +36,35 @@ local function update_winbar_cache()
         iconHighlight = "RustIcon"
         icon = "󱘗"
     end
-    winbar_cache = " "
-        .. "%#NvimTreeFolderName#"
-        .. " "
-        .. path
-        .. "%#Comment#"
-        .. " => "
-        .. "%#"
-        .. iconHighlight
-        .. "#"
-        .. icon
-        .. " %#WinbarFileName#"
-        .. filename
-        .. "%*"
+    if not vim.startswith(absolute_path, cwd) then
+        winbar_cache = " "
+            .. " "
+            .. "%#LibPath#"
+            .. path
+            .. "%#Comment#"
+            .. " => "
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. icon
+            .. " %#WinbarFileName#"
+            .. filename
+            .. "%*"
+    else
+        -- 在当前工作目录下，使用默认颜色
+        winbar_cache = " "
+            .. "%#NvimTreeFolderName#"
+            .. " "
+            .. path
+            .. " => "
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. icon
+            .. " %#WinbarFileName#"
+            .. filename
+            .. "%*"
+    end
 end
 
 -- 更新 winbar 内容，仅添加动态变化的百分比部分
