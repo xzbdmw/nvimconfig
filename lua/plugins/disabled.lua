@@ -25,6 +25,7 @@ return {
     { "shellRaining/hlchunk.nvim", enabled = false },
     -- { "neoclide/coc.nvim", enabled = false },
     { "folke/neodev.nvim", enabled = false },
+    { "rafamadriz/friendly-snippets", enabled = false },
     { "folke/neoconf.nvim", enabled = false },
     -- { "barbecue", enabled = false },
     { "luukvbaal/nnn.nvim", enabled = false },

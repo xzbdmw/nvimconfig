@@ -75,7 +75,13 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 }) ]]
 
 -- walkaroud for incremental selection
-vim.api.nvim_create_augroup("_cmd_win", { clear = true })
+vim.api.nvim_create_augroup("cmdwin_treesitter", { clear = true })
+vim.api.nvim_create_autocmd("CmdwinEnter", {
+    pattern = "*",
+    command = "TSBufDisable incremental_selection",
+    group = "cmdwin_treesitter",
+    desc = "Disable treesitter's incremental selection in Command-line window",
+})
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {
         "txt",
@@ -182,6 +188,32 @@ vim.api.nvim_create_autocmd("FileType", {
         local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
         if venv ~= "" then
             require("venv-selector").retrieve_from_cache()
+        end
+    end,
+})
+
+_G.glancebuffer = {}
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*",
+    callback = function()
+        local winconfig = vim.api.nvim_win_get_config(0)
+        if winconfig.relative ~= "" and winconfig.zindex == 10 then
+            local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
+            if _G.glancebuffer[bufnr] ~= nil then
+                return
+            end
+            _G.glancebuffer[bufnr] = true
+            vim.keymap.set("n", "<CR>", function()
+                OpenFileAtSamePosition()
+            end, { buffer = bufnr })
+
+            vim.keymap.set("n", "<Esc>", function()
+                CloseIfNormal()
+            end, { buffer = bufnr })
+
+            vim.keymap.set("n", "q", function()
+                Close_with_q()
+            end, { buffer = bufnr })
         end
     end,
 })

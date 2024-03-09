@@ -3,7 +3,8 @@ return {
     dependencies = {
         "kevinhwang91/promise-async",
     },
-    lazy = false,
+    event = "VeryLazy",
+    -- lazy = false,
     init = function()
         -- INFO fold commands usually change the foldlevel, which fixes folds, e.g.
         -- auto-closing them after leaving insert mode, however ufo does not seem to

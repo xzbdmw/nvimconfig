@@ -80,7 +80,7 @@ return {
             "yaml",
         },
         incremental_selection = {
-            enable = false,
+            enable = true,
             keymaps = {
                 init_selection = "<CR>",
                 node_incremental = "<CR>",

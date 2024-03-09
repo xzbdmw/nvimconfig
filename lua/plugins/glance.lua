@@ -1,22 +1,49 @@
 return {
     "dnlhc/glance.nvim",
-    lazy = false,
+    event = "VeryLazy",
     config = function()
         local glance = require("glance")
         local actions = glance.actions
-        local function closeIfNormal()
+        function CloseIfNormal()
             local mode = vim.api.nvim_get_mode()
             if mode.mode == "n" then
+                for bufnr, _ in pairs(_G.glancebuffer) do
+                    -- vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
+                    vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+                    vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
+                    _G.glancebuffer = {} -- 重置glancebuffer
+                end
                 vim.defer_fn(actions.close, 1)
             else
+                vim.keymap.set("v", "<CR>", function()
+                    vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
+                end)
+                vim.keymap.set("n", "<CR>", function()
+                    vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+                end)
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
             end
         end
-        local function close_with_q()
-            -- vim.cmd("TSContextToggle")
+        function Close_with_q()
+            for bufnr, _ in pairs(_G.glancebuffer) do
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
+            end
+            _G.glancebuffer = {} -- 重置glancebuffer
+            vim.keymap.set("v", "<CR>", function()
+                vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
+            end)
+            vim.keymap.set("n", "<CR>", function()
+                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+            end)
             vim.defer_fn(actions.close, 1)
         end
-        local function openFileAtSamePosition()
+
+        local function jump()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab><CR>", true, false, true), "t", true)
+        end
+        function OpenFileAtSamePosition()
             -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
@@ -27,9 +54,22 @@ return {
 
             -- 关闭当前窗口
             -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("q", true, false, true), "t", true)
+            for bufnr, _ in pairs(_G.glancebuffer) do
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
+            end
+            _G.glancebuffer = {} -- 重置glancebuffer
             actions.close()
             local uri = vim.uri_from_fname(filename)
             local bufnr = vim.uri_to_bufnr(uri)
+            vim.keymap.set("v", "<CR>", function()
+                vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
+            end)
+
+            vim.keymap.set("n", "<CR>", function()
+                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+            end)
             vim.schedule(function()
                 vim.api.nvim_win_set_buf(0, bufnr)
             end)
@@ -42,7 +82,7 @@ return {
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,
-            detached = false,
+            -- detached = false,
 
             --[[ Or use a function to enable `detached` only when the active window is too small
             (default behavior)
@@ -80,21 +120,21 @@ return {
                     ["v"] = actions.jump_vsplit,
                     ["s"] = actions.jump_split,
                     ["t"] = actions.jump_tab,
-                    ["<CR>"] = actions.jump,
+                    ["<CR>"] = jump,
                     ["o"] = actions.jump,
                     ["l"] = actions.open_fold,
                     ["h"] = actions.close_fold,
                     ["<Tab>"] = actions.enter_win("preview"), -- Focus preview window
-                    ["q"] = close_with_q,
-                    ["Q"] = close_with_q,
-                    ["<Esc>"] = close_with_q,
+                    ["q"] = Close_with_q,
+                    ["Q"] = Close_with_q,
+                    ["<Esc>"] = Close_with_q,
                     ["<C-q>"] = actions.quickfix,
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
-                    ["<CR>"] = openFileAtSamePosition,
-                    ["<esc>"] = closeIfNormal,
-                    ["q"] = close_with_q,
+                    -- ["<CR>"] = openFileAtSamePosition,
+                    -- ["<esc>"] = CloseIfNormal,
+                    -- ["q"] = Close_with_q,
                     ["n"] = actions.next_location,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
@@ -127,6 +167,7 @@ return {
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
                     end
                 end,
+                before_close = function() end,
             },
             folds = {
                 fold_closed = ">",

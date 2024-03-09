@@ -1,8 +1,7 @@
 return {
     "hrsh7th/nvim-cmp",
-    -- enabled = false,
     version = false, -- last release is way too old
-    event = "VeryLazy",
+    event = "InsertEnter",
     keys = { { "<C-n>", false } },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
@@ -133,7 +132,7 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                -- { name = "buffer", keyword_length = 2 },
+                { name = "buffer", keyword_length = 3 },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
