@@ -36,7 +36,7 @@ return {
         function OpenAndKeepHighlight()
             OpenFileAtSamePosition()
             vim.schedule(function()
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("H", true, false, true), "t", true)
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<left>", true, false, true), "t", true)
             end)
         end
         function OpenFileAtSamePosition()

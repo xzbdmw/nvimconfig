@@ -5,7 +5,7 @@ return {
     keys = {
         { "<down>", "<cmd>MoveLine(1)<CR>", desc = "move line down" },
         { "<up>", "<cmd>MoveLine(-1)<CR>", desc = "move line up" },
-        { "<left>", "<cmd>MoveHChar(-1)<CR>", desc = "move char left" },
+        -- { "<left>", "<cmd>MoveHChar(-1)<CR>", desc = "move char left" },
         { "<right>", "<cmd>MoveHChar(1)<CR>", desc = "move char right" },
     },
     opts = {

@@ -70,7 +70,7 @@ end
 esc()
 
 -- illuminate
-keymap("n", "H", function()
+keymap("n", "<left>", function()
     local bufnr = vim.api.nvim_get_current_buf()
     vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
     vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#FCF0A1" })
