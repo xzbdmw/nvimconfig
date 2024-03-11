@@ -70,7 +70,6 @@ end
 esc()
 
 -- illuminate
-_G.highlight_ill = false
 keymap("n", "H", function()
     local bufnr = vim.api.nvim_get_current_buf()
     vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
@@ -92,6 +91,7 @@ keymap("n", "H", function()
         esc()
         require("illuminate").unfreeze_buf()
         require("illuminate.highlight").buf_clear_references(bufnr)
+        require("illuminate.engine").refresh_references()
     end)
     require("illuminate").freeze_buf()
 end)

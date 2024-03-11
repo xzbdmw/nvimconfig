@@ -11,7 +11,7 @@ return {
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "H")
+                -- vim.api.nvim_buf_del_keymap(bufnr, "n", "H")
             end
             _G.glancebuffer = {} -- 重置glancebuffer
             vim.keymap.set("v", "<CR>", function()

@@ -203,9 +203,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
                 return
             end
             _G.glancebuffer[bufnr] = true
-            vim.keymap.set("n", "<CR>", function()
-                OpenFileAtSamePosition()
-            end, { buffer = bufnr })
+            -- vim.keymap.set("n", "<CR>", function()
+            --     OpenFileAtSamePosition()
+            -- end, { buffer = bufnr })
 
             vim.keymap.set("n", "<Esc>", function()
                 Close_with_q()
@@ -215,7 +215,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
                 Close_with_q()
             end, { buffer = bufnr })
 
-            vim.keymap.set("n", "H", function()
+            vim.keymap.set("n", "<CR>", function()
                 OpenAndKeepHighlight()
             end, { buffer = bufnr })
         end
