@@ -39,6 +39,36 @@ keymap("i", "<up>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 keymap("v", "<down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 keymap("v", "<up>", ":m '<-2<cr>gv=gv", { desc = "Move up" }) ]]
 
+local function esc()
+    keymap({ "s", "i", "n" }, "<esc>", function()
+        local flag = true
+        for _, win in pairs(vim.api.nvim_list_wins()) do
+            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            if success then
+                -- print(vim.inspect(win_config))
+                if
+                    win_config.relative ~= "" and win_config.zindex == 45
+                    or win_config.zindex == 44
+                    or win_config.zindex == 46
+                    or win_config.zindex == 47
+                    or win_config.zindex == 50
+                    or win_config.zindex == 80
+                then
+                    flag = false
+                    vim.api.nvim_win_close(win, true)
+                elseif win_config.zindex == 10 then
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                end
+            end
+        end
+        if flag then
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+            vim.cmd("noh")
+        end
+    end)
+end
+esc()
+
 -- illuminate
 _G.highlight_ill = false
 keymap("n", "H", function()
@@ -59,32 +89,7 @@ keymap("n", "H", function()
         vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#D2D0D0" })
         vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#D2D0D0" })
         vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#d0d8d8" })
-        keymap({ "s", "i", "n" }, "<esc>", function()
-            local flag = true
-            for _, win in pairs(vim.api.nvim_list_wins()) do
-                local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-                if success then
-                    -- print(vim.inspect(win_config))
-                    if
-                        win_config.relative ~= "" and win_config.zindex == 45
-                        or win_config.zindex == 44
-                        or win_config.zindex == 46
-                        or win_config.zindex == 47
-                        or win_config.zindex == 50
-                        or win_config.zindex == 80
-                    then
-                        flag = false
-                        vim.api.nvim_win_close(win, true)
-                    elseif win_config.zindex == 10 then
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-                    end
-                end
-            end
-            if flag then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-                vim.cmd("noh")
-            end
-        end)
+        esc()
         require("illuminate").unfreeze_buf()
         require("illuminate.highlight").buf_clear_references(bufnr)
     end)
@@ -453,30 +458,4 @@ keymap("n", "<leader>d", function()
     -- -- local def_or_ref = require("custom.definition-or-references.main")
     def_or_ref.definition_or_references()
     -- vim.lsp.buf.definition()
-end)
-keymap({ "s", "i", "n" }, "<esc>", function()
-    local flag = true
-    for _, win in pairs(vim.api.nvim_list_wins()) do
-        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if success then
-            -- print(vim.inspect(win_config))
-            if
-                win_config.relative ~= "" and win_config.zindex == 45
-                or win_config.zindex == 44
-                or win_config.zindex == 46
-                or win_config.zindex == 47
-                or win_config.zindex == 50
-                or win_config.zindex == 80
-            then
-                flag = false
-                vim.api.nvim_win_close(win, true)
-            elseif win_config.zindex == 10 then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-            end
-        end
-    end
-    if flag then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-        vim.cmd("noh")
-    end
 end)
