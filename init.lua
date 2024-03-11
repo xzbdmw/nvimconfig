@@ -1,6 +1,5 @@
+---@diagnostic disable: undefined-global
 -- -- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
---
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
     callback = function(_)
@@ -31,7 +30,6 @@ local function update_winbar_cache()
     if path == nil or filename == nil then
         return
     end
-
     if filename:match("%.rs$") then
         iconHighlight = "RustIcon"
         icon = "󱘗"
@@ -91,6 +89,78 @@ end
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = update_winbar_cache,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*",
+    callback = function()
+        local winconfig = vim.api.nvim_win_get_config(0)
+        if winconfig.relative ~= "" and winconfig.zindex == 9 then
+            local function checkGlobalVarAndSetWinBar()
+                -- 检查全局变量是否设置
+                if _G.glance_listnr ~= nil then
+                    -- 如果已设置，执行 vim.wo 操作
+                    vim.wo.winbar = " %#Comment#"
+                        .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
+                else
+                    -- 如果未设置，10 毫秒后再次检查
+                    vim.defer_fn(checkGlobalVarAndSetWinBar, 1)
+                end
+            end
+
+            -- 开始轮询
+            checkGlobalVarAndSetWinBar()
+        end
+        if winconfig.relative ~= "" and winconfig.zindex == 10 then
+            local telescopeUtilities = require("telescope.utils")
+            local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
+            local path = vim.fn.expand("%:~:.:h")
+
+            local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
+            local filename = vim.fn.expand("%:t")
+
+            local cwd = vim.fn.getcwd()
+            pre_filename = filename
+            if path == nil or filename == nil then
+                return
+            end
+            if filename:match("%.rs$") then
+                iconHighlight = "RustIcon"
+                icon = "󱘗"
+            end
+
+            local current_line = vim.fn.line(".")
+            local total_lines = vim.fn.line("$")
+            local percentage = math.floor((current_line / total_lines) * 100)
+            if not vim.startswith(absolute_path, cwd) then
+                vim.wo.winbar = " "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. icon
+                    .. " %#GlanceWinbarFileName#"
+                    .. filename
+                    .. "%*"
+                    .. " "
+                    .. "%#LibPath#"
+                    .. path
+            else
+                -- 在当前工作目录下，使用默认颜色
+                vim.wo.winbar = " "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. icon
+                    .. " %#GlanceWinbarFileName#"
+                    .. filename
+                    .. "%*"
+                    .. " "
+                    .. "%#GlanceWinbarFolderName#"
+                    .. path
+            end
+            -- update_winbar_with_percentage()
+        end
+    end,
 })
 
 -- 注册 CursorMoved 事件来仅更新动态变化的部分

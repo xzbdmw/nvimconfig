@@ -24,7 +24,7 @@ keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "v" }, "L", "$", opts)
-keymap({ "n", "v" }, "H", "^", opts)
+-- keymap({ "n", "v" }, "H", "^", opts)
 -- keymap("n", "<CR>", "viw", opts)
 -- keymap("v", "<CR>", [[:'<,'>lua require"wildfire".node_incremental()]], opts)
 -- keymap("n", "q", "<Nop>", opts)
@@ -38,6 +38,30 @@ keymap("i", "<down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 keymap("i", "<up>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 keymap("v", "<down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 keymap("v", "<up>", ":m '<-2<cr>gv=gv", { desc = "Move up" }) ]]
+
+-- illuminate
+keymap("n", "H", function()
+    vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
+    vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#CCE2E2" })
+
+    keymap("n", "<esc>", function()
+        local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
+        vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+        vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#D2D0D0" })
+        vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#d0d8d8" })
+        require("illuminate").unfreeze_buf()
+        require("illuminate.highlight").buf_clear_references(bufnr)
+    end, { buffer = true })
+    require("illuminate").freeze_buf()
+end)
+keymap("n", "n", function()
+    require("illuminate").goto_next_reference()
+end)
+keymap("n", "N", function()
+    require("illuminate").goto_prev_reference()
+end)
+keymap("n", "]]", "n")
+keymap("n", "[[", "N")
 
 keymap("n", "U", "<C-r>", opts)
 keymap("n", "Y", "y$", opts)
@@ -70,7 +94,9 @@ keymap("n", "<Leader>B", function()
     require("dap").set_breakpoint()
 end) ]]
 keymap("n", "ge", "g;", opts)
-keymap("v", "<leader>gb", "gcgbkgb", opts)
+keymap("v", "<leader>gb", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("gcgvgb", true, false, true), "t", true)
+end, opts)
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -95,6 +121,18 @@ local function get_non_float_win_count()
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
         if success then
             if win_config.relative ~= "" then
+                window_count = window_count - 1
+            end
+        end
+    end
+    return window_count
+end
+local function get_float_win_count()
+    local window_count = #vim.api.nvim_list_wins()
+    for _, win in pairs(vim.api.nvim_list_wins()) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            if win_config.relative == "" then
                 window_count = window_count - 1
             end
         end
@@ -167,16 +205,16 @@ keymap("n", "<Tab>", function()
     end
 end, { desc = "swicth window" })
 
--- keymap("i", "<CR>", function()
---     local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
---     ---@diagnostic disable-next-line: param-type-mismatch
---     local char = vim.fn.getline("."):sub(col, col)
---     if col > 0 and (char == "{" or char == "(") then
---         return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
---     else
---         return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
---     end
--- end, { expr = true })
+--[[ keymap("i", "<CR>", function()
+    local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
+    ---@diagnostic disable-next-line: param-type-mismatch
+    local char = vim.fn.getline("."):sub(col, col)
+    if col > 0 and (char == "{" or char == "(") then
+        return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
+    else
+        return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
+    end
+end, { expr = true }) ]]
 
 --[[ keymap("i", "<bs>", function()
     local pairs = {
@@ -361,13 +399,14 @@ keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
 
 keymap({ "s", "i", "n" }, "<C-7>", function()
+    print(get_float_win_count())
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
         if success then
             if win_config.relative ~= "" then
+                print(vim.inspect(win))
                 print(vim.inspect(win_config))
-                print(win_config.zindex)
-                vim.api.nvim_win_close(win, true)
+                -- vim.api.nvim_win_close(win, true)
             end
         end
     end

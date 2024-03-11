@@ -197,8 +197,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
         local winconfig = vim.api.nvim_win_get_config(0)
+        local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
         if winconfig.relative ~= "" and winconfig.zindex == 10 then
-            local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
             if _G.glancebuffer[bufnr] ~= nil then
                 return
             end
@@ -208,7 +208,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
             end, { buffer = bufnr })
 
             vim.keymap.set("n", "<Esc>", function()
-                CloseIfNormal()
+                Close_with_q()
             end, { buffer = bufnr })
 
             vim.keymap.set("n", "q", function()
@@ -218,6 +218,19 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
+-- vim.api.nvim_create_autocmd("WinEnter", {
+--     pattern = "*",
+--     callback = function()
+--         local winconfig = vim.api.nvim_win_get_config(0)
+--         local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
+--
+--         if winconfig.relative ~= "" and winconfig.zindex == 9 then
+--             vim.keymap.set("n", "<CR>", function()
+--                 Jump()
+--             end, { buffer = bufnr })
+--         end
+--     end,
+-- })
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
     local is_split = false

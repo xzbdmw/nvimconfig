@@ -19,15 +19,11 @@ return {
             --         end
             --     end
             --     if buf_index == #buffers and #buffers > 1 then
-            --         -- FUN
-            --         print([==[get_next_buf#if 1]==]) -- FUN
             --         return buffers[#buffers - 1]
             --     end
-            --     -- VAR
             --     print(
             --         [==[get_next_buf buffers[buf_index % #buffers + 1]:]==],
             --         vim.inspect(buffers[buf_index % #buffers + 1])
-            --     ) -- VAR
             --     return buffers[buf_index % #buffers + 1]
             -- end,
             quit = false, -- quit Neovim when last buffer is closed

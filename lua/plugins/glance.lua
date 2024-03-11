@@ -4,28 +4,8 @@ return {
     config = function()
         local glance = require("glance")
         local actions = glance.actions
-        function CloseIfNormal()
-            local mode = vim.api.nvim_get_mode()
-            if mode.mode == "n" then
-                for bufnr, _ in pairs(_G.glancebuffer) do
-                    -- vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
-                    vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
-                    vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
-                    _G.glancebuffer = {} -- 重置glancebuffer
-                end
-                _G.reference = false
-                vim.defer_fn(actions.close, 1)
-            else
-                vim.keymap.set("v", "<CR>", function()
-                    vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
-                end)
-                vim.keymap.set("n", "<CR>", function()
-                    vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
-                end)
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true)
-            end
-        end
-        function Close_with_q()
+
+        local function clear_and_restore()
             for bufnr, _ in pairs(_G.glancebuffer) do
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
@@ -39,12 +19,18 @@ return {
                 vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
             end)
             _G.reference = false
+        end
+
+        function Jump()
+            clear_and_restore()
+            actions.jump()
+        end
+
+        function Close_with_q()
+            clear_and_restore()
             vim.defer_fn(actions.close, 1)
         end
 
-        local function jump()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab><CR>", true, false, true), "t", true)
-        end
         function OpenFileAtSamePosition()
             -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
@@ -54,30 +40,13 @@ return {
             -- 获取当前编辑的文件名
             local filename = vim.fn.expand("%:p")
 
-            -- 关闭当前窗口
-            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("q", true, false, true), "t", true)
-            for bufnr, _ in pairs(_G.glancebuffer) do
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
-            end
-            _G.glancebuffer = {} -- 重置glancebuffer
-            _G.reference = false
-            actions.close()
-            local uri = vim.uri_from_fname(filename)
-            local bufnr = vim.uri_to_bufnr(uri)
-            vim.keymap.set("v", "<CR>", function()
-                vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
-            end)
-
-            vim.keymap.set("n", "<CR>", function()
-                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
-            end)
+            clear_and_restore()
             vim.schedule(function()
+                local uri = vim.uri_from_fname(filename)
+                local bufnr = vim.uri_to_bufnr(uri)
                 vim.api.nvim_win_set_buf(0, bufnr)
             end)
-            -- 重新打开文件，并跳转到相同的位置
-            -- 需要延迟执行，因为立即打开文件可能会因为窗口关闭操作而出现问题
+            actions.close()
             vim.schedule(function()
                 vim.api.nvim_win_set_cursor(0, { lnum, col })
             end)
@@ -123,7 +92,7 @@ return {
                     ["v"] = actions.jump_vsplit,
                     ["s"] = actions.jump_split,
                     ["t"] = actions.jump_tab,
-                    ["<CR>"] = jump,
+                    ["<CR>"] = Jump,
                     ["o"] = actions.jump,
                     ["l"] = actions.open_fold,
                     ["h"] = actions.close_fold,
@@ -167,14 +136,16 @@ return {
                     else
                         vim.cmd("normal! m'")
                         open(result) -- argument is optional
-                        if _G.reference == false then
-                            print("false")
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "n", true)
-                        end
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
+                        if _G.reference == false then
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("n", true, false, true), "t", true)
+                        end
                     end
                 end,
-                before_close = function() end,
+                before_close = function()
+                    _G.glance_list_method = nil
+                    _G.glance_listnr = nil
+                end,
             },
             folds = {
                 fold_closed = ">",
@@ -186,7 +157,7 @@ return {
                 icon = " ",
             },
             winbar = {
-                enable = true, -- Available strating from nvim-0.8+
+                enable = false, -- Available strating from nvim-0.8+
             },
         })
     end,

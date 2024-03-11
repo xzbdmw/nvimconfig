@@ -9,6 +9,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "sentiment" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "_watch" },
                     opts = { skip = true },
                 },

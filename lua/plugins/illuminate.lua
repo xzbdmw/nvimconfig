@@ -10,7 +10,7 @@ return {
             "regex",
         },
         filetypes_denylist = {
-            -- "Glance",
+            "Glance",
             "fugitive",
         },
         delay = 1,
@@ -20,4 +20,7 @@ return {
         large_file_overrides = nil,
         modes_denylist = { "i", "v", "x" },
     },
+    config = function(_, opts)
+        require("illuminate").configure(opts)
+    end,
 }

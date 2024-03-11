@@ -430,35 +430,7 @@ return {
                     sort_lastused = true,
                 },
             },
-            extensions = {
-                ["neovim-project"] = {
-                    layout_strategy = "horizontal",
-                    layout_config = {
-                        horizontal = {
-                            width = 0.35,
-                            height = 0.7,
-                        },
-                    },
-                },
-                smart_open = {
-                    show_scores = true,
-                    ignore_patterns = { "*.git/*", "*/tmp/*" },
-                    match_algorithm = "fzf",
-                    disable_devicons = true,
-                    open_buffer_indicators = { previous = "😄", others = "👀" },
-                },
-                -- undo = {
-                --     layout_config = {
-                --         horizontal = {
-                --             width = 0.9,
-                --             height = 0.9,
-                --             preview_cutoff = 0,
-                --             prompt_position = "top",
-                --             preview_width = 0.4,
-                --         },
-                --     },
-                -- },
-            },
+            extensions = {},
         })
         -- require("telescope").load_extension("bookmarks")
         require("telescope").load_extension("fzf")
