@@ -214,6 +214,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
             vim.keymap.set("n", "q", function()
                 Close_with_q()
             end, { buffer = bufnr })
+
+            vim.keymap.set("n", "H", function()
+                OpenAndKeepHighlight()
+            end, { buffer = bufnr })
         end
     end,
 })

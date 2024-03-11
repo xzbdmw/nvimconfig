@@ -40,25 +40,54 @@ keymap("v", "<down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 keymap("v", "<up>", ":m '<-2<cr>gv=gv", { desc = "Move up" }) ]]
 
 -- illuminate
+_G.highlight_ill = false
 keymap("n", "H", function()
+    local bufnr = vim.api.nvim_get_current_buf()
     vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
+    vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#FCF0A1" })
     vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#CCE2E2" })
     keymap("n", "n", function()
         require("illuminate").goto_next_reference()
-    end, { buffer = true })
+    end, { buffer = bufnr })
     keymap("n", "N", function()
         require("illuminate").goto_prev_reference()
-    end, { buffer = true })
+    end, { buffer = bufnr })
     keymap("n", "<esc>", function()
-        local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
-        vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+        -- vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
         vim.api.nvim_buf_del_keymap(bufnr, "n", "n")
         vim.api.nvim_buf_del_keymap(bufnr, "n", "N")
         vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#D2D0D0" })
+        vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#D2D0D0" })
         vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#d0d8d8" })
+        keymap({ "s", "i", "n" }, "<esc>", function()
+            local flag = true
+            for _, win in pairs(vim.api.nvim_list_wins()) do
+                local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+                if success then
+                    -- print(vim.inspect(win_config))
+                    if
+                        win_config.relative ~= "" and win_config.zindex == 45
+                        or win_config.zindex == 44
+                        or win_config.zindex == 46
+                        or win_config.zindex == 47
+                        or win_config.zindex == 50
+                        or win_config.zindex == 80
+                    then
+                        flag = false
+                        vim.api.nvim_win_close(win, true)
+                    elseif win_config.zindex == 10 then
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                    end
+                end
+            end
+            if flag then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                vim.cmd("noh")
+            end
+        end)
         require("illuminate").unfreeze_buf()
         require("illuminate.highlight").buf_clear_references(bufnr)
-    end, { buffer = true })
+    end)
     require("illuminate").freeze_buf()
 end)
 

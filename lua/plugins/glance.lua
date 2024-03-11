@@ -1,3 +1,4 @@
+_G.parentbufnr = nil
 return {
     "dnlhc/glance.nvim",
     event = "VeryLazy",
@@ -10,6 +11,7 @@ return {
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
+                vim.api.nvim_buf_del_keymap(bufnr, "n", "H")
             end
             _G.glancebuffer = {} -- 重置glancebuffer
             vim.keymap.set("v", "<CR>", function()
@@ -31,6 +33,12 @@ return {
             vim.defer_fn(actions.close, 1)
         end
 
+        function OpenAndKeepHighlight()
+            OpenFileAtSamePosition()
+            vim.schedule(function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("H", true, false, true), "t", true)
+            end)
+        end
         function OpenFileAtSamePosition()
             -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
@@ -104,7 +112,6 @@ return {
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
-                    -- ["<CR>"] = openFileAtSamePosition,
                     -- ["<esc>"] = CloseIfNormal,
                     -- ["q"] = Close_with_q,
                     ["n"] = actions.next_location,
@@ -115,6 +122,7 @@ return {
             },
             hooks = {
                 before_open = function(result, open, jump, _)
+                    _G.parentbufnr = vim.api.nvim_get_current_buf()
                     vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#E8E7E0", underline = true })
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
