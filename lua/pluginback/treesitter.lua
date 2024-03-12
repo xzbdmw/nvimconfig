@@ -2,6 +2,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
+    enabled = false,
     event = { "LazyFile", "VeryLazy" },
     -- lazy = false,
     init = function(plugin)
@@ -55,7 +56,6 @@ return {
         highlight = { enable = true, disable = { "markdown" } },
         indent = { enable = true },
         ensure_installed = {
-            "rust",
             "vue",
             "java",
             "bash",

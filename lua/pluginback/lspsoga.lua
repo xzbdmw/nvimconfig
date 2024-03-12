@@ -1,6 +1,5 @@
 return {
     "nvimdev/lspsaga.nvim",
-    enabled = false,
     event = "LspAttach",
     commit = "2198c07124bef27ef81335be511c8abfd75db933",
     dependencies = {
