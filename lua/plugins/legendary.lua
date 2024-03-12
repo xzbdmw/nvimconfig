@@ -90,12 +90,14 @@ return {
                 },
                 {
                     function()
+                        vim.g.neovide_underline_stroke_scale = 0
                         vim.cmd("DiffviewOpen")
                     end,
                     description = "DiffviewOpen",
                 },
                 {
                     function()
+                        vim.g.neovide_underline_stroke_scale = 2
                         vim.cmd("DiffviewClose")
                     end,
                     description = "DiffviewClose",
