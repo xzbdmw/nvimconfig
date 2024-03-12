@@ -27,7 +27,7 @@ return {
             clear_and_restore()
             actions.jump()
             vim.schedule(function()
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<left>", true, false, true), "t", true)
+                FeedKeys("H", "t")
             end)
         end
 
@@ -39,7 +39,7 @@ return {
         function OpenAndKeepHighlight()
             OpenFileAtSamePosition()
             vim.schedule(function()
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<left>", true, false, true), "t", true)
+                FeedKeys("H", "t")
             end)
         end
         function OpenFileAtSamePosition()
@@ -131,7 +131,7 @@ return {
                     local locations = {}
                     if result ~= nil and result[1].range == nil then
                         open(result)
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
+                        FeedKeys("<Tab>", "t")
                         return
                     end
                     if #result == 1 then
@@ -147,9 +147,9 @@ return {
                     else
                         vim.cmd("normal! m'")
                         open(result) -- argument is optional
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "t", true)
+                        FeedKeys("<Tab>", "t")
                         if _G.reference == false then
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("n", true, false, true), "t", true)
+                            FeedKeys("n", "t")
                         end
                     end
                 end,
