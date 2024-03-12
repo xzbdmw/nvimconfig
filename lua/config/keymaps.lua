@@ -24,7 +24,7 @@ keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "v" }, "L", "$", opts)
-keymap({ "n", "v" }, "H", "^", opts)
+-- keymap({ "n", "v" }, "H", "^", opts)
 -- keymap("n", "<CR>", "viw", opts)
 -- keymap("v", "<CR>", [[:'<,'>lua require"wildfire".node_incremental()]], opts)
 -- keymap("n", "q", "<Nop>", opts)
@@ -70,7 +70,7 @@ end
 esc()
 
 -- illuminate
-keymap("n", "<left>", function()
+keymap("n", "H", function()
     local bufnr = vim.api.nvim_get_current_buf()
     vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
     vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#FCF0A1" })

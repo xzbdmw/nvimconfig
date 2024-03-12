@@ -78,9 +78,20 @@ return {
                     function()
                         vim.cmd("Gitsigns preview_hunk_inline")
                     end,
-                    description = "preview_hunk_inline",
+                    description = "hunk_inline",
                 },
-
+                {
+                    function()
+                        vim.cmd("DiffviewOpen")
+                    end,
+                    description = "DiffviewOpen",
+                },
+                {
+                    function()
+                        vim.cmd("DiffviewClose")
+                    end,
+                    description = "DiffviewClose",
+                },
                 {
                     function()
                         require("refactoring").debug.print_var()
