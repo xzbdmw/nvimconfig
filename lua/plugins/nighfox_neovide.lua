@@ -39,7 +39,7 @@ return {
                 MiniIndentscopeSymbol = { link = "Comment" },
                 GitSignsCurrentLineBlame = { fg = "#2D5D22" },
                 Directory = { link = "Comment" },
-                MatchParen = { fg = "#000000", style = "bold" },
+                MatchParen = { fg = "#000000", style = "bold,italic" },
                 AerialLine = { link = "NvimTreeCursorLine" },
                 Substitute = { bg = "#FCF0A1", fg = "#000000", style = "bold" },
                 -- I have the same problem and more

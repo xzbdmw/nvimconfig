@@ -150,10 +150,10 @@ return {
                 end,
             },
             experimental = {
-                ghost_text = {
-                    hl_group = "CmpGhostText",
-                },
-                -- ghost_text = false,
+                -- ghost_text = {
+                --     hl_group = "CmpGhostText",
+                -- },
+                ghost_text = false,
             },
             sorting = {
                 compare.order,

@@ -26,6 +26,9 @@ return {
         function Jump()
             clear_and_restore()
             actions.jump()
+            vim.schedule(function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<left>", true, false, true), "t", true)
+            end)
         end
 
         function Close_with_q()

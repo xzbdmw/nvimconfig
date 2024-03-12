@@ -3,10 +3,16 @@ return {
     -- since legendary.nvim handles all your keymaps/commands,
     --   -- its recommended to load legendary.nvim before other plugins
     priority = 10000,
-    enabled = false,
+    -- enabled = false,
     lazy = false,
     -- sqlite is only needed if you want to use frecency sorting
     dependencies = { "kkharji/sqlite.lua" },
+    keys = { {
+        "<leader>ss",
+        function()
+            vim.cmd("Legendary functions")
+        end,
+    } },
     config = function()
         require("legendary").setup({
             keymaps = {
@@ -14,11 +20,14 @@ return {
                 -- { "<leader>ff", ":Telescope find_files", description = "Find files" },
                 -- -- map keys to a function
                 -- {
-                --     "<leader>h",
+                --     "<leader>vp",
                 --     function()
-                --         print("hello world!")
+                --         require("refactoring").debug.print_var()
+                --         vim.schedule(function()
+                --             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
+                --         end)
                 --     end,
-                --     description = "Say hello",
+                --     description = "print_var",
                 -- },
                 -- -- Set options used during keymap creation
                 -- { "<leader>s", ":SomeCommand<CR>", description = "Non-silent keymap", opts = { silent = true } },
@@ -67,9 +76,19 @@ return {
             funcs = {
                 {
                     function()
-                        vim.cmd("DiffviewOpen")
+                        vim.cmd("Gitsigns preview_hunk_inline")
                     end,
-                    description = "DiffviewOpen",
+                    description = "preview_hunk_inline",
+                },
+
+                {
+                    function()
+                        require("refactoring").debug.print_var()
+                        vim.schedule(function()
+                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
+                        end)
+                    end,
+                    description = "print variable",
                 },
                 -- Make arbitrary Lua functions that can be executed via the item finder
                 -- {
