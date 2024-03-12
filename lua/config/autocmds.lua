@@ -4,9 +4,9 @@
 -- auto close
 -- vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
 -- vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
-vim.cmd("syntax off")
+-- vim.cmd("syntax off")
 
---[[ local start_time = nil
+local start_time = nil
 local end_time = nil
 -- 注册BufLeave事件，在离开当前buffer时记录时间
 vim.api.nvim_create_autocmd("BufLeave", {
@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
             print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
         end
     end,
-}) ]]
+})
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
