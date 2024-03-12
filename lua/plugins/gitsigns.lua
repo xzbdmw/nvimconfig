@@ -28,24 +28,12 @@ return {
 
                 -- Navigation
                 map("n", "]c", function()
-                    if vim.wo.diff then
-                        return "]c"
-                    end
-                    vim.schedule(function()
-                        gs.next_hunk()
-                    end)
-                    return "<Ignore>"
-                end, { expr = true })
+                    gs.next_hunk()
+                end)
 
                 map("n", "[c", function()
-                    if vim.wo.diff then
-                        return "[c"
-                    end
-                    vim.schedule(function()
-                        gs.prev_hunk()
-                    end)
-                    return "<Ignore>"
-                end, { expr = true })
+                    gs.prev_hunk()
+                end)
 
                 -- -- Actions
                 -- map("n", "<leader>hs", gs.stage_hunk)

@@ -6,7 +6,7 @@ return {
 
         require("diffview").setup({
             diff_binaries = false, -- Show diffs for binaries
-            enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
+            enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
             git_cmd = { "git" }, -- The git executable followed by default args.
             hg_cmd = { "hg" }, -- The hg executable followed by default args.
             use_icons = true, -- Requires nvim-web-devicons
@@ -50,6 +50,7 @@ return {
                 },
             },
             file_panel = {
+
                 listing_style = "tree", -- One of 'list' or 'tree'
                 tree_options = { -- Only applies when listing_style is 'tree'
                     flatten_dirs = true, -- Flatten dirs that only contain one single dir
@@ -97,6 +98,24 @@ return {
                 view = {
                     -- The `view` bindings are active in the diff buffers, only when the current
                     -- tabpage is a Diffview.
+                    {
+                        "n",
+                        "<Tab>",
+                        '<C-w><C-w><cmd>lua if vim.bo.filetype == "DiffviewFiles" then vim.cmd("wincmd w") end<CR>',
+                        { desc = "Open the diff for the next file" },
+                    },
+                    {
+                        "n",
+                        "n",
+                        "]c",
+                        { desc = "next hunk" },
+                    },
+                    {
+                        "n",
+                        "N",
+                        "[c",
+                        { desc = "prev hunk" },
+                    },
                     {
                         "n",
                         "<C-n>",
@@ -262,10 +281,15 @@ return {
                 file_panel = {
                     {
                         "n",
+                        "<Tab>",
+                        "<C-w><C-w>",
+                        { desc = "Open the diff for the next file" },
+                    },
+                    {
+                        "n",
                         "j",
                         function()
                             actions.next_entry()
-                            actions.select_entry()
                         end,
                         { desc = "Bring the cursor to the next file entry" },
                     },
@@ -280,7 +304,6 @@ return {
                         "k",
                         function()
                             actions.prev_entry()
-                            actions.select_entry()
                         end,
                         { desc = "Bring the cursor to the previous file entry" },
                     },

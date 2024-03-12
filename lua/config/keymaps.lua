@@ -174,43 +174,35 @@ local function get_float_win_count()
 end
 
 keymap("n", "<Tab>", function()
-    local cursor_pos = vim.api.nvim_win_get_cursor(0) -- 获取当前窗口的光标位置
-    local line_num = cursor_pos[1] -- 光标所在的行号
-    local fold_start = vim.fn.foldclosed(line_num)
-    if fold_start == -1 then
-        local flag = false
-        local window_count = get_non_float_win_count()
-        local current_win = vim.api.nvim_get_current_win()
-        for _, win in pairs(vim.api.nvim_list_wins()) do
-            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-            -- print(vim.inspect(win_config))
-            if success then
-                -- if this win is float_win
-                if win_config.relative ~= "" then
-                    -- if this win isn't current_win
-                    if
-                        current_win ~= win
-                        and win_config.zindex ~= 20
-                        and win_config.zindex ~= 60
-                        and win_config.width ~= 1
-                        and win_config.zindex ~= 51
-                        and win_config.zindex ~= 52
-                    then
-                        -- change flag to indicate that we have change current_win, so no need to cycle
-                        flag = true
-                        vim.api.nvim_set_current_win(win)
-                    end
-                    break
+    local flag = false
+    local window_count = get_non_float_win_count()
+    local current_win = vim.api.nvim_get_current_win()
+    for _, win in pairs(vim.api.nvim_list_wins()) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        -- print(vim.inspect(win_config))
+        if success then
+            -- if this win is float_win
+            if win_config.relative ~= "" then
+                -- if this win isn't current_win
+                if
+                    current_win ~= win
+                    and win_config.zindex ~= 20
+                    and win_config.zindex ~= 60
+                    and win_config.width ~= 1
+                    and win_config.zindex ~= 51
+                    and win_config.zindex ~= 52
+                then
+                    -- change flag to indicate that we have change current_win, so no need to cycle
+                    flag = true
+                    vim.api.nvim_set_current_win(win)
                 end
+                break
             end
         end
-        -- if window_count == 1 then
-        --     return
-        -- end
-        -- 当前有两个以上窗口的时候 忽略nvimtree
-        if flag == false and window_count ~= 2 then
-            -- print(window_count)
-            vim.cmd([[
+    end
+    if flag == false and window_count ~= 2 then
+        -- print(window_count)
+        vim.cmd([[
   let w0 = winnr()
   let nok = 1
   while nok
@@ -220,9 +212,9 @@ keymap("n", "<Tab>", function()
   let nok = ( n=~'NVimTree' )   && (w != w0)
   endwhile
 ]])
-            -- 当前有两个窗口的时候,可以切换到nvimtree
-        elseif flag == false then
-            vim.cmd([[
+        -- 当前有两个窗口的时候,可以切换到nvimtree
+    elseif flag == false then
+        vim.cmd([[
   let w0 = winnr()
   let nok = 1
   while nok
@@ -232,9 +224,6 @@ keymap("n", "<Tab>", function()
     let nok = (n=~'NVmTree') && (w != w0)
   endwhile
 ]])
-        end
-    else
-        require("ufo").peekFoldedLinesUnderCursor()
     end
 end, { desc = "swicth window" })
 

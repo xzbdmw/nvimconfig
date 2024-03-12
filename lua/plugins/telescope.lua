@@ -6,7 +6,6 @@ return {
         { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "telescope resume" },
         { "<leader>sd", false },
-        { "<leader>ss", false },
         {
             "<leader>ff",
             function()
@@ -22,7 +21,7 @@ return {
             end,
         }, ]]
         {
-            "<leader>so",
+            "<leader>ss",
             function()
                 require("custom.telescope-pikers").prettyWorkspaceSymbols()
             end,
