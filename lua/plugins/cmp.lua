@@ -57,7 +57,6 @@ return {
             },
             mapping = cmp.mapping.preset.insert({
                 ["<D-d>"] = cmp.mapping(function()
-                    print("hello")
                     print(cmp.visible_docs())
                     if cmp.visible_docs() then
                         cmp.close_docs()
@@ -119,7 +118,6 @@ return {
                 ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
             }),
             sources = cmp.config.sources({
-                -- { name = "nvim_lsp", trigger_characters = { "&", ":" } },
                 { name = "nvim_lsp", max_item_count = 30 },
             }, {
                 { name = "path" },
