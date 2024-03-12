@@ -1,6 +1,6 @@
 return {
     { "nvim-pack/nvim-spectre", enabled = false },
-    { "lewis6991/gitsigns.nvim", enabled = false },
+    -- { "lewis6991/gitsigns.nvim", enabled = false },
     { "ggandor/leap.nvim", enabled = false },
     { "rcarriga/nvim-notify", enabled = false },
     { "nvimdev/dashboard-nvim", enabled = false },

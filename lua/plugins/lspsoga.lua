@@ -47,6 +47,9 @@ return {
                 enable = false,
                 frequency = 14,
             },
+            code_action = {
+                extend_gitsigns = true,
+            },
             implement = {
                 enable = false,
                 sign = true,
