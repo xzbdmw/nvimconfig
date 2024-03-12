@@ -55,7 +55,7 @@ return {
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 -- async_budget = 1,
-                max_view_entries = 7,
+                max_view_entries = 10,
             },
             snippet = {
                 expand = function(args)
@@ -128,7 +128,7 @@ return {
             }),
             sources = cmp.config.sources({
                 -- { name = "nvim_lsp", trigger_characters = { "&", ":" } },
-                { name = "nvim_lsp" },
+                { name = "nvim_lsp", max_item_count = 30 },
                 { name = "luasnip" },
                 { name = "path" },
             }, {
