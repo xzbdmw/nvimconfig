@@ -37,9 +37,9 @@ return {
                 LspInlayHint = { fg = "#7E7D7D", bg = "none" },
                 illuminatedwordwrite = { bg = "#d0d8d8" },
                 MiniIndentscopeSymbol = { link = "Comment" },
-                GitSignsCurrentLineBlame = { link = "Comment" },
+                GitSignsCurrentLineBlame = { fg = "#2D5D22" },
                 Directory = { link = "Comment" },
-                MatchParen = { fg = "#000000", bg = "#BEC4C2", style = "bold,italic" },
+                MatchParen = { fg = "#000000", style = "bold" },
                 AerialLine = { link = "NvimTreeCursorLine" },
                 Substitute = { bg = "#FCF0A1", fg = "#000000", style = "bold" },
                 -- I have the same problem and more
