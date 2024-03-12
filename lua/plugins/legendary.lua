@@ -138,7 +138,7 @@ return {
                         vim.cmd("messages")
                         vim.defer_fn(function()
                             K("<C-w>L", "t")
-                        end, 10)
+                        end, 30)
                     end,
                     description = "show messages",
                 },
@@ -158,7 +158,7 @@ return {
                     function()
                         vim.cmd.RustLsp({ "runnables", bang = true })
                     end,
-                    description = "resume rust testables",
+                    description = "resume rust runnables",
                 },
                 {
                     function()
