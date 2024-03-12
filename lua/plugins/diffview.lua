@@ -366,18 +366,6 @@ return {
                     },
                     {
                         "n",
-                        "<C-n>",
-                        actions.select_next_entry,
-                        { desc = "Open the diff for the next file" },
-                    },
-                    {
-                        "n",
-                        "<C-p>",
-                        actions.select_prev_entry,
-                        { desc = "Open the diff for the previous file" },
-                    },
-                    {
-                        "n",
                         "gf",
                         actions.goto_file_edit,
                         { desc = "Open the file in the previous tabpage" },
@@ -535,18 +523,6 @@ return {
                     },
                     { "n", "<c-b>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
                     { "n", "<c-f>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
-                    {
-                        "n",
-                        "<C-n>",
-                        actions.select_next_entry,
-                        { desc = "Open the diff for the next file" },
-                    },
-                    {
-                        "n",
-                        "<C-p>",
-                        actions.select_prev_entry,
-                        { desc = "Open the diff for the previous file" },
-                    },
                     {
                         "n",
                         "gf",
