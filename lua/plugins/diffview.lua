@@ -58,7 +58,7 @@ return {
                 },
                 win_config = { -- See ':h diffview-config-win_config'
                     position = "left",
-                    width = 35,
+                    width = 30,
                     win_opts = {},
                 },
             },
@@ -83,6 +83,20 @@ return {
                     win_opts = {},
                 },
             },
+            hooks = {
+                view_opened = function(view)
+                    if view.class:name() == "FileHistoryView" then
+                        vim.cmd("wincmd k")
+                        vim.cmd("wincmd x")
+                        vim.cmd("wincmd j")
+                    end
+
+                    if view.class:name() == "DiffView" then
+                        vim.cmd("wincmd l")
+                        vim.cmd("wincmd x")
+                    end
+                end,
+            },
             commit_log_panel = {
                 win_config = { -- See ':h diffview-config-win_config'
                     win_opts = {},
@@ -92,7 +106,6 @@ return {
                 DiffviewOpen = {},
                 DiffviewFileHistory = {},
             },
-            hooks = {}, -- See ':h diffview-config-hooks'
             keymaps = {
                 disable_defaults = true, -- Disable the default keymaps
                 view = {
@@ -428,6 +441,7 @@ return {
                         "n",
                         "g<C-x>",
                         actions.cycle_layout,
+
                         { desc = "Cycle available layouts" },
                     },
                     {
