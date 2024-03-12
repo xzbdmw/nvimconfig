@@ -1,4 +1,4 @@
-K = function(keymap, mode)
+FeedKeys = function(keymap, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
 end
 ---@diagnostic disable: undefined-global
