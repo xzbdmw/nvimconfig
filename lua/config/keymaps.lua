@@ -31,7 +31,6 @@ keymap({ "n", "v" }, "L", "$", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-
 --[[ keymap("n", "<down>", "<cmd>m .+1<cr>==", { desc = "Move down" })
 keymap("n", "<up>", "<cmd>m .-2<cr>==", { desc = "Move up" })
 keymap("i", "<down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })

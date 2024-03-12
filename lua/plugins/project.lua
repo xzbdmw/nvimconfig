@@ -17,6 +17,7 @@ return {
             -- detection_methods
             patterns = {
                 "=karabiner",
+                "=runtime",
                 "Cargo.lock",
                 "go.mod",
                 ".git",

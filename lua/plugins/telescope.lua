@@ -12,14 +12,6 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("file")
             end,
         },
-        --[[ {
-            "<C-d>",
-            function()
-                -- require("custom.telescope-pikers").prettyDocumentSymbols()
-
-                vim.cmd("Telescope lsp_document_symbols")
-            end,
-        }, ]]
         {
             "<leader>ss",
             function()
@@ -39,24 +31,10 @@ return {
                 require("custom.telescope-pikers").prettyFilesPicker("old_files")
             end,
         },
-
         {
-            "<leader><C-p>",
+            "<C-;>",
             function()
                 require("telescope").extensions["neovim-project"].history({
-                    --[[ attach_mappings = function(_, map)
-                        map("i", "<C-d>", function(_prompt_bufnr)
-                            print("You typed asdf")
-                        end)
-
-                        map({ "i", "n" }, "<C-r>", function(_prompt_bufnr)
-                            print("You typed <C-r>")
-                        end, { desc = "desc for which key" })
-
-                        -- needs to return true if you want to map default_mappings and
-                        -- false if not
-                        return true
-                    end, ]]
                     layout_strategy = "horizontal",
                     layout_config = {
                         horizontal = {

@@ -191,7 +191,6 @@ vim.api.nvim_create_autocmd("FileType", {
         end
     end,
 })
-
 _G.glancebuffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",

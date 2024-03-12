@@ -2,7 +2,8 @@ return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter" },
-    keys = { { "<C-n>", false } },
+    -- enabled = false,
+    -- keys = { { "<C-n>", false } },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -34,12 +35,13 @@ return {
                     col_offset = -3,
                     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
-                documentation = cmp.config.window.bordered({
-                    border = "none",
-                    side_padding = 0,
-                    col_offset = -3,
-                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
-                }),
+                -- documentation = cmp.config.window.bordered({
+                --     border = "none",
+                --     side_padding = 0,
+                --     col_offset = -3,
+                --     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                -- }),
+                documentation = false,
             },
 
             completion = {
@@ -55,7 +57,7 @@ return {
                 fetching_timeout = 500,
                 confirm_resolve_timeout = 80,
                 -- async_budget = 1,
-                max_view_entries = 10,
+                max_view_entries = 30,
             },
             snippet = {
                 expand = function(args)
