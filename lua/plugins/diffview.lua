@@ -79,7 +79,7 @@ return {
                 },
                 win_config = { -- See ':h diffview-config-win_config'
                     position = "bottom",
-                    height = 16,
+                    height = 12,
                     win_opts = {},
                 },
             },
@@ -101,19 +101,19 @@ return {
                     {
                         "n",
                         "<Tab>",
-                        '<C-w><C-w><cmd>lua if vim.bo.filetype == "DiffviewFiles" then vim.cmd("wincmd w") end<CR>',
+                        '<C-w><C-w><cmd>lua if vim.bo.filetype == "DiffviewFiles" or vim.bo.filetype=="DiffviewFileHistory" then vim.cmd("wincmd w") end<CR>',
                         { desc = "Open the diff for the next file" },
                     },
                     {
                         "n",
                         "n",
-                        "]c",
+                        "]czz",
                         { desc = "next hunk" },
                     },
                     {
                         "n",
                         "N",
-                        "[c",
+                        "[czz",
                         { desc = "prev hunk" },
                     },
                     {

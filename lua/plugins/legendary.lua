@@ -104,6 +104,13 @@ return {
                 },
                 {
                     function()
+                        vim.g.neovide_underline_stroke_scale = 0
+                        vim.cmd("DiffviewFileHistory %")
+                    end,
+                    description = "DiffviewFile",
+                },
+                {
+                    function()
                         require("refactoring").debug.print_var()
                         vim.schedule(function()
                             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
@@ -126,22 +133,39 @@ return {
                     end,
                     description = "prev chunk",
                 },
-                -- Make arbitrary Lua functions that can be executed via the item finder
-                -- {
-                --     function()
-                --         doSomeStuff()
-                --     end,
-                --     description = "Do some stuff with a Lua function!",
-                -- },
-                -- {
-                --     -- groups with same itemgroup will be merged
-                --     itemgroup = "short ID",
-                --     -- don't need to copy the other group data because
-                --     -- it will be merged with the one from the keymaps table
-                --     funcs = {
-                --         -- more funcs here
-                --     },
-                -- },
+                {
+                    function()
+                        vim.cmd("messages")
+                        vim.defer_fn(function()
+                            K("<C-w>L", "t")
+                        end, 10)
+                    end,
+                    description = "show messages",
+                },
+                {
+                    function()
+                        vim.cmd.RustLsp("runnables")
+                    end,
+                    description = "runnables",
+                },
+                {
+                    function()
+                        vim.cmd.RustLsp("testables")
+                    end,
+                    description = "testables",
+                },
+                {
+                    function()
+                        vim.cmd.RustLsp({ "runnables", bang = true })
+                    end,
+                    description = "resume rust testables",
+                },
+                {
+                    function()
+                        vim.cmd.RustLsp({ "testables", bang = true })
+                    end,
+                    description = "resume rust testables",
+                },
             },
             autocmds = {
                 -- Create autocmds and augroups
