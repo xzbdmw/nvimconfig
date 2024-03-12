@@ -6,7 +6,7 @@
 -- vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
 -- vim.cmd("syntax off")
 
-local start_time = nil
+--[[ local start_time = nil
 local end_time = nil
 -- 注册BufLeave事件，在离开当前buffer时记录时间
 vim.api.nvim_create_autocmd("BufLeave", {
@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
             print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
         end
     end,
-})
+}) ]]
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
@@ -116,27 +116,6 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
--- vim.api.nvim_create_autocmd("ModeChanged", {
---     pattern = "*:i",
---     callback = function()
---         if vim.bo.filetype ~= "TelescopePrompt" then
---             vim.cmd("TSContextDisable")
---             vim.defer_fn(function()
---                 vim.g.neovide_floating_z_height = 10
---             end, 100)
---         end
---     end,
--- })
--- vim.api.nvim_create_autocmd("ModeChanged", {
---     pattern = "*:n",
---     callback = function()
---         if vim.bo.filetype ~= "TelescopePrompt" then
---             vim.g.neovide_floating_z_height = 0
---             vim.cmd("TSContextEnable")
---         end
---     end,
--- })
-
 local selection_mode = false
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "*:s",
@@ -171,26 +150,6 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
---[[ vim.api.nvim_create_autocmd("ModeChanged", {
-    -- pattern = { "no:*", "V:*" },
-    callback = function()
-        local new_mode = vim.v.event.new_mode
-        local old_mode = vim.v.event.old_mode
-        print(new_mode)
-        print(old_mode)
-        -- vim.opt.relativenumber = false
-    end,
-}) ]]
-
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = "python",
---     callback = function(_)
---         local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
---         if venv ~= "" then
---             require("venv-selector").retrieve_from_cache()
---         end
---     end,
--- })
 _G.glancebuffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
@@ -221,19 +180,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
--- vim.api.nvim_create_autocmd("WinEnter", {
---     pattern = "*",
---     callback = function()
---         local winconfig = vim.api.nvim_win_get_config(0)
---         local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
---
---         if winconfig.relative ~= "" and winconfig.zindex == 9 then
---             vim.keymap.set("n", "<CR>", function()
---                 Jump()
---             end, { buffer = bufnr })
---         end
---     end,
--- })
 local function checkSplitAndSetLaststatus()
     local windows = vim.api.nvim_list_wins()
     local is_split = false
