@@ -17,16 +17,6 @@ return {
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         return {
-            --[[ enabled = function()
-                -- disable completion in comments
-                local context = require("cmp.config.context")
-                -- keep command mode completion enabled when cursor is in a comment
-                if vim.api.nvim_get_mode().mode == "c" then
-                    return true
-                else
-                    return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
-                end
-            end, ]]
             preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
@@ -35,21 +25,22 @@ return {
                     col_offset = -3,
                     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
                 }),
-                -- documentation = cmp.config.window.bordered({
-                --     border = "none",
-                --     side_padding = 0,
-                --     col_offset = -3,
-                --     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
-                -- }),
-                documentation = false,
+                documentation = cmp.config.window.bordered({
+                    border = "none",
+                    side_padding = 0,
+                    col_offset = -3,
+                    winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                }),
             },
 
             completion = {
-                -- autocomplete = { require("cmp.types").cmp.TriggerEvent.InsertEnter },
                 completeopt = "menu,menuone,noinsert",
             },
             view = {
                 entries = { name = "custom", selection_order = "near_cursor" },
+                docs = {
+                    auto_open = false,
+                },
             },
             performance = {
                 debounce = 0,
@@ -65,14 +56,15 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                --[[ ["<S-CR>"] = cmp.mapping(function()
-                    require("luasnip").jump(1)
-                    vim.api.nvim_feedkeys(
-                        vim.api.nvim_replace_termcodes("<Del><cmd>write<CR>o", true, false, true),
-                        "t",
-                        true
-                    )
-                end), ]]
+                ["<D-d>"] = cmp.mapping(function()
+                    print("hello")
+                    print(cmp.visible_docs())
+                    if cmp.visible_docs() then
+                        cmp.close_docs()
+                    else
+                        cmp.open_docs()
+                    end
+                end),
                 ["<space>"] = cmp.mapping(function(fallback)
                     if cmp.visible then
                         cmp.abort()
@@ -94,8 +86,6 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "v", "n" }),
-                -- ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-                -- ["<C-f>"] = cmp.mapping.scroll_docs(4),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
