@@ -9,7 +9,7 @@ return {
     dependencies = { "kkharji/sqlite.lua" },
     keys = {
         {
-            "<C-;>",
+            "<C-p>",
             function()
                 vim.cmd("Legendary functions")
             end,

@@ -41,7 +41,7 @@ return {
         },
 
         {
-            "<C-p>",
+            "<leader><C-p>",
             function()
                 require("telescope").extensions["neovim-project"].history({
                     --[[ attach_mappings = function(_, map)

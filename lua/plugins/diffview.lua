@@ -118,13 +118,13 @@ return {
                     },
                     {
                         "n",
-                        "<C-n>",
+                        "<down>",
                         actions.select_next_entry,
                         { desc = "Open the diff for the next file" },
                     },
                     {
                         "n",
-                        "<C-p>",
+                        "<up>",
                         actions.select_prev_entry,
                         { desc = "Open the diff for the previous file" },
                     },
@@ -295,22 +295,10 @@ return {
                     },
                     {
                         "n",
-                        "<down>",
-                        actions.next_entry,
-                        { desc = "Bring the cursor to the next file entry" },
-                    },
-                    {
-                        "n",
                         "k",
                         function()
                             actions.prev_entry()
                         end,
-                        { desc = "Bring the cursor to the previous file entry" },
-                    },
-                    {
-                        "n",
-                        "<up>",
-                        actions.prev_entry,
                         { desc = "Bring the cursor to the previous file entry" },
                     },
                     {
