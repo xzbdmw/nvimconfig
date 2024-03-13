@@ -20,7 +20,6 @@ keymap({ "n", "v" }, "L", "$", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-
 local function esc()
     keymap({ "s", "i", "n" }, "<esc>", function()
         local flag = true
@@ -50,7 +49,6 @@ local function esc()
     end)
 end
 esc()
-
 -- illuminate
 keymap("n", "H", function()
     local bufnr = vim.api.nvim_get_current_buf()
@@ -77,7 +75,6 @@ keymap("n", "H", function()
     end)
     require("illuminate").freeze_buf()
 end)
-
 keymap("n", "U", "<C-r>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
