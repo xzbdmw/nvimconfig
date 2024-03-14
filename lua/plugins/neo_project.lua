@@ -1,11 +1,15 @@
 return {
     "coffebar/neovim-project",
+    keys = {
+        { "<D-9>", "<cmd>NeovimProjectLoadRecent<CR>" },
+    },
     -- commit = "33a5d6ef5f9e035470c80cbec0bbfe23e776543c",
     opts = {
         last_session_on_startup = true,
         projects = { -- define project roots
             "~/Project/rust/*",
             "~/Project/vim/*",
+            "~/Project/lua/*",
             "~/Project/Typescript/*",
             "~/Project/Go/*",
             "/Users/xzb/Downloads/nvim-macos/share/nvim/*",
