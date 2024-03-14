@@ -248,6 +248,7 @@ return {
                 ["@lsp.typemod.method.library"] = { fg = "#215062" },
                 ["@lsp.typemod.enumMember.library"] = { fg = "#152381" },
                 ["@lsp.typemod.interface"] = { fg = "#80462D" },
+                ["@lsp.type.interface.typescript"] = { fg = "#80462D" },
                 ["@type.builtin"] = { fg = "#0033b3" },
                 ["@function.builtin"] = { fg = "#215062" },
                 ["@variable.builtin.rust"] = { fg = "#000000" },

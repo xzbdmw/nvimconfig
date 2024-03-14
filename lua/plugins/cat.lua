@@ -1,6 +1,27 @@
 return {
     "catppuccin/nvim",
     name = "catppuccin",
+    init = function()
+        local selection_mode = false
+        vim.api.nvim_create_autocmd("ModeChanged", {
+            pattern = "*:s",
+            callback = function()
+                if selection_mode == false then
+                    vim.api.nvim_set_hl(0, "Visual", { bg = "#375D7C" })
+                    selection_mode = true
+                end
+            end,
+        })
+        vim.api.nvim_create_autocmd("ModeChanged", {
+            pattern = "*:v",
+            callback = function()
+                if selection_mode then
+                    vim.api.nvim_set_hl(0, "Visual", { bg = "#39424A" })
+                    selection_mode = false
+                end
+            end,
+        })
+    end,
     -- priority = 1000,
     config = function()
         require("catppuccin").setup({
@@ -18,7 +39,7 @@ return {
                 shade = "dark",
                 percentage = 0.15, -- percentage of the shade to apply to the inactive window
             },
-            no_italic = false, -- Force no italic
+            no_italic = true, -- Force no italic
             no_bold = false, -- Force no bold
             no_underline = false, -- Force no underline
             styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
@@ -38,28 +59,31 @@ return {
             color_overrides = {},
             custom_highlights = function(colors)
                 return {
-                    ["@lsp.typemod.selfKeyword"] = { fg = colors.red, italic = true },
-                    ["@lsp.type.selfTypeKeyword"] = { fg = colors.red, style = { "italic" } },
+                    ["@lsp.typemod.selfKeyword"] = { fg = colors.red },
+                    ["@lsp.type.selfTypeKeyword"] = { fg = colors.red },
                     ["@lsp.typemod.decorator"] = { link = "special" },
                     ["@namespace"] = { style = { "nocombine" } },
                     ["@module"] = { style = { "nocombine" } },
-                    TreesitterContextLineNumber = { fg = "#494D64" },
+                    TreesitterContextLineNumber = { fg = "#494D64", bg = "#1e2030" },
                     CursorLine = { bg = "#292D3F" },
                     Comment = { link = "NvimTreeFolderIcon" },
                     WinbarFolder = { fg = "#8F98B8" },
-                    WinbarFileName = { link = "NvimTreeRootFolder" },
+                    WinbarFileName = { fg = "#B6BDFD" },
                     ["@function.builtin"] = { link = "Function" },
                     ["@punctuation.bracket"] = { link = "Comment" },
                     ["@punctuation.special.rust"] = { link = "Comment" },
                     String = { fg = "#92be83" },
                     FzfLuaBorder = { link = "TelescopeBorder" },
                     GlancePreviewMatch = { fg = "#ffffff", bg = "#304E75" },
+                    GlanceWinbarFileName = { link = "NvimTreeRootFolder" },
                     GlanceListMatch = { fg = "#8AADF4" },
+                    GlanceWinbarFolderName = { link = "Comment" },
                     GlanceListCursorLine = { bg = "#212635" },
-                    GlanceListNormal = { fg = "#8F98B8", bg = "#15182A" },
-                    GlancePreviewNormal = { bg = "#1A1E30" },
-                    LspInlayHint = { fg = "#6C7086", bg = colors.none },
+                    -- GlanceListNormal = { fg = "#8F98B8", bg = "#15182A" },
+                    -- GlancePreviewNormal = { bg = "#1A1E30" },
+                    LspInlayHint = { fg = "#8D98BB", bg = colors.none },
                     NvimTreeOpenedFile = { fg = "#cad3f5" },
+                    NvimTreeRootFolder = { fg = "#B6BDFD", style = { "nocombine" } },
                     NvimTreeFolderName = { link = "Directory" },
                     NvimTreeOpenedFolderName = { link = "NvimTreeOpenedFile" },
                     NvimTreeFolderIcon = { link = "Directory" },
@@ -75,11 +99,12 @@ return {
                     CmpGhostText = { fg = "#6C7086", style = { "italic" } },
                     CmpItemMenu = { link = "Comment" },
                     TelescopeMatching = { style = { "bold" } },
-                    TelescopeNormal = { style = { "nocombine" } },
+                    TelescopeNormal = { bg = "#1E2031", style = { "nocombine" } },
+                    TelescopeBorder = { bg = "#1E2031", style = { "nocombine" } },
                     TelescopeSelection = { style = { "nocombine" } },
                     MyNormalFloat = { bg = "#1e2030" },
                     MyCursorLine = { bg = "#283E5B" },
-                    MatchParen = { fg = "#F0C6C6", style = { "italic" }, bg = colors.none },
+                    MatchParen = { fg = "#F0C6C6", style = { "nocombine" }, bg = colors.none },
                     LualineCursorLine = { bg = "#2A2B3C" },
                     Unvisited = { bg = "#34344F" },
                     MiniIndentscopeSymbol = { fg = "#6C7086" },

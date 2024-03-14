@@ -158,7 +158,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
                     .. filename
                     .. "%*"
                     .. " "
-                    .. "%#GlanceWinbarFolderName#"
+                    .. "%#Comment#"
                     .. path
             end
             -- update_winbar_with_percentage()

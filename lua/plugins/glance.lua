@@ -126,7 +126,6 @@ return {
             hooks = {
                 before_open = function(result, open, jump, _)
                     _G.parentbufnr = vim.api.nvim_get_current_buf()
-                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#E8E7E0", underline = true })
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
                     if result ~= nil and result[1].range == nil then

@@ -20,7 +20,7 @@ keymap({ "n", "v" }, "L", "$", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-local function esc()
+function Set_esc_keymap()
     keymap({ "s", "i", "n" }, "<esc>", function()
         local flag = true
         for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -48,33 +48,7 @@ local function esc()
         end
     end)
 end
-esc()
--- illuminate
-keymap("n", "H", function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#FCF0A1" })
-    vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#FCF0A1" })
-    vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#CCE2E2" })
-    keymap("n", "n", function()
-        require("illuminate").goto_next_reference()
-    end, { buffer = bufnr })
-    keymap("n", "N", function()
-        require("illuminate").goto_prev_reference()
-    end, { buffer = bufnr })
-    keymap("n", "<esc>", function()
-        -- vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
-        vim.api.nvim_buf_del_keymap(bufnr, "n", "n")
-        vim.api.nvim_buf_del_keymap(bufnr, "n", "N")
-        vim.api.nvim_set_hl(0, "illuminatedWordRead", { bg = "#D2D0D0" })
-        vim.api.nvim_set_hl(0, "illuminatedWordText", { bg = "#D2D0D0" })
-        vim.api.nvim_set_hl(0, "illuminatedWordwrite", { bg = "#d0d8d8" })
-        esc()
-        require("illuminate").unfreeze_buf()
-        require("illuminate.highlight").buf_clear_references(bufnr)
-        require("illuminate.engine").refresh_references()
-    end)
-    require("illuminate").freeze_buf()
-end)
+Set_esc_keymap()
 keymap("n", "U", "<C-r>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
@@ -83,6 +57,47 @@ keymap("v", "<down>", "", opts)
 keymap("n", "[p", '"0p', opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
+
+keymap("n", "<leader>sd", function()
+    vim.g.neovide_underline_stroke_scale = 0
+    vim.cmd("DiffviewOpen")
+end, opts)
+keymap("n", "<leader>cd", function()
+    vim.g.neovide_underline_stroke_scale = 2
+    vim.cmd("DiffviewClose")
+end, opts)
+keymap("n", "<leader>sm", function()
+    vim.cmd("messages")
+    vim.defer_fn(function()
+        local win_height = vim.api.nvim_win_get_height(0)
+        local screen_height = vim.api.nvim_get_option("lines")
+        if win_height + 1 < screen_height then
+            FeedKeys("<C-w>L", "t")
+        end
+    end, 30)
+end, opts)
+
+local function get_normal_bg_color()
+    -- 获取 Normal 高亮组的详细信息
+    local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
+    -- 转换颜色值为十六进制格式
+    local bg_color = string.format("#%06x", normal_hl.background)
+    -- __AUTO_GENERATED_PRINT_VAR_START__
+    print([==[get_normal_bg_color bg_color:]==], vim.inspect(bg_color)) -- __AUTO_GENERATED_PRINT_VAR_END__
+    return bg_color
+end
+local function load_appropriate_theme()
+    local bg_color = get_normal_bg_color()
+    -- 假设我们将亮背景定义为具有大于某个阈值的亮度
+    -- 这里简化处理，仅通过颜色的数值来判断
+    -- 实际应用中，可能需要更复杂的亮度计算来决定是亮色还是暗色背景
+    if bg_color == "#24273a" then
+        require("theme.dark")
+    else
+        require("theme.light")
+    end
+end
+load_appropriate_theme()
 --[[ keymap("n", "<leader>td", function()
     require("dapui").toggle()
 end, { silent = true, noremap = true, desc = "toggle signature" })

@@ -6,6 +6,7 @@ return {
         projects = { -- define project roots
             "~/Project/rust/*",
             "~/Project/vim/*",
+            "~/Project/Typescript/*",
             "~/Project/Go/*",
             "/Users/xzb/Downloads/nvim-macos/share/nvim/*",
             "/Users/xzb/.local/share/nvim/lazy/*",

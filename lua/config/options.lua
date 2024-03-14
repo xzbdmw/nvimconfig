@@ -9,11 +9,13 @@ vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
 vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos,resize"
 vim.opt.relativenumber = false
+vim.g.winblend = 0
 vim.opt.pumblend = 0
 vim.opt.shiftwidth = 4
 vim.opt.list = false
 vim.opt.tabstop = 4
 vim.opt.jumpoptions = "stack"
+-- vim.o.guifont = "menlo,Symbols Nerd Font:h18.5"
 --[[ vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h18.5"
 vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
 vim.o.guifont = "JetBrains Mono freeze freeze,Symbols Nerd Font:h20:#e-subpixelantialias:#h-none"
