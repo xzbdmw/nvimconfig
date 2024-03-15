@@ -38,9 +38,7 @@ return {
 
         function OpenAndKeepHighlight()
             OpenFileAtSamePosition()
-            vim.schedule(function()
-                FeedKeys("H", "t")
-            end)
+            FeedKeys("H", "t")
         end
         function OpenFileAtSamePosition()
             -- 获取当前光标位置

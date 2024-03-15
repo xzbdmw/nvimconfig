@@ -37,10 +37,46 @@ return {
         end
 
         function OpenAndKeepHighlight()
-            OpenFileAtSamePosition()
+            local cursor = vim.api.nvim_win_get_cursor(0)
+            local lnum = cursor[1]
+            local col = cursor[2]
+
+            -- 获取当前编辑的文件名
+            local filename = vim.fn.expand("%:p")
+
+            clear_and_restore()
+            actions.close()
             vim.schedule(function()
-                FeedKeys("H", "t")
+                local uri = vim.uri_from_fname(filename)
+                local bufnr = vim.uri_to_bufnr(uri)
+                vim.api.nvim_win_set_buf(0, bufnr)
             end)
+            vim.schedule(function()
+                vim.api.nvim_win_set_cursor(0, { lnum, col })
+                local bufnr = vim.api.nvim_get_current_buf()
+                local keymap = vim.keymap.set
+                keymap("n", "n", function()
+                    require("illuminate.goto").goto_next_keepd_reference(true)
+                end, { buffer = bufnr })
+                keymap("n", "N", function()
+                    require("illuminate.goto").goto_prev_keepd_reference(true)
+                end, { buffer = bufnr })
+                keymap("n", "<esc>", function()
+                    vim.api.nvim_buf_del_keymap(bufnr, "n", "n")
+                    vim.api.nvim_buf_del_keymap(bufnr, "n", "N")
+                    Set_esc_keymap()
+                    require("illuminate.engine").clear_keeped_highlight()
+                    require("illuminate.engine").refresh_references()
+                end)
+                -- vim.defer_fn(function()
+                --     -- __AUTO_GENERATED_PRINT_VAR_START__
+                --     print([==[function bufnr:]==], vim.inspect(bufnr)) -- __AUTO_GENERATED_PRINT_VAR_END__
+                --     require("illuminate.engine").keep_highlight()
+                -- end, 10000)
+            end)
+            vim.defer_fn(function()
+                print("hellp")
+            end, 5000)
         end
         function OpenFileAtSamePosition()
             -- 获取当前光标位置
