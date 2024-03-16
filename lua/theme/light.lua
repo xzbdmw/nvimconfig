@@ -17,22 +17,45 @@ vim.api.nvim_create_autocmd("ModeChanged", {
         end
     end,
 })
+
 local keymap = vim.keymap.set
+keymap("n", "n", function()
+    require("illuminate.goto").goto_next_keepd_reference(true)
+end)
+keymap("n", "N", function()
+    require("illuminate.goto").goto_prev_keepd_reference(true)
+end)
+keymap({ "s", "i", "n" }, "<esc>", function()
+    local flag = true
+    for _, win in pairs(vim.api.nvim_list_wins()) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            if
+                win_config.relative ~= "" and win_config.zindex == 45
+                or win_config.zindex == 44
+                or win_config.zindex == 46
+                or win_config.zindex == 47
+                or win_config.zindex == 50
+                or win_config.zindex == 80
+            then
+                flag = false
+                vim.api.nvim_win_close(win, true)
+            elseif win_config.zindex == 10 then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+            end
+        end
+    end
+    if flag then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+        vim.cmd("noh")
+    end
+    require("illuminate.engine").clear_keeped_highlight()
+    require("illuminate.engine").refresh_references()
+end)
 -- illuminate
 keymap("n", "H", function()
-    require("illuminate.engine").keep_highlight()
     local bufnr = vim.api.nvim_get_current_buf()
-    keymap("n", "n", function()
-        require("illuminate.goto").goto_next_keepd_reference(true)
-    end, { buffer = bufnr })
-    keymap("n", "N", function()
-        require("illuminate.goto").goto_prev_keepd_reference(true)
-    end, { buffer = bufnr })
-    keymap("n", "<esc>", function()
-        vim.api.nvim_buf_del_keymap(bufnr, "n", "n")
-        vim.api.nvim_buf_del_keymap(bufnr, "n", "N")
-        Set_esc_keymap()
-        require("illuminate.engine").clear_keeped_highlight()
-        require("illuminate.engine").refresh_references()
-    end)
+    -- __AUTO_GENERATED_PRINT_VAR_START__
+    print([==[function bufnr:]==], vim.inspect(bufnr)) -- __AUTO_GENERATED_PRINT_VAR_END__
+    require("illuminate.engine").keep_highlight(bufnr)
 end)

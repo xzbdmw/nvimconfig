@@ -20,35 +20,6 @@ keymap({ "n", "v" }, "L", "$", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-function Set_esc_keymap()
-    keymap({ "s", "i", "n" }, "<esc>", function()
-        local flag = true
-        for _, win in pairs(vim.api.nvim_list_wins()) do
-            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-            if success then
-                -- print(vim.inspect(win_config))
-                if
-                    win_config.relative ~= "" and win_config.zindex == 45
-                    or win_config.zindex == 44
-                    or win_config.zindex == 46
-                    or win_config.zindex == 47
-                    or win_config.zindex == 50
-                    or win_config.zindex == 80
-                then
-                    flag = false
-                    vim.api.nvim_win_close(win, true)
-                elseif win_config.zindex == 10 then
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-                end
-            end
-        end
-        if flag then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-            vim.cmd("noh")
-        end
-    end)
-end
-Set_esc_keymap()
 keymap("n", "U", "<C-r>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
@@ -264,7 +235,7 @@ keymap("i", ".", "<C-g>u.", opts)
 keymap("i", ",", "<C-g>u,", opts)
 keymap("i", "<space>", "<C-g>u<space>", opts)
 keymap("i", "<C-r>", "<C-g>u<C-r>", opts)
-
+keymap("n", "0", "^", opts)
 keymap("i", "<C-CR>", "<CR>", opts)
 keymap("i", "<C-e>", "<esc>A", opts)
 -- keymap("i", "<C-CR>", "<CR>", opts)

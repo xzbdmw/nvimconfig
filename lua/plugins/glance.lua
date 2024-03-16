@@ -26,9 +26,6 @@ return {
         function Jump()
             clear_and_restore()
             actions.jump()
-            vim.schedule(function()
-                FeedKeys("H", "t")
-            end)
         end
 
         function Close_with_q()
@@ -37,10 +34,6 @@ return {
         end
 
         function OpenAndKeepHighlight()
-            OpenFileAtSamePosition()
-            FeedKeys("H", "t")
-        end
-        function OpenFileAtSamePosition()
             -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
@@ -54,23 +47,36 @@ return {
                 local uri = vim.uri_from_fname(filename)
                 local bufnr = vim.uri_to_bufnr(uri)
                 vim.api.nvim_win_set_buf(0, bufnr)
+                vim.schedule(function()
+                    vim.api.nvim_win_set_cursor(0, { lnum, col })
+                    require("illuminate.engine").keep_highlight(bufnr)
+                end)
             end)
             actions.close()
-            vim.schedule(function()
-                vim.api.nvim_win_set_cursor(0, { lnum, col })
-            end)
         end
+        -- function OpenFileAtSamePosition()
+        --     -- 获取当前光标位置
+        --     local cursor = vim.api.nvim_win_get_cursor(0)
+        --     local lnum = cursor[1]
+        --     local col = cursor[2]
+        --
+        --     -- 获取当前编辑的文件名
+        --     local filename = vim.fn.expand("%:p")
+        --
+        --     clear_and_restore()
+        --     vim.schedule(function()
+        --         local uri = vim.uri_from_fname(filename)
+        --         local bufnr = vim.uri_to_bufnr(uri)
+        --         vim.api.nvim_win_set_buf(0, bufnr)
+        --     end)
+        --     actions.close()
+        --     vim.schedule(function()
+        --         vim.api.nvim_win_set_cursor(0, { lnum, col })
+        --     end)
+        -- end
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,
-            -- detached = false,
-
-            --[[ Or use a function to enable `detached` only when the active window is too small
-            (default behavior)
-            detached = function(winid)
-                return vim.api.nvim_win_get_width(winid) < 100
-            end, ]]
-
             preview_win_opts = { -- Configure preview window options
                 cursorline = true,
                 number = true,
@@ -124,6 +130,7 @@ return {
             hooks = {
                 before_open = function(result, open, jump, _)
                     _G.parentbufnr = vim.api.nvim_get_current_buf()
+                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#E8E7E0", underline = true })
                     local lnum = vim.api.nvim_win_get_cursor(0)[1]
                     local locations = {}
                     if result ~= nil and result[1].range == nil then
