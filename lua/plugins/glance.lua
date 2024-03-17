@@ -11,7 +11,6 @@ return {
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
-                -- vim.api.nvim_buf_del_keymap(bufnr, "n", "H")
             end
             _G.glancebuffer = {} -- 重置glancebuffer
             vim.keymap.set("v", "<CR>", function()
@@ -54,26 +53,7 @@ return {
             end)
             actions.close()
         end
-        -- function OpenFileAtSamePosition()
-        --     -- 获取当前光标位置
-        --     local cursor = vim.api.nvim_win_get_cursor(0)
-        --     local lnum = cursor[1]
-        --     local col = cursor[2]
-        --
-        --     -- 获取当前编辑的文件名
-        --     local filename = vim.fn.expand("%:p")
-        --
-        --     clear_and_restore()
-        --     vim.schedule(function()
-        --         local uri = vim.uri_from_fname(filename)
-        --         local bufnr = vim.uri_to_bufnr(uri)
-        --         vim.api.nvim_win_set_buf(0, bufnr)
-        --     end)
-        --     actions.close()
-        --     vim.schedule(function()
-        --         vim.api.nvim_win_set_cursor(0, { lnum, col })
-        --     end)
-        -- end
+
         require("glance").setup({
             height = 18, -- Height of the window
             zindex = 10,

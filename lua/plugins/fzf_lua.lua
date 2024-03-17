@@ -5,6 +5,18 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     event = "VeryLazy",
     keys = {
+        -- {
+        --     "<leader>sg",
+        --     function()
+        --         require("fzf-lua").live_grep_native()
+        --     end,
+        -- },
+        {
+            "<leader>fb",
+            function()
+                require("fzf-lua").grep_curbuf()
+            end,
+        },
         {
             "<C-d>",
             function()

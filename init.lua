@@ -68,6 +68,7 @@ local function update_winbar_cache()
     end
 end
 
+local modified_buffer_indicator = ""
 -- 更新 winbar 内容，仅添加动态变化的百分比部分
 local function update_winbar_with_percentage()
     local win_config = vim.api.nvim_win_get_config(0)
@@ -84,14 +85,53 @@ local function update_winbar_with_percentage()
     if vim.fn.expand("%:t") ~= pre_filename then
         update_winbar_cache()
     end
-    -- end
-    vim.wo.winbar = winbar_cache .. "%#Comment#" .. " - " .. percentage .. "%%"
+    if vim.api.nvim_get_option_value("modified", { buf = 0 }) then
+        vim.wo.winbar = winbar_cache
+            .. modified_buffer_indicator
+            .. "%#diffLine#"
+            .. " * "
+            .. "%#Comment#"
+            .. percentage
+            .. "%%"
+    else
+        vim.wo.winbar = winbar_cache .. modified_buffer_indicator .. "%#Comment#" .. " - " .. percentage .. "%%"
+    end
 end
 
 -- 注册 BufEnter 事件来更新缓存
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = update_winbar_cache,
+})
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    callback = function()
+        local win_config = vim.api.nvim_win_get_config(0)
+        if win_config.relative ~= "" then
+            return
+        end
+        local current_line = vim.fn.line(".")
+        local total_lines = vim.fn.line("$")
+        local percentage = math.floor((current_line / total_lines) * 100)
+        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "aerial" then
+            return
+        end
+        -- if winbar_cache == nil or winbar_cache == "" then
+        if vim.fn.expand("%:t") ~= pre_filename then
+            update_winbar_cache()
+        end
+        if vim.api.nvim_get_option_value("modified", { buf = 0 }) then
+            vim.wo.winbar = winbar_cache
+                .. modified_buffer_indicator
+                .. "%#diffLine#"
+                .. " * "
+                .. "%#Comment#"
+                .. percentage
+                .. "%%"
+        else
+            vim.wo.winbar = winbar_cache .. modified_buffer_indicator .. "%#Comment#" .. " - " .. percentage .. "%%"
+        end
+    end,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
