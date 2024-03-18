@@ -18,6 +18,12 @@ local winbar_cache = ""
 local pre_filename = ""
 -- 更新固定内容的函数
 local function update_winbar_cache()
+    local success, win_config = pcall(vim.api.nvim_win_get_config, 0)
+    if success then
+        if win_config.relative ~= "" then
+            return
+        end
+    end
     if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "aerial" then
         return
     end
@@ -88,8 +94,8 @@ local function update_winbar_with_percentage()
     if vim.api.nvim_get_option_value("modified", { buf = 0 }) then
         vim.wo.winbar = winbar_cache
             .. modified_buffer_indicator
-            .. "%#diffLine#"
-            .. " * "
+            .. "%#FileChangedIcon#"
+            .. "  "
             .. "%#Comment#"
             .. percentage
             .. "%%"
@@ -171,10 +177,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
                 iconHighlight = "RustIcon"
                 icon = "󱘗"
             end
-
-            local current_line = vim.fn.line(".")
-            local total_lines = vim.fn.line("$")
-            local percentage = math.floor((current_line / total_lines) * 100)
             if not vim.startswith(absolute_path, cwd) then
                 vim.wo.winbar = " "
                     .. "%#"

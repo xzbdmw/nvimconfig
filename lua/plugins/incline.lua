@@ -7,8 +7,8 @@ return {
     config = function()
         require("incline").setup({
             debounce_threshold = {
-                falling = 50,
-                rising = 10,
+                falling = 200,
+                rising = 200,
             },
             hide = {
                 cursorline = false,
@@ -54,38 +54,29 @@ return {
                 end
 
                 local function get_diagnostic_label()
-                    local icons = { Error = "E", Warn = "W", Info = "I", Hint = "H" }
-                    local diagnosticsCount = { Error = 0, Warn = 0, Info = 0, Hint = 0 }
-
-                    -- 收集每种严重程度的诊断计数
-                    for severity, _ in pairs(icons) do
-                        diagnosticsCount[severity] =
-                            #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[severity] })
-                    end
+                    local icons = {
+                        Error = "",
+                        Warn = "",
+                        Info = "",
+                        Hint = "",
+                    }
 
                     local label = {}
-                    local highestSeverityLabel = nil
-
-                    -- 确定最高的非零严重程度
-                    if diagnosticsCount.Error > 0 then
-                        highestSeverityLabel = "Error"
-                    elseif diagnosticsCount.Warn > 0 then
-                        highestSeverityLabel = "Warn"
-                    elseif diagnosticsCount.Info > 0 then
-                        highestSeverityLabel = "Info"
-                    elseif diagnosticsCount.Hint > 0 then
-                        highestSeverityLabel = "Hint"
-                    end
-
-                    -- 如果存在非零的最高严重程度，构建对应的标签
-                    if highestSeverityLabel then
-                        label = {
-                            { "   " }, -- 前缀图标
-                            {
-                                diagnosticsCount[highestSeverityLabel] .. " ",
-                                group = "DiagnosticSign" .. highestSeverityLabel,
-                            },
-                        }
+                    for severity, _ in pairs(icons) do
+                        local n = #vim.diagnostic.get(
+                            props.buf,
+                            { severity = vim.diagnostic.severity[string.upper(severity)] }
+                        )
+                        if n > 0 then
+                            label = {
+                                { "   " }, -- 前缀图标
+                                {
+                                    n,
+                                    group = "DiagnosticSign" .. severity,
+                                },
+                            }
+                            break
+                        end
                     end
                     return label
                 end

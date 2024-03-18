@@ -148,6 +148,7 @@ return {
                 CmpItemAbbr = { fg = "#000000" },
                 CmpItemAbbrMatch = { fg = "#000000", style = "bold" },
                 CmpItemAbbrMatchFuzzy = { fg = "#000000", style = "bold" },
+                FileChangedIcon = { fg = "#1D6D8D" },
                 -- CmpItemAbbrMatch = { fg = "#152381", style = "bold" },
                 -- CmpItemAbbrMatchFuzzy = { fg = "#152381", style = "bold" },
                 CmpGhostText = { fg = "#595655", style = "italic" },

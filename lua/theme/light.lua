@@ -52,10 +52,9 @@ keymap({ "s", "i", "n" }, "<esc>", function()
     require("illuminate.engine").clear_keeped_highlight()
     require("illuminate.engine").refresh_references()
 end)
+
 -- illuminate
 keymap("n", "H", function()
     local bufnr = vim.api.nvim_get_current_buf()
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[function bufnr:]==], vim.inspect(bufnr)) -- __AUTO_GENERATED_PRINT_VAR_END__
     require("illuminate.engine").keep_highlight(bufnr)
 end)
