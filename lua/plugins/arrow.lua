@@ -1,5 +1,6 @@
 return {
     "otavioschwanck/arrow.nvim",
+    commit = "ffad9340a82646d538b99070e2b5ffeb2b20bba7",
     event = "VeryLazy",
     keys = {
         {

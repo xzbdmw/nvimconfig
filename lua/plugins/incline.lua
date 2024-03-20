@@ -48,7 +48,7 @@ return {
                         end
                     end
                     if #labels > 0 then
-                        table.insert(labels, 1, { "   " })
+                        table.insert(labels, 1, { "  " })
                     end
                     return labels
                 end
@@ -69,9 +69,9 @@ return {
                         )
                         if n > 0 then
                             label = {
-                                { "   " }, -- 前缀图标
+                                { "  " }, -- 前缀图标
                                 {
-                                    n,
+                                    tostring(n) .. " ",
                                     group = "DiagnosticSign" .. severity,
                                 },
                             }
@@ -82,6 +82,8 @@ return {
                 end
 
                 return {
+                    -- { { "winid: " .. tostring(vim.api.nvim_get_current_win()) } },
+                    -- { { "bufid: " .. tostring(vim.api.nvim_get_current_buf()) } },
                     { get_diagnostic_label() },
                     { get_git_diff() },
                 }

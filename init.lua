@@ -12,11 +12,6 @@ vim.api.nvim_create_autocmd("FileType", {
         end
     end,
 })
-
--- 定义全局变量来缓存 winbar 的固定内容
-local winbar_cache = ""
-local pre_filename = ""
--- 更新固定内容的函数
 local function update_winbar_cache()
     local success, win_config = pcall(vim.api.nvim_win_get_config, 0)
     if success then
@@ -35,7 +30,6 @@ local function update_winbar_cache()
     local filename = vim.fn.expand("%:t")
 
     local cwd = vim.fn.getcwd()
-    pre_filename = filename
     if path == nil or filename == nil then
         return
     end
@@ -43,8 +37,17 @@ local function update_winbar_cache()
         iconHighlight = "RustIcon"
         icon = "󱘗"
     end
+    local statusline = require("arrow.statusline")
+    local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
+    local arrow_icon = ""
+    if arrow ~= "" then
+        arrow_icon = "󰣉"
+        icon = ""
+        arrow = "(" .. arrow .. ")"
+        iconHighlight = "ArrowIcon"
+    end
     if not vim.startswith(absolute_path, cwd) then
-        winbar_cache = " "
+        vim.wo.winbar = " "
             .. " "
             .. "%#LibPath#"
             .. path
@@ -53,13 +56,18 @@ local function update_winbar_cache()
             .. "%#"
             .. iconHighlight
             .. "#"
+            .. arrow_icon
             .. icon
             .. " %#WinbarFileName#"
             .. filename
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. arrow
             .. "%*"
     else
         -- 在当前工作目录下，使用默认颜色
-        winbar_cache = " "
+        vim.wo.winbar = " "
             .. "%#NvimTreeFolderName#"
             .. " "
             .. path
@@ -67,77 +75,24 @@ local function update_winbar_cache()
             .. "%#"
             .. iconHighlight
             .. "#"
+            .. arrow_icon
             .. icon
             .. " %#WinbarFileName#"
             .. filename
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. arrow
             .. "%*"
     end
 end
 
 local modified_buffer_indicator = ""
--- 更新 winbar 内容，仅添加动态变化的百分比部分
-local function update_winbar_with_percentage()
-    local win_config = vim.api.nvim_win_get_config(0)
-    if win_config.relative ~= "" then
-        return
-    end
-    local current_line = vim.fn.line(".")
-    local total_lines = vim.fn.line("$")
-    local percentage = math.floor((current_line / total_lines) * 100)
-    if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "aerial" then
-        return
-    end
-    -- if winbar_cache == nil or winbar_cache == "" then
-    if vim.fn.expand("%:t") ~= pre_filename then
-        update_winbar_cache()
-    end
-    if vim.api.nvim_get_option_value("modified", { buf = 0 }) then
-        vim.wo.winbar = winbar_cache
-            .. modified_buffer_indicator
-            .. "%#FileChangedIcon#"
-            .. "  "
-            .. "%#Comment#"
-            .. percentage
-            .. "%%"
-    else
-        vim.wo.winbar = winbar_cache .. modified_buffer_indicator .. "%#Comment#" .. " - " .. percentage .. "%%"
-    end
-end
 
 -- 注册 BufEnter 事件来更新缓存
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = update_winbar_cache,
-})
-
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    callback = function()
-        local win_config = vim.api.nvim_win_get_config(0)
-        if win_config.relative ~= "" then
-            return
-        end
-        local current_line = vim.fn.line(".")
-        local total_lines = vim.fn.line("$")
-        local percentage = math.floor((current_line / total_lines) * 100)
-        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "aerial" then
-            return
-        end
-        -- if winbar_cache == nil or winbar_cache == "" then
-        if vim.fn.expand("%:t") ~= pre_filename then
-            update_winbar_cache()
-        end
-        if vim.api.nvim_get_option_value("modified", { buf = 0 }) then
-            vim.wo.winbar = winbar_cache
-                .. modified_buffer_indicator
-                .. "%#diffLine#"
-                .. " * "
-                .. "%#Comment#"
-                .. percentage
-                .. "%%"
-        else
-            vim.wo.winbar = winbar_cache .. modified_buffer_indicator .. "%#Comment#" .. " - " .. percentage .. "%%"
-        end
-    end,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -167,7 +122,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
             local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
             local filename = vim.fn.expand("%:t")
-
             local cwd = vim.fn.getcwd()
             pre_filename = filename
             if path == nil or filename == nil then
@@ -203,16 +157,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
                     .. "%#Comment#"
                     .. path
             end
-            -- update_winbar_with_percentage()
         end
     end,
 })
 
--- 注册 CursorMoved 事件来仅更新动态变化的部分
-vim.api.nvim_create_autocmd("CursorMoved", {
-    pattern = "*",
-    callback = update_winbar_with_percentage,
-})
+-- -- 注册 CursorMoved 事件来仅更新动态变化的部分
+-- vim.api.nvim_create_autocmd("CursorMoved", {
+--     pattern = "*",
+--     callback = update_winbar_with_percentage,
+-- })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {

@@ -93,7 +93,7 @@ return {
                     function()
                         vim.cmd("messages clear")
                     end,
-                    description = "messages clear",
+                    description = "msg",
                 },
                 {
                     function()

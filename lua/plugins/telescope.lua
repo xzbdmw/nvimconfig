@@ -168,7 +168,6 @@ return {
             local previewer = picker.previewer
             local winid = previewer.state.winid
             local bufnr = previewer.state.bufnr
-
             local line_start = vim.fn.line("w0", winid)
             local line_end = vim.fn.line("w$", winid)
 

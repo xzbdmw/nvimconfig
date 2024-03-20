@@ -2,15 +2,19 @@
 vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
 vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
 
+-- vim.api.nvim_create_autocmd("BufLeave", {
+--     callback = function()
+--         local t = {
+--             file = vim.fn.expand("<afile>"),
+--             buf = vim.fn.expand("<abuf>"),
+--             math = vim.fn.expand("<amatch>"),
+--         }
+--         print(vim.inspect(t))
+--     end,
+-- })
 --[[ local start_time = nil
 local end_time = nil
 -- 注册BufLeave事件，在离开当前buffer时记录时间
-vim.api.nvim_create_autocmd("BufLeave", {
-    callback = function()
-        start_time = os.clock()
-        print("开始切换Buffer")
-    end,
-})
 vim.keymap.set("n", "gd", function()
     vim.lsp.buf.definition()
 end)
