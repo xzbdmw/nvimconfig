@@ -210,6 +210,14 @@ return {
                     },
                     {
                         "n",
+                        "<D-1>",
+                        function()
+                            vim.cmd("DiffviewToggleFiles")
+                        end,
+                        { desc = "Toggle the file panel" },
+                    },
+                    {
+                        "n",
                         "dx",
                         actions.conflict_choose("none"),
                         { desc = "Delete the conflict region" },
@@ -433,8 +441,10 @@ return {
                     },
                     {
                         "n",
-                        "<leader>b",
-                        actions.toggle_files,
+                        "<D-1>",
+                        function()
+                            vim.cmd("DiffviewToggleFiles")
+                        end,
                         { desc = "Toggle the file panel" },
                     },
                     {
@@ -588,5 +598,7 @@ return {
                 },
             },
         })
+        -- vim.keymap.set("n", "sd", "<cmd>DiffviewOpen<CR>")
+        -- vim.keymap.set("n", "sc", "<cmd>DiffviewClose<CR>")
     end,
 }

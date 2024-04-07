@@ -12,89 +12,89 @@ vim.api.nvim_create_autocmd("FileType", {
         end
     end,
 })
-local function update_winbar_cache()
-    local success, win_config = pcall(vim.api.nvim_win_get_config, 0)
-    if success then
-        if win_config.relative ~= "" then
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    pattern = "*",
+    callback = function(args)
+        local telescopeUtilities = require("telescope.utils")
+        local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
+        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
             return
         end
-    end
-    if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "aerial" then
-        return
-    end
-    local telescopeUtilities = require("telescope.utils")
-    local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
-    local path = vim.fn.expand("%:~:.:h")
-
-    local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
-    local filename = vim.fn.expand("%:t")
-
-    local cwd = vim.fn.getcwd()
-    if path == nil or filename == nil then
-        return
-    end
-    if filename:match("%.rs$") then
-        iconHighlight = "RustIcon"
-        icon = "󱘗"
-    end
-    local statusline = require("arrow.statusline")
-    local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
-    local arrow_icon = ""
-    if arrow ~= "" then
-        arrow_icon = "󰣉"
-        icon = ""
-        arrow = "(" .. arrow .. ")"
-        iconHighlight = "ArrowIcon"
-    end
-    if not vim.startswith(absolute_path, cwd) then
-        vim.wo.winbar = " "
-            .. " "
-            .. "%#LibPath#"
-            .. path
-            .. "%#Comment#"
-            .. " => "
-            .. "%#"
-            .. iconHighlight
-            .. "#"
-            .. arrow_icon
-            .. icon
-            .. " %#WinbarFileName#"
-            .. filename
-            .. "%#"
-            .. iconHighlight
-            .. "#"
-            .. arrow
-            .. "%*"
-    else
-        -- 在当前工作目录下，使用默认颜色
-        vim.wo.winbar = " "
-            .. "%#NvimTreeFolderName#"
-            .. " "
-            .. path
-            .. " => "
-            .. "%#"
-            .. iconHighlight
-            .. "#"
-            .. arrow_icon
-            .. icon
-            .. " %#WinbarFileName#"
-            .. filename
-            .. "%#"
-            .. iconHighlight
-            .. "#"
-            .. arrow
-            .. "%*"
-    end
-end
-
-local modified_buffer_indicator = ""
-
--- 注册 BufEnter 事件来更新缓存
-vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = "*",
-    callback = update_winbar_cache,
+        local winid = vim.api.nvim_get_current_win()
+        local winconfig = vim.api.nvim_win_get_config(winid)
+        if winconfig.relative ~= "" then
+            return
+        end
+        local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
+        local path = vim.fn.expand("%:~:.:h")
+        local cwd = vim.fn.getcwd()
+        local filename = vim.fn.expand("%:t")
+        if filename:match("%.rs$") then
+            iconHighlight = "RustIcon"
+            icon = "󱘗"
+        end
+        local statusline = require("arrow.statusline")
+        local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
+        local arrow_icon = ""
+        if arrow ~= "" then
+            arrow_icon = "󰣉"
+            icon = ""
+            arrow = " (" .. arrow .. ")"
+            iconHighlight = "ArrowIcon"
+        end
+        if path ~= "" and filename ~= "" then
+            if not vim.startswith(absolute_path, cwd) then
+                if vim.api.nvim_win_get_config(winid).relative ~= "" then
+                    return
+                end
+                vim.wo[winid].winbar = " "
+                    .. " "
+                    .. "%#LibPath#"
+                    .. path
+                    .. "%#Comment#"
+                    .. " => "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow_icon
+                    .. icon
+                    .. " %#WinbarFileName#"
+                    .. filename
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow
+                    .. "%*"
+            else
+                if vim.api.nvim_win_get_config(winid).relative ~= "" then
+                    return
+                end
+                vim.wo[winid].winbar = " "
+                    .. "%#NvimTreeFolderName#"
+                    .. " "
+                    .. path
+                    .. " => "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow_icon
+                    .. icon
+                    .. " %#WinbarFileName#"
+                    .. filename
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow
+                    .. "%*"
+            end
+        elseif filename ~= "" then
+            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
+        else
+            vim.wo.winbar = ""
+        end
+    end,
 })
-
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
@@ -123,7 +123,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
             local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
             local filename = vim.fn.expand("%:t")
             local cwd = vim.fn.getcwd()
-            pre_filename = filename
             if path == nil or filename == nil then
                 return
             end
@@ -161,14 +160,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
--- -- 注册 CursorMoved 事件来仅更新动态变化的部分
--- vim.api.nvim_create_autocmd("CursorMoved", {
---     pattern = "*",
---     callback = update_winbar_with_percentage,
--- })
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+vim.api.nvim_create_autocmd({ "BufWinLeave", "QuitPre" }, {
     pattern = "*",
     callback = function()
         if vim.bo.filetype == "fzf" then
@@ -189,7 +183,6 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         end
     end,
 })
-
 vim.cmd([[set viewoptions-=curdir]])
 
 vim.api.nvim_create_autocmd({ "User" }, {

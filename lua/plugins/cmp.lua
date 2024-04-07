@@ -1,10 +1,13 @@
+local expand = true
 return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter" },
+    -- dir = "~/Project/lua/nvim-cmp/",
     -- enabled = false,
-    -- keys = { { "<C-n>", false } },
     dependencies = {
+        "zbirenbaum/copilot-cmp",
+        -- "hrsh7th/cmp-copilot",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -12,11 +15,26 @@ return {
         "hrsh7th/cmp-cmdline",
     },
     opts = function()
+        local reverse_prioritize = function(entry1, entry2)
+            if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
+                return false
+            elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
+                return true
+            end
+        end
         local cmp = require("cmp")
         local compare = cmp.config.compare
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         return {
+            enabled = function()
+                local prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
+                local context = require("cmp.config.context")
+                return vim.g.cmp_completion
+                    and not prompt
+                    and not context.in_treesitter_capture("comment")
+                    and not context.in_syntax_group("Comment")
+            end,
             preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
@@ -27,12 +45,11 @@ return {
                 }),
                 documentation = cmp.config.window.bordered({
                     border = "none",
-                    side_padding = 0,
-                    col_offset = -3,
                     winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalDocFloat",
+                    col_offset = 0,
+                    side_padding = 0,
                 }),
             },
-
             completion = {
                 completeopt = "menu,menuone,noinsert",
             },
@@ -45,37 +62,47 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 500,
+                fetching_timeout = 10,
                 confirm_resolve_timeout = 80,
                 -- async_budget = 1,
-                max_view_entries = 30,
+                max_view_entries = 20,
             },
             snippet = {
                 expand = function(args)
+                    if not expand then
+                        local function remove_bracket_contents(input)
+                            local pattern = "^(.*)%b().*$"
+                            local result = string.gsub(input, pattern, "%1")
+                            return result
+                        end
+                        args.body = remove_bracket_contents(args.body)
+                        expand = true
+                    end
                     require("luasnip").lsp_expand(args.body)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
                 ["<D-d>"] = cmp.mapping(function()
-                    print(cmp.visible_docs())
                     if cmp.visible_docs() then
                         cmp.close_docs()
                     else
                         cmp.open_docs()
                     end
                 end),
-                -- ["<space>"] = cmp.mapping(function(fallback)
-                --     if cmp.visible then
-                --         cmp.abort()
-                --         fallback()
-                --     else
-                --         fallback()
-                --     end
-                -- end),
+                ["<right>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        expand = false
+                        cmp.confirm()
+                    else
+                        fallback()
+                    end
+                    _G.has_moved_up = false
+                end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible then
+                    if cmp.visible() then
                         cmp.abort()
                     end
+                    _G.has_moved_up = false
                     vim.schedule(fallback)
                 end),
                 ["<f7>"] = cmp.mapping(function()
@@ -88,9 +115,9 @@ return {
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                            cmp.select_next_item()
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         else
-                            cmp.select_prev_item()
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
                         end
                     else
                         fallback()
@@ -99,15 +126,22 @@ return {
                 ["<up>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                            cmp.select_prev_item()
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
                         else
-                            cmp.select_next_item()
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         end
                     else
                         fallback()
                     end
                 end,
-                ["<C-e>"] = cmp.mapping.abort(),
+                ["<C-e>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.abort()
+                    else
+                        fallback()
+                    end
+                    _G.has_moved_up = false
+                end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close_docs()
@@ -115,39 +149,54 @@ return {
                         fallback()
                     end
                 end),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                ["<CR>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.confirm({ select = true })
+                        -- cmp.complete()
+                    else
+                        fallback()
+                    end
+                    _G.has_moved_up = false
+                end),
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp", max_item_count = 30 },
-            }, {
-                { name = "path" },
                 { name = "luasnip" },
-                { name = "buffer", keyword_length = 3 },
+                { name = "path" },
+                { name = "copilot" },
+            }, {
+                { name = "buffer" },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
-                -- fields = { "kind", "abbr", "menu" },
-                fields = { "kind", "abbr" },
+                fields = { "kind", "abbr", "menu" },
                 format = function(entry, vim_item)
                     local kind = require("lspkind").cmp_format({
                         mode = "symbol_text",
-                        maxwidth = 60,
+                        show_labelDetails = true, -- show labelDetails in menu. Disabled by default
                     })(entry, vim_item)
                     local strings = vim.split(kind.kind, "%s", { trimempty = true })
                     kind.kind = " " .. (strings[1] or "") .. " "
-                    -- kind.menu = "(" .. (strings[3] or "") .. ")"
+                    if kind.menu ~= nil then
+                        if string.len(kind.menu) > 40 then
+                            kind.menu = kind.menu:sub(1, 40)
+                        end
+                    end
                     return kind
                 end,
             },
             experimental = {
-                -- ghost_text = {
-                --     hl_group = "CmpGhostText",
-                -- },
-                ghost_text = false,
+                ghost_text = {
+                    hl_group = "CmpGhostText",
+                },
+                -- ghost_text = false,
             },
             sorting = {
                 compare.order,
                 comparators = {
+                    reverse_prioritize,
+                    cmp.config.compare.exact,
                     compare.score,
                     compare.recently_used,
                     compare.locality,
@@ -162,10 +211,11 @@ return {
             completion = {
                 autocomplete = false,
             },
+        })
+
+        cmp.setup.filetype({ "query" }, {
             sources = {
-                -- { name = "nvim_lsp" },
-                { name = "path" },
-                -- { name = "buffer" },
+                { name = "treesitter" },
             },
         })
         for _, source in ipairs(opts.sources) do
@@ -213,13 +263,6 @@ return {
         })
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline({
-                --[[ ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                        fallback()
-                    end
-                end, { "i", "s" }), ]]
-
                 ["<CR>"] = cmp.mapping({
                     i = cmp.mapping.confirm({ select = true }),
                     c = cmp.mapping.confirm({ select = false }),

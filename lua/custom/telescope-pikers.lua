@@ -56,12 +56,11 @@ function telescopePickers.prettyFilesPicker(ftype)
                 previewer = false,
                 -- layout_strategy = "vertical",
                 layout_config = {
-                    prompt_position = "top",
-                    width = 0.4,
-                    height = 0.95,
-                    mirror = true,
-                    preview_cutoff = 0,
-                    -- preview_height = 0.55,
+                    horizontal = {
+                        width = 0.35,
+                        height = 0.7,
+                    },
+                    mirror = false,
                 },
             },
         }

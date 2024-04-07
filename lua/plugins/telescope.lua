@@ -43,6 +43,9 @@ return {
                         },
                     },
                 })
+                vim.schedule(function()
+                    FeedKeys("<down>", "t")
+                end)
             end,
         },
         {
@@ -209,6 +212,7 @@ return {
                 }, ]]
                 mappings = {
                     i = {
+                        ["<c-t>"] = require("trouble.providers.telescope").open_with_trouble,
                         ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                         ["<C-e>"] = actions.close,
                         ["<C-d>"] = function()
@@ -242,6 +246,7 @@ return {
                         end,
                     },
                     n = {
+                        ["<c-t>"] = require("trouble.providers.telescope").open_with_trouble,
                         ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                         ["<esc>"] = actions.close,
                         ["Y"] = yank_preview_lines,

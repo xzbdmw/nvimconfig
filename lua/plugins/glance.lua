@@ -1,6 +1,6 @@
-_G.parentbufnr = nil
 return {
     "dnlhc/glance.nvim",
+    -- dir = "~/Project/lua/glance.nvim/",
     event = "VeryLazy",
     config = function()
         local glance = require("glance")
@@ -21,7 +21,10 @@ return {
             end)
             _G.reference = false
         end
-
+        local function quickfix()
+            clear_and_restore()
+            actions.quickfix()
+        end
         function Jump()
             clear_and_restore()
             actions.jump()
@@ -54,7 +57,29 @@ return {
             actions.close()
         end
 
+        function Open()
+            local cursor = vim.api.nvim_win_get_cursor(0)
+            local lnum = cursor[1]
+            local col = cursor[2]
+
+            -- 获取当前编辑的文件名
+            local filename = vim.fn.expand("%:p")
+
+            clear_and_restore()
+            vim.schedule(function()
+                local uri = vim.uri_from_fname(filename)
+                local bufnr = vim.uri_to_bufnr(uri)
+                vim.api.nvim_win_set_buf(0, bufnr)
+                vim.schedule(function()
+                    vim.api.nvim_win_set_cursor(0, { lnum, col })
+                    vim.cmd("norm zz")
+                end)
+            end)
+            actions.close()
+        end
+
         require("glance").setup({
+            use_trouble_qf = true,
             height = 18, -- Height of the window
             zindex = 10,
             preview_win_opts = { -- Configure preview window options
@@ -95,47 +120,67 @@ return {
                     ["q"] = Close_with_q,
                     ["Q"] = Close_with_q,
                     ["<Esc>"] = Close_with_q,
-                    ["<C-q>"] = actions.quickfix,
+                    ["<C-q>"] = quickfix,
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
-                    -- ["<esc>"] = CloseIfNormal,
-                    -- ["q"] = Close_with_q,
                     ["n"] = actions.next_location,
+                    ["<C-q>"] = quickfix,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
                 },
             },
             hooks = {
-                before_open = function(result, open, jump, _)
-                    _G.parentbufnr = vim.api.nvim_get_current_buf()
-                    vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#E8E7E0", underline = true })
-                    local lnum = vim.api.nvim_win_get_cursor(0)[1]
-                    local locations = {}
-                    if result ~= nil and result[1].range == nil then
-                        open(result)
-                        FeedKeys("<Tab>", "t")
-                        return
-                    end
-                    if #result == 1 then
-                        print("no reference")
-                        return
-                    end
-                    if #result == 2 then
-                        locations = vim.tbl_filter(function(v)
-                            return not (v.range.start.line + 1 == lnum)
-                        end, vim.F.if_nil(result, {}))
+                before_open = function(result, open, jump, method)
+                    if method == "definitions" and #result >= 1 then
                         vim.cmd("normal! m'")
-                        jump(locations[1])
-                    else
-                        vim.cmd("normal! m'")
-                        open(result) -- argument is optional
-                        FeedKeys("<Tab>", "t")
-                        if _G.reference == false then
-                            FeedKeys("n", "t")
+                        jump(result[1])
+                    elseif method == "references" then
+                        if #result == 1 then
+                            vim.cmd("normal! m'")
+                            jump(result[1])
+                        elseif #result == 2 then
+                            print("2")
+                            vim.cmd("normal! m'")
+                            local lnum = vim.api.nvim_win_get_cursor(0)[1]
+                            local locations = vim.tbl_filter(function(v)
+                                return not (v.range.start.line + 1 == lnum)
+                            end, vim.F.if_nil(result, {}))
+                            vim.cmd("normal! m'")
+                            jump(locations[1])
+                        else
+                            vim.cmd("normal! m'")
+                            open(result)
+                            FeedKeys("<Tab>", "t")
                         end
+                        return
                     end
+                    -- local lnum = vim.api.nvim_win_get_cursor(0)[1]
+                    -- local locations = {}
+                    -- if result ~= nil and result[1].range == nil then
+                    --     open(result)
+                    --     FeedKeys("<Tab>", "t")
+                    --     return
+                    -- end
+                    -- if #result == 1 then
+                    --     print("no reference")
+                    --     return
+                    -- end
+                    -- if #result == 2 then
+                    --     locations = vim.tbl_filter(function(v)
+                    --         return not (v.range.start.line + 1 == lnum)
+                    --     end, vim.F.if_nil(result, {}))
+                    --     vim.cmd("normal! m'")
+                    --     jump(locations[1])
+                    -- else
+                    --     vim.cmd("normal! m'")
+                    --     open(result) -- argument is optional
+                    --     FeedKeys("<Tab>", "t")
+                    --     if _G.reference == false then
+                    --         FeedKeys("n", "t")
+                    --     end
+                    -- end
                 end,
                 before_close = function()
                     _G.glance_list_method = nil

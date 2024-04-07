@@ -54,6 +54,7 @@ return {
         end,
         highlight = { enable = true, disable = { "markdown" } },
         indent = { enable = true },
+        auto_install = true,
         ensure_installed = {
             "rust",
             "vue",

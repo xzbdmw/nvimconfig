@@ -1,9 +1,10 @@
 return {
-    -- "xzbdmw/nvim-treesitter-context",
+    -- "nvim-treesitter/nvim-treesitter-context",
     dir = "~/Project/lua/nvim-treesitter-context/",
     lazy = false,
     -- enabled = false,
     -- commit = "a5d16fd7639da37009e7c43eea4a932ccece2162",
+    -- commit = "b8b7e52c1517d401d7c519787d5dc4528c41291a",
     keys = {
         {
             "gs",
@@ -20,7 +21,7 @@ return {
     opts = {
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
         max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
-        min_window_height = -1, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+        min_window_height = 2, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
         line_numbers = true,
         multiline_threshold = 100, -- Maximum number of lines to show for a single context
         trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'

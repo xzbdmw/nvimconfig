@@ -7,14 +7,20 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
-vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,terminal,winsize,winpos,resize"
+vim.o.sessionoptions = "blank,buffers,folds,curdir,help,tabpages,terminal,winsize,winpos,resize"
 vim.opt.relativenumber = false
+-- vim.opt.inccommand = "split"
 vim.g.winblend = 0
 vim.opt.pumblend = 0
 vim.opt.shiftwidth = 4
+vim.opt.backup = true
+vim.opt.writebackup = true
 vim.opt.list = false
+vim.opt.backupcopy = "yes"
+vim.g.editorconfig = false
+vim.opt.backupdir = "/Users/xzb/.local/state/nvim/backup//"
 vim.opt.tabstop = 4
-vim.opt.jumpoptions = "stack"
+vim.opt.jumpoptions = "stack,view"
 -- vim.o.guifont = "menlo,Symbols Nerd Font:h18.5"
 --[[ vim.o.guifont = "mcv sans mono,Symbols Nerd Font:h18.5"
 vim.o.guifont = "JetBrains Mono light,Symbols Nerd Font:h19"
@@ -29,11 +35,12 @@ vim.opt.timeoutlen = 500
 vim.opt.laststatus = 0
 vim.o.scrolloff = 6
 vim.opt.swapfile = false
+-- vim.opt.inccommand = "split"
 local str = string.rep(" ", vim.api.nvim_win_get_width(0))
 vim.opt.statusline = str
 vim.g.loaded_matchparen = 1
 -- vim.opt.linebreak = true
-
+vim.g.cmp_completion = true
 -- Neovide
 vim.g.neovide_unlink_border_highlights = false
 vim.g.neovide_transparency = 1

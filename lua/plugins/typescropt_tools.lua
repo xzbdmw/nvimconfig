@@ -5,7 +5,11 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     opts = {
         tsserver_plugins = {
-            "@vue/typescript-plugin",
+            {
+                name = "@vue/typescript-plugin",
+                location = "/Users/xzb/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                languages = { "javascript", "typescript", "vue" },
+            },
         },
         filetypes = {
             "javascript",

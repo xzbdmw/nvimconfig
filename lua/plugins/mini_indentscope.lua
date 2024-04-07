@@ -7,10 +7,10 @@ return {
             delay = 100,
             priority = 2,
         },
-        -- symbol = "",
-        -- symbol = "|",
-        -- symbol = "╎",
         symbol = "",
+        -- symbol = "│",
+        -- symbol = "╎",
+        -- symbol = "",
         options = { try_as_border = true },
     },
 }

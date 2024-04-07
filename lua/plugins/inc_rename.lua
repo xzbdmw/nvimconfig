@@ -16,6 +16,11 @@ return {
 
     config = function()
         require("inc_rename").setup({
+            preview_empty_name = true,
+            po = function(results)
+                -- __AUTO_GENERATED_PRINT_VAR_START__
+                print([==[function#function results:]==], vim.inspect(results)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            end,
             -- cmd_name = "Rename",
         })
     end,

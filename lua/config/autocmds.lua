@@ -2,19 +2,15 @@
 vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
 vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
 
--- vim.api.nvim_create_autocmd("BufLeave", {
---     callback = function()
---         local t = {
---             file = vim.fn.expand("<afile>"),
---             buf = vim.fn.expand("<abuf>"),
---             math = vim.fn.expand("<amatch>"),
---         }
---         print(vim.inspect(t))
---     end,
--- })
 --[[ local start_time = nil
 local end_time = nil
 -- 注册BufLeave事件，在离开当前buffer时记录时间
+vim.api.nvim_create_autocmd("BufLeave", {
+    callback = function()
+        start_time = os.clock()
+        print("开始切换Buffer")
+    end,
+})
 vim.keymap.set("n", "gd", function()
     vim.lsp.buf.definition()
 end)
@@ -48,6 +44,14 @@ vim.api.nvim_create_autocmd("QuitPre", {
     end,
 })
 
+-- nvim-cmp
+vim.api.nvim_create_autocmd({ "ModeChanged" }, {
+    pattern = "*:n",
+    callback = function()
+        _G.has_moved_up = false
+    end,
+})
+
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
@@ -61,18 +65,6 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-
---[[local bufenter = true
- vim.api.nvim_create_autocmd("VimEnter", {
-    callback = function()
-        if bufenter then
-            print("hello")
-            vim.cmd("NvimTreeToggle")
-            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "t", true)
-            bufenter = false
-        end
-    end,
-}) ]]
 
 -- walkaroud for incremental selection
 vim.api.nvim_create_augroup("cmdwin_treesitter", { clear = true })
@@ -107,12 +99,18 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+        "qf",
+    },
+    callback = function()
+        vim.keymap.set("n", "<CR>", "<CR>", { buffer = 0 })
+    end,
+})
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "s:i",
     callback = function()
-        -- vim.defer_fn(function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-9>", true, false, true), "m", true)
-        -- end, 10)
     end,
 })
 vim.api.nvim_create_autocmd("ModeChanged", {
@@ -146,9 +144,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
             vim.keymap.set("n", "q", function()
                 Close_with_q()
             end, { buffer = bufnr })
-
             vim.keymap.set("n", "<CR>", function()
-                OpenAndKeepHighlight()
+                Open()
             end, { buffer = bufnr })
         end
     end,

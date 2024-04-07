@@ -14,12 +14,6 @@ return {
                 vim.cmd("Legendary functions")
             end,
         },
-        {
-            "<C-CR>",
-            function()
-                vim.cmd("LegendaryRepeat")
-            end,
-        },
     },
     config = function()
         require("legendary").setup({

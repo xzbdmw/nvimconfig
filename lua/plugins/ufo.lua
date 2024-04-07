@@ -3,8 +3,8 @@ return {
     dependencies = {
         "kevinhwang91/promise-async",
     },
-    event = "VeryLazy",
-    -- lazy = false,
+    -- event = "VeryLazy",
+    lazy = false,
     init = function()
         -- INFO fold commands usually change the foldlevel, which fixes folds, e.g.
         -- auto-closing them after leaving insert mode, however ufo does not seem to
@@ -158,7 +158,19 @@ return {
             table.insert(newVirtText, { suffix, "MoreMsg" })
             return newVirtText
         end
-
+        -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+        -- capabilities.textDocument.foldingRange = {
+        --     dynamicRegistration = false,
+        --     lineFoldingOnly = true,
+        -- }
+        -- local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
+        -- for _, ls in ipairs(language_servers) do
+        --     print("[DEBUG]: ufo.lua:167: ls=" .. vim.inspect(ls))
+        --     require("lspconfig")[ls].setup({
+        --         capabilities = capabilities,
+        --         -- you can add other fields for setting up lsp server in this table
+        --     })
+        -- end
         require("ufo").setup({
             -- close_fold_kinds = { "comment" },
             close_fold_kinds = {},

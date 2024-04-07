@@ -1,5 +1,7 @@
 return {
-    "cbochs/portal.nvim",
+    -- "cbochs/portal.nvim",
+    dir = "~/Project/lua/portal.nvim/",
+    enabled = false,
     -- Optional dependencies
     dependencies = {
         "cbochs/grapple.nvim",
@@ -25,7 +27,8 @@ return {
             ---An ordered list of keys for labelling portals.
             ---Labels will be applied in order, or to match slotted results.
             ---@type string[]
-            labels = { "j", "k", "h", "l" },
+            labels = { "j", "k", "h", "l", "a" },
+            -- labels = { "1", "2", "3", "4", "5", "6", "7", "8" },
 
             ---Select the first portal when there is only one result.
             select_first = false,
@@ -41,11 +44,12 @@ return {
             window_options = {
                 relative = "cursor",
                 width = 80,
-                height = 5,
+                height = 4,
                 col = 2,
+                -- row = 20,
                 focusable = true,
-                border = "single",
-                noautocmd = true,
+                border = "rounded",
+                noautocmd = false,
             },
         })
     end,

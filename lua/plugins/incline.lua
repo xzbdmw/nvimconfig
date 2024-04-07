@@ -35,57 +35,25 @@ return {
                 wintypes = "special",
             },
             render = function(props)
-                local function get_git_diff()
-                    local icons = { removed = "", changed = "", added = "" }
-                    local signs = vim.b[props.buf].gitsigns_status_dict
-                    local labels = {}
-                    if signs == nil then
-                        return labels
-                    end
-                    for name, icon in pairs(icons) do
-                        if tonumber(signs[name]) and signs[name] > 0 then
-                            table.insert(labels, { icon .. signs[name] .. " ", group = "Diff" .. name })
-                        end
-                    end
-                    if #labels > 0 then
-                        table.insert(labels, 1, { "  " })
-                    end
-                    return labels
-                end
-
                 local function get_diagnostic_label()
-                    local icons = {
-                        Error = "",
-                        Warn = "",
-                        Info = "",
-                        Hint = "",
-                    }
-
+                    local icons = { error = "", warn = "", info = "", hint = "" }
                     local label = {}
-                    for severity, _ in pairs(icons) do
+                    for severity, icon in pairs(icons) do
                         local n = #vim.diagnostic.get(
                             props.buf,
                             { severity = vim.diagnostic.severity[string.upper(severity)] }
                         )
                         if n > 0 then
-                            label = {
-                                { "  " }, -- 前缀图标
-                                {
-                                    tostring(n) .. " ",
-                                    group = "DiagnosticSign" .. severity,
-                                },
-                            }
-                            break
+                            table.insert(label, { icon .. " " .. n .. " ", group = "DiagnosticSign" .. severity })
                         end
                     end
                     return label
                 end
-
                 return {
                     -- { { "winid: " .. tostring(vim.api.nvim_get_current_win()) } },
                     -- { { "bufid: " .. tostring(vim.api.nvim_get_current_buf()) } },
                     { get_diagnostic_label() },
-                    { get_git_diff() },
+                    -- { get_git_diff() },
                 }
             end,
             window = {

@@ -35,13 +35,13 @@ return {
                 end,
             }
             keys[#keys + 1] = {
-                "<leader>sD",
+                "gt",
                 function()
                     vim.lsp.buf.type_definition()
                 end,
             }
             keys[#keys + 1] = {
-                "<C-a>",
+                "<C-cr>",
                 function()
                     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
                     vim.cmd([[:stopinsert]])
@@ -138,28 +138,21 @@ return {
                 lua_ls = {
                     settings = {
                         Lua = {
-                            --[[ completion = {
-                                callSnippet = "Disable",
-                            },
                             runtime = {
-                                -- LuaJIT in the case of Neovim
                                 version = "LuaJIT",
-                                pathStrict = true,
-                                path = {
-                                    "lua/?.lua",
-                                },
-                            }, ]]
+                            },
                             workspace = {
                                 library = {
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
-                                    "/Users/xzb/Downloads/nvim-macos/share/nvim/runtime/lua/",
+                                    "/usr/local/share/nvim/runtime",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/",
+                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-treesitter/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",
                                 },
+                                -- library = vim.api.nvim_get_runtime_file("", true),
                             },
                             hint = {
                                 enable = true,
@@ -209,16 +202,16 @@ return {
                 }, ]]
                 tsserver = {
                     enabled = true,
-                    --[[ cmd = lsp_containers.command("tsserver"),
+                    -- cmd = lsp_containers.command("tsserver"),
                     init_options = {
                         plugins = {
                             {
                                 name = "@vue/typescript-plugin",
-                                location = "/opt/homebrew/lib/@vue/typescript-plugin@2.0.5",
+                                location = "/Users/xzb/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/language-server",
                                 languages = { "typescript", "vue" },
                             },
                         },
-                    }, ]]
+                    },
                     filetypes = {
                         "javascript",
                         "typescript",
@@ -253,6 +246,18 @@ return {
                         }, ]]
                     },
                 },
+            },
+            -- you can do any additional lsp server setup here
+            -- return true if you don't want this server to be setup with lspconfig
+            ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+            setup = {
+                -- example to setup with typescript.nvim
+                -- tsserver = function(_, opts)
+                --   require("typescript").setup({ server = opts })
+                --   return true
+                -- end,
+                -- Specify * to use this function as a fallback for any server
+                -- ["*"] = function(server, opts) end,
             },
         },
         --[[ config = function(_, opts)

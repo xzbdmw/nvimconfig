@@ -13,7 +13,7 @@ return {
             "Glance",
             "fugitive",
         },
-        delay = 1,
+        delay = 0,
         under_cursor = true,
         min_count_to_highlight = 0,
         large_file_cutoff = 2000,

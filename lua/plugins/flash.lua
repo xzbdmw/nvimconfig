@@ -1,6 +1,7 @@
 return {
     "folke/flash.nvim",
     optional = true,
+    enabled = false,
     opts = {
         -- labels = "abcdefghijklmnopqrstuvwxyz",
         labels = "asdfghjklqwertyuiopzxcvbnm",
@@ -243,4 +244,7 @@ return {
             motion = false,
         },
     },
+    config = function(_, opts)
+        require("flash").setup(opts)
+    end,
 }

@@ -1,4 +1,4 @@
 return {
-    "SmiteshP/nvim-navic",
+    "github/copilot.vim",
     enabled = false,
 }

@@ -79,14 +79,17 @@ return {
             },
             on_attach = my_on_attach,
             view = {
+                signcolumn = "yes",
                 width = 30,
                 preserve_window_proportions = true,
             },
             renderer = {
+                highlight_bookmarks = "all",
                 highlight_opened_files = "name",
                 special_files = {},
                 group_empty = true,
                 icons = {
+                    bookmarks_placement = "after",
                     web_devicons = {
                         file = { color = true, enable = true },
                         folder = {
@@ -95,11 +98,14 @@ return {
                     },
                     show = {
                         git = false,
-                        modified = false,
-                        bookmarks = false,
+                        modified = true,
+                        bookmarks = true,
                     },
                     glyphs = {
                         default = "",
+                        bookmark = "B",
+
+                        modified = "●",
                         folder = {
                             arrow_closed = ">",
                             arrow_open = "󱞩",

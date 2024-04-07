@@ -13,6 +13,7 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
+                -- vim.wo.winbar = ""
                 vim.g.neovide_underline_stroke_scale = 0
             end, -- function to run when the terminal opens
             on_close = function()

@@ -20,10 +20,10 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 
 local keymap = vim.keymap.set
 keymap("n", "n", function()
-    require("illuminate.goto").goto_next_keepd_reference(true)
+    require("illuminate.goto").goto_next_keeped_reference(true)
 end)
 keymap("n", "N", function()
-    require("illuminate.goto").goto_prev_keepd_reference(true)
+    require("illuminate.goto").goto_prev_keeped_reference(true)
 end)
 keymap({ "s", "i", "n" }, "<esc>", function()
     local flag = true
@@ -50,7 +50,8 @@ keymap({ "s", "i", "n" }, "<esc>", function()
         vim.cmd("noh")
     end
     require("illuminate.engine").clear_keeped_highlight()
-    require("illuminate.engine").refresh_references()
+    require("illuminate.goto").clear_keeped_hl()
+    -- require("illuminate.engine").refresh_references()
 end)
 
 -- illuminate

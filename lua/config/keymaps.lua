@@ -1,5 +1,3 @@
--- -- Keymaps are automatically loaded on the VeryLazy event-- -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local lazy_view_config = require("lazy.view.config")
@@ -14,6 +12,15 @@ del("n", "<leader>w|")
 del("n", "<leader>qq")
 del({ "n", "x" }, "<space>qÞ")
 del({ "n", "x" }, "<space>wÞ")
+keymap("n", "<leader>mc", "<cmd>messages clear<CR>", opts)
+keymap({ "n" }, "<C-n>", function()
+    vim.g.cmp_completion = false
+    return "<cmd>MCstart<cr>"
+end, { expr = true })
+keymap({ "x" }, "n", function()
+    vim.g.cmp_completion = false
+    return "<cmd>MCstart<cr>"
+end, { expr = true })
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
@@ -22,14 +29,19 @@ keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_s
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("n", "U", "<C-r>", opts)
-keymap("n", "Y", "y$", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap({ "n", "v" }, "c", '"_c', opts)
+keymap("n", "Y", "y$", opts)
 keymap("v", "<down>", "", opts)
 keymap("n", "[p", '"0p', opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
-
+keymap("n", "]]", "n", opts)
+keymap("n", "[[", "N", opts)
+keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
+keymap("n", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
+keymap("v", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
+keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
     vim.cmd("DiffviewOpen")
@@ -53,19 +65,13 @@ keymap("n", "<leader>sm", function()
 end, opts)
 
 local function get_normal_bg_color()
-    -- 获取 Normal 高亮组的详细信息
     local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
-    -- 转换颜色值为十六进制格式
     local bg_color = string.format("#%06x", normal_hl.background)
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[get_normal_bg_color bg_color:]==], vim.inspect(bg_color)) -- __AUTO_GENERATED_PRINT_VAR_END__
     return bg_color
 end
+
 local function load_appropriate_theme()
     local bg_color = get_normal_bg_color()
-    -- 假设我们将亮背景定义为具有大于某个阈值的亮度
-    -- 这里简化处理，仅通过颜色的数值来判断
-    -- 实际应用中，可能需要更复杂的亮度计算来决定是亮色还是暗色背景
     if bg_color == "#24273a" then
         require("theme.dark")
     else
@@ -237,9 +243,7 @@ keymap("i", ",", "<C-g>u,", opts)
 keymap("i", "<space>", "<C-g>u<space>", opts)
 keymap("i", "<C-r>", "<C-g>u<C-r>", opts)
 keymap("n", "0", "^", opts)
-keymap("i", "<C-CR>", "<CR>", opts)
 keymap("i", "<C-e>", "<esc>A", opts)
--- keymap("i", "<C-CR>", "<CR>", opts)
 keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
@@ -388,7 +392,6 @@ keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
-
 keymap({ "s", "i", "n" }, "<C-7>", function()
     print(get_float_win_count())
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -397,12 +400,11 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
             if win_config.relative ~= "" then
                 print(vim.inspect(win))
                 print(vim.inspect(win_config))
-                -- vim.api.nvim_win_close(win, true)
+                vim.api.nvim_win_close(win, true)
             end
         end
     end
 end, opts)
-
 keymap("x", "<bs>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)
 end, opts)
@@ -410,10 +412,10 @@ end, opts)
 keymap("x", "=", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("loho", true, false, true), "t", false)
 end, opts)
-
 keymap("n", "<leader>d", function()
-    local def_or_ref = require("custom.definitions")
-    -- -- local def_or_ref = require("custom.definition-or-references.main")
-    def_or_ref.definition_or_references()
-    -- vim.lsp.buf.definition()
+    vim.cmd("Glance definitions")
+    -- local def_or_ref = require("custom.definitions")
+    -- -- -- local def_or_ref = require("custom.definition-or-references.main")
+    -- def_or_ref.definition_or_references()
+    -- -- vim.lsp.buf.definition()
 end)

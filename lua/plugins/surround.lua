@@ -1,8 +1,6 @@
 return {
     "echasnovski/mini.surround",
-    -- lazy = false,
-    -- enabled = false,
-    event = "VeryLazy",
+    lazy = false,
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -17,6 +15,12 @@ return {
         return vim.tbl_deep_extend("keep", mappings, keys)
     end,
     opts = {
+        custom_surroundings = {
+            ["("] = { input = { "%b()", "^.().*().$" }, output = { left = "(", right = ")" } },
+            ["["] = { input = { "%b[]", "^.().*().$" }, output = { left = "[", right = "]" } },
+            ["{"] = { input = { "%b{}", "^.().*().$" }, output = { left = "{", right = "}" } },
+            ["<"] = { input = { "%b<>", "^.().*().$" }, output = { left = "<", right = ">" } },
+        },
         mappings = {
             add = "ma", -- Add surrounding in Normal and Visual modes
             delete = "md", -- Delete surrounding
