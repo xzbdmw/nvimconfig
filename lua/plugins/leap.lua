@@ -7,8 +7,9 @@ return {
         max_phase_one_targets = nil,
         highlight_unlabeled_phase_one_targets = false,
         max_highlighted_traversal_targets = 10,
-        substitute_chars = {},
+        -- substitute_chars = {},
         safe_labels = "sfnut/SFNLHMUGTZ?",
+        -- safe_labels = "",
         labels = "sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?",
         special_keys = {
             next_target = ";",
@@ -22,8 +23,9 @@ return {
         for k, v in pairs(opts) do
             leap.opts[k] = v
         end
-        leap.add_default_mappings(true)
-        vim.keymap.del({ "x", "o" }, "x")
-        vim.keymap.del({ "x", "o" }, "X")
+        -- vim.keymap.set("n", "s", "<Plug>(leap)")
+        -- vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
+        vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)")
+        vim.keymap.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward)")
     end,
 }

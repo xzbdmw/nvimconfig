@@ -2,7 +2,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
-    event = { "LazyFile", "VeryLazy" },
+    event = { "VeryLazy" },
     -- lazy = false,
     init = function(plugin)
         -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
@@ -54,7 +54,7 @@ return {
         end,
         highlight = { enable = true, disable = { "markdown" } },
         indent = { enable = true },
-        auto_install = true,
+        auto_install = false,
         ensure_installed = {
             "rust",
             "vue",

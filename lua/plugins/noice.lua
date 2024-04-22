@@ -9,6 +9,14 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "notify", find = "Plugin" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "Pattern not found" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "sentiment" },
                     opts = { skip = true },
                 },
@@ -174,8 +182,8 @@ return {
                     },
                     opts = {
                         size = {
-                            max_height = 10,
-                            max_width = 50,
+                            max_height = 15,
+                            max_width = 80,
                         },
                         border = {
                             style = "none",

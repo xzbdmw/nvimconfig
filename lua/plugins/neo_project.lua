@@ -9,6 +9,9 @@ return {
         filetype_autocmd_timeout = 0,
         last_session_on_startup = true,
         projects = { -- define project roots
+            "/Users/xzb/Project/lua/lua/fzf-lua",
+            "/Users/xzb/Project/lua/color/nvim-cmp",
+            "/Users/xzb/Documents/xzbdmw的副本",
             "~/Project/rust/*",
             "~/Project/vim/*",
             "~/Project/lua/*",

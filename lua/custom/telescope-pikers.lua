@@ -184,10 +184,13 @@ end
 --                                      picker = '<pickerName>',
 --                                      (optional) options = { ... }
 --                                   }
-function telescopePickers.prettyGrepPicker(pickerAndOptions)
-    pickerAndOptions = {
-        picker = "live_grep",
+function telescopePickers.prettyGrepPicker(search, word)
+    local filename = vim.fn.expand("%:p")
+    local pickerAndOptions = {
+        picker = search,
         options = {
+            search_dirs = { filename },
+            additional_args = { "-F" },
             layout_strategy = "vertical",
             layout_config = {
                 vertical = {
@@ -201,6 +204,9 @@ function telescopePickers.prettyGrepPicker(pickerAndOptions)
             },
         },
     }
+    if word then
+        pickerAndOptions.options.search = word
+    end
     -- Parameter integrity check
     if type(pickerAndOptions) ~= "table" or pickerAndOptions.picker == nil then
         print(
@@ -230,7 +236,6 @@ function telescopePickers.prettyGrepPicker(pickerAndOptions)
     options.entry_maker = function(line)
         -- Generate the Original Entry table
         local originalEntryTable = originalEntryMaker(line)
-
         -- INSIGHT: An "entry display" is an abstract concept that defines the "container" within which data
         --          will be displayed inside the picker, this means that we must define options that define
         --          its dimensions, like, for example, its width.

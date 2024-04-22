@@ -1,4 +1,4 @@
 return {
-    -- enabled = false,
+    enabled = false,
     "tpope/vim-fugitive",
 }

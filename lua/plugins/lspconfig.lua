@@ -48,7 +48,7 @@ return {
                     vim.cmd("Lspsaga code_action")
                 end,
                 desc = "Code Action",
-                mode = { "i", "n", "v" },
+                mode = { "n", "v" },
                 has = "codeAction",
             }
 
@@ -232,7 +232,7 @@ return {
                                 -- parameterNames = true,
                                 rangeVariableTypes = true,
                             },
-                            semanticTokens = true,
+                            semanticTokens = false,
                             experimentalPostfixCompletions = false,
                             analyses = {
                                 unusedparams = true,
@@ -252,9 +252,11 @@ return {
             ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
             setup = {
                 -- example to setup with typescript.nvim
-                -- tsserver = function(_, opts)
-                --   require("typescript").setup({ server = opts })
-                --   return true
+                -- gopls = function(_, opts)
+                --     -- __AUTO_GENERATED_PRINT_VAR_START__
+                --     print([==[function opts:]==], vim.inspect(opts)) -- __AUTO_GENERATED_PRINT_VAR_END__
+                --     require("gopls").setup({ server = opts })
+                --     return true
                 -- end,
                 -- Specify * to use this function as a fallback for any server
                 -- ["*"] = function(server, opts) end,

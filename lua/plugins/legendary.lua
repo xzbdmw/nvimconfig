@@ -1,5 +1,6 @@
 return {
     "mrjones2014/legendary.nvim",
+    enabled = false,
     -- since legendary.nvim handles all your keymaps/commands,
     --   -- its recommended to load legendary.nvim before other plugins
     priority = 10000,
@@ -20,12 +21,6 @@ return {
             keymaps = {},
             commands = {},
             funcs = {
-                {
-                    function()
-                        vim.cmd("Gitsigns preview_hunk_inline")
-                    end,
-                    description = "hunk inline",
-                },
                 {
                     function()
                         vim.g.neovide_underline_stroke_scale = 0
@@ -55,39 +50,6 @@ return {
                         end)
                     end,
                     description = "variable",
-                },
-                {
-                    function()
-                        local gs = package.loaded.gitsigns
-                        gs.next_hunk()
-                    end,
-                    description = "next chunk",
-                },
-                {
-                    function()
-                        local gs = package.loaded.gitsigns
-                        gs.prev_hunk()
-                    end,
-                    description = "prev chunk",
-                },
-                {
-                    function()
-                        vim.cmd("messages")
-                        vim.defer_fn(function()
-                            local win_height = vim.api.nvim_win_get_height(0)
-                            local screen_height = vim.api.nvim_get_option("lines")
-                            if win_height + 1 < screen_height then
-                                FeedKeys("<C-w>L", "t")
-                            end
-                        end, 30)
-                    end,
-                    description = "show messages",
-                },
-                {
-                    function()
-                        vim.cmd("messages clear")
-                    end,
-                    description = "msg",
                 },
                 {
                     function()

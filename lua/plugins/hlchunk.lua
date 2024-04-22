@@ -1,23 +1,11 @@
-local hl_enable = true
 return {
     "shellRaining/hlchunk.nvim",
+    enabled = false,
     event = { "UIEnter" },
-    keys = {
-        "<leader>ui",
-        function()
-            if hl_enable then
-                vim.cmd("DisableHL")
-                hl_enable = false
-            else
-                vim.cmd("EnableHL")
-                hl_enable = true
-            end
-        end,
-    },
     config = function()
         require("hlchunk").setup({
             chunk = {
-                enable = true,
+                enable = false,
                 notify = true,
                 use_treesitter = true,
                 -- details about support_filetypes and exclude_filetypes in https://github.com/shellRaining/hlchunk.nvim/blob/main/lua/hlchunk/utils/filetype.lua
@@ -38,18 +26,18 @@ return {
             },
 
             indent = {
-                enable = false,
+                enable = true,
                 use_treesitter = false,
                 chars = {
                     "│",
                 },
                 style = {
-                    { fg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Whitespace")), "fg", "gui") },
+                    { fg = "#E8E7E0" },
                 },
             },
 
             line_num = {
-                enable = true,
+                enable = false,
                 use_treesitter = false,
                 style = "#806d9c",
             },

@@ -1,7 +1,6 @@
 return {
     { "nvim-pack/nvim-spectre", enabled = false },
     -- { "lewis6991/gitsigns.nvim", enabled = false },
-    { "ggandor/leap.nvim", enabled = false },
     { "rcarriga/nvim-notify", enabled = false },
     { "nvimdev/dashboard-nvim", enabled = false },
     -- { "mg979/vim-visual-multi", enabled = false },
@@ -22,7 +21,7 @@ return {
     -- { "shortcuts/no-neck-pain.nvim", enabled = false },
     -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
     { "echasnovski/mini.pairs", enabled = false },
-    { "shellRaining/hlchunk.nvim", enabled = false },
+    -- { "shellRaining/hlchunk.nvim", enabled = false },
     -- { "neoclide/coc.nvim", enabled = false },
     { "folke/neodev.nvim", enabled = false },
     -- { "rafamadriz/friendly-snippets", enabled = false },

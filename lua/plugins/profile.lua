@@ -1,0 +1,3 @@
+return {
+    "stevearc/profile.nvim",
+}

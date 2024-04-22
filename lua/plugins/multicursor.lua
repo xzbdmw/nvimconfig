@@ -8,8 +8,9 @@ return {
     cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
     config = function()
         local extend = require("multicursors.extend_mode")
+        local insert = require("multicursors.insert_mode")
         require("multicursors").setup({
-            updatetime = 1, -- selections get updated if this many milliseconds nothing is typed in the insert mode see :help updatetime
+            updatetime = 0, -- selections get updated if this many milliseconds nothing is typed in the insert mode see :help updatetime
             normal_keys = {
                 -- use extend motions in normal mode
                 ["w"] = { method = extend.w_method, opts = { desc = "next word start" } },
@@ -22,6 +23,9 @@ return {
                 ["$"] = { method = extend.dollar_method, opts = { desc = "line end" } },
                 ["<CR>"] = { method = extend.node_parent, opts = { desc = "parent node" } },
                 ["<C-d>"] = { method = extend.node_first_child, opts = { desc = "parent node" } },
+            },
+            insert_keys = {
+                ["<C-d>"] = { method = insert.C_w_method, opts = { desc = "parent node" } },
             },
             generate_hints = {
                 normal = false,

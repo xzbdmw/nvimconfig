@@ -1,6 +1,7 @@
 return {
     "akinsho/toggleterm.nvim",
     config = function()
+        local closed = false
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
             size = function(term)
@@ -15,8 +16,13 @@ return {
             on_open = function()
                 -- vim.wo.winbar = ""
                 vim.g.neovide_underline_stroke_scale = 0
+                if closed then
+                    vim.cmd("startinsert")
+                    closed = false
+                end
             end, -- function to run when the terminal opens
             on_close = function()
+                closed = true
                 vim.cmd("set laststatus=0")
                 vim.g.neovide_underline_stroke_scale = 2
                 -- vim.cmd("set winbar=%{%v:lua.dropbar.get_dropbar_str()%}")

@@ -1,6 +1,7 @@
 return {
     -- "nvim-treesitter/nvim-treesitter-context",
     dir = "~/Project/lua/nvim-treesitter-context/",
+    -- dir = "~/Project/lua/nvim-treesitter-context/",
     lazy = false,
     -- enabled = false,
     -- commit = "a5d16fd7639da37009e7c43eea4a932ccece2162",

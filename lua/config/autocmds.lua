@@ -1,6 +1,6 @@
 -- Autocmds are automatically loaded on the VeryLazy event
-vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
-vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
+-- vim.api.nvim_del_augroup_by_name("lazyvim_highlight_yank")
+-- vim.api.nvim_del_augroup_by_name("lazyvim_close_with_q")
 
 --[[ local start_time = nil
 local end_time = nil
@@ -8,7 +8,6 @@ local end_time = nil
 vim.api.nvim_create_autocmd("BufLeave", {
     callback = function()
         start_time = os.clock()
-        print("开始切换Buffer")
     end,
 })
 vim.keymap.set("n", "gd", function()
@@ -17,7 +16,6 @@ end)
 -- 注册BufEnter事件，在进入新的buffer时记录时间
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
-        print("asdasdasd")
         end_time = os.clock()
         if start_time then
             local elapsed_time = end_time - start_time
@@ -25,6 +23,36 @@ vim.api.nvim_create_autocmd("BufEnter", {
         end
     end,
 }) ]]
+vim.keymap.set("n", "<C-;>", function()
+    local start_time = nil
+    local end_time = nil
+    start_time = os.clock()
+    vim.cmd("e /Users/xzb/.config/nvim/lua/plugins/cmp.lua")
+    -- vim.cmd("e lua/config/keymaps.lua")
+    end_time = os.clock()
+    local elapsed_time = end_time - start_time
+    print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
+end)
+vim.api.nvim_create_augroup("LeapIlluminate", {})
+_G.leapjump = false
+vim.api.nvim_create_autocmd("User", {
+    pattern = "LeapSelectPre",
+    callback = function()
+        _G.leapjump = true
+        local buf = vim.api.nvim_get_current_buf()
+        local win = vim.api.nvim_get_current_win()
+        require("illuminate.engine").refresh_references(buf, win)
+    end,
+    group = "LeapIlluminate",
+})
+
+--[[ vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        client.server_capabilities.semanticTokensProvider = nil
+    end,
+}) ]]
+
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         local invalid_win = {}
@@ -68,6 +96,12 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
 -- walkaroud for incremental selection
 vim.api.nvim_create_augroup("cmdwin_treesitter", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+        "qf",
+    },
+    command = "TSBufDisable incremental_selection",
+})
 vim.api.nvim_create_autocmd("CmdwinEnter", {
     pattern = "*",
     command = "TSBufDisable incremental_selection",
@@ -99,32 +133,24 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = {
-        "qf",
-    },
-    callback = function()
-        vim.keymap.set("n", "<CR>", "<CR>", { buffer = 0 })
-    end,
-})
+
+-- cmp completion
 vim.api.nvim_create_autocmd("ModeChanged", {
     pattern = "s:i",
     callback = function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-9>", true, false, true), "m", true)
     end,
 })
-vim.api.nvim_create_autocmd("ModeChanged", {
-    pattern = { "*:V", "*:no" },
+Start = 0
+
+--[[ vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "n:i",
     callback = function()
-        vim.opt.relativenumber = true
+        local eend = os.clock()
+        local elapsed_time = eend - Start
+        print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
     end,
-})
-vim.api.nvim_create_autocmd("ModeChanged", {
-    pattern = { "no:*", "V:*" },
-    callback = function()
-        vim.opt.relativenumber = false
-    end,
-})
+}) ]]
 
 _G.glancebuffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -215,14 +241,15 @@ api.nvim_create_user_command("Ut", function()
     setUndotreeWinSize()
 end, { desc = "load undotree" })
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
-        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        --[[ for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             -- Don't save while there's any 'nofile' buffer open.
             if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
                 return
             end
-        end
+        end ]]
+        vim.cmd([[silent! mkview 1]])
         require("session_manager").save_current_session()
     end,
 })

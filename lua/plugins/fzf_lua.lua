@@ -5,17 +5,58 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     event = "VeryLazy",
     keys = {
-        -- {
-        --     "<leader>sg",
-        --     function()
-        --         require("fzf-lua").live_grep()
-        --     end,
-        -- },
         {
-            "<leader>fb",
+            "<leader>sg",
             function()
-                require("fzf-lua").grep_curbuf()
+                require("fzf-lua").live_grep({
+                    grep = {
+                        rg_opts = "-F --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+                    },
+                    winopts = { width = 0.8, height = 0.9 },
+                    files = { path_shorten = true },
+                })
             end,
+        },
+        {
+            "<leader>sr",
+            function()
+                require("fzf-lua").live_grep_resume({})
+            end,
+        },
+        {
+            "<leader>sw",
+            function()
+                require("fzf-lua").grep_cword({
+                    grep = {
+                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+                    },
+                    winopts = { width = 0.8, height = 0.9 },
+                })
+            end,
+        },
+        {
+            "<leader>sW",
+            function()
+                require("fzf-lua").grep_cWORD({
+                    grep = {
+                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+                    },
+                    winopts = { width = 0.8, height = 0.9 },
+                })
+            end,
+        },
+
+        {
+            "<leader>f",
+            function()
+                require("fzf-lua").grep_visual({
+                    grep = {
+                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+                    },
+                    winopts = { width = 0.8, height = 0.9 },
+                })
+            end,
+            mode = { "v" },
         },
         {
             "<C-d>",
@@ -49,7 +90,7 @@ return {
                 -- (i.e. when 'split' is not defined, default)
                 height = 0.9, -- window height
                 width = 0.55, -- window width
-                row = 0.35, -- window row position (0=top, 1=bottom)
+                row = 0.45, -- window row position (0=top, 1=bottom)
                 col = 0.50, -- window col position (0=left, 1=right)
                 -- border argument passthrough to nvim_open_win(), also used
                 -- to manually draw the border characters around the preview
@@ -69,7 +110,7 @@ return {
                     border = "border", -- border|noborder, applies only to
                     -- native fzf previewers (bat/cat/git/etc)
                     wrap = "nowrap", -- wrap|nowrap
-                    hidden = "nohidden", -- hidden|nohidden
+                    -- hidden = "hidden", -- hidden|nohidden
                     vertical = "down:55%", -- up|down:size
                     horizontal = "left:40%", -- right|left:size
                     layout = "vertical", -- horizontal|vertical|flex
@@ -159,8 +200,8 @@ return {
                     ["ctrl-s"] = actions.file_split,
                     ["ctrl-v"] = actions.file_vsplit,
                     ["ctrl-t"] = actions.file_tabedit,
-                    ["alt-q"] = actions.file_sel_to_qf,
-                    ["alt-l"] = actions.file_sel_to_ll,
+                    ["ctrl-q"] = actions.file_sel_to_qf,
+                    ["ctrl-l"] = actions.file_sel_to_ll,
                 },
                 buffers = {
                     -- providers that inherit these actions:
@@ -177,6 +218,7 @@ return {
                 -- set to '' for a non-value flag
                 -- for raw args use `fzf_args` instead
                 ["--ansi"] = "",
+                -- ["--preview-window"] = "hidden:right:0",
                 ["--info"] = "inline",
                 ["--height"] = "100%",
                 ["--layout"] = "reverse",
@@ -455,7 +497,7 @@ return {
                 -- default options are controlled by 'rg|grep_opts'
                 -- cmd            = "rg --vimgrep",
                 grep_opts = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
-                rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+                rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
                 -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
                 -- search strings will be split using the 'glob_separator' and translated
                 -- to '--iglob=' arguments, requires 'rg'
@@ -554,13 +596,13 @@ return {
                 show_unlisted = true, -- include 'help' buffers
                 no_term_buffers = false, -- include 'term' buffers
                 -- start          = "cursor"      -- start display from cursor?
-                fzf_opts = {
-                    -- hide filename, tiebreak by line no.
-                    ["--delimiter"] = "'[:]'",
-                    ["--with-nth"] = "2..",
-                    ["--tiebreak"] = "index",
-                    ["--tabstop"] = "1",
-                },
+                -- fzf_opts = {
+                --     -- hide filename, tiebreak by line no.
+                --     ["--delimiter"] = "'[:]'",
+                --     ["--with-nth"] = "2..",
+                --     ["--tiebreak"] = "index",
+                --     ["--tabstop"] = "1",
+                -- },
                 -- actions inherit from 'actions.buffers' and merge
                 actions = {
                     ["default"] = actions.buf_edit_or_qf,

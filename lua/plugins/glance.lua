@@ -56,12 +56,10 @@ return {
             end)
             actions.close()
         end
-
         function Open()
             local cursor = vim.api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
             local col = cursor[2]
-
             -- 获取当前编辑的文件名
             local filename = vim.fn.expand("%:p")
 
@@ -115,17 +113,18 @@ return {
                     ["<CR>"] = Jump,
                     ["o"] = actions.jump,
                     ["l"] = actions.open_fold,
+                    ["n"] = actions.next_location,
                     ["h"] = actions.close_fold,
                     ["<Tab>"] = actions.enter_win("preview"), -- Focus preview window
                     ["q"] = Close_with_q,
                     ["Q"] = Close_with_q,
                     ["<Esc>"] = Close_with_q,
-                    ["<C-q>"] = quickfix,
+                    ["<C-t>"] = quickfix,
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
                     ["n"] = actions.next_location,
-                    ["<C-q>"] = quickfix,
+                    ["<C-t>"] = quickfix,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
@@ -136,6 +135,9 @@ return {
                     if method == "definitions" and #result >= 1 then
                         vim.cmd("normal! m'")
                         jump(result[1])
+                    elseif method == "implementations" then
+                        vim.cmd("normal! m'")
+                        open(result)
                     elseif method == "references" then
                         if #result == 1 then
                             vim.cmd("normal! m'")
@@ -148,7 +150,11 @@ return {
                                 return not (v.range.start.line + 1 == lnum)
                             end, vim.F.if_nil(result, {}))
                             vim.cmd("normal! m'")
-                            jump(locations[1])
+                            if locations ~= nil and #locations ~= 0 then
+                                jump(locations[1])
+                            else
+                                print("can't find reference")
+                            end
                         else
                             vim.cmd("normal! m'")
                             open(result)
@@ -156,31 +162,6 @@ return {
                         end
                         return
                     end
-                    -- local lnum = vim.api.nvim_win_get_cursor(0)[1]
-                    -- local locations = {}
-                    -- if result ~= nil and result[1].range == nil then
-                    --     open(result)
-                    --     FeedKeys("<Tab>", "t")
-                    --     return
-                    -- end
-                    -- if #result == 1 then
-                    --     print("no reference")
-                    --     return
-                    -- end
-                    -- if #result == 2 then
-                    --     locations = vim.tbl_filter(function(v)
-                    --         return not (v.range.start.line + 1 == lnum)
-                    --     end, vim.F.if_nil(result, {}))
-                    --     vim.cmd("normal! m'")
-                    --     jump(locations[1])
-                    -- else
-                    --     vim.cmd("normal! m'")
-                    --     open(result) -- argument is optional
-                    --     FeedKeys("<Tab>", "t")
-                    --     if _G.reference == false then
-                    --         FeedKeys("n", "t")
-                    --     end
-                    -- end
                 end,
                 before_close = function()
                     _G.glance_list_method = nil

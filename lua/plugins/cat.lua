@@ -77,6 +77,8 @@ return {
                     GlancePreviewMatch = { fg = "#ffffff", bg = "#304E75" },
                     GlanceWinbarFileName = { link = "NvimTreeRootFolder" },
                     GlanceListMatch = { fg = "#8AADF4" },
+                    CmpItemAbbrMatch = { fg = "none", style = { "bold" } },
+                    CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },
                     GlanceWinbarFolderName = { link = "Comment" },
                     GlanceListCursorLine = { bg = "#212635" },
                     -- GlanceListNormal = { fg = "#8F98B8", bg = "#15182A" },

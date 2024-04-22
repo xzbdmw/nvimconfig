@@ -51,8 +51,8 @@ return {
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma(", true, false, true), "t", true)
         end, keymap_ops)
         local del = vim.keymap.del
-        del("n", "gsh")
-        del("n", "gshn")
-        del("n", "gshl")
+        -- del("n", "gsh")
+        -- del("n", "gshn")
+        -- del("n", "gshl")
     end,
 }

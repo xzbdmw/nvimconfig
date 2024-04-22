@@ -45,11 +45,7 @@ return {
                     -- SatelliteGitSignsDelete (default links to GitSignsDelete)
                 },
                 marks = {
-                    enable = true,
-                    show_builtins = false, -- shows the builtin marks like [ ] < >
-                    key = "m",
-                    -- Highlights:
-                    -- SatelliteMark (default links to Normal)
+                    enable = false,
                 },
                 quickfix = {
                     signs = { "-", "=", "≡" },

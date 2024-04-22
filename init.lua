@@ -1,6 +1,16 @@
 FeedKeys = function(keymap, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
 end
+local function regexEscape(str)
+    return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
+end
+-- you can use return and set your own name if you do require() or dofile()
+
+-- like this: str_replace = require("string-replace")
+-- return function (str, this, that) -- modify the line below for the above to work
+string.replace = function(str, this, that)
+    return str:gsub(regexEscape(this), that:gsub("%%", "%%%%")) -- only % needs to be escaped for 'that'
+end
 ---@diagnostic disable: undefined-global
 -- bootstrap lazy.nvim, LazyVim and your plugins
 vim.api.nvim_create_autocmd("FileType", {
@@ -43,11 +53,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
             arrow = " (" .. arrow .. ")"
             iconHighlight = "ArrowIcon"
         end
+        local winconfig = vim.api.nvim_win_get_config(winid)
         if path ~= "" and filename ~= "" then
             if not vim.startswith(absolute_path, cwd) then
-                if vim.api.nvim_win_get_config(winid).relative ~= "" then
-                    return
-                end
                 vim.wo[winid].winbar = " "
                     .. " "
                     .. "%#LibPath#"
@@ -67,9 +75,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
                     .. arrow
                     .. "%*"
             else
-                if vim.api.nvim_win_get_config(winid).relative ~= "" then
-                    return
-                end
                 vim.wo[winid].winbar = " "
                     .. "%#NvimTreeFolderName#"
                     .. " "
@@ -95,6 +100,17 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
         end
     end,
 })
+
+-- fold
+--[[ vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        vim.defer_fn(function()
+            vim.cmd("set foldmethod=manual")
+            -- vim.cmd("set foldlevel=999")
+        end, 1000)
+    end,
+}) ]]
+
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
@@ -161,14 +177,28 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
-
-vim.api.nvim_create_autocmd({ "BufWinLeave", "QuitPre" }, {
+--
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
         if vim.bo.filetype == "fzf" then
-            return
+            if
+                _G.fzf_win ~= nil
+                and _G.fzf_view ~= nil
+                and _G.fzf_buf ~= nil
+                and vim.api.nvim_win_is_valid(_G.fzf_win)
+                and _G.fzf_view ~= nil
+                and vim.api.nvim_buf_is_valid(_G.fzf_buf)
+            then
+                local ns = vim.api.nvim_create_namespace("symbol_highlight")
+                vim.api.nvim_buf_clear_namespace(_G.fzf_buf, ns, 0, -1)
+                vim.api.nvim_win_call(_G.fzf_win, function()
+                    vim.fn.winrestview(_G.fzf_view)
+                end)
+                return
+            end
         else
-            vim.cmd.mkview({ mods = { emsg_silent = true } })
+            vim.cmd([[silent! mkview 1]])
         end
     end,
 })
@@ -179,7 +209,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         if vim.bo.filetype == "fzf" then
             return
         else
-            vim.cmd.loadview({ mods = { emsg_silent = true } })
+            vim.cmd([[silent! loadview 1]])
         end
     end,
 })
@@ -190,6 +220,32 @@ vim.api.nvim_create_autocmd({ "User" }, {
     group = config_group,
     callback = function()
         require("nvim-tree.api").tree.toggle({ focus = false })
+        -- vim.cmd([[silent! loadview 1]])
     end,
 })
 require("config.lazy")
+--[[ local should_profile = os.getenv("NVIM_PROFILE")
+if should_profile then
+    require("profile").instrument_autocmds()
+    if should_profile:lower():match("^start") then
+        require("profile").start("*")
+    else
+        require("profile").instrument("*")
+    end
+end
+
+local function toggle_profile()
+    local prof = require("profile")
+    if prof.is_recording() then
+        prof.stop()
+        vim.ui.input({ prompt = "Save profile to:", completion = "file", default = "profile.json" }, function(filename)
+            if filename then
+                prof.export(filename)
+                vim.notify(string.format("Wrote %s", filename))
+            end
+        end)
+    else
+        prof.start("*")
+    end
+end
+vim.keymap.set("", "<leader>pr", toggle_profile) ]]

@@ -267,11 +267,11 @@ if err != nil {
             updateevents = "TextChanged,TextChangedI",
             ext_opts = {
                 [types.insertNode] = {
-                    -- active = {
-                    --     -- highlight the text inside the node red.
-                    --     hl_group = "LualineCursorLine",
-                    --     priority = 1,
-                    -- },
+                    --[[ active = {
+                        -- highlight the text inside the node red.
+                        hl_group = "LualineCursorLine",
+                        priority = 1,
+                    }, ]]
                     --[[ these ext_opts are applied when the node is not active, but
                 the snippet still is.
                 passive = {

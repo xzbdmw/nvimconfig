@@ -5,24 +5,13 @@ return {
     -- enabled = fa
     -- event = "VeryLazy",
     lazy = false,
-    keys = {
-        {
-            "H",
-            function()
-                require("arrow.persist").previous()
-            end,
-        },
-        {
-            "L",
-            function()
-                require("arrow.persist").next()
-            end,
-        },
-    },
-
     opts = {
         per_buffer_config = {
-            lines = 6,
+            sort_automatically = true,
+            treesitter_context = {
+                line_shift_down = 1,
+            },
+            lines = 7,
         },
         buffer_leader_key = "'",
         show_icons = true,
@@ -37,4 +26,9 @@ return {
             border = "none",
         },
     },
+    config = function(_, opts)
+        require("arrow").setup(opts)
+        vim.keymap.set("n", "mn", "<cmd>Arrow next_buffer_bookmark<CR>")
+        vim.keymap.set("n", "mp", "<cmd>Arrow prev_buffer_bookmark<CR>")
+    end,
 }
