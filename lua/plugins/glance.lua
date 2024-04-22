@@ -5,7 +5,6 @@ return {
     config = function()
         local glance = require("glance")
         local actions = glance.actions
-
         local function clear_and_restore()
             for bufnr, _ in pairs(_G.glancebuffer) do
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")

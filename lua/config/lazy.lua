@@ -18,6 +18,11 @@ require("lazy").setup({
         -- import/override with your plugins
         { import = "plugins" },
     },
+    change_detection = {
+        -- automatically check for config file changes and reload the ui
+        enabled = false,
+        notify = false, -- get a notification when changes are found
+    },
     ui = {
         backdrop = 100,
     },
@@ -38,8 +43,8 @@ require("lazy").setup({
             disabled_plugins = {
                 "gzip",
                 -- "matchit",
-                -- "matchparen",
-                -- "netrwPlugin",
+                "matchparen",
+                "netrwPlugin",
                 "tarPlugin",
                 "tohtml",
                 "tutor",

@@ -7,7 +7,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
 -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
-vim.o.sessionoptions = "blank,buffers,folds,curdir,help,tabpages,terminal,winsize,winpos,resize"
+vim.o.sessionoptions = "blank,folds,buffers,curdir,help,tabpages,terminal,winsize,winpos,resize"
 vim.opt.relativenumber = true
 -- vim.opt.inccommand = "split"
 vim.opt.pumblend = 0

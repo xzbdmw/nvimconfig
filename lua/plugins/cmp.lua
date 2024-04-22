@@ -27,7 +27,6 @@ local CompletionItemKind = {
     Operator = 24,
     TypeParameter = 25,
 }
-
 local function findLast(haystack, needle)
     local i = haystack:match(".*" .. needle .. "()")
     if i == nil then
@@ -586,7 +585,7 @@ return {
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
                         kind.kind = " " .. (strings[1] or "") .. " "
                         kind.menu = ""
-                        kind.concat = kind.abbr
+                        -- kind.concat = kind.abbr
                         return kind
                     end
                     local get_mode = function()
@@ -732,15 +731,11 @@ return {
                     fallback()
                 end, { "i", "c" }),
             }),
-            --[[ completion = {
-                completeopt = "menu,menuone,noselect",
-            }, ]]
             sources = cmp.config.sources({
                 { name = "cmdline" },
                 { name = "path" },
             }),
         })
-
         require("cmp").setup(opts)
         --[[ local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
         -- Setup lspconfig.

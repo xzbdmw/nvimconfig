@@ -9,19 +9,6 @@ end, opts)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
-local profile = false
-keymap("n", "<leader><leader>g", function()
-    profile = true
-    vim.cmd("profile start profile.log")
-    vim.cmd("profile func *")
-    vim.cmd("profile file *")
-end, opts)
-keymap("n", "<leader><leader>g", function()
-    if profile then
-        vim.cmd("profile pause")
-        vim.cmd("qall!")
-    end
-end, opts)
 keymap("n", "o", function()
     vim.g.neovide_cursor_animation_length = 0.0
     vim.defer_fn(function()
@@ -40,7 +27,7 @@ keymap("n", "O", function()
 end, { expr = true })
 keymap("n", "<leader>zz", function()
     local buf = vim.api.nvim_create_buf(false, true)
-    local str = "TroubleToggle"
+    local str = "fn test(&self)->Vec<T>"
     -- local str = 's:="adsasds"'
     -- local str = [[import "asdsd"]]
     local filetype = "rust"
@@ -76,6 +63,7 @@ keymap("n", "<leader>zz", function()
     end
 end, opts)
 local del = vim.keymap.del
+
 --[[ keymap("n", "<leader>zz", function()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     -- __AUTO_GENERATED_PRINT_VAR_START__
@@ -189,7 +177,6 @@ local function buf_add_hl(buffer, ns_id, hl_group, line, col_start, col_end)
     end
     vim.api.nvim_buf_add_highlight(buffer, ns_id, hl_group, line, col_start, col_end)
 end
-
 ---Highlight text in buffer, clear previous highlight if any exists
 local function range_single(buf, hlgroup, s_line, e_line)
     if not vim.api.nvim_buf_is_valid(buf) then
@@ -280,8 +267,6 @@ keymap("v", "<down>", "", opts)
 keymap("n", "[p", '"0p', opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
-keymap("n", "]]", "n", opts)
-keymap("n", "[[", "N", opts)
 keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
 keymap("n", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 keymap("v", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
@@ -310,6 +295,7 @@ keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     vim.cmd("DiffviewClose")
 end, opts)
+keymap("n", "za", "zfai", { remap = true })
 keymap("n", "<leader><leader>s", function()
     vim.cmd("source %")
 end, opts)
@@ -646,7 +632,7 @@ keymap("t", "<D-v>", function()
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
-
+keymap("x", "za", "zf", opts)
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
@@ -670,7 +656,6 @@ end, opts)
 keymap("x", "=", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("loho", true, false, true), "t", false)
 end, opts)
-
 keymap("n", "<leader>d", function()
     vim.cmd("Glance definitions")
     --[[ local def_or_ref = require("custom.definitions")
