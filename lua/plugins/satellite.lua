@@ -1,11 +1,12 @@
 return {
     "lewis6991/satellite.nvim",
+    enabled = false,
     config = function()
         require("satellite").setup({
             current_only = true,
             winblend = 0,
             zindex = 20,
-            excluded_filetypes = { "" },
+            excluded_filetypes = { "minifiles" },
             width = 1,
             handlers = {
                 cursor = {
@@ -17,13 +18,13 @@ return {
                     -- - SatelliteCursor (default links to NonText
                 },
                 search = {
-                    enable = true,
+                    enable = false,
                     -- Highlights:
                     -- - SatelliteSearch (default links to Search)
                     -- - SatelliteSearchCurrent (default links to SearchCurrent)
                 },
                 diagnostic = {
-                    enable = true,
+                    enable = false,
                     signs = { "-", "=", "≡" },
                     min_severity = vim.diagnostic.severity.WARN,
                     -- Highlights:
@@ -48,6 +49,7 @@ return {
                     enable = false,
                 },
                 quickfix = {
+                    enable = false,
                     signs = { "-", "=", "≡" },
                     -- Highlights:
                     -- SatelliteQuickfix (default links to WarningMsg)

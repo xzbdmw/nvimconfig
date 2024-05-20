@@ -455,19 +455,20 @@
   (#eq? @keyword.debug "dbg"))
 
 (impl_item
-      trait: (generic_type type: (type_identifier)@trait.definition(set! "priority" 1000) type_arguments:(_))
+      trait: (generic_type type: (type_identifier)@trait.definition type_arguments:(_))
             type: (_))
 (impl_item
-      trait: (type_identifier)@trait.definition(set! "priority" 1000)
+      trait: (type_identifier)@trait.definition
             type: (_))
+trait: (type_identifier)@trait.definition
 (impl_item
     trait: (scoped_type_identifier
-        path:(_) name:(_)@trait.definition(set! "priority" 1000))
+        path:(_) name:(_)@trait.definition)
       type: (_))
 (impl_item
     trait: (generic_type 
         type:(scoped_type_identifier
             path:(_) 
-            name:(_)@trait.definition(set! "priority" 1000))
+            name:(_)@trait.definition)
         type_arguments:(_))
     type: (_))

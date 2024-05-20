@@ -5,11 +5,11 @@ return {
             "<leader>gz",
             function()
                 if open == 0 then
-                    vim.cmd("FocusDisable")
+                    -- vim.cmd("FocusDisable")
                     vim.opt.number = false
                     open = 1
                 else
-                    vim.cmd("FocusEnable")
+                    -- vim.cmd("FocusEnable")
                     vim.opt.number = true
                     open = 0
                 end
@@ -20,11 +20,11 @@ return {
             "<D-2>",
             function()
                 if open == 0 then
-                    vim.cmd("FocusDisable")
+                    -- vim.cmd("FocusDisable")
                     vim.opt.number = false
                     open = 1
                 else
-                    vim.cmd("FocusEnable")
+                    -- vim.cmd("FocusEnable")
                     vim.opt.number = true
                     open = 0
                 end
@@ -36,7 +36,7 @@ return {
     lazy = false,
     config = function()
         require("no-neck-pain").setup({
-            width = 90,
+            width = 110,
             mappings = {
                 enabled = true,
                 -- widthUp = "<Leader>n=",

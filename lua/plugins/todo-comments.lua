@@ -1,12 +1,13 @@
 return {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    enabled = false,
     opts = {
         signs = true, -- show icons in the signs column
         sign_priority = 8, -- sign priority
         -- keywords recognized as todo comments
         keywords = {
-            VAR = { icon = "󰄛 ", color = "info" },
+            -- VAR = { icon = "󰄛 ", color = "info" },
             FUN = { icon = "󰡱 ", color = "default" },
             FIX = {
                 icon = " ", -- icon used for the sign, and in search results

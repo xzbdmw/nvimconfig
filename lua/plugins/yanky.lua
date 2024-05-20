@@ -1,12 +1,24 @@
 return {
     "gbprod/yanky.nvim",
+    -- commit = "0dc8e0f262246ce4a891f0adf61336b3afe7c579",
+    -- enabled = false,
     keys = {
-        { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
+        {
+            "y",
+            "<Plug>(YankyYank)",
+            mode = { "n", "x" },
+        },
 
         { "<leader>p", "<Plug>(YankyPreviousEntry)" },
         { "<leader>n", "<Plug>(YankyNextEntry)" },
-
-        { "p", "<Plug>(YankyPutAfter)" },
+        {
+            "p",
+            function()
+                YANK = vim.uv.hrtime()
+                return "<Plug>(YankyPutAfter)"
+            end,
+            expr = true,
+        },
         { "P", "<Plug>(YankyPutBefore)" },
 
         { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
@@ -17,7 +29,15 @@ return {
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
 
         -- force paste the same line
-        { "<leader>P", "<Plug>(YankyPutAfterCharwiseJoined)", mode = { "n", "x" } },
+        {
+            "<leader>P",
+            function()
+                YANK = vim.uv.hrtime()
+                return "<Plug>(YankyPutAfterCharwiseJoined)"
+            end,
+            mode = { "n", "x" },
+            expr = true,
+        },
 
         -- text object
         {

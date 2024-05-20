@@ -122,7 +122,6 @@ _G.rust_query = vim.treesitter.query.parse(
 ] @comment]]
 )
 function M.parseEntry(entryStr)
-    -- 使用字符串匹配来提取括号中间的字符串
     ::POS::
     local s, e, betweenParentheses = entryStr:find("%((.-)%)")
     local sub = string.sub(entryStr, s, e)
@@ -131,13 +130,11 @@ function M.parseEntry(entryStr)
         goto POS
     end
     if betweenParentheses then
-        -- 根据冒号分割字符串
         local parts = {}
         for part in betweenParentheses:gmatch("[^:]+") do
             table.insert(parts, tonumber(part))
         end
 
-        -- 如果成功分割成两个数字，则返回
         if #parts == 2 then
             return parts[1], parts[2]
         else
@@ -148,20 +145,13 @@ function M.parseEntry(entryStr)
     end
 end
 function M.WriteToFile(content)
-    -- 以只写方式打开文件，如果文件不存在则创建
-
     local filename = "/Users/xzb/.local/share/nvim/lazy/multicursors.nvim/demo.txt"
     local file = io.open(filename, "a")
-    -- 检查文件是否成功打开
     if file then
-        -- 写入内容到文件
         file:write(content)
 
-        -- 关闭文件
         file:flush()
-    -- print('写入成功')
     else
-        print("无法打开文件")
     end
 end
 function M.get_visual_selection_text()

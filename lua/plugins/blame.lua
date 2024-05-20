@@ -1,5 +1,6 @@
 return {
     "FabijanZulj/blame.nvim",
+    enabled = false,
     config = function()
         require("blame").setup({
             date_format = "%d.%m.%Y",

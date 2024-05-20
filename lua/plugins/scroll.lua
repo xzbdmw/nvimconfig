@@ -13,7 +13,7 @@ return {
             -- where to run scrollEOF. See https://neovim.io/doc/user/autocmd.html#autocmd-pattern
             pattern = "*",
             -- Whether or not scrollEOF should be enabled in insert mode
-            insert_mode = true,
+            insert_mode = false,
             -- List of filetypes to disable scrollEOF for.
             disabled_filetypes = { "toggleterm", "NvimTree" },
             -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode()

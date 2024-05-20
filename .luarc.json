@@ -3,5 +3,8 @@
     "runtime.version": "LuaJIT",
     "diagnostics.disable": [
         "deprecated"
+    ],
+    "diagnostics.globals": [
+        "MiniFiles"
     ]
 }

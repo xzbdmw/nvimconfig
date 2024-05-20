@@ -1,7 +1,14 @@
 return {
     "akinsho/toggleterm.nvim",
+    cmd = {
+        "ToggleTerm",
+        "ToggleTermSetName",
+        "ToggleTermToggleAll",
+        "ToggleTermSendVisualLines",
+        "ToggleTermSendCurrentLine",
+        "ToggleTermSendVisualSelection",
+    },
     config = function()
-        local closed = false
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
             size = function(term)
@@ -14,17 +21,17 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
+                vim.cmd(":startinsert")
                 -- vim.wo.winbar = ""
-                vim.g.neovide_underline_stroke_scale = 0
-                if closed then
-                    vim.cmd("startinsert")
-                    closed = false
-                end
+                -- vim.g.neovide_underline_stroke_scale = 0
+                -- if closed then
+                --     vim.cmd("startinsert")
+                --     closed = false
+                -- end
             end, -- function to run when the terminal opens
             on_close = function()
-                closed = true
                 vim.cmd("set laststatus=0")
-                vim.g.neovide_underline_stroke_scale = 2
+                -- vim.g.neovide_underline_stroke_scale = 2
                 -- vim.cmd("set winbar=%{%v:lua.dropbar.get_dropbar_str()%}")
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout

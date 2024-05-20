@@ -1,6 +1,6 @@
 return {
     "b0o/incline.nvim",
-    -- enabled = false,
+    enabled = false,
     commit = "ba95a8d0fc02734967dcbe15c024a34bae7c87aa",
     --Optional: Lazy load Incline
     event = "VeryLazy",

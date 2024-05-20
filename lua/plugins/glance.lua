@@ -1,7 +1,7 @@
 return {
     "dnlhc/glance.nvim",
+    cmd = "Glance",
     -- dir = "~/Project/lua/glance.nvim/",
-    event = "VeryLazy",
     config = function()
         local glance = require("glance")
         local actions = glance.actions
@@ -56,23 +56,26 @@ return {
             actions.close()
         end
         function Open()
-            local cursor = vim.api.nvim_win_get_cursor(0)
-            local lnum = cursor[1]
-            local col = cursor[2]
+            -- local cursor = vim.api.nvim_win_get_cursor(0)
+            -- local lnum = cursor[1]
+            -- local col = cursor[2]
             -- 获取当前编辑的文件名
-            local filename = vim.fn.expand("%:p")
+            -- local filename = vim.fn.expand("%:p")
 
             clear_and_restore()
-            vim.schedule(function()
-                local uri = vim.uri_from_fname(filename)
-                local bufnr = vim.uri_to_bufnr(uri)
-                vim.api.nvim_win_set_buf(0, bufnr)
-                vim.schedule(function()
-                    vim.api.nvim_win_set_cursor(0, { lnum, col })
-                    vim.cmd("norm zz")
-                end)
-            end)
-            actions.close()
+            -- local uri = vim.uri_from_fname(filename)
+            -- local bufnr = vim.uri_to_bufnr(uri)
+            actions.close(vim.api.nvim_get_current_buf())
+            -- vim.schedule(function()
+            --     local sequnce = "<cmd>lua vim.api.nvim_win_set_buf(0, "
+            --         .. bufnr
+            --         .. ")<CR><cmd>lua vim.api.nvim_win_set_cursor(0, { "
+            --         .. lnum
+            --         .. ", "
+            --         .. col
+            --         .. " })<CR><CMD>norm! zz<CR>"
+            --     FeedKeys(sequnce, "n")
+            -- end)
         end
 
         require("glance").setup({
@@ -134,6 +137,7 @@ return {
                     if method == "definitions" and #result >= 1 then
                         vim.cmd("normal! m'")
                         jump(result[1])
+                        vim.cmd("norm! zz")
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
                         open(result)
@@ -141,6 +145,7 @@ return {
                         if #result == 1 then
                             vim.cmd("normal! m'")
                             jump(result[1])
+                            vim.cmd("norm! zz")
                         elseif #result == 2 then
                             print("2")
                             vim.cmd("normal! m'")

@@ -9,188 +9,160 @@ end, opts)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
-keymap("n", "o", function()
-    vim.g.neovide_cursor_animation_length = 0.0
+
+keymap("i", "<c-g>", function()
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "rg",
+                },
+            },
+        },
+    })
+end)
+keymap("n", "<leader>h", function()
+    FeedKeys("0", "n")
+    vim.fn.winrestview({ leftcol = 0 })
+    vim.schedule(function()
+        local col = vim.api.nvim_win_get_cursor(0)[2]
+        local char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
+        if char == " " then
+            FeedKeys("w", "n")
+        end
+    end)
+end, opts)
+keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
+keymap("n", "<D-7>", function()
+    HELP = vim.uv.hrtime()
+    vim.cmd("h clipboard-unnamedplus")
+end, opts)
+
+_G.no_delay = function(animation)
+    -- TYO = vim.uv.hrtime()
+    vim.g.type_o = true
+    vim.g.neovide_cursor_animation_length = animation
+    vim.schedule(function()
+        -- Time(TYO, "no_delay: ")
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local ts_indent = require("nvim-treesitter.indent")
+        local success, indent_number = pcall(ts_indent.get_indent, row)
+        vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace("illuminate.highlight"), 0, -1)
+        if not success or col >= indent_number then
+            return
+        end
+        local indent = string.rep(" ", indent_number)
+        local line = vim.trim(vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1])
+        vim.api.nvim_buf_set_lines(0, row - 1, row, false, { indent .. line })
+        success = pcall(vim.api.nvim_win_set_cursor, 0, { row, indent_number })
+        if not success then
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            print([==[indent fail: ts indent_number: ]==], vim.inspect(indent_number)) -- __AUTO_GENERATED_PRINT_VAR_END__
+        end
+    end)
     vim.defer_fn(function()
+        pcall(_G.update_indent, true)
+        pcall(_G.mini_indent_auto_draw)
+        vim.g.type_o = false
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 50)
+end
+
+keymap("n", "o", function()
+    -- ST = vim.uv.hrtime()
+    _G.no_delay(0)
+    return "o"
+end, { expr = true, remap = true })
+keymap("i", "<C-d>", "<C-w>", opts)
+keymap("n", "`", function()
+    vim.g.gd = true
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
+        vim.g.gd = false
         vim.g.neovide_cursor_animation_length = 0.06
     end, 100)
-    Start = os.clock()
-    print("o")
-    return "o"
+    return "<cmd>e #<cr>"
 end, { expr = true })
 keymap("n", "O", function()
-    vim.g.neovide_cursor_animation_length = 0.0
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end, 100)
+    _G.no_delay(0)
     return "O"
 end, { expr = true })
+
+-- various textobjs
+keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
+keymap({ "o", "x" }, "im", "<cmd>lua require('various-textobjs').chainMember('inner')<CR>")
+keymap({ "o", "x" }, "am", "<cmd>lua require('various-textobjs').chainMember('outer')<CR>")
+keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
+
+-- require("lspconfig").clangd.setup({})
 keymap("n", "<leader>zz", function()
+    local start_time = vim.loop.hrtime()
     local buf = vim.api.nvim_create_buf(false, true)
-    local str = "fn test(&self)->Vec<T>"
+    local str = "for"
     -- local str = 's:="adsasds"'
-    -- local str = [[import "asdsd"]]
-    local filetype = "rust"
+    local filetype = "go"
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, { str })
+    local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
     local query = vim.treesitter.query.get(filetype, "highlights")
     local parser = vim.treesitter.get_string_parser(str, filetype)
-    local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
-    local tree = parser:parse(true)[1]
+    local tree = parser:parse(false)[1]
     local root = tree:root()
-    for id, node in query:iter_captures(root, str, 0, -1) do
-        local name = "@" .. query.captures[id] .. "." .. filetype
-        local priority = 200
-        if name == "@interface.name" then
-            priority = 1000
+    for _ = 1, 500 do
+        for id, node in query:iter_captures(root, str, 0, -1) do
+            local name = "@" .. query.captures[id] .. "." .. filetype
+            local priority = 200
+            if name == "@interface.name" then
+                priority = 1000
+            end
+            local hl = vim.api.nvim_get_hl_id_by_name(name)
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            -- print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            local range = { node:range() }
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            -- print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
+            local ns_id = vim.api.nvim_create_namespace("cmp")
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            -- print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            -- __AUTO_GENERATED_PRINT_VAR_START__
+            -- print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
+            vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
+                end_col = necol,
+                priority = priority,
+                hl_group = hl,
+            })
         end
-        local hl = vim.api.nvim_get_hl_id_by_name(name)
+    end
+    if start_time then
+        local duration = 0.000001 * (vim.loop.hrtime() - start_time)
         -- __AUTO_GENERATED_PRINT_VAR_START__
-        print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        local range = { node:range() }
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
-        local ns_id = vim.api.nvim_create_namespace("cmp")
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
-            end_col = necol,
-            priority = priority,
-            hl_group = hl,
-        })
+        print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
     end
 end, opts)
-local del = vim.keymap.del
 
---[[ keymap("n", "<leader>zz", function()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[function line:]==], vim.inspect(row)) -- __AUTO_GENERATED_PRINT_VAR_END__
-    local res = require("nvim-treesitter.indent").get_indent(row + 1)
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[function res:]==], vim.inspect(res)) -- __AUTO_GENERATED_PRINT_VAR_END__
-end) ]]
-del("n", "<leader>w-")
-del("n", "<leader>ww")
-del("n", "<leader>wd")
-del("t", "<esc><esc>")
-del("n", "<leader>fn")
-del("n", "<leader>w|")
-del("n", "<leader>qq")
-del({ "n", "x" }, "<space>qÞ")
-del({ "n", "x" }, "<space>wÞ")
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
+keymap("i", "<C-c>", function()
+    vim.cmd("messages clear")
+end, opts)
 keymap({ "n" }, "<C-n>", function()
     vim.g.cmp_completion = false
     vim.cmd("MCstart")
 end)
+keymap("i", "h", function()
+    -- require("plenary.profile").start("profilef.log", { flame = true })
+    HK = vim.uv.hrtime()
+    return "h"
+end, { expr = true })
 
---[[ keymap("n", "<leader>zz", function()
-    local n = require("nui-components")
-    local fn = require("nui-components.utils.fn")
-    local renderer = n.create_renderer({
-        width = 80,
-       height = 3,
-        position = {
-            row = 1,
-            col = "50%",
-        },
-    })
-
-    local data = {
-        n.node({ text = "Code Documentation Standards" }),
-        n.node({ text = "Version Control Workflow" }),
-        n.node({ text = "Essential API Documentation" }),
-        n.node({ text = "Bug Reporting Protocol" }),
-        n.node({ text = "Testing Strategy Overview" }),
-        n.node({ text = "Code Review Checklist" }),
-        n.node({ text = "Agile Sprint Planning Guide" }),
-        n.node({ text = "Deployment Process Documentation" }),
-        n.node({ text = "Continuous Integration Setup" }),
-        n.node({ text = "Security Protocol Documentation" }),
-    }
-
-    local signal = n.create_signal({
-        search_value = "",
-        data = data,
-    })
-
-    local get_data = function()
-        return signal.data
-            :dup()
-            :combine_latest(signal.search_value:debounce(0):start_with(""), function(items, search_value)
-                return fn.ifilter(items, function(item)
-                    return string.find(item.text:lower(), search_value:lower())
-                end)
-            end)
-    end
-
-    local body = n.rows(
-        n.text_input({
-            size = 1,
-            max_lines = 1,
-            autofocus = true,
-            on_change = function(value)
-                signal.search_value = value
-            end,
-        }),
-        n.tree({
-            border_label = "",
-            size = get_data()
-                :map(function(lines)
-                    return #lines
-                end)
-                :tap(function(lines)
-                    renderer:set_size({ height = math.max(lines + 3, 3) })
-                end),
-            data = get_data(),
-            hidden = get_data():map(function(lines)
-                return #lines == 0
-            end),
-            on_select = function(node)
-                print("selected: " .. node.text)
-            end,
-            prepare_node = function(node, line)
-                line:append(node.text)
-                return line
-            end,
-        })
-    )
-
-    renderer:render(body)
-end, opts) ]]
-
-keymap({ "x" }, "n", function()
+keymap({ "x" }, "<C-n>", function()
     vim.g.cmp_completion = false
     return "<cmd>MCstart<cr>"
 end, { expr = true })
+
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "x" }, "L", "$", opts)
-
-local function buf_add_hl(buffer, ns_id, hl_group, line, col_start, col_end)
-    if vim.fn.hlexists(hl_group) == 0 then
-        return
-    end
-    vim.api.nvim_buf_add_highlight(buffer, ns_id, hl_group, line, col_start, col_end)
-end
----Highlight text in buffer, clear previous highlight if any exists
-local function range_single(buf, hlgroup, s_line, e_line)
-    if not vim.api.nvim_buf_is_valid(buf) then
-        return
-    end
-    local ns = vim.api.nvim_create_namespace(hlgroup)
-    vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-
-    for linenr = s_line, e_line do
-        local start_col = 0
-        local end_col = 10
-        buf_add_hl(buf, ns, hlgroup, linenr, start_col, end_col)
-    end
-end
 
 keymap("n", "<leader>zr", function()
     local fzf_lua = require("fzf-lua")
@@ -271,19 +243,6 @@ keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
 keymap("n", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 keymap("v", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
 keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
---[[ keymap("n", "<leader>zz", function()
-    local bufnr = vim.api.nvim_create_buf(false, true)
-    local winnr = vim.api.nvim_open_win(bufnr, true, { row = 0, col = 0, width = 80, height = 20, relative = "editor" })
-end, opts)
-vim.api.nvim_create_autocmd("WinEnter", {
-    callback = function()
-        local winid = vim.api.nvim_get_current_win()
-        local bufnr = vim.api.nvim_win_get_buf(winid)
-        vim.schedule(function()
-            local bufnr = vim.api.nvim_win_get_buf(winid)
-        end)
-    end,
-}) ]]
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, opts)
@@ -295,19 +254,15 @@ keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     vim.cmd("DiffviewClose")
 end, opts)
+keymap("n", "<leader>ur", function()
+    vim.o.relativenumber = vim.o.relativenumber == false and true or false
+end, opts)
 keymap("n", "za", "zfai", { remap = true })
 keymap("n", "<leader><leader>s", function()
     vim.cmd("source %")
 end, opts)
 keymap("n", "<leader>sm", function()
     vim.cmd("messages")
-    vim.defer_fn(function()
-        local win_height = vim.api.nvim_win_get_height(0)
-        local screen_height = vim.api.nvim_get_option("lines")
-        if win_height + 1 < screen_height then
-            FeedKeys("<C-w>L", "t")
-        end
-    end, 30)
 end, opts)
 
 local function get_normal_bg_color()
@@ -351,6 +306,7 @@ keymap("n", "ge", "g;", opts)
 keymap("v", "<leader>gb", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("gcgvgb", true, false, true), "t", true)
 end, opts)
+
 keymap("i", "<Tab>", function()
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -369,6 +325,7 @@ keymap("i", "<Tab>", function()
         return
     end
 end, opts)
+
 local function get_non_float_win_count()
     local window_count = #vim.api.nvim_list_wins()
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -381,6 +338,7 @@ local function get_non_float_win_count()
     end
     return window_count
 end
+
 local function get_float_win_count()
     local window_count = #vim.api.nvim_list_wins()
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -393,6 +351,7 @@ local function get_float_win_count()
     end
     return window_count
 end
+
 keymap("n", "<Tab>", function()
     local flag = false
     local window_count = get_non_float_win_count()
@@ -422,73 +381,38 @@ keymap("n", "<Tab>", function()
     if flag == false and window_count ~= 2 then
         -- print(window_count)
         vim.cmd([[
-  let w0 = winnr()
-  let nok = 1
-  while nok
-    exe 'wincmd ' 'w'
-    let w = winnr()
-    let n = bufname('%')
-  let nok = ( n=~'NVimTree' )   && (w != w0)
-  endwhile
-]])
+        let w0 = winnr()
+        let nok = 1
+        while nok
+          exe 'wincmd ' 'w'
+          let w = winnr()
+          let n = bufname('%')
+        let nok = ( n=~'NVimTree' )   && (w != w0)
+        endwhile
+      ]])
         -- 当前有两个窗口的时候,可以切换到nvimtree
     elseif flag == false then
         vim.cmd([[
-  let w0 = winnr()
-  let nok = 1
-  while nok
-    exe 'wincmd ' 'w'
-    let w = winnr()
-    let n = bufname('%')
-    let nok = (n=~'NVmTree') && (w != w0)
-  endwhile
-]])
+        let w0 = winnr()
+        let nok = 1
+        while nok
+          exe 'wincmd ' 'w'
+          let w = winnr()
+          let n = bufname('%')
+          let nok = (n=~'NVmTree') && (w != w0)
+        endwhile
+      ]])
     end
 end, { desc = "swicth window" })
 
---[[ keymap("i", "<CR>", function()
-    local col = vim.fn.col(".") - 1 -- 获取光标当前列的位置
-    ---@diagnostic disable-next-line: param-type-mismatch
-    local char = vim.fn.getline("."):sub(col, col)
-    if col > 0 and (char == "{" or char == "(") then
-        return "<C-g>u<CR><C-c>O" -- 如果光标前的字符是 '{'，则执行 <CR> 后在上一行插入新行
-    else
-        return "<C-g>u<CR>" -- 否则，只执行普通的 <CR>
-    end
-end, { expr = true }) ]]
-
---[[ keymap("i", "<bs>", function()
-    local pairs = {
-        ['"'] = '"',
-        ["'"] = "'",
-        ["["] = "]",
-        ["{"] = "}",
-        ["("] = ")",
-        ["<"] = ">",
-    }
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    row = row - 1 -- Lua中的索引从1开始，而API使用的是从0开始的索引
-    local line = vim.api.nvim_get_current_line()
-    local before = line:sub(col, col) -- 获取光标前的字符
-    local after = line:sub(col + 1, col + 1) -- 获取光标后的字符
-    if pairs[before] and pairs[before] == after then -- 检查前后是否为双引号
-        return "<right><C-g>u<bs><bs>"
-    else
-        return "<C-g>u<bs>"
-    end
-end, { expr = true }) ]]
 keymap("c", "<C-d>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>", true, false, true), "t", true)
 end, opts)
-keymap("i", "<C-d>", "<C-g>u<C-w>", opts)
-keymap("i", "<C-u>", "<C-g>u<C-u>", opts)
-keymap("i", ".", "<C-g>u.", opts)
-keymap("i", ",", "<C-g>u,", opts)
-keymap("i", "<space>", "<C-g>u<space>", opts)
+keymap("x", "<C-r>", '"', opts)
 -- keymap("i", "<C-r>", "<C-g>u<C-r>", opts)
 keymap("n", "0", "^", opts)
 keymap("i", "<C-e>", "<esc>A", opts)
-keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+-- keymap({ "n", "i" }, "<C-e>", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n", "i" }, "<D-w>", function()
     local nvimtree_present = false
@@ -617,12 +541,34 @@ end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
-keymap("i", "<D-v>", "<C-g>u<C-r>1", opts)
+
+keymap("i", "<D-v>", function()
+    return '<C-g>u<C-r><C-o>"'
+end, { expr = true })
+
+-- don't messy up indent
+keymap("i", "<C-r>", "<C-r><C-o>", opts)
+
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
+
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<C-o>u", opts)
-keymap("n", "<leader>j", "f{a<CR>", { remap = true })
-keymap({ "n", "i" }, "<f11>", "<C-o>", opts)
+
+keymap("n", "<leader>j", function()
+    vim.g.neovide_cursor_animation_length = 0.0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+    return "f{a<CR>"
+end, { expr = true, remap = true })
+
+keymap("n", "<f11>", function()
+    vim.g.neovide_cursor_animation_length = 0.0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+    return "f{a<CR>"
+end, { expr = true, remap = true })
 keymap("n", "<M-w>", "<c-w>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 
@@ -633,10 +579,16 @@ keymap("t", "<D-v>", function()
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
 keymap("x", "za", "zf", opts)
+keymap("n", "zu", "zfu", { remap = true })
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 --nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
+
+keymap("x", "<bs>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)
+end, opts)
+
 keymap({ "s", "i", "n" }, "<C-7>", function()
     print(get_float_win_count())
     for _, win in pairs(vim.api.nvim_list_wins()) do
@@ -650,16 +602,59 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
-keymap("x", "<bs>", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)
-end, opts)
+
 keymap("x", "=", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("loho", true, false, true), "t", false)
 end, opts)
+keymap("n", "]q", function()
+    vim.cmd("cnext")
+end, opts)
+keymap("n", "[q", function()
+    vim.cmd("cprev")
+end, opts)
 keymap("n", "<leader>d", function()
+    ST = vim.uv.hrtime()
+    vim.g.gd = true
+    vim.g.neovide_cursor_animation_length = 0.0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.gd = false
+    end, 100)
     vim.cmd("Glance definitions")
-    --[[ local def_or_ref = require("custom.definitions")
-    -- -- local def_or_ref = require("custom.definition-or-references.main")
-    def_or_ref.definition_or_references()
-    -- vim.lsp.buf.definition() ]]
 end)
+keymap("n", "gd", function()
+    vim.g.gd = true
+    vim.g.neovide_cursor_animation_length = 0.0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.gd = false
+    end, 100)
+    vim.lsp.buf.definition()
+end)
+local hl_enable = false
+keymap("n", "<leader><right>", function()
+    local hl = vim.api.nvim_set_hl
+    if hl_enable then
+        vim.cmd("DisableHL")
+        hl(0, "MiniIndentscopeSymbol", { fg = "#E8E7E0" })
+        hl_enable = false
+    else
+        vim.cmd("EnableHL")
+        hl(0, "MiniIndentscopeSymbol", { fg = "#C0C0BE" })
+        hl_enable = true
+    end
+end, opts)
+
+local del = vim.keymap.del
+del("n", "<leader>w-")
+del("n", "<leader>ww")
+del("n", "<leader>wd")
+del("t", "<esc><esc>")
+del("n", "<leader>fn")
+del("n", "<leader>w|")
+del("n", "<leader>qq")
+-- del({ "n", "x" }, "<space>qÞ")
+-- del({ "n", "x" }, "<space>wÞ")
+del("n", "gsh")
+del("n", "gshn")
+del("n", "gshl")

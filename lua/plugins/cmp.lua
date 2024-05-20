@@ -1,5 +1,4 @@
-local CTRL_V = vim.api.nvim_replace_termcodes("<C-v>", true, true, true)
-local CTRL_S = vim.api.nvim_replace_termcodes("<C-s>", true, true, true)
+local has_map = false
 local CompletionItemKind = {
     Text = 1,
     Method = 2,
@@ -35,7 +34,6 @@ local function findLast(haystack, needle)
         return i - 1
     end
 end
-
 --[[ local function trim_detail(detail)
     if detail then
         detail = vim.trim(detail)
@@ -162,6 +160,13 @@ local function rust_fmt(entry, vim_item)
     elseif item_kind == 6 or item_kind == 21 then -- variable constant
         if label_detail then
             local detail = label_detail.description
+            --[[ if detail then -- align type at right
+                -- local s = kind.abbr .. " " .. detail
+                local hole = string.rep(" ", 60 - #kind.abbr - #detail)
+                kind.concat = "let " .. kind.abbr .. string.rep(" ", 58 - #kind.abbr - #detail) .. ": " .. detail
+                kind.abbr = kind.abbr .. hole .. detail
+                kind.offset = 4
+            else ]]
             if detail then
                 kind.concat = "let " .. kind.abbr .. ": " .. detail
                 kind.abbr = kind.abbr .. ": " .. detail
@@ -211,19 +216,19 @@ local function rust_fmt(entry, vim_item)
             kind.concat = kind.abbr
         end
     else
-        -- if label_detail then
-        --     local detail = label_detail.detail
-        --     local description = label_detail.description
-        --     if detail then
-        --         kind.abbr = kind.abbr .. " " .. detail
-        --     end
-        --     if description then
-        --         kind.abbr = kind.abbr .. " " .. description
-        --     end
-        -- end
-        -- if completion_item.detail then
-        --     kind.abbr = kind.abbr .. " " .. completion_item.detail
-        -- end
+        --[[ if label_detail then
+            local detail = label_detail.detail
+            local description = label_detail.description
+            if detail then
+                kind.abbr = kind.abbr .. " " .. detail
+            end
+            if description then
+                kind.abbr = kind.abbr .. " " .. description
+            end
+        end
+        if completion_item.detail then
+            kind.abbr = kind.abbr .. " " .. completion_item.detail
+        end ]]
         kind.concat = kind.abbr
     end
     if item_kind == 15 then
@@ -235,6 +240,7 @@ local function rust_fmt(entry, vim_item)
     if string.len(kind.abbr) > 60 then
         kind.abbr = kind.abbr:sub(1, 60)
     end
+
     return kind
 end
 
@@ -244,6 +250,31 @@ local function lua_fmt(entry, vim_item)
     })(entry, vim_item)
     local strings = vim.split(kind.kind, "%s", { trimempty = true })
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
+    if item_kind == 5 then -- Field
+        kind.concat = "v." .. kind.abbr
+        kind.offset = 2
+    elseif item_kind == 1 or item_kind == 16 then -- Text
+        kind.concat = '"' .. kind.abbr .. '"'
+        kind.offset = 1
+    else
+        kind.concat = kind.abbr
+    end
+    kind.abbr = kind.abbr
+    kind.kind = " " .. (strings[1] or "") .. " "
+    kind.menu = nil
+    if string.len(kind.abbr) > 50 then
+        kind.abbr = kind.abbr:sub(1, 50)
+    end
+    return kind
+end
+
+local function c_fmt(entry, vim_item)
+    local kind = require("lspkind").cmp_format({
+        mode = "symbol_text",
+    })(entry, vim_item)
+    local strings = vim.split(kind.kind, "%s", { trimempty = true })
+    local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
+    local completion_item = entry:get_completion_item()
     if item_kind == 5 then -- Field
         kind.concat = "v." .. kind.abbr
         kind.offset = 2
@@ -292,6 +323,9 @@ local function go_fmt(entry, vim_item)
         end
     elseif item_kind == 1 then -- Text
         kind.concat = '"' .. kind.abbr .. '"'
+        kind.offset = 1
+    elseif item_kind == 15 then -- snippet
+        kind.concat = ""
         kind.offset = 1
     elseif item_kind == 6 or item_kind == 21 then -- Variable
         local last = findLast(kind.abbr, "%.")
@@ -383,11 +417,13 @@ return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter" },
-    dir = "~/Project/lua/color/nvim-cmp/",
+    -- enabled = false,
+    dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
+    -- dir = "~/Project/lua/origin/nvim-cmp/",
     dependencies = {
+        "lukas-reineke/cmp-rg",
         "zbirenbaum/copilot-cmp",
-        -- "hrsh7th/cmp-copilot",
-        "hrsh7th/cmp-nvim-lsp",
+        { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
@@ -395,7 +431,7 @@ return {
     },
     opts = function()
         local reverse_prioritize = function(entry1, entry2)
-            local is_snip = entry1.get_completion_item().insertTextFormat == 2
+            local is_snip = entry1:get_completion_item().insertTextFormat == 2
             if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
                 return false
             elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
@@ -420,17 +456,15 @@ return {
         end
         local cmp = require("cmp")
         local compare = cmp.config.compare
-        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         return {
-            --[[ enabled = function()
-                local prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
-                local context = require("cmp.config.context")
-                return vim.g.cmp_completion
-                    and not prompt
-                    and not context.in_treesitter_capture("comment")
-                    and not context.in_syntax_group("Comment")
-            end, ]]
+            enabled = function()
+                local disabled = false
+                disabled = disabled or (vim.api.nvim_buf_get_option(0, "buftype") == "prompt")
+                disabled = disabled or (vim.bo.filetype == "minifiles")
+                disabled = disabled or (vim.fn.reg_recording() ~= "")
+                disabled = disabled or (vim.fn.reg_executing() ~= "")
+                return not disabled
+            end,
             preselect = cmp.PreselectMode.None,
             window = {
                 completion = cmp.config.window.bordered({
@@ -458,9 +492,9 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 5,
-                confirm_resolve_timeout = 80,
-                -- async_budget = 1,
+                fetching_timeout = 80,
+                confirm_resolve_timeout = 1,
+                async_budget = 1,
                 max_view_entries = 20,
             },
             snippet = {
@@ -475,6 +509,7 @@ return {
                         expand = true
                     end
                     require("luasnip").lsp_expand(args.body)
+                    -- vim.snippet.expand(args.body)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
@@ -495,12 +530,80 @@ return {
                     _G.has_moved_up = false
                 end),
                 ["<space>"] = cmp.mapping(function(fallback)
+                    vim.g.space = true
                     if cmp.visible() then
                         cmp.close()
                         fallback()
                     else
                         fallback()
                     end
+                    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" or vim.bo.filetype == "minifiles" then
+                        return
+                    end
+                    -- vim.g.space = false
+                    vim.defer_fn(function()
+                        pcall(_G.indent_update)
+                        pcall(_G.mini_indent_auto_draw)
+                    end, 100)
+                    _G.has_moved_up = false
+
+                    if has_map then
+                        return
+                    end
+                    local changed_keys = {
+                        ["<esc>"] = "<esc>",
+                        ["<C-a>"] = "a",
+                        ["<C-b>"] = "b",
+                        ["<C-c>"] = "c",
+                        ["<C-d>"] = "d",
+                        ["<C-e>"] = "e",
+                        ["<C-f>"] = "f",
+                        ["<C-g>"] = "g",
+                        ["<C-h>"] = "h",
+                        ["<C-i>"] = "i",
+                        ["<C-j>"] = "j",
+                        ["<C-k>"] = "k",
+                        ["<C-l>"] = "l",
+                        ["<C-m>"] = "m",
+                        ["<C-n>"] = "n",
+                        ["<C-o>"] = "o",
+                        ["<C-p>"] = "p",
+                        ["<C-q>"] = "q",
+                        ["<C-r>"] = "r",
+                        ["<C-s>"] = "s",
+                        ["<C-t>"] = "t",
+                        ["<C-u>"] = "u",
+                        ["<C-v>"] = "v",
+                        ["<C-w>"] = "w",
+                        ["<C-x>"] = "x",
+                        ["<C-y>"] = "y",
+                        ["<C-z>"] = "z",
+                    }
+                    for k, v in pairs(changed_keys) do
+                        vim.keymap.set("i", k, function()
+                            local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+                            if v == "<esc>" then
+                                local key_comb = "."
+                                -- local cmd = "<bs><cmd>lua vim.api.nvim_put({'" .. key_comb .. "'}, 'c', true, true)<CR>"....................................................................
+                                local cmd = "<bs>" .. key_comb
+                                FeedKeys(cmd, "n")
+                            else
+                                local key_comb = "." .. v
+                                local cmd = "<bs>" .. key_comb
+                                FeedKeys(cmd, "n")
+                            end
+                        end, { buffer = 0, desc = "dot" })
+                    end
+                    has_map = true
+                    vim.defer_fn(function()
+                        local map = vim.api.nvim_buf_get_keymap(0, "i")
+                        for _, m in ipairs(map) do
+                            if m.desc == "dot" then
+                                vim.keymap.del("i", m.lhs, { buffer = 0 })
+                            end
+                        end
+                        has_map = false
+                    end, 150)
                 end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -510,12 +613,9 @@ return {
                     vim.schedule(fallback)
                 end),
                 ["<f7>"] = cmp.mapping(function()
-                    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                 end),
                 ["<C-9>"] = cmp.mapping.complete(),
-                ["<C-n>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end, { "i", "v", "n" }),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
@@ -540,12 +640,21 @@ return {
                     end
                 end,
                 ["<C-e>"] = cmp.mapping(function(fallback)
+                    if cmp.visible then
+                        cmp.abort()
+                    end
                     if cmp.visible() then
                         cmp.abort()
                     else
                         fallback()
                     end
                     _G.has_moved_up = false
+                end),
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    fallback()
                 end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -554,24 +663,43 @@ return {
                         fallback()
                     end
                 end),
-                -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                ["<CR>"] = cmp.mapping(function(fallback)
+                ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
+                        ST = vim.uv.hrtime()
+                        -- local origin = vim.o.eventignore
+                        -- vim.o.eventignore = "all"
+                        vim.g.neovide_cursor_animation_length = 0
+                        vim.g.enter = true
+                        -- vim.g.no_redraw = true
+                        vim.defer_fn(function()
+                            vim.g.enter = false
+                            -- vim.o.eventignore = origin
+                            vim.g.neovide_cursor_animation_length = 0.06
+                        end, 100)
+                        -- Time(ST, "optionset")
                         cmp.confirm({ select = true })
-                        -- cmp.complete()
                     else
+                        _G.no_delay(0.0)
                         fallback()
                     end
+                    vim.defer_fn(function()
+                        -- hlchunk
+                        ---@diagnostic disable-next-line: undefined-field
+                        pcall(_G.update_indent, true)
+                        -- mini-indentscope
+                        ---@diagnostic disable-next-line: undefined-field
+                        pcall(_G.mini_indent_auto_draw)
+                    end, 100)
                     _G.has_moved_up = false
                 end),
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
+                { name = "luasnip", keyword_length = 2 },
                 { name = "path" },
-                { name = "luasnip" },
                 -- { name = "copilot" },
             }, {
-                { name = "buffer" },
+                { name = "rg", keyword_length = 2 },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
@@ -585,24 +713,9 @@ return {
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
                         kind.kind = " " .. (strings[1] or "") .. " "
                         kind.menu = ""
-                        -- kind.concat = kind.abbr
+                        kind.concat = kind.abbr
                         return kind
                     end
-                    local get_mode = function()
-                        local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
-                        if mode == "i" then
-                            return "i" -- insert
-                        elseif mode == "v" or mode == "V" or mode == CTRL_V then
-                            return "x" -- visual
-                        elseif mode == "s" or mode == "S" or mode == CTRL_S then
-                            return "s" -- select
-                        elseif mode == "c" and vim.fn.getcmdtype() ~= "=" then
-                            return "c" -- cmdline
-                        end
-                    end
-                    -- if get_mode() == "c" then
-                    --     return commom_format(entry, vim_item)
-                    -- end
                     if vim.bo.filetype == "rust" then
                         return rust_fmt(entry, vim_item)
                     elseif vim.bo.filetype == "lua" then
@@ -623,8 +736,9 @@ return {
             sorting = {
                 compare.order,
                 comparators = {
-                    cmp.config.compare.exact,
+                    -- reverse_prioritize,
                     put_down_snippet,
+                    cmp.config.compare.exact,
                     compare.score,
                     compare.recently_used,
                     compare.locality,
@@ -650,9 +764,6 @@ return {
             source.group_index = source.group_index or 1
         end
         cmp.setup.cmdline("/", {
-            completion = {
-                autocomplete = false,
-            },
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
                     i = cmp.mapping.confirm({ select = true }),
@@ -676,10 +787,13 @@ return {
                         end
                     end,
                 },
-                ["<C-p>"] = cmp.mapping(function(fallback)
-                    cmp.close()
-                    fallback()
-                end, { "i", "c" }),
+                -- ["<C-p>"] = cmp.mapping(function(fallback)
+                --     -- if  then
+                --     --
+                --     -- end
+                --     -- cmp.close()
+                --     fallback()
+                -- end, { "i", "c", "s" }),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     cmp.close()
                     fallback()

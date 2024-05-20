@@ -1,17 +1,22 @@
 return {
-    -- "otavioschwanck/arrow.nvim",
+    "otavioschwanck/arrow.nvim",
     -- commit = "f3d8470580ecbd5778a68091eca8d5da304f2e2a",
-    dir = "/Users/xzb/Project/lua/arrow.nvim/",
-    -- enabled = fa
+    -- dir = "/Users/xzb/Project/lua/arrow.nvim/",
+    -- dir = "/Users/xzb/Project/lua/fork/arrow.nvim/",
     -- event = "VeryLazy",
-    lazy = false,
     opts = {
         per_buffer_config = {
-            sort_automatically = true,
+            sort_automatically = false,
             treesitter_context = {
                 line_shift_down = 1,
             },
+            satellite = {
+                enable = true,
+                overlap = true,
+                priority = 1000,
+            },
             lines = 7,
+            zindex = 20,
         },
         buffer_leader_key = "'",
         show_icons = true,
@@ -22,7 +27,7 @@ return {
             width = "auto",
             height = "auto",
             row = 10,
-            col = 65,
+            col = 62,
             border = "none",
         },
     },

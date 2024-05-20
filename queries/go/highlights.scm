@@ -39,7 +39,7 @@
 (method_declaration
   name: (field_identifier) @function.method)
 
-(method_spec
+(method_elem
   name: (field_identifier) @function.method)
 
 ; Constructors
@@ -221,7 +221,6 @@
   .
   (function_declaration))
 
-((type_declaration (type_spec name:(type_identifier) @interface.name(set! "priority" 1000) type:(interface_type)))@interface.declaration)
 (source_file
   (comment)+ @comment.documentation
   .
@@ -233,5 +232,7 @@
   (var_declaration))
 
 ; Spell
-((interpreted_string_literal) @spell
-  (#not-has-parent? @spell import_spec))
+; ((interpreted_string_literal) @spell
+;   (#not-has-parent? @spell import_spec))
+
+((type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))@interface.declaration)

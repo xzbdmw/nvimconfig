@@ -1,10 +1,39 @@
 return {
     "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
+    -- event = "LspAttach",
     commit = "2198c07124bef27ef81335be511c8abfd75db933",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons",
+    },
+    keys = {
+        {
+            "<C-e>",
+            "<cmd>Lspsaga diagnostic_jump_next<CR>",
+            mode = { "n", "i" },
+        },
+        {
+            "<leader>ca",
+            function()
+                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
+                vim.cmd("Lspsaga code_action")
+            end,
+            mode = { "n", "v" },
+            desc = "Code Action",
+        },
+        {
+            "<C-cr>",
+            function()
+                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
+                local origin = vim.o.eventignore
+                vim.o.eventignore = "all"
+                vim.cmd([[:stopinsert]])
+                vim.cmd("Lspsaga code_action")
+                vim.o.eventignore = origin
+            end,
+            desc = "Code Action",
+            mode = { "n", "v" },
+        },
     },
     config = function()
         require("lspsaga").setup({
@@ -62,6 +91,7 @@ return {
                 virtual_text = true,
             },
             outline = {
+                enable = false,
                 layout = "normal",
             },
         })

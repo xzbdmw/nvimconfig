@@ -34,10 +34,8 @@ end
 local function filenameFirstForFrecency(_, path)
     -- print("Original path: " .. path)
 
-    -- 获取当前工作目录
     local cwd = vim.fn.getcwd() .. "/"
     -- print("Current working directory: " .. cwd)
-    -- 将绝对路径转换为相对于当前工作目录的相对路径
     local relative_path = path:gsub("^" .. vim.pesc(cwd), "")
     -- print("Relative path: " .. relative_path)
 

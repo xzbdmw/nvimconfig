@@ -1,43 +1,54 @@
+vim.uv = vim.loop
 require("config.lazy")
+_G.Time = function(start, msg)
+    msg = msg or ""
+    local duration = 0.000001 * (vim.loop.hrtime() - start)
+    if msg == "" then
+        print(vim.inspect(duration))
+    else
+        print(msg .. ":", vim.inspect(duration))
+    end
+end
+vim.cmd("syntax off")
 FeedKeys = function(keymap, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
 end
-local function regexEscape(str)
-    return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
-end
-
---[[ local start_time = nil
-local end_time = nil
--- 注册BufLeave事件，在离开当前buffer时记录时间
-vim.api.nvim_create_autocmd("BufLeave", {
-    callback = function()
-        start_time = os.clock()
-    end,
-})
-vim.keymap.set("n", "gd", function()
-    vim.lsp.buf.definition()
-end)
--- 注册BufEnter事件，在进入新的buffer时记录时间
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function()
-        end_time = os.clock()
-        if start_time then
-            local elapsed_time = end_time - start_time
-            print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
-        end
-    end,
-}) ]]
-vim.keymap.set("n", "<C-;>", function()
-    local start_time = nil
-    local end_time = nil
-    start_time = os.clock()
-    vim.cmd("e /Users/xzb/.config/nvim/lua/plugins/cmp.lua")
-    end_time = os.clock()
-    local elapsed_time = end_time - start_time
-    print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
-end)
 
 vim.api.nvim_create_augroup("LeapIlluminate", {})
+
+-- sync system clipboard while yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+        vim.defer_fn(function()
+            local now = vim.fn.getreg('"')
+            vim.fn.setreg("+", now)
+        end, 100)
+    end,
+})
+
+-- sync system clipboard to vim clipboard
+vim.api.nvim_create_autocmd("FocusGained", {
+    callback = function()
+        local loaded_content = vim.fn.getreg("+")
+        if loaded_content ~= "" then
+            vim.fn.setreg('"', loaded_content)
+        end
+    end,
+})
+
+-- sync vim clipboard to system clipboard
+vim.api.nvim_create_autocmd("TextChanged", {
+    callback = function()
+        if vim.system == nil then
+            return
+        end
+        vim.schedule(function()
+            local s = vim.fn.getreg('"')
+            vim.system({ "echo", s, "| pbcopy" })
+        end)
+    end,
+})
+
 _G.leapjump = false
 vim.api.nvim_create_autocmd("User", {
     pattern = "LeapSelectPre",
@@ -50,16 +61,23 @@ vim.api.nvim_create_autocmd("User", {
     group = "LeapIlluminate",
 })
 
---[[ vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        client.server_capabilities.semanticTokensProvider = nil
-    end,
-}) ]]
-
 vim.api.nvim_create_autocmd("QuitPre", {
     callback = function()
         vim.cmd([[silent! mkview!]])
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "help" },
+    callback = function()
+        -- vim.treesitter.stop()
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "undotree", "diff" },
+    callback = function()
+        vim.cmd([[syntax on]])
     end,
 })
 
@@ -71,19 +89,25 @@ vim.api.nvim_create_autocmd({ "ModeChanged" }, {
     end,
 })
 
-function _G.set_terminal_keymaps()
-    local opts = { buffer = 0 }
-    vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
-    vim.keymap.set("t", "<C-d>", [[<C-w>]], opts)
-    vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
-    vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
-    vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
-    vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-    vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
-end
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+    pattern = { "*" },
+    callback = function()
+        if vim.opt.buftype:get() == "terminal" then
+            vim.cmd(":startinsert")
+        end
+    end,
+})
 
--- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function(args)
+        local opts = { buffer = 0 }
+        if vim.endswith(args.file, [[#1]]) then
+            vim.keymap.set("t", "<Tab>", [[<C-\><C-n><Tab>]], { remap = true, buffer = 0 })
+            vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+        end
+        vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
+    end,
+})
 
 -- walkaroud for incremental selection
 vim.api.nvim_create_augroup("cmdwin_treesitter", { clear = true })
@@ -93,12 +117,7 @@ vim.api.nvim_create_autocmd("FileType", {
     },
     command = "TSBufDisable incremental_selection",
 })
-vim.api.nvim_create_autocmd("CmdwinEnter", {
-    pattern = "*",
-    command = "TSBufDisable incremental_selection",
-    group = "cmdwin_treesitter",
-    desc = "Disable treesitter's incremental selection in Command-line window",
-})
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {
         "txt",
@@ -125,24 +144,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- cmp completion
-vim.api.nvim_create_autocmd("ModeChanged", {
-    pattern = "s:i",
-    callback = function()
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-9>", true, false, true), "m", true)
-    end,
-})
-Start = 0
-
---[[ vim.api.nvim_create_autocmd("ModeChanged", {
-    pattern = "n:i",
-    callback = function()
-        local eend = os.clock()
-        local elapsed_time = eend - Start
-        print("Buffer切换完成，耗时: " .. elapsed_time .. " 秒")
-    end,
-}) ]]
-
 _G.glancebuffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
@@ -155,14 +156,38 @@ vim.api.nvim_create_autocmd("BufEnter", {
             end
             _G.glancebuffer[bufnr] = true
             vim.keymap.set("n", "<Esc>", function()
+                vim.g.neovide_cursor_animation_length = 0.0
+                pcall(satellite_close, vim.api.nvim_get_current_win())
+                pcall(close_stored_win, vim.api.nvim_get_current_win())
                 Close_with_q()
+                vim.defer_fn(function()
+                    vim.g.neovide_cursor_animation_length = 0.06
+                    pcall(_G.indent_update)
+                    pcall(_G.mini_indent_auto_draw)
+                end, 100)
             end, { buffer = bufnr })
 
             vim.keymap.set("n", "q", function()
+                vim.g.neovide_cursor_animation_length = 0.0
+                pcall(satellite_close, vim.api.nvim_get_current_win())
+                pcall(close_stored_win, vim.api.nvim_get_current_win())
                 Close_with_q()
+                vim.defer_fn(function()
+                    vim.g.neovide_cursor_animation_length = 0.06
+                    pcall(_G.indent_update)
+                    pcall(_G.mini_indent_auto_draw)
+                end, 100)
             end, { buffer = bufnr })
             vim.keymap.set("n", "<CR>", function()
-                Open()
+                vim.g.neovide_cursor_animation_length = 0.0
+                pcall(satellite_close, vim.api.nvim_get_current_win())
+                pcall(close_stored_win, vim.api.nvim_get_current_win())
+                vim.defer_fn(function()
+                    vim.g.neovide_cursor_animation_length = 0.06
+                end, 100)
+                vim.defer_fn(function()
+                    Open()
+                end, 5)
             end, { buffer = bufnr })
         end
     end,
@@ -234,15 +259,18 @@ end, { desc = "load undotree" })
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
-        --[[ for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        vim.cmd([[silent! mkview!]])
+        pcall(_G.indent_update)
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             -- Don't save while there's any 'nofile' buffer open.
             if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
                 return
             end
-        end ]]
+        end
         require("session_manager").save_current_session()
     end,
 })
+
 ---@diagnostic disable: undefined-global
 -- bootstrap lazy.nvim, LazyVim and your plugins
 vim.api.nvim_create_autocmd("FileType", {
@@ -254,6 +282,7 @@ vim.api.nvim_create_autocmd("FileType", {
         end
     end,
 })
+
 vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function(args)
@@ -332,16 +361,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     end,
 })
 
--- fold
---[[ vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function()
-        vim.defer_fn(function()
-            vim.cmd("set foldmethod=manual")
-            -- vim.cmd("set foldlevel=999")
-        end, 1000)
-    end,
-}) ]]
-
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
@@ -406,6 +425,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
         end
     end,
 })
+
 local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A global group for all your config autocommands
 --
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
@@ -443,18 +463,70 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         end
     end,
 })
+
+vim.api.nvim_create_autocmd({ "BufReadPre" }, {
+    pattern = "*",
+    callback = function()
+        vim.g.gd = true
+        vim.defer_fn(function()
+            vim.g.gd = false
+        end, 100)
+    end,
+})
+
 vim.cmd([[set viewoptions-=curdir]])
 
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     group = config_group,
     callback = function()
-        require("nvim-tree.api").tree.toggle({ focus = false })
-        vim.cmd([[silent! loadview]])
+        local tree = require("nvim-tree.api").tree
+        pcall(tree.toggle, { focus = false })
+        vim.defer_fn(function()
+            vim.g.neovide_cursor_animation_length = 0.06
+            vim.cmd("NvimTreeRefresh")
+            pcall(_G.indent_update)
+        end, 100)
     end,
 })
 
---[[ local should_profile = os.getenv("NVIM_PROFILE")
+vim.api.nvim_create_autocmd("User", {
+    pattern = {
+        "MiniFilesActionCreate",
+        "MiniFilesActionRename",
+        "MiniFilesActionCopy",
+        "MiniFilesActionMove",
+    },
+    callback = function()
+        vim.cmd("NvimTreeRefresh")
+    end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
+    callback = function(args)
+        local buf_id = args.data.buf_id
+        -- Tweak keys to your liking
+        vim.keymap.set("n", "q", function()
+            MiniFiles.close()
+        end, { buffer = buf_id })
+    end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesActionDelete",
+    callback = function(args)
+        local from_path = args.data.from
+        local bufnr = vim.fn.bufnr(from_path)
+        if bufnr ~= -1 then
+            vim.api.nvim_buf_delete(bufnr, {})
+        end
+        vim.cmd("NvimTreeRefresh")
+    end,
+})
+
+vim.lsp.set_log_level("off")
+local should_profile = os.getenv("NVIM_PROFILE")
 if should_profile then
     require("profile").instrument_autocmds()
     if should_profile:lower():match("^start") then
@@ -463,7 +535,6 @@ if should_profile then
         require("profile").instrument("*")
     end
 end
-
 local function toggle_profile()
     local prof = require("profile")
     if prof.is_recording() then
@@ -478,4 +549,19 @@ local function toggle_profile()
         prof.start("*")
     end
 end
-vim.keymap.set("", "<leader>pr", toggle_profile) ]]
+vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
+
+--[[ vim.api.nvim_create_autocmd("CursorMoved", {
+    callback = function()
+        if vim.g.gd then
+            if ST ~= nil then
+                Time(ST, "CursorMoved")
+            end
+        end
+    end,
+})
+local origin = vim.lsp.util.jump_to_location
+vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
+    ST = vim.uv.hrtime()
+    origin(location, offset_encoding, reuse_win)
+end ]]

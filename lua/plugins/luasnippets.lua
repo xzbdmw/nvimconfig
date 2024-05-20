@@ -1,25 +1,24 @@
 return {
     "L3MON4D3/LuaSnip",
     version = false,
+    event = "InsertEnter",
     keys = function()
+        local cmp = require("cmp")
         return {
-            --[[ {
-                "<Tab>",
-                function()
-                    return "<Plug>(neotab-out-luasnip)"
-                end,
-                expr = true,
-                silent = true,
-                mode = "i",
-            }, ]]
             {
                 "<C-n>",
                 mode = { "i", "s" },
                 function()
+                    vim.g.neovide_cursor_animation_length = 0.02
+                    vim.defer_fn(function()
+                        vim.g.neovide_cursor_animation_length = 0.06
+                    end, 20)
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(1) then
                         luasnip.jump(1)
-                        -- FeedKeys("<C-e>", "t")
+                        -- if cmp.visible() then
+                        --     cmp.close()
+                        -- end
                     end
                 end,
                 { silent = true },
@@ -29,9 +28,15 @@ return {
                 mode = { "i", "s" },
                 function()
                     local luasnip = require("luasnip")
+                    vim.g.neovide_cursor_animation_length = 0.02
+                    vim.defer_fn(function()
+                        vim.g.neovide_cursor_animation_length = 0.06
+                    end, 20)
                     if luasnip.jumpable(-1) then
                         luasnip.jump(-1)
-                        -- FeedKeys("<C-e>", "t")
+                        -- if cmp.visible() then
+                        --     cmp.close()
+                        -- end
                     end
                 end,
                 { silent = true },
@@ -173,7 +178,6 @@ return {
                 vim.notify("Not inside of a function")
                 return t("")
             end
-
             -- This file is in `queries/go/return-snippet.scm`
             local query = assert(vim.treesitter.query.get("go", "return-snippet"), "No query")
             for _, capture in query:iter_captures(node, 0) do
@@ -199,12 +203,12 @@ return {
                 "efi",
                 fmta(
                     [[
-<val>, err := <f>
-if err != nil {
-	return <result>
-}
-<finish>
-]],
+                   <val>, err := <f>
+                   if err != nil {
+	                   return <result>
+                   }
+                   <finish>
+                   ]],
                     {
                         val = i(1, "v"),
                         f = i(2),
@@ -215,15 +219,107 @@ if err != nil {
             ),
             s("ie", fmta("if err != nil {\n\treturn <err>\n}", { err = i(1, "err") })),
         })
+        ls.add_snippets("lua", {
+            s(
+                "block",
+                fmta(
+                    [[
+                    if vim.g.<start> then
+                        local n = 1
+                        for i = 1, 1000000000 do
+                            n = n + 1
+                        end
+                    end
+                    <finish>
+                    ]],
+                    {
+                        start = i(1),
+                        ["finish"] = i(0),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
+                "cursor",
+                fmta(
+                    [[
+                    vim.g.neovide_cursor_animation_length = 0.0
+                    vim.defer_fn(function()
+                        vim.g.neovide_cursor_animation_length = 0.06
+                    end, 100)<finish>
+                    ]],
+                    {
+                        ["finish"] = i(0),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
+                "infer",
+                fmta(
+                    [[
+                    require("plenary.profile").start("profilef.log", { flame = true })
+                    <finish>
+                    require("plenary.profile").stop()
+                    ]],
+                    {
+                        finish = i(0),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
+                "aver",
+                fmta(
+                    [[
+	            <finish>local i = 0
+	            local sum = 0
 
+	            local time = vim.uv.hrtime()
+
+	            i = i + 1
+	            local duration = 0.000001 * (vim.loop.hrtime() - time)
+	            sum = sum + duration
+	            if i == <count> then
+		                -- __AUTO_GENERATED_PRINT_VAR_START__
+		                print([==[sum:]==], vim.inspect(sum / <rep>)) -- __AUTO_GENERATED_PRINT_VAR_END__
+		                i = 0
+		                sum = 0
+	            end
+                    ]],
+                    {
+                        count = i(1, "10"),
+                        rep = rep(1),
+                        finish = i(0),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
+                "perf",
+                fmta(
+                    [[
+                    local time = vim.uv.hrtime()
+                    Time(time, "<finish>")
+                    ]],
+                    {
+                        finish = i(0),
+                    }
+                )
+            ),
+        })
         ls.add_snippets("go", {
             s(
                 "eff",
                 fmta(
                     [[
-<val>, err := <f>
-<finish>
-]],
+                    <val>, err := <f>
+                    <finish>
+                    ]],
                     {
                         val = i(2, "val"),
                         f = i(1),

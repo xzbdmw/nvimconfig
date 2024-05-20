@@ -189,7 +189,8 @@ function telescopePickers.prettyGrepPicker(search, word)
     local pickerAndOptions = {
         picker = search,
         options = {
-            search_dirs = { filename },
+            type_filter = vim.bo.filetype,
+            -- search_dirs = { filename },
             additional_args = { "-F" },
             layout_strategy = "vertical",
             layout_config = {
@@ -480,21 +481,19 @@ function telescopePickers.prettyWorkspaceSymbols(localOptions)
     require("telescope.builtin").lsp_dynamic_workspace_symbols(options)
 end
 
-function telescopePickers.prettyBuffersPicker(previewer)
+function telescopePickers.prettyBuffersPicker(previewer, initial)
     local localOptions = {}
     if previewer then
         localOptions = {
-            initial_mode = "insert",
+            initial_mode = initial,
+            bufnr_width = 0,
             layout_strategy = "horizontal",
             previewer = false,
-            bufnr_width = 0,
-            -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
             layout_config = {
                 horizontal = {
                     width = 0.35,
                     height = 0.7,
                 },
-                preview_cutoff = 0,
                 mirror = false,
             },
         }

@@ -1,11 +1,16 @@
 return {
     "folke/noice.nvim",
+    dependencies = { { "MunifTanjim/nui.nvim" } },
     config = function()
         local noice = require("noice")
         noice.setup({
             routes = {
                 {
                     filter = { event = "msg_show", find = "'modifiable' is off" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "notify.warn", find = "is_enabled" },
                     opts = { skip = true },
                 },
                 {
@@ -57,7 +62,7 @@ return {
                 view = "mini", -- default view for messages
                 view_error = "notify", -- view for errors
                 view_warn = "notify", -- view for warnings
-                view_history = "messages", -- view for :messages
+                view_history = "vsplit", -- view for :messages
                 view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
             },
             cmdline = {
@@ -161,7 +166,7 @@ return {
                     -- See the section on formatting for more details on how to customize.
                     format = "lsp_progress",
                     format_done = "lsp_progress_done",
-                    throttle = 1000 / 30, -- frequency to update lsp progress message
+                    throttle = 100, -- frequency to update lsp progress message
                     view = "mini",
                 },
                 signature = {
@@ -193,6 +198,8 @@ return {
                     },
                 },
             },
+
+            throttle = 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
             views = {
                 cmdline_popup = {
                     border = {
@@ -206,6 +213,18 @@ return {
                     size = {
                         width = 20,
                         height = "auto",
+                    },
+                },
+                vsplit = {
+                    win_options = {
+                        winhighlight = { Normal = "Normal", FloatBorder = "NoiceSplitBorder" },
+                        wrap = true,
+                    },
+                    view = "split",
+                    enter = true,
+                    position = "right",
+                    size = {
+                        width = 65,
                     },
                 },
                 mini = {

@@ -21,8 +21,11 @@ local function my_on_attach(bufnr)
     end, { desc = "create new file" })
 end
 return {
-    "nvim-tree/nvim-tree.lua",
+    -- "nvim-tree/nvim-tree.lua",
     version = false,
+    dir = "/Users/xzb/.local/share/nvim/lazy/nvim-tree",
+    -- event = "VeryLazy",
+    lazy = false,
     -- enabled = false,
     keys = {
         { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
@@ -30,7 +33,6 @@ return {
         { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
         { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
     },
-    lazy = false,
     config = function()
         require("nvim-tree").setup({
             git = {
@@ -107,7 +109,7 @@ return {
 
                         modified = "●",
                         folder = {
-                            arrow_closed = ">",
+                            arrow_closed = "󱦰",
                             arrow_open = "󱞩",
                             default = "",
                             open = "",

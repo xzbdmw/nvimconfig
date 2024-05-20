@@ -1,6 +1,8 @@
 return {
     "stevearc/oil.nvim",
     opts = {},
+    cmd = "Oil",
+    enabled = false,
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
@@ -72,7 +74,7 @@ return {
                 ["q"] = "actions.close",
                 ["<C-l>"] = "actions.refresh",
                 ["-"] = "actions.parent",
-                ["p"] = "actions.parent",
+                -- ["p"] = "actions.parent",
                 ["_"] = "actions.open_cwd",
                 ["`"] = "actions.cd",
                 ["~"] = "actions.tcd",

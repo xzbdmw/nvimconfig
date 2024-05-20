@@ -1,5 +1,7 @@
 return {
     "CRAG666/code_runner.nvim",
+    enabled = false,
+    event = "VeryLazy",
     config = function()
         require("code_runner").setup({
             -- choose default mode (valid term, tab, float, toggle)

@@ -1,7 +1,8 @@
 return {
     "shellRaining/hlchunk.nvim",
-    enabled = false,
-    event = { "UIEnter" },
+    -- enabled = false,
+    -- event = { "UIEnter" },
+    event = "VeryLazy",
     config = function()
         require("hlchunk").setup({
             chunk = {
@@ -52,5 +53,7 @@ return {
                 },
             },
         })
+
+        -- vim.cmd("DisableHL")
     end,
 }

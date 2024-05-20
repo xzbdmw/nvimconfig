@@ -1,17 +1,33 @@
 return {
     "ibhagwan/fzf-lua",
+    commit = "344b309421e5222a6199e4b46d01041089b6a2ae",
     -- enabled = false,
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    event = "VeryLazy",
+    -- event = "VeryLazy",
     keys = {
         {
             "<leader>sg",
             function()
-                require("fzf-lua").live_grep({
-                    grep = {
-                        rg_opts = "-F --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-                    },
+                local opts = {
+                    rg_opts = "--column  --line-number --no-heading --color=always --smart-case --max-columns=4096",
+                    winopts = { width = 0.8, height = 0.9 },
+                    files = { path_shorten = true },
+                }
+                -- if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+                if false then
+                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+                end
+                require("fzf-lua").live_grep_native(opts)
+            end,
+        },
+        {
+            "<leader>sa",
+            function()
+                local s = vim.fn.getreg("0")
+                require("fzf-lua").grep({
+                    search = s,
+                    rg_opts = "--column  -F --line-number --no-heading --color=always --smart-case --max-columns=4096",
                     winopts = { width = 0.8, height = 0.9 },
                     files = { path_shorten = true },
                 })
@@ -26,35 +42,43 @@ return {
         {
             "<leader>sw",
             function()
-                require("fzf-lua").grep_cword({
-                    grep = {
-                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-                    },
+                local opts = {
+                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
                     winopts = { width = 0.8, height = 0.9 },
-                })
+                    files = { path_shorten = true },
+                }
+                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+                end
+                require("fzf-lua").grep_cword(opts)
             end,
         },
         {
             "<leader>sW",
             function()
-                require("fzf-lua").grep_cWORD({
-                    grep = {
-                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-                    },
+                local opts = {
+                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
                     winopts = { width = 0.8, height = 0.9 },
-                })
+                    files = { path_shorten = true },
+                }
+                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+                end
+                require("fzf-lua").grep_cWORD(opts)
             end,
         },
-
         {
-            "<leader>f",
+            "<leader>sw",
             function()
-                require("fzf-lua").grep_visual({
-                    grep = {
-                        rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-                    },
+                local opts = {
+                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
                     winopts = { width = 0.8, height = 0.9 },
-                })
+                    files = { path_shorten = true },
+                }
+                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+                end
+                require("fzf-lua").grep_visual(opts)
             end,
             mode = { "v" },
         },
@@ -76,6 +100,7 @@ return {
     },
     config = function()
         local actions = require("fzf-lua.actions")
+        local ft = vim.b.filetype
         require("fzf-lua").setup({
             -- fzf_bin         = 'sk',            -- use skim instead of fzf?
             -- https://github.com/lotabout/skim
@@ -141,12 +166,23 @@ return {
                     },
                 },
                 on_create = function()
+                    pcall(vim.cmd, "DisableHL")
+                    vim.b.miniindentscope_disable = true
                     -- called once upon creation of the fzf main window
                     -- can be used to add custom fzf-lua mappings, e.g:
-                    --   vim.keymap.set("t", "<C-j>", "<Down>", { silent = true, buffer = true })
+                    vim.keymap.set("t", "<esc>", "<C-c>", { silent = true, buffer = true })
+                    vim.defer_fn(function()
+                        vim.keymap.set("t", "<C-c>", [[<C-\><C-n>]], { silent = true, buffer = true })
+                    end, 100)
                 end,
                 -- called once *after* the fzf interface is closed
-                on_close = function() end,
+                on_close = function()
+                    vim.g.neovide_cursor_animation_length = 0.0
+                    vim.defer_fn(function()
+                        vim.g.neovide_cursor_animation_length = 0.06
+                        pcall(vim.cmd, "EnableHL")
+                    end, 100)
+                end,
             },
             keymap = {
                 -- These override the default tables completely
@@ -172,9 +208,8 @@ return {
                     ["ctrl-u"] = "unix-line-discard",
                     ["ctrl-f"] = "half-page-down",
                     ["ctrl-b"] = "half-page-up",
-                    ["ctrl-a"] = "beginning-of-line",
                     ["ctrl-e"] = "end-of-line",
-                    ["alt-a"] = "toggle-all",
+                    ["ctrl-a"] = "toggle-all",
                     -- Only valid with fzf previewers (bat/cat/git/etc)
                     ["f3"] = "toggle-preview-wrap",
                     ["f4"] = "toggle-preview",
@@ -485,44 +520,44 @@ return {
                     -- ["A"]        = { icon = "+", color = "green" },
                 },
             },
-            grep = {
-                prompt = "Rg> ",
-                input_prompt = "Grep For> ",
-                multiprocess = true, -- run command in a separate process
-                git_icons = true, -- show git icons?
-                file_icons = true, -- show file icons?
-                color_icons = true, -- colorize file|git icons
-                -- executed command priority is 'cmd' (if exists)
-                -- otherwise auto-detect prioritizes `rg` over `grep`
-                -- default options are controlled by 'rg|grep_opts'
-                -- cmd            = "rg --vimgrep",
-                grep_opts = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
-                rg_opts = "--line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-                -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
-                -- search strings will be split using the 'glob_separator' and translated
-                -- to '--iglob=' arguments, requires 'rg'
-                -- can still be used when 'false' by calling 'live_grep_glob' directly
-                rg_glob = false, -- default to glob parsing?
-                glob_flag = "--iglob", -- for case sensitive globs use '--glob'
-                glob_separator = "%s%-%-", -- query separator pattern (lua): ' --'
-                -- advanced usage: for custom argument parsing define
-                -- 'rg_glob_fn' to return a pair:
-                --   first returned argument is the new search query
-                --   second returned argument are additional rg flags
-                -- rg_glob_fn = function(query, opts)
-                --   ...
-                --   return new_query, flags
-                -- end,
-                actions = {
-                    -- actions inherit from 'actions.files' and merge
-                    -- this action toggles between 'grep' and 'live_grep'
-                    ["ctrl-g"] = { actions.grep_lgrep },
-                    -- uncomment to enable '.gitignore' toggle for grep
-                    -- ["ctrl-r"]   = { actions.toggle_ignore }
-                },
-                no_header = false, -- hide grep|cwd header?
-                no_header_i = false, -- hide interactive header?
-            },
+            -- grep = {
+            --     prompt = "Rg> ",
+            --     input_prompt = "Grep For> ",
+            --     multiprocess = true, -- run command in a separate process
+            --     git_icons = true, -- show git icons?
+            --     file_icons = true, -- show file icons?
+            --     color_icons = true, -- colorize file|git icons
+            --     -- executed command priority is 'cmd' (if exists)
+            --     -- otherwise auto-detect prioritizes `rg` over `grep`
+            --     -- default options are controlled by 'rg|grep_opts'
+            --     -- cmd            = "rg --vimgrep",
+            --     -- grep_opts = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
+            --     -- rg_opts = "-F --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+            --     -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
+            --     -- search strings will be split using the 'glob_separator' and translated
+            --     -- to '--iglob=' arguments, requires 'rg'
+            --     -- can still be used when 'false' by calling 'live_grep_glob' directly
+            --     rg_glob = true, -- default to glob parsing?
+            --     -- glob_flag = "--iglob", -- for case sensitive globs use '--glob'
+            --     -- glob_separator = "%s%-%-", -- query separator pattern (lua): ' --'
+            --     -- -- advanced usage: for custom argument parsing define
+            --     -- -- 'rg_glob_fn' to return a pair:
+            --     -- --   first returned argument is the new search query
+            --     -- --   second returned argument are additional rg flags
+            --     -- -- rg_glob_fn = function(query, opts)
+            --     -- --   ...
+            --     -- --   return new_query, flags
+            --     -- -- end,
+            --     -- actions = {
+            --     --     -- actions inherit from 'actions.files' and merge
+            --     --     -- this action toggles between 'grep' and 'live_grep'
+            --     --     ["ctrl-g"] = { actions.grep_lgrep },
+            --     --     -- uncomment to enable '.gitignore' toggle for grep
+            --     --     -- ["ctrl-r"]   = { actions.toggle_ignore }
+            --     -- },
+            --     -- no_header = false, -- hide grep|cwd header?
+            --     -- no_header_i = false, -- hide interactive header?
+            -- },
             args = {
                 prompt = "Args❯ ",
                 files_only = true,

@@ -12,11 +12,10 @@ return {
         -- have equivalents for zr and zm because there is no saved fold level.
         -- Consequently, the vim-internal fold levels need to be disabled by setting
         -- them to 99
-        vim.opt.foldlevel = 99
-        vim.opt.foldlevelstart = 99
+        -- vim.opt.foldlevel = 99
+        -- vim.opt.foldlevelstart = 99
     end,
     keys = {
-
         {
             "zm",
             function()

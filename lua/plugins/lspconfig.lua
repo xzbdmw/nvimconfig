@@ -11,13 +11,17 @@ return {
             keys[#keys + 1] = {
                 "<leader>i",
                 function()
-                    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                 end,
+            }
+            keys[#keys + 1] = {
+                "<leader>cc",
+                false,
             }
             keys[#keys + 1] = {
                 "<f7>",
                 function()
-                    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                 end,
                 mode = { "x", "v", "n", "i" },
             }
@@ -39,28 +43,6 @@ return {
                 function()
                     vim.lsp.buf.type_definition()
                 end,
-            }
-            keys[#keys + 1] = {
-                "<C-cr>",
-                function()
-                    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
-                    vim.cmd([[:stopinsert]])
-                    vim.cmd("Lspsaga code_action")
-                end,
-                desc = "Code Action",
-                mode = { "n", "v" },
-                has = "codeAction",
-            }
-
-            keys[#keys + 1] = {
-                "<leader>ca",
-                function()
-                    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
-                    vim.cmd("Lspsaga code_action")
-                end,
-                mode = { "n", "v" },
-                desc = "Code Action",
-                has = "codeAction",
             }
             keys[#keys + 1] = {
                 "gh",
@@ -120,6 +102,10 @@ return {
                     },
                     -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
                 },
+                -- clangd = {
+                --     init_options = { compilationDatabasePath = "./build" },
+                --     settings = {},
+                -- },
                 pylance = {
                     settings = {
                         python = {
@@ -141,6 +127,9 @@ return {
                             runtime = {
                                 version = "LuaJIT",
                             },
+                            -- semantic = {
+                            --     enable = false,
+                            -- },
                             workspace = {
                                 library = {
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
@@ -162,44 +151,47 @@ return {
                         },
                     },
                 },
-                --[[ rust_analyzer = {
-                    settings = {
-                        ["rust-analyzer"] = {
-                            checkOnSave = true,
-                            check = {
-                                enable = true,
-                                command = "clippy",
-                                features = "all",
-                            },
-                            completion = {
-                                callable = {
-                                    snippets = "add_parentheses",
-                                },
-                                fullFunctionSignatures = {
-                                    enable = true,
-                                },
-                                privateEditable = {
-                                    enable = true,
-                                },
-                            },
-                            procMacro = {
-                                ignored = {
-                                    tokio_macros = {
-                                        "main",
-                                        "test",
-                                    },
-                                    tracing_attributes = {
-                                        "instrument",
-                                    },
-                                },
-                            },
-                            inlayHints = {
-                                parameterHints = false,
-                                closureReturnTypeHints = "with_block",
-                            },
-                        },
-                    },
-                }, ]]
+                -- rust_analyzer = {
+                --     settings = {
+                --         ["rust-analyzer"] = {
+                --             checkOnSave = true,
+                --             check = {
+                --                 enable = true,
+                --                 command = "clippy",
+                --                 features = "all",
+                --             },
+                --             trace = {
+                --                 server = "verbose",
+                --             },
+                --             completion = {
+                --                 callable = {
+                --                     snippets = "add_parentheses",
+                --                 },
+                --                 fullFunctionSignatures = {
+                --                     enable = true,
+                --                 },
+                --                 privateEditable = {
+                --                     enable = true,
+                --                 },
+                --             },
+                --             procMacro = {
+                --                 ignored = {
+                --                     tokio_macros = {
+                --                         "main",
+                --                         "test",
+                --                     },
+                --                     tracing_attributes = {
+                --                         "instrument",
+                --                     },
+                --                 },
+                --             },
+                --             inlayHints = {
+                --                 parameterHints = false,
+                --                 closureReturnTypeHints = "with_block",
+                --             },
+                --         },
+                --     },
+                -- },
                 tsserver = {
                     enabled = true,
                     -- cmd = lsp_containers.command("tsserver"),
@@ -249,15 +241,12 @@ return {
             },
             -- you can do any additional lsp server setup here
             -- return true if you don't want this server to be setup with lspconfig
-            ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
             setup = {
                 -- example to setup with typescript.nvim
-                -- gopls = function(_, opts)
-                --     -- __AUTO_GENERATED_PRINT_VAR_START__
-                --     print([==[function opts:]==], vim.inspect(opts)) -- __AUTO_GENERATED_PRINT_VAR_END__
-                --     require("gopls").setup({ server = opts })
-                --     return true
-                -- end,
+                clangd = function(_, opts)
+                    require("lspconfig").clangd.setup()
+                    return true
+                end,
                 -- Specify * to use this function as a fallback for any server
                 -- ["*"] = function(server, opts) end,
             },

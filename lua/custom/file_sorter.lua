@@ -74,7 +74,6 @@ local get_buffers = function(opts)
             table.insert(buffers, element)
         end
     end
-    -- 打印 buffers 表中的每个元素
     -- for _, buffer in ipairs(buffers) do
     --     print("Buffer Number: " .. buffer.bufnr)
     --     print("Flag: " .. buffer.flag)
@@ -82,7 +81,6 @@ local get_buffers = function(opts)
     --     for k, v in pairs(buffer.info) do
     --         print("  " .. k .. ": " .. tostring(v))
     --     end
-    --     print("---sdsaddsad") -- 分隔线
     -- end
     return buffers
 end
@@ -114,14 +112,9 @@ local file_sorter = function(opts)
     return sorters.Sorter:new({
         discard = fzy_sorter.discard,
         scoring_function = function(_, prompt, line)
-            -- 没有输入时的默认逻辑
             if prompt == "" then
-                -- 这里可以添加您的逻辑，例如根据最近使用时间给出分数
-                -- 例如，如果 line 在最近使用的文件中，则返回较高的分数
                 if is_file_open(line) then
-                    return 0.5 -- 或者任何其他根据您逻辑的分数
                 else
-                    return 1 -- 默认分数
                 end
             end
             -- Check for actual matches before running the scoring alogrithm.

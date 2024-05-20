@@ -1,5 +1,6 @@
 return {
     "onsails/lspkind.nvim",
+    event = "InsertEnter",
     config = function()
         require("lspkind").init({
             symbol_map = {
@@ -7,7 +8,7 @@ return {
                 Boolean = " 󰨙 ",
                 Class = " 󰯳 ",
                 Codeium = " 󰘦 ",
-                Color = "  ",
+                Color = " 󰰠 ",
                 Control = "  ",
                 Collapsed = " > ",
                 Constant = " 󰯱 ",
@@ -41,7 +42,7 @@ return {
                 TypeParameter = " 󰰦 ",
                 Unit = " 󱜥 ",
                 Value = "  ",
-                Variable = " 󰄛 ",
+                Variable = " 󰫧 ",
             },
         })
     end,

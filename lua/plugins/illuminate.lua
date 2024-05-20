@@ -6,10 +6,11 @@ return {
     opts = {
         providers = {
             "lsp",
-            "treesitter",
-            "regex",
+            -- "treesitter",
+            -- "regex",
         },
         filetypes_denylist = {
+            "help",
             "Glance",
             "fugitive",
         },

@@ -1,3 +1,5 @@
+-- print("else branch")
+-- print("else branch")
 local methods = {
     definitions = {
         name = "textDocument/definition",
@@ -149,9 +151,8 @@ local function definitions()
                     vim.lsp.get_client_by_id(context.client_id).offset_encoding
                 )
                 return
-            else --如果不止有2个definition 那就去找reference 如果只有一个reference 直接跳过去
-                -- print("else branch")
-                vim.cmd("Glance references")
+                    -- print("else branch")
+                    vim.cmd("Glance references")
             end
         else
             -- print("enter 3")
