@@ -9,6 +9,7 @@ return {
         {
             "<leader>rf",
             ":Refactor extract ",
+            mode = { "x", "n" },
         },
         { "<leader>re", ":Refactor extract_var ", mode = { "x", "n" } },
         {

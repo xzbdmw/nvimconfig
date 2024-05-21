@@ -6,21 +6,21 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     -- event = "VeryLazy",
     keys = {
-        {
-            "<leader>sg",
-            function()
-                local opts = {
-                    rg_opts = "--column  --line-number --no-heading --color=always --smart-case --max-columns=4096",
-                    winopts = { width = 0.8, height = 0.9 },
-                    files = { path_shorten = true },
-                }
-                -- if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
-                if false then
-                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
-                end
-                require("fzf-lua").live_grep_native(opts)
-            end,
-        },
+        -- {
+        --     "<leader>sg",
+        --     function()
+        --         local opts = {
+        --             rg_opts = "--column  --line-number --no-heading --color=always --smart-case --max-columns=4096",
+        --             winopts = { width = 0.8, height = 0.9 },
+        --             files = { path_shorten = true },
+        --         }
+        --         -- if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+        --         if false then
+        --             opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+        --         end
+        --         require("fzf-lua").live_grep_native(opts)
+        --     end,
+        -- },
         {
             "<leader>sa",
             function()
@@ -82,14 +82,14 @@ return {
             end,
             mode = { "v" },
         },
-        {
-            "<C-d>",
-            function()
-                vim.cmd("normal! m'")
-                require("fzf-lua").lsp_document_symbols()
-            end,
-            desc = "Goto Symbol",
-        },
+        -- {
+        --     "<C-d>",
+        --     function()
+        --         vim.cmd("normal! m'")
+        --         require("fzf-lua").lsp_document_symbols()
+        --     end,
+        --     desc = "Goto Symbol",
+        -- },
         {
             "<leader>fz",
             function()

@@ -154,8 +154,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
             if _G.glancebuffer[bufnr] ~= nil then
                 return
             end
-            _G.glancebuffer[bufnr] = true
-            vim.keymap.set("n", "<Esc>", function()
+
+            local function glance_close()
                 vim.g.neovide_cursor_animation_length = 0.0
                 pcall(satellite_close, vim.api.nvim_get_current_win())
                 pcall(close_stored_win, vim.api.nvim_get_current_win())
@@ -165,18 +165,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
                     pcall(_G.indent_update)
                     pcall(_G.mini_indent_auto_draw)
                 end, 100)
+            end
+
+            _G.glancebuffer[bufnr] = true
+            vim.keymap.set("n", "<Esc>", function()
+                glance_close()
             end, { buffer = bufnr })
 
             vim.keymap.set("n", "q", function()
-                vim.g.neovide_cursor_animation_length = 0.0
-                pcall(satellite_close, vim.api.nvim_get_current_win())
-                pcall(close_stored_win, vim.api.nvim_get_current_win())
-                Close_with_q()
-                vim.defer_fn(function()
-                    vim.g.neovide_cursor_animation_length = 0.06
-                    pcall(_G.indent_update)
-                    pcall(_G.mini_indent_auto_draw)
-                end, 100)
+                glance_close()
             end, { buffer = bufnr })
             vim.keymap.set("n", "<CR>", function()
                 vim.g.neovide_cursor_animation_length = 0.0
@@ -550,7 +547,6 @@ local function toggle_profile()
     end
 end
 vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
-
 --[[ vim.api.nvim_create_autocmd("CursorMoved", {
     callback = function()
         if vim.g.gd then

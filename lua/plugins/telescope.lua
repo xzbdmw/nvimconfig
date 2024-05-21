@@ -1,3 +1,25 @@
+_G.last = nil
+local function on_complete(bo_line, bo_line_side, origin_height)
+    vim.defer_fn(function()
+        local obj = _G.telescope_picker
+        local count = vim.api.nvim_buf_line_count(obj.results_bufnr)
+        local top_win = vim.api.nvim_win_get_config(obj.results_win)
+        local buttom_buf = vim.api.nvim_win_get_buf(obj.results_win + 1)
+        local bottom_win = vim.api.nvim_win_get_config(obj.results_win + 1)
+        top_win.height = math.max(count, 1)
+        top_win.height = math.min(top_win.height, origin_height)
+        bottom_win.height = math.max(count + 2, 3)
+        bottom_win.height = math.min(bottom_win.height, origin_height + 2)
+        vim.api.nvim_win_set_config(obj.results_win + 1, bottom_win)
+        vim.api.nvim_win_set_config(obj.results_win, top_win)
+        if _G.last ~= nil then
+            vim.api.nvim_buf_set_lines(buttom_buf, _G.last, _G.last + 1, false, { bo_line_side })
+        end
+        vim.api.nvim_buf_set_lines(buttom_buf, math.max(count + 1, 2), math.max(count + 2, 3), false, { bo_line })
+        _G.last = math.max(count + 1, 2)
+        -- end
+    end, 10)
+end
 return {
     {
         "nvim-telescope/telescope-fzf-native.nvim",
@@ -12,7 +34,7 @@ return {
             { "<leader>sw", false },
             { "<leader>so", false },
             { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
-            { "<leader>st", "<cmd>Telescope resume<CR>" },
+            { "<leader>sr", "<cmd>Telescope resume<CR>" },
             { "<leader>sd", false },
             {
                 "<leader>ss",
@@ -30,6 +52,15 @@ return {
                 "<C-p>",
                 function()
                     require("telescope").extensions["neovim-project"].history({
+                        on_complete = {
+                            function()
+                                on_complete(
+                                    "╰────────────────────────────────────────────────────────────────────────╯",
+                                    "│                                                                        │",
+                                    19
+                                )
+                            end,
+                        },
                         layout_strategy = "horizontal",
                         layout_config = {
                             horizontal = {
@@ -48,6 +79,15 @@ return {
                 function()
                     require("telescope").extensions["neovim-project"].discover({
                         layout_strategy = "horizontal",
+                        on_complete = {
+                            function()
+                                on_complete(
+                                    "╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯",
+                                    "│                                                                                                                  │",
+                                    19
+                                )
+                            end,
+                        },
                         layout_config = {
                             horizontal = {
                                 width = 0.7,
@@ -60,7 +100,10 @@ return {
             },
             {
                 "<leader>sg",
-                false,
+                -- false,
+                function()
+                    require("custom.telescope-pikers").prettyGrepPicker("live_grep")
+                end,
             },
             {
                 "<leader>sa",
@@ -80,10 +123,61 @@ return {
                 mode = { "n", "i" },
             },
             {
+                "<C-d>",
+                function()
+                    _G.aerial = true
+                    _G.a_win = vim.api.nvim_get_current_win()
+                    _G.a_buf = vim.api.nvim_get_current_buf()
+                    _G.aerial_view = vim.fn.winsaveview()
+                    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
+                    local ns_id = vim.api.nvim_create_namespace("indent")
+                    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+                    pcall(close_stored_win, _G.a_win)
+                    -- ST = os.clock()
+                    require("telescope").extensions.aerial.aerial({
+                        on_complete = {
+                            function()
+                                on_complete(
+                                    "╰───────────────────────────────────────╯",
+                                    "│                                       │",
+                                    19
+                                )
+                            end,
+                        },
+                        prompt_title = "aerial",
+                        initial_mode = "insert",
+                        layout_strategy = "horizontal",
+                        previewer = false,
+                        layout_config = {
+                            horizontal = {
+                                height = 0.7, -- window height
+                                width = 0.25, -- window width
+                            },
+                            mirror = false,
+                        },
+                        -- Display symbols as <root>.<parent>.<symbol>
+                        show_nesting = {
+                            ["_"] = true, -- This key will be the default
+                            json = true, -- You can set the option for specific filetypes
+                            yaml = true,
+                        },
+                    })
+                end,
+            },
+            {
                 "<D-e>",
                 function()
                     -- ST = os.clock()
                     require("telescope").extensions.smart_open.smart_open({
+                        on_complete = {
+                            function()
+                                on_complete(
+                                    "╰────────────────────────────────────────────────────────╯",
+                                    "│                                                        │",
+                                    19
+                                )
+                            end,
+                        },
                         cwd_only = true,
                         show_scores = false,
                         ignore_patterns = { "*.git/*", "*/tmp/*" },
@@ -211,9 +305,8 @@ return {
                 local lines = vim.api.nvim_buf_get_lines(bufnr, line_start, line_end, false)
 
                 local text = table.concat(lines, "\n")
-
                 actions.close(prompt_bufnr)
-                vim.fn.setreg("+", text)
+                vim.fn.setreg('"', text)
             end
             require("telescope").setup({
                 defaults = {
@@ -237,9 +330,12 @@ return {
                     },
                     mappings = {
                         i = {
-                            -- ["<c-t>"] = require("trouble.sources.telescope").open,
+                            ["<Tab>"] = actions.toggle_selection,
+                            ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+                            ["<c-t>"] = require("trouble.sources.telescope").open,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
+                                _G.last = nil
                                 vim.g.neovide_cursor_animation_length = 0.0
                                 vim.defer_fn(function()
                                     vim.g.neovide_cursor_animation_length = 0.06
@@ -262,17 +358,14 @@ return {
                             end,
                             ["<CR>"] = function(bufnr)
                                 ST = vim.uv.hrtime()
-                                NV = vim.uv.hrtime()
                                 vim.g.gd = true
                                 vim.g.neovide_cursor_animation_length = 0.0
                                 vim.defer_fn(function()
                                     vim.g.gd = false
                                     vim.g.neovide_cursor_animation_length = 0.06
                                 end, 100)
-                                -- require("plenary.profile").start("profilef.log", { flame = true })
                                 actions.select_default(bufnr)
-                                -- vim.cmd([[:stopinsert]])
-                                -- vim.cmd([[call feedkeys("\<CR>")]])
+                                actions.center(bufnr)
                             end,
                             ["<esc>"] = function()
                                 vim.api.nvim_feedkeys(
@@ -305,10 +398,13 @@ return {
                             end,
                         },
                         n = {
-                            -- ["<c-t>"] = require("trouble.sources.telescope").open,
+                            ["<Tab>"] = actions.toggle_selection,
+                            ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+                            ["<c-t>"] = require("trouble.sources.telescope").open,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-g>"] = actions.to_fuzzy_refine,
                             ["<esc>"] = function(bufnr)
+                                _G.last = nil
                                 vim.g.neovide_cursor_animation_length = 0.0
                                 vim.defer_fn(function()
                                     vim.g.neovide_cursor_animation_length = 0.06
@@ -322,10 +418,8 @@ return {
                                     vim.g.gd = false
                                     vim.g.neovide_cursor_animation_length = 0.06
                                 end, 100)
-                                -- require("plenary.profile").start("profilef.log", { flame = true })
                                 actions.select_default(bufnr)
-                                -- vim.cmd([[:stopinsert]])
-                                -- vim.cmd([[call feedkeys("\<CR>")]])
+                                actions.center(bufnr)
                             end,
                             ["Y"] = yank_preview_lines,
                             ["y"] = yank_selected_entry,

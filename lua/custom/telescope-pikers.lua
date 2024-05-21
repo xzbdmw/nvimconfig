@@ -298,8 +298,8 @@ function telescopePickers.prettyGrepPicker(search, word)
             --          internally and return in the correct format.
             return displayer({
                 { icon, iconHighlight },
-                { tailForDisplay, "Comment" },
-                { text, "TelescopeParent" },
+                { tailForDisplay, "ChangedCmpItemKindInterface" },
+                { text, "TelescopeNormal" },
             })
         end
 

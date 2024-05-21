@@ -21,7 +21,7 @@ return {
         {
             "]e",
             function()
-                require("trouble").next("mydiags")
+                require("trouble").next({ skip_groups = true, jump = true })
             end,
             desc = "Symbols (Trouble)",
         },

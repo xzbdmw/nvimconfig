@@ -6,7 +6,7 @@ return {
     -- event = "VeryLazy",
     opts = {
         per_buffer_config = {
-            sort_automatically = false,
+            sort_automatically = true,
             treesitter_context = {
                 line_shift_down = 1,
             },

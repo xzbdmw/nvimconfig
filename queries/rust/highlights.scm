@@ -454,6 +454,11 @@
   "!" @keyword.debug
   (#eq? @keyword.debug "dbg"))
 
+(trait_item name: (type_identifier) @trait.definition)
+(impl_item trait: (type_identifier) @trait.definition)
+(abstract_type trait: (type_identifier) @trait.definition)
+(dynamic_type trait: (type_identifier) @trait.definition)
+(trait_bounds (type_identifier) @trait.definition)
 (impl_item
       trait: (generic_type type: (type_identifier)@trait.definition type_arguments:(_))
             type: (_))
