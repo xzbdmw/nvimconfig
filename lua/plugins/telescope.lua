@@ -1,6 +1,7 @@
 _G.last = nil
+_G.first_time = false
 local function on_complete(bo_line, bo_line_side, origin_height)
-    vim.defer_fn(function()
+    vim.schedule(function()
         local obj = _G.telescope_picker
         local count = vim.api.nvim_buf_line_count(obj.results_bufnr)
         local top_win = vim.api.nvim_win_get_config(obj.results_win)
@@ -17,8 +18,7 @@ local function on_complete(bo_line, bo_line_side, origin_height)
         end
         vim.api.nvim_buf_set_lines(buttom_buf, math.max(count + 1, 2), math.max(count + 2, 3), false, { bo_line })
         _G.last = math.max(count + 1, 2)
-        -- end
-    end, 10)
+    end)
 end
 return {
     {
@@ -102,19 +102,32 @@ return {
                 "<leader>sg",
                 -- false,
                 function()
-                    require("custom.telescope-pikers").prettyGrepPicker("live_grep")
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify")
                 end,
             },
             {
                 "<leader>sa",
-                false,
-            }, -- {
-            --     "<leader>f",
-            --     function()
-            --         require("custom.telescope-pikers").prettyGrepPicker("grep_string")
-            --     end,
-            --     mode = { "v" },
-            -- },
+                function()
+                    local mode = vim.fn.mode()
+                    if mode == "v" then
+                        local get_selection = function()
+                            return vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { mode = "v" })
+                        end
+                        require("custom.telescope-pikers").prettyGrepPicker("egrepify", get_selection()[1])
+                    else
+                        local s = vim.fn.getreg('"')
+                        require("custom.telescope-pikers").prettyGrepPicker("egrepify", s)
+                    end
+                end,
+                mode = { "v", "n" },
+            },
+            {
+                "<leader>sw",
+                function()
+                    local w = vim.fn.expand("<cword>")
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", w)
+                end,
+            },
             {
                 "<C-6>",
                 function()
@@ -125,15 +138,12 @@ return {
             {
                 "<C-d>",
                 function()
+                    _G.first_time = true
                     _G.aerial = true
                     _G.a_win = vim.api.nvim_get_current_win()
                     _G.a_buf = vim.api.nvim_get_current_buf()
                     _G.aerial_view = vim.fn.winsaveview()
                     vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
-                    local ns_id = vim.api.nvim_create_namespace("indent")
-                    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-                    pcall(close_stored_win, _G.a_win)
-                    -- ST = os.clock()
                     require("telescope").extensions.aerial.aerial({
                         on_complete = {
                             function()
@@ -144,7 +154,7 @@ return {
                                 )
                             end,
                         },
-                        prompt_title = "aerial",
+                        -- prompt_title = "aerial",
                         initial_mode = "insert",
                         layout_strategy = "horizontal",
                         previewer = false,
@@ -179,6 +189,7 @@ return {
                             end,
                         },
                         cwd_only = true,
+                        default_text = "'",
                         show_scores = false,
                         ignore_patterns = { "*.git/*", "*/tmp/*" },
                         match_algorithm = "fzf",
@@ -330,7 +341,13 @@ return {
                     },
                     mappings = {
                         i = {
-                            ["<Tab>"] = actions.toggle_selection,
+                            ["<Tab>"] = "to_fuzzy_refine",
+                            ["("] = function()
+                                FeedKeys("\\(", "n")
+                            end,
+                            [")"] = function()
+                                FeedKeys("\\)", "n")
+                            end,
                             ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
                             ["<c-t>"] = require("trouble.sources.telescope").open,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
@@ -375,11 +392,6 @@ return {
                                 )
                             end,
                             ["<C-->"] = actions.preview_scrolling_left,
-                            ["<C-i>"] = function()
-                                vim.g.gd = true
-                                vim.cmd([[:stopinsert]])
-                                vim.cmd([[call feedkeys("\<CR>")]])
-                            end,
                             ["<C-=>"] = actions.preview_scrolling_right,
                             ["<D-v>"] = function()
                                 vim.api.nvim_feedkeys(
@@ -388,7 +400,9 @@ return {
                                     true
                                 )
                             end,
-                            ["<C-g>"] = actions.to_fuzzy_refine,
+                            ["<C-g>"] = function(bufnr)
+                                actions.to_fuzzy_refine(bufnr)
+                            end,
                             ["<f17>"] = function()
                                 vim.api.nvim_feedkeys(
                                     vim.api.nvim_replace_termcodes("<Cr>", true, false, true),
@@ -398,7 +412,7 @@ return {
                             end,
                         },
                         n = {
-                            ["<Tab>"] = actions.toggle_selection,
+                            ["<Tab>"] = "toggle_selection",
                             ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
                             ["<c-t>"] = require("trouble.sources.telescope").open,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
@@ -484,19 +498,6 @@ return {
                             },
                         },
                     },
-                    live_grep = {
-                        entry_maker = require("custom.make_entry").gen_from_vimgrep_lib(),
-                        disable_coordinates = true,
-                        layout_config = {
-                            horizontal = {
-                                width = 0.8,
-                                height = 0.9,
-                                preview_cutoff = 0,
-                                prompt_position = "top",
-                                preview_width = 0.5,
-                            },
-                        },
-                    },
                     current_buffer_fuzzy_find = {
                         disable_coordinates = true,
                         layout_strategy = "vertical",
@@ -543,6 +544,8 @@ return {
                 extensions = {},
             })
             require("telescope").load_extension("fzf")
+            require("telescope").load_extension("egrepify")
+
             -- require("telescope").load_extension("zf-native")
         end,
     },

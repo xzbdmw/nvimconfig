@@ -14,7 +14,7 @@ return {
             "Glance",
             "fugitive",
         },
-        delay = 90,
+        delay = 1,
         under_cursor = true,
         min_count_to_highlight = 1,
         -- large_file_cutoff = 2000,

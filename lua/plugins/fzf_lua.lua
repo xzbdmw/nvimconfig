@@ -1,7 +1,7 @@
 return {
     "ibhagwan/fzf-lua",
     commit = "344b309421e5222a6199e4b46d01041089b6a2ae",
-    -- enabled = false,
+    enabled = false,
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
     -- event = "VeryLazy",

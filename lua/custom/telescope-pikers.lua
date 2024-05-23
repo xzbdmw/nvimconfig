@@ -184,7 +184,7 @@ end
 --                                      picker = '<pickerName>',
 --                                      (optional) options = { ... }
 --                                   }
-function telescopePickers.prettyGrepPicker(search, word)
+function telescopePickers.prettyGrepPicker(search, default_text)
     local filename = vim.fn.expand("%:p")
     local pickerAndOptions = {
         picker = search,
@@ -205,8 +205,22 @@ function telescopePickers.prettyGrepPicker(search, word)
             },
         },
     }
-    if word then
-        pickerAndOptions.options.search = word
+    if default_text then
+        pickerAndOptions.options.default_text = default_text
+    end
+
+    pickerAndOptions.options.attach_mapping = function(_, map)
+        map("i", "(", function(_prompt_bufnr)
+            print("You typed asdf")
+        end)
+
+        map({ "i", "n" }, "<C-0>", function(_prompt_bufnr)
+            print("You typed <C-r>")
+        end, { desc = "desc for which key" })
+
+        -- needs to return true if you want to map default_mappings and
+        -- false if not
+        return true
     end
     -- Parameter integrity check
     if type(pickerAndOptions) ~= "table" or pickerAndOptions.picker == nil then
@@ -311,6 +325,8 @@ function telescopePickers.prettyGrepPicker(search, word)
         require("telescope.builtin").live_grep(options)
     elseif pickerAndOptions.picker == "grep_string" then
         require("telescope.builtin").grep_string(options)
+    elseif pickerAndOptions.picker == "egrepify" then
+        require("telescope").extensions.egrepify.egrepify(options)
     elseif pickerAndOptions.picker == "" then
         print("Picker was not specified")
     else

@@ -36,6 +36,18 @@ vim.api.nvim_create_autocmd("FocusGained", {
     end,
 })
 
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "TelescopePreviewerLoaded",
+    callback = function(data)
+        local winid = data.data.winid
+        vim.wo[winid].number = true
+        vim.defer_fn(function()
+            pcall(function()
+                require("treesitter-context").context_force_update(vim.api.nvim_win_get_buf(winid), winid)
+            end)
+        end, 5)
+    end,
+})
 -- sync vim clipboard to system clipboard
 vim.api.nvim_create_autocmd("TextChanged", {
     callback = function()
@@ -148,6 +160,9 @@ _G.glancebuffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
+        vim.defer_fn(function()
+            vim.cmd("set foldmethod=manual")
+        end, 100)
         local winconfig = vim.api.nvim_win_get_config(0)
         local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
         if winconfig.relative ~= "" and winconfig.zindex == 10 then
@@ -224,7 +239,6 @@ vim.api.nvim_create_autocmd("WinResized", {
         -- vim.cmd("FocusAutoresize")
     end,
 })
-vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
 vim.api.nvim_create_autocmd({ "BufRead" }, {
     pattern = {
         "/Users/xzb/.rustup/toolchains/**/*.rs",

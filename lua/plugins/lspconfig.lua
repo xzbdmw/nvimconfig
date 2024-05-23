@@ -65,9 +65,6 @@ return {
                     spacing = 4,
                     source = "if_many",
                     prefix = "",
-                    -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-                    -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-                    -- prefix = "icons",
                 },
                 severity_sort = true,
                 signs = {
@@ -151,47 +148,6 @@ return {
                         },
                     },
                 },
-                -- rust_analyzer = {
-                --     settings = {
-                --         ["rust-analyzer"] = {
-                --             checkOnSave = true,
-                --             check = {
-                --                 enable = true,
-                --                 command = "clippy",
-                --                 features = "all",
-                --             },
-                --             trace = {
-                --                 server = "verbose",
-                --             },
-                --             completion = {
-                --                 callable = {
-                --                     snippets = "add_parentheses",
-                --                 },
-                --                 fullFunctionSignatures = {
-                --                     enable = true,
-                --                 },
-                --                 privateEditable = {
-                --                     enable = true,
-                --                 },
-                --             },
-                --             procMacro = {
-                --                 ignored = {
-                --                     tokio_macros = {
-                --                         "main",
-                --                         "test",
-                --                     },
-                --                     tracing_attributes = {
-                --                         "instrument",
-                --                     },
-                --                 },
-                --             },
-                --             inlayHints = {
-                --                 parameterHints = false,
-                --                 closureReturnTypeHints = "with_block",
-                --             },
-                --         },
-                --     },
-                -- },
                 tsserver = {
                     enabled = true,
                     -- cmd = lsp_containers.command("tsserver"),

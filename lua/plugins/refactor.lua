@@ -8,10 +8,31 @@ return {
     keys = {
         {
             "<leader>rf",
-            ":Refactor extract ",
+            function()
+                vim.cmd("Noice disable")
+                return ":Refactor extract "
+            end,
+            mode = { "x", "n" },
+            expr = true,
+        },
+        {
+            "<leader>ri",
+            function()
+                vim.cmd("Noice disable")
+                return ":Refactor inline_var"
+            end,
+            mode = { "x", "n" },
+            expr = true,
+        },
+        {
+            "<leader>re",
+            function()
+                vim.cmd("Noice disable")
+                return ":Refactor extract_var "
+            end,
+            expr = true,
             mode = { "x", "n" },
         },
-        { "<leader>re", ":Refactor extract_var ", mode = { "x", "n" } },
         {
             "<leader>rp",
             function()

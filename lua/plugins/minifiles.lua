@@ -5,9 +5,18 @@ return {
         {
             "<leader>so",
             function()
-                MiniFiles.open(vim.api.nvim_buf_get_name(0))
-                -- MiniFiles.reveal_cwd()
-                MiniFiles.three_level()
+                if vim.bo.filetype == "NvimTree" then
+                    FeedKeys("<C-w><C-w>", "n")
+                    vim.schedule(function()
+                        MiniFiles.open(vim.api.nvim_buf_get_name(0))
+                        -- MiniFiles.reveal_cwd()
+                        MiniFiles.three_level()
+                    end)
+                else
+                    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+                    -- MiniFiles.reveal_cwd()
+                    MiniFiles.three_level()
+                end
             end,
         },
     },

@@ -2,6 +2,7 @@ local success, engin = pcall(require, "illuminate.engine")
 local success, ref = pcall(require, "illuminate.reference")
 local success, go = pcall(require, "illuminate.goto")
 local selection_mode = false
+local utils = require("config.utils")
 -- vim.api.nvim_create_autocmd("ModeChanged", {
 --     pattern = "*:s",
 --     callback = function()
@@ -28,12 +29,12 @@ keymap("n", "n", function()
     if require("trouble").is_open("mydiags") then
         require("trouble").next({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
-        require("illuminate.goto").goto_next_keeped_reference(true)
+        utils.cursor(require("illuminate.goto").goto_next_keeped_reference, 0.03)(true)
         return
     else
         local n = vim.v.hlsearch
         if n == 0 then
-            require("illuminate").goto_next_reference(true)
+            utils.cursor(require("illuminate").goto_next_reference, 0.03)(true)
         else
             vim.cmd("normal! n")
         end
@@ -44,12 +45,12 @@ keymap("n", "N", function()
     if require("trouble").is_open("mydiags") then
         require("trouble").prev({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
-        require("illuminate.goto").goto_prev_keeped_reference(true)
+        utils.cursor(require("illuminate.goto").goto_prev_keeped_reference, 0.03)(true)
         return
     else
         local n = vim.v.hlsearch
         if n == 0 then
-            require("illuminate").goto_prev_reference(true)
+            utils.cursor(require("illuminate").goto_prev_reference, 0.03)(true)
         else
             vim.cmd("normal! N")
         end

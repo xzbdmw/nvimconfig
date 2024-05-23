@@ -39,18 +39,6 @@ return {
         require("lspsaga").setup({
             finder = {
                 enable = false,
-                --[[ filter = {
-                    ["textDocument/references"] = function(item)
-                        local lnum = vim.api.nvim_win_get_cursor(0)[1]
-                        local filepath = vim.api.nvim_buf_get_name(0)
-                        print(filepath)
-                        local a = 5
-                        print(a)
-                        print(a)
-                        return item
-                        --item now is list-like table .
-                    end,
-                }, ]]
                 left_width = 0.3,
                 layout = "float",
                 default = "ref",

@@ -25,7 +25,11 @@ return {
         end,
         cmd = {
             "node",
-            vim.fn.expand("~/.vscode/extensions/ms-python.vscode-pylance-2024.2.104/dist/server_nvim.js", false, true)[1],
+            vim.fn.expand(
+                "~/.vscode-insiders/extensions/ms-python.vscode-pylance-2024.5.1/dist/server_nvim.js",
+                false,
+                true
+            )[1],
             "--stdio",
         },
         filetypes = { "python" },

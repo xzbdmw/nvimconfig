@@ -235,9 +235,14 @@ keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_s
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("n", "U", "<C-r>", opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
-keymap({ "n", "v" }, "c", '"_c', opts)
+-- keymap({ "n", "x" }, "c", function()
+--     vim.g.neovide_cursor_animation_length = 0.0
+--     vim.defer_fn(function()
+--         vim.g.neovide_cursor_animation_length = 0.06
+--     end, 100)
+--     return '"_c'
+-- end, opts)
 keymap("n", "Y", "y$", opts)
-keymap("v", "<down>", "", opts)
 keymap("n", "[p", '"0p', opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
@@ -248,6 +253,14 @@ keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, opts)
+keymap("n", "<leader>uu", function()
+    local is_enabled = require("noice.ui")._attached
+    if is_enabled then
+        return "<cmd>Noice disable<CR>"
+    else
+        return "<cmd>Noice enable<CR>"
+    end
+end, { expr = true })
 keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
     vim.cmd("DiffviewOpen")
@@ -310,6 +323,8 @@ keymap("v", "<leader>gb", function()
 end, opts)
 
 keymap("i", "<Tab>", function()
+    -- __AUTO_GENERATED_PRINTF_START__
+    print([==[function 1]==]) -- __AUTO_GENERATED_PRINTF_END__
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
     local line = vim.fn.getline(".") -- 获取当前行的内容
@@ -353,6 +368,80 @@ local function get_float_win_count()
     end
     return window_count
 end
+
+keymap({ "n", "v" }, "c", function()
+    vim.g.neovide_cursor_animation_length = 0.02
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+    return '"_c'
+end, { expr = true })
+
+-- dot trick
+keymap("n", "<space><esc>", ".", opts)
+
+-- mark trick
+keymap("n", "<space>;", "m6A;<esc>`6", opts)
+keymap("n", "<space>)", "m6A)<esc>`6", opts)
+keymap("n", "<space>,", "m6A,<esc>`6", opts)
+
+local has_map = false
+keymap("i", "<space>", function()
+    FeedKeys("<Space>", "n")
+    if has_map then
+        return
+    end
+    local changed_keys = {
+        ["<esc>"] = "<esc>",
+        ["<C-a>"] = "a",
+        ["<C-b>"] = "b",
+        ["<C-c>"] = "c",
+        ["<C-d>"] = "d",
+        ["<C-e>"] = "e",
+        ["<C-f>"] = "f",
+        ["<C-g>"] = "g",
+        ["<C-h>"] = "h",
+        ["<C-i>"] = "i",
+        ["<C-j>"] = "j",
+        ["<C-k>"] = "k",
+        ["<C-l>"] = "l",
+        ["<C-m>"] = "m",
+        ["<C-n>"] = "n",
+        ["<C-o>"] = "o",
+        ["<C-p>"] = "p",
+        ["<C-q>"] = "q",
+        ["<C-r>"] = "r",
+        ["<C-s>"] = "s",
+        ["<C-t>"] = "t",
+        ["<C-u>"] = "u",
+        ["<C-v>"] = "v",
+        ["<C-w>"] = "w",
+        ["<C-x>"] = "x",
+        ["<C-y>"] = "y",
+        ["<C-z>"] = "z",
+    }
+    for k, v in pairs(changed_keys) do
+        vim.keymap.set("i", k, function()
+            if v == "<esc>" then
+                local key_comb = "."
+                FeedKeys("<bs>" .. key_comb, "n")
+            else
+                local key_comb = "." .. v
+                FeedKeys("<bs>" .. key_comb, "n")
+            end
+        end, { buffer = 0, desc = "dot" })
+    end
+    has_map = true
+    vim.defer_fn(function()
+        local map = vim.api.nvim_buf_get_keymap(0, "i")
+        for _, m in ipairs(map) do
+            if m.desc == "dot" then
+                vim.keymap.del("i", m.lhs, { buffer = 0 })
+            end
+        end
+        has_map = false
+    end, 150)
+end, opts)
 
 keymap("n", "<Tab>", function()
     local flag = false
@@ -604,7 +693,6 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
         end
     end
 end, opts)
-
 keymap("x", "=", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("loho", true, false, true), "t", false)
 end, opts)

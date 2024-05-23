@@ -1,4 +1,3 @@
-local has_map = false
 local CompletionItemKind = {
     Text = 1,
     Method = 2,
@@ -533,81 +532,17 @@ return {
                     vim.g.space = true
                     if cmp.visible() then
                         cmp.close()
-                        fallback()
-                    else
-                        fallback()
                     end
-                    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" or vim.bo.filetype == "minifiles" then
-                        return
-                    end
-                    -- vim.g.space = false
-                    vim.defer_fn(function()
-                        pcall(_G.indent_update)
-                        pcall(_G.mini_indent_auto_draw)
-                    end, 100)
+                    fallback()
+                    -- vim.defer_fn(function()
+                    --     pcall(_G.indent_update)
+                    --     pcall(_G.mini_indent_auto_draw)
+                    -- end, 100)
                     _G.has_moved_up = false
-
-                    if has_map then
-                        return
-                    end
-                    local changed_keys = {
-                        ["<esc>"] = "<esc>",
-                        ["<C-a>"] = "a",
-                        ["<C-b>"] = "b",
-                        ["<C-c>"] = "c",
-                        ["<C-d>"] = "d",
-                        ["<C-e>"] = "e",
-                        ["<C-f>"] = "f",
-                        ["<C-g>"] = "g",
-                        ["<C-h>"] = "h",
-                        ["<C-i>"] = "i",
-                        ["<C-j>"] = "j",
-                        ["<C-k>"] = "k",
-                        ["<C-l>"] = "l",
-                        ["<C-m>"] = "m",
-                        ["<C-n>"] = "n",
-                        ["<C-o>"] = "o",
-                        ["<C-p>"] = "p",
-                        ["<C-q>"] = "q",
-                        ["<C-r>"] = "r",
-                        ["<C-s>"] = "s",
-                        ["<C-t>"] = "t",
-                        ["<C-u>"] = "u",
-                        ["<C-v>"] = "v",
-                        ["<C-w>"] = "w",
-                        ["<C-x>"] = "x",
-                        ["<C-y>"] = "y",
-                        ["<C-z>"] = "z",
-                    }
-                    for k, v in pairs(changed_keys) do
-                        vim.keymap.set("i", k, function()
-                            local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
-                            if v == "<esc>" then
-                                local key_comb = "."
-                                -- local cmd = "<bs><cmd>lua vim.api.nvim_put({'" .. key_comb .. "'}, 'c', true, true)<CR>"....................................................................
-                                local cmd = "<bs>" .. key_comb
-                                FeedKeys(cmd, "n")
-                            else
-                                local key_comb = "." .. v
-                                local cmd = "<bs>" .. key_comb
-                                FeedKeys(cmd, "n")
-                            end
-                        end, { buffer = 0, desc = "dot" })
-                    end
-                    has_map = true
-                    vim.defer_fn(function()
-                        local map = vim.api.nvim_buf_get_keymap(0, "i")
-                        for _, m in ipairs(map) do
-                            if m.desc == "dot" then
-                                vim.keymap.del("i", m.lhs, { buffer = 0 })
-                            end
-                        end
-                        has_map = false
-                    end, 150)
                 end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.abort()
+                        cmp.close()
                     end
                     _G.has_moved_up = false
                     vim.schedule(fallback)

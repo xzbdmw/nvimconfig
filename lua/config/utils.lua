@@ -1,4 +1,14 @@
 local M = {}
+M.cursor = function(callback, length)
+    length = length or 0
+    return function(...)
+        vim.g.neovide_cursor_animation_length = length
+        callback(...)
+        vim.defer_fn(function()
+            vim.g.neovide_cursor_animation_length = 0.06
+        end, 100)
+    end
+end
 _G.rust_query = vim.treesitter.query.parse(
     "rust",
     [[
