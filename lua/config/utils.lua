@@ -184,6 +184,10 @@ function M.normal_tab()
         endwhile
       ]])
     end
+    local is_terminal = vim.opt.buftype:get() == "terminal"
+    if is_terminal then
+        vim.cmd(":startinsert")
+    end
 end
 function M.insert_mode_tab()
     local col = vim.fn.col(".") - 1

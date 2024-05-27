@@ -13,7 +13,7 @@ return {
             -- size can be a number or function which is passed the current terminal
             size = function(term)
                 if term.direction == "horizontal" then
-                    return 15
+                    return 12
                 elseif term.direction == "vertical" then
                     return vim.o.columns * 0.4
                 end
@@ -22,17 +22,9 @@ return {
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
                 vim.cmd(":startinsert")
-                -- vim.wo.winbar = ""
-                -- vim.g.neovide_underline_stroke_scale = 0
-                -- if closed then
-                --     vim.cmd("startinsert")
-                --     closed = false
-                -- end
             end, -- function to run when the terminal opens
             on_close = function()
                 vim.cmd("set laststatus=0")
-                -- vim.g.neovide_underline_stroke_scale = 2
-                -- vim.cmd("set winbar=%{%v:lua.dropbar.get_dropbar_str()%}")
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
             -- on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr

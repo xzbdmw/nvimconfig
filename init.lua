@@ -99,8 +99,7 @@ vim.api.nvim_create_autocmd({ "ModeChanged" }, {
     end,
 })
 
-vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-    pattern = { "*" },
+vim.api.nvim_create_autocmd({ "TermEnter", "BufEnter" }, {
     callback = function()
         if vim.opt.buftype:get() == "terminal" then
             vim.cmd(":startinsert")

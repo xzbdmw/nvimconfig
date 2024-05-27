@@ -235,11 +235,22 @@ keymap("t", "<D-v>", function()
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
 
+keymap("t", "<c-->", function()
+    require("smart-splits").resize_left()
+end, opts)
+
+keymap("t", "<c-=>", function()
+    require("smart-splits").resize_right()
+end, opts)
+
+keymap("t", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+keymap("t", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+
 keymap("x", "za", "zf", opts)
 keymap("n", "zu", "zfu", { remap = true })
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 
---nvimtree workaround
+--Nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
 keymap("n", "V", function()
