@@ -52,7 +52,7 @@ return {
             current_line_blame_opts = {
                 virt_text = true,
                 virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
-                delay = 0,
+                delay = 1,
                 ignore_whitespace = false,
                 virt_text_priority = 100,
             },
@@ -74,7 +74,7 @@ return {
                 enable = false,
             },
         })
-        vim.keymap.set("n", "<leader>sb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
+        vim.keymap.set("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
         vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
     end,
 }

@@ -1,7 +1,8 @@
 return {
     "fdschmidt93/telescope-egrepify.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    -- dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
     config = function()
+        local egrep_actions = require("telescope._extensions.egrepify.actions")
         require("telescope").setup({
             extensions = {
                 egrepify = {

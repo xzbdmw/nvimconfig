@@ -1,5 +1,5 @@
 local root = vim.fn.fnamemodify("./.repro", ":p")
-_G.Time = function(start, msg)
+_G.Time1 = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
     -- __AUTO_GENERATED_PRINT_VAR_START__

@@ -591,6 +591,12 @@ return {
                     end
                     fallback()
                 end),
+                ["<C-p>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    fallback()
+                end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close_docs()
@@ -672,12 +678,12 @@ return {
                 compare.order,
                 comparators = {
                     -- reverse_prioritize,
-                    put_down_snippet,
                     cmp.config.compare.exact,
                     compare.score,
                     compare.recently_used,
                     compare.locality,
                     compare.offset,
+                    put_down_snippet,
                 },
             },
         }
@@ -786,41 +792,5 @@ return {
             }),
         })
         require("cmp").setup(opts)
-        --[[ local capabilities = require("cmp_nvim_lsp").default_capabilities() --nvim-cmp
-        -- Setup lspconfig.
-        local nvim_lsp = require("lspconfig")
-
-        -- setup languages
-        -- GoLang
-        nvim_lsp["gopls"].setup({
-            cmd = { "gopls" },
-            -- on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                gopls = {
-                    hints = {
-                        assignVariableTypes = true,
-                        compositeLiteralFields = true,
-                        compositeLiteralTypes = true,
-                        constantValues = true,
-                        functionTypeParameters = true,
-                        -- parameterNames = true,
-                        rangeVariableTypes = true,
-                    },
-                    semanticTokens = true,
-                    experimentalPostfixCompletions = false,
-                    analyses = {
-                        unusedparams = true,
-                        shadow = true,
-                    },
-                    staticcheck = false,
-                },
-            },
-            init_options = {
-                -- usePlaceholders = false,
-                usePlaceholders = true,
-                completeFunctionCalls = true,
-            },
-        }) ]]
     end,
 }

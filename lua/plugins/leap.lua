@@ -1,5 +1,6 @@
 return {
     "ggandor/leap.nvim",
+    -- commit = "3fc5e8344eac8a306baca09634fd613d1aa2c388",
     enabled = true,
     opts = {
         case_sensitive = false,
@@ -10,7 +11,7 @@ return {
         -- substitute_chars = {},
         safe_labels = "sfnut/SFNLHMUGTZ?",
         -- safe_labels = "",
-        labels = "sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?",
+        labels = "fnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?",
         special_keys = {
             next_target = ";",
             prev_target = ",",

@@ -29,12 +29,6 @@
 --         },
 --         signatureHelp = { enabled = true },
 --         contentProvider = { preferred = "fernflower" },
---         -- eclipse = {
---         -- 	downloadSources = true,
---         -- },
---         -- implementationsCodeLens = {
---         -- 	enabled = true,
---         -- },
 --         completion = {
 --             favoriteStaticMembers = {
 --                 "org.hamcrest.MatcherAssert.assertThat",
@@ -77,8 +71,8 @@
 --         configuration = {
 --             runtimes = {
 --                 {
---                     name = "JavaSE-11",
---                     path = "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home",
+--                     name = "Java17",
+--                     home = "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
 --                 },
 --             },
 --         },

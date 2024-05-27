@@ -10,7 +10,7 @@ return {
         {
             "<C-e>",
             "<cmd>Lspsaga diagnostic_jump_next<CR>",
-            mode = { "n", "i" },
+            mode = { "n" },
         },
         {
             "<leader>ca",

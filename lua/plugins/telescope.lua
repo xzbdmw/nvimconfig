@@ -2,7 +2,11 @@ _G.last = nil
 _G.first_time = false
 local function on_complete(bo_line, bo_line_side, origin_height)
     vim.schedule(function()
+        ---@diagnostic disable-next-line: undefined-field
         local obj = _G.telescope_picker
+        if not vim.api.nvim_buf_is_valid(obj.results_bufnr) then
+            return
+        end
         local count = vim.api.nvim_buf_line_count(obj.results_bufnr)
         local top_win = vim.api.nvim_win_get_config(obj.results_win)
         local buttom_buf = vim.api.nvim_win_get_buf(obj.results_win + 1)
@@ -26,12 +30,13 @@ return {
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     },
     {
-        "nvim-telescope/telescope.nvim",
-        commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
+        -- "nvim-telescope/telescope.nvim",
+        dir = "~/Project/lua/telescope.nvim/",
+        -- commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
         version = false,
+        lazy = false,
         keys = {
             { "<leader><space>", false },
-            { "<leader>sw", false },
             { "<leader>so", false },
             { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
             { "<leader>sr", "<cmd>Telescope resume<CR>" },
@@ -124,9 +129,17 @@ return {
             {
                 "<leader>sw",
                 function()
-                    local w = vim.fn.expand("<cword>")
+                    local mode = vim.api.nvim_get_mode()
+                    local w
+                    if mode.mode == "v" then
+                        vim.cmd([[noautocmd sil norm! "vy]])
+                        w = vim.fn.getreg("v")
+                    else
+                        w = vim.fn.expand("<cword>")
+                    end
                     require("custom.telescope-pikers").prettyGrepPicker("egrepify", w)
                 end,
+                mode = { "n", "v" },
             },
             {
                 "<C-6>",
@@ -321,6 +334,7 @@ return {
             end
             require("telescope").setup({
                 defaults = {
+                    disable_devicons = true,
                     winblend = 0,
                     initial_mode = "insert",
                     path_display = require("custom.path_display").filenameFirstWithoutParent,
@@ -341,6 +355,7 @@ return {
                     },
                     mappings = {
                         i = {
+                            ["<C-y>"] = "toggle_selection",
                             ["<Tab>"] = "to_fuzzy_refine",
                             ["("] = function()
                                 FeedKeys("\\(", "n")
@@ -348,8 +363,10 @@ return {
                             [")"] = function()
                                 FeedKeys("\\)", "n")
                             end,
-                            ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-                            ["<c-t>"] = require("trouble.sources.telescope").open,
+                            ["<c-q>"] = function(bufnr)
+                                actions.smart_send_to_qflist(bufnr)
+                                require("trouble").open("qflist")
+                            end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
                                 _G.last = nil
@@ -391,8 +408,8 @@ return {
                                     true
                                 )
                             end,
-                            ["<C-->"] = actions.preview_scrolling_left,
-                            ["<C-=>"] = actions.preview_scrolling_right,
+                            ["<C-->"] = actions.preview_scrolling_up,
+                            ["<C-=>"] = actions.preview_scrolling_down,
                             ["<D-v>"] = function()
                                 vim.api.nvim_feedkeys(
                                     vim.api.nvim_replace_termcodes("<C-r>1", true, false, true),
@@ -412,9 +429,18 @@ return {
                             end,
                         },
                         n = {
-                            ["<Tab>"] = "toggle_selection",
-                            ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-                            ["<c-t>"] = require("trouble.sources.telescope").open,
+                            ["<C-y>"] = "toggle_selection",
+                            ["<Tab>"] = function(bufnr)
+                                actions.to_fuzzy_refine(bufnr)
+                                FeedKeys("i", "n")
+                            end,
+                            ["<c-q>"] = function(bufnr)
+                                actions.smart_send_to_qflist(bufnr)
+                                require("trouble").open("qflist")
+                            end,
+                            ["<c-t>"] = function(bufnr)
+                                require("trouble.sources.telescope").open(bufnr)
+                            end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-g>"] = actions.to_fuzzy_refine,
                             ["<esc>"] = function(bufnr)
@@ -451,13 +477,16 @@ return {
                     },
                 },
                 pickers = {
+                    find_files = {
+                        disable_devicons = true,
+                    },
                     lsp_implementations = {
                         entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
                         initial_mode = "insert",
                         layout_strategy = "vertical",
                         trim_text = true,
                         reuse_win = true,
-                        previewer = false,
+                        previewer = true,
                         layout_config = {
                             vertical = {
                                 width = 0.6,
@@ -527,6 +556,11 @@ return {
                         disable_coordinates = true,
                         include_declaration = false,
                         push_cursor_on_edit = true,
+                    },
+                    live_grep = {
+                        additional_args = { "--glob", "!.git", "--max-count", "10" },
+                        max_results = 20,
+                        disable_devicons = true,
                     },
                     buffers = {
                         initial_mode = "normal",

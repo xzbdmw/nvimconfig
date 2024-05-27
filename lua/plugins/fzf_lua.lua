@@ -4,7 +4,7 @@ return {
     enabled = false,
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    -- event = "VeryLazy",
+    lazy = false,
     keys = {
         -- {
         --     "<leader>sg",

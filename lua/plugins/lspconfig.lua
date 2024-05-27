@@ -8,6 +8,7 @@ return {
             -- disable a keymap
             keys[#keys + 1] = { "K", false }
             keys[#keys + 1] = { "<leader>cr", false }
+            keys[#keys + 1] = { "<leader>rn", false }
             keys[#keys + 1] = {
                 "<leader>i",
                 function()
@@ -26,9 +27,15 @@ return {
                 mode = { "x", "v", "n", "i" },
             }
             keys[#keys + 1] = {
-                "gi",
+                "gI",
                 function()
                     vim.cmd("Glance implementations")
+                end,
+            }
+            keys[#keys + 1] = {
+                "<leader><C-i>",
+                function()
+                    vim.cmd("Telescope lsp_implementations")
                 end,
             }
             keys[#keys + 1] = {
@@ -99,24 +106,65 @@ return {
                     },
                     -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
                 },
+                -- rust_analyzer = {
+                --     settings = {
+                --         -- ["rust-analyzer"] = {
+                --         --     checkOnSave = true,
+                --         --     check = {
+                --         --         enable = true,
+                --         --         command = "clippy",
+                --         --         features = "all",
+                --         --     },
+                --         --     trace = {
+                --         --         server = "verbose",
+                --         --     },
+                --         --     completion = {
+                --         --         callable = {
+                --         --             snippets = "add_parentheses",
+                --         --         },
+                --         --         fullFunctionSignatures = {
+                --         --             enable = true,
+                --         --         },
+                --         --         privateEditable = {
+                --         --             enable = true,
+                --         --         },
+                --         --     },
+                --         --     procMacro = {
+                --         --         ignored = {
+                --         --             tokio_macros = {
+                --         --                 "main",
+                --         --                 "test",
+                --         --             },
+                --         --             tracing_attributes = {
+                --         --                 "instrument",
+                --         --             },
+                --         --         },
+                --         --     },
+                --         --     inlayHints = {
+                --         --         parameterHints = false,
+                --         --         closureReturnTypeHints = "with_block",
+                --         --     },
+                --         -- },
+                --     },
+                -- },
                 -- clangd = {
                 --     init_options = { compilationDatabasePath = "./build" },
                 --     settings = {},
                 -- },
                 pylance = {
-                    settings = {
-                        python = {
-                            -- pythonPath = "/usr/bin/python3",
-                            analysis = {
-                                inlayHints = {
-                                    variableTypes = true,
-                                    functionReturnTypes = true,
-                                    callArgumentNames = true,
-                                    pytestParameters = true,
-                                },
-                            },
-                        },
-                    },
+                    -- settings = {
+                    --     python = {
+                    --         -- pythonPath = "/usr/bin/python3",
+                    --         analysis = {
+                    --             inlayHints = {
+                    --                 variableTypes = true,
+                    --                 functionReturnTypes = true,
+                    --                 callArgumentNames = true,
+                    --                 pytestParameters = true,
+                    --             },
+                    --         },
+                    --     },
+                    -- },
                 },
                 lua_ls = {
                     settings = {
@@ -129,9 +177,11 @@ return {
                             -- },
                             workspace = {
                                 library = {
+                                    "${3rd}/luv/library",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
                                     "/usr/local/share/nvim/runtime",
+                                    "~/.config/nvim/lua",
                                     -- "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/nvim-treesitter/",
@@ -180,7 +230,7 @@ return {
                                 -- parameterNames = true,
                                 rangeVariableTypes = true,
                             },
-                            semanticTokens = false,
+                            semanticTokens = true,
                             experimentalPostfixCompletions = false,
                             analyses = {
                                 unusedparams = true,

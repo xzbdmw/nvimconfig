@@ -2,8 +2,10 @@ tt.*
 .tests
 doc/tags
 debug
+# repro.lua
 .repro
 foo.*
 *.log
 data
 profile.json
+profile.log

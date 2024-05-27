@@ -189,9 +189,6 @@ function telescopePickers.prettyGrepPicker(search, default_text)
     local pickerAndOptions = {
         picker = search,
         options = {
-            type_filter = vim.bo.filetype,
-            -- search_dirs = { filename },
-            additional_args = { "-F" },
             layout_strategy = "vertical",
             layout_config = {
                 vertical = {
@@ -207,21 +204,9 @@ function telescopePickers.prettyGrepPicker(search, default_text)
     }
     if default_text then
         pickerAndOptions.options.default_text = default_text
+        pickerAndOptions.options.initial_mode = "normal"
     end
 
-    pickerAndOptions.options.attach_mapping = function(_, map)
-        map("i", "(", function(_prompt_bufnr)
-            print("You typed asdf")
-        end)
-
-        map({ "i", "n" }, "<C-0>", function(_prompt_bufnr)
-            print("You typed <C-r>")
-        end, { desc = "desc for which key" })
-
-        -- needs to return true if you want to map default_mappings and
-        -- false if not
-        return true
-    end
     -- Parameter integrity check
     if type(pickerAndOptions) ~= "table" or pickerAndOptions.picker == nil then
         print(

@@ -1,8 +1,25 @@
 return {
     "stevearc/oil.nvim",
     opts = {},
+    keys = {
+        {
+            "<leader>os",
+            "<cmd>Oil oil-ssh://root@10.211.55.5/root<cr>",
+        },
+        {
+            "-",
+            function()
+                vim.g.neovide_cursor_animation_length = 0.0
+                vim.defer_fn(function()
+                    vim.g.neovide_cursor_animation_length = 0.06
+                end, 100)
+                return "<cmd>Oil<cr>"
+            end,
+            expr = true,
+        },
+    },
     cmd = "Oil",
-    enabled = false,
+    -- enabled = false,
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
@@ -66,6 +83,7 @@ return {
             keymaps = {
                 ["g?"] = "actions.show_help",
                 ["<CR>"] = "actions.select",
+                ["="] = "actions.select",
                 ["<C-s>"] = "actions.select_vsplit",
                 ["<C-h>"] = "actions.select_split",
                 ["<C-t>"] = "actions.select_tab",

@@ -10,6 +10,12 @@ return {
             "<leader>rf",
             function()
                 vim.cmd("Noice disable")
+                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                    once = true,
+                    callback = function()
+                        vim.cmd("Noice enable")
+                    end,
+                })
                 return ":Refactor extract "
             end,
             mode = { "x", "n" },
@@ -19,6 +25,12 @@ return {
             "<leader>ri",
             function()
                 vim.cmd("Noice disable")
+                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                    once = true,
+                    callback = function()
+                        vim.cmd("Noice enable")
+                    end,
+                })
                 return ":Refactor inline_var"
             end,
             mode = { "x", "n" },
@@ -28,6 +40,12 @@ return {
             "<leader>re",
             function()
                 vim.cmd("Noice disable")
+                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                    once = true,
+                    callback = function()
+                        vim.cmd("Noice enable")
+                    end,
+                })
                 return ":Refactor extract_var "
             end,
             expr = true,

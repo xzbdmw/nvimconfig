@@ -5,12 +5,22 @@ return {
     keys = {
         {
             "<leader>xw",
-            "<cmd>Trouble mydiags toggle<cr>",
+            "<cmd>Trouble mydiags toggle focus=false<cr>",
+            desc = "Diagnostics (Trouble)",
+        },
+        {
+            "<leader>xq",
+            "<cmd>Trouble qflist toggle focus=false<cr>",
+            desc = "Diagnostics (Trouble)",
+        },
+        {
+            "<leader>xt",
+            "<cmd>Trouble telescope toggle<cr>",
             desc = "Diagnostics (Trouble)",
         },
         {
             "<leader>xx",
-            "<cmd>Trouble mydiags toggle filter.buf=0<cr>",
+            "<cmd>Trouble mydiags toggle filter.buf=0 focus=false<cr>",
             desc = "Buffer Diagnostics (Trouble)",
         },
         {
@@ -63,7 +73,7 @@ return {
         -- Throttle/Debounce settings. Should usually not be changed.
         ---@type table<string, number|{ms:number, debounce?:boolean}>
         throttle = {
-            refresh = 20, -- fetches new data when needed
+            refresh = 100, -- fetches new data when needed
             update = 10, -- updates the window
             render = 10, -- renders the window
             follow = 1, -- follows the current item
@@ -80,7 +90,7 @@ return {
             o = "jump_close",
             ["<esc>"] = "cancel",
             ["<cr>"] = "jump",
-            ["<Tab>"] = "jump",
+            ["<Tab>"] = "tab",
             ["<2-leftmouse>"] = "jump",
             ["<c-s>"] = "jump_split",
             ["<c-v>"] = "jump_vsplit",

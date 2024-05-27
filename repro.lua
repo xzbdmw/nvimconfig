@@ -1762,12 +1762,13 @@ if err != nil {
     {
         "dnlhc/glance.nvim",
         -- dir = "~/Project/lua/glance.nvim/",
+        -- aaaaaaaaa
         event = "VeryLazy",
         config = function()
             local glance = require("glance")
             local actions = glance.actions
             local function clear_and_restore()
-                for bufnr, _ in pairs(_G.glancebuffer) do
+                for bufnr, _ in pairs(_G.glance_buffer) do
                     vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                     vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                     vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
@@ -2032,7 +2033,7 @@ lspconfig.gopls.setup({
         },
     },
 })
-_G.Time = function(start, msg)
+_G.Time1 = function(start, msg)
     local file = io.open("/Users/xzb/.config/nvim/example.txt", "w")
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)

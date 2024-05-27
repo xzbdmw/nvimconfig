@@ -1,27 +1,16 @@
-vim.uv = vim.loop
 require("config.lazy")
-_G.Time = function(start, msg)
-    msg = msg or ""
-    local duration = 0.000001 * (vim.loop.hrtime() - start)
-    if msg == "" then
-        print(vim.inspect(duration))
-    else
-        print(msg .. ":", vim.inspect(duration))
-    end
-end
-vim.cmd("syntax off")
-FeedKeys = function(keymap, mode)
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
-end
+vim.uv = vim.loop
 
+vim.cmd("syntax off")
 vim.api.nvim_create_augroup("LeapIlluminate", {})
 
 -- sync system clipboard while yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
+        local v = vim.v.event
+        local regcontents = v.regcontents
         vim.defer_fn(function()
-            local now = vim.fn.getreg('"')
-            vim.fn.setreg("+", now)
+            vim.fn.setreg("+", regcontents)
         end, 100)
     end,
 })
@@ -36,6 +25,19 @@ vim.api.nvim_create_autocmd("FocusGained", {
     end,
 })
 
+-- Not needed because delete also trigger TextYankPost
+-- vim.api.nvim_create_autocmd("TextChanged", {
+--     callback = function()
+--         if vim.system == nil then
+--             return
+--         end
+--         vim.schedule(function()
+--             local s = vim.fn.getreg('"')
+--             vim.system({ "echo", s, "| pbcopy" })
+--         end)
+--     end,
+-- })
+
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "TelescopePreviewerLoaded",
     callback = function(data)
@@ -44,26 +46,15 @@ vim.api.nvim_create_autocmd({ "User" }, {
         vim.defer_fn(function()
             pcall(function()
                 require("treesitter-context").context_force_update(vim.api.nvim_win_get_buf(winid), winid)
+                ---@diagnostic disable-next-line: undefined-field
+                pcall(_G.indent_update, winid)
             end)
         end, 5)
     end,
 })
--- sync vim clipboard to system clipboard
-vim.api.nvim_create_autocmd("TextChanged", {
-    callback = function()
-        if vim.system == nil then
-            return
-        end
-        vim.schedule(function()
-            local s = vim.fn.getreg('"')
-            vim.system({ "echo", s, "| pbcopy" })
-        end)
-    end,
-})
-
 _G.leapjump = false
 vim.api.nvim_create_autocmd("User", {
-    pattern = "LeapSelectPre",
+    pattern = { "LeapSelectPre" },
     callback = function()
         _G.leapjump = true
         local buf = vim.api.nvim_get_current_buf()
@@ -71,6 +62,13 @@ vim.api.nvim_create_autocmd("User", {
         require("illuminate.engine").refresh_references(buf, win)
     end,
     group = "LeapIlluminate",
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = { "ArrowUpdate" },
+    callback = function()
+        vim.cmd("NvimTreeRefresh")
+    end,
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {
@@ -152,11 +150,17 @@ vim.api.nvim_create_autocmd("FileType", {
     },
     callback = function(event)
         vim.bo[event.buf].buflisted = false
-        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+        vim.keymap.set("n", "q", function()
+            vim.g.neovide_cursor_animation_length = 0.0
+            vim.defer_fn(function()
+                vim.g.neovide_cursor_animation_length = 0.06
+            end, 100)
+            return "<cmd>close<cr>"
+        end, { expr = true, buffer = event.buf, silent = true })
     end,
 })
 
-_G.glancebuffer = {}
+_G.glance_buffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
@@ -166,7 +170,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
         local winconfig = vim.api.nvim_win_get_config(0)
         local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
         if winconfig.relative ~= "" and winconfig.zindex == 10 then
-            if _G.glancebuffer[bufnr] ~= nil then
+            if _G.glance_buffer[bufnr] ~= nil then
                 return
             end
 
@@ -182,7 +186,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
                 end, 100)
             end
 
-            _G.glancebuffer[bufnr] = true
+            _G.glance_buffer[bufnr] = true
             vim.keymap.set("n", "<Esc>", function()
                 glance_close()
             end, { buffer = bufnr })
@@ -296,7 +300,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
-    callback = function(args)
+    callback = function()
         local telescopeUtilities = require("telescope.utils")
         local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
         if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
@@ -325,50 +329,52 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
             iconHighlight = "ArrowIcon"
         end
         local winconfig = vim.api.nvim_win_get_config(winid)
-        if path ~= "" and filename ~= "" then
-            if not vim.startswith(absolute_path, cwd) then
-                vim.wo[winid].winbar = " "
-                    .. " "
-                    .. "%#LibPath#"
-                    .. path
-                    .. "%#Comment#"
-                    .. " => "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow_icon
-                    .. icon
-                    .. " %#WinbarFileName#"
-                    .. filename
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow
-                    .. "%*"
+        pcall(function()
+            if path ~= "" and filename ~= "" then
+                if not vim.startswith(absolute_path, cwd) then
+                    vim.wo[winid].winbar = " "
+                        .. " "
+                        .. "%#LibPath#"
+                        .. path
+                        .. "%#Comment#"
+                        .. " => "
+                        .. "%#"
+                        .. iconHighlight
+                        .. "#"
+                        .. arrow_icon
+                        .. icon
+                        .. " %#WinbarFileName#"
+                        .. filename
+                        .. "%#"
+                        .. iconHighlight
+                        .. "#"
+                        .. arrow
+                        .. "%*"
+                else
+                    vim.wo[winid].winbar = " "
+                        .. "%#NvimTreeFolderName#"
+                        .. " "
+                        .. path
+                        .. " => "
+                        .. "%#"
+                        .. iconHighlight
+                        .. "#"
+                        .. arrow_icon
+                        .. icon
+                        .. " %#WinbarFileName#"
+                        .. filename
+                        .. "%#"
+                        .. iconHighlight
+                        .. "#"
+                        .. arrow
+                        .. "%*"
+                end
+            elseif filename ~= "" then
+                vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
             else
-                vim.wo[winid].winbar = " "
-                    .. "%#NvimTreeFolderName#"
-                    .. " "
-                    .. path
-                    .. " => "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow_icon
-                    .. icon
-                    .. " %#WinbarFileName#"
-                    .. filename
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow
-                    .. "%*"
+                vim.wo.winbar = ""
             end
-        elseif filename ~= "" then
-            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
-        else
-            vim.wo.winbar = ""
-        end
+        end)
     end,
 })
 
@@ -561,17 +567,23 @@ local function toggle_profile()
     end
 end
 vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
---[[ vim.api.nvim_create_autocmd("CursorMoved", {
-    callback = function()
-        if vim.g.gd then
-            if ST ~= nil then
-                Time(ST, "CursorMoved")
-            end
-        end
-    end,
-})
+
+-- vim.api.nvim_create_autocmd("CursorMoved", {
+--     callback = function()
+--         if vim.g.gd then
+--             if ST ~= nil then
+--                 Time(ST, "CursorMoved")
+--             end
+--         end
+--     end,
+-- })
+
 local origin = vim.lsp.util.jump_to_location
 vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
     ST = vim.uv.hrtime()
+    vim.g.neovide_cursor_animation_length = 0.0
     origin(location, offset_encoding, reuse_win)
-end ]]
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+end

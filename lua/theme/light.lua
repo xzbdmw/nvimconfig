@@ -26,7 +26,7 @@ local ns = vim.api.nvim_create_namespace("MiniDiffOverlay")
 local keymap = vim.keymap.set
 
 keymap("n", "n", function()
-    if require("trouble").is_open("mydiags") then
+    if require("trouble").is_open("mydiags") or require("trouble").is_open("qflist") then
         require("trouble").next({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
         utils.cursor(require("illuminate.goto").goto_next_keeped_reference, 0.03)(true)
@@ -42,7 +42,7 @@ keymap("n", "n", function()
 end)
 
 keymap("n", "N", function()
-    if require("trouble").is_open("mydiags") then
+    if require("trouble").is_open("mydiags") or require("trouble").is_open("qflist") then
         require("trouble").prev({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
         utils.cursor(require("illuminate.goto").goto_prev_keeped_reference, 0.03)(true)
@@ -58,40 +58,45 @@ keymap("n", "N", function()
 end)
 
 keymap({ "s", "i", "n" }, "<esc>", function()
-    local flag = true
-    for _, win in pairs(vim.api.nvim_list_wins()) do
-        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if success then
-            if
-                win_config.relative ~= "" and win_config.zindex == 45
-                or win_config.zindex == 44
-                or win_config.zindex == 44
-                or win_config.zindex == 46
-                or win_config.zindex == 47
-                or win_config.zindex == 50
-                or win_config.zindex == 80
-            then
-                flag = false
-                vim.api.nvim_win_close(win, true)
-            elseif win_config.zindex == 10 then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    pcall(function()
+        vim.api.nvim_exec_autocmds("User", {
+            pattern = "ESC",
+        })
+        local flag = true
+        for _, win in pairs(vim.api.nvim_list_wins()) do
+            local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+            if success then
+                if
+                    win_config.relative ~= "" and win_config.zindex == 45
+                    or win_config.zindex == 44
+                    or win_config.zindex == 44
+                    or win_config.zindex == 46
+                    or win_config.zindex == 47
+                    or win_config.zindex == 50
+                    or win_config.zindex == 80
+                then
+                    flag = false
+                    vim.api.nvim_win_close(win, true)
+                elseif win_config.zindex == 10 then
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                end
             end
         end
-    end
-    if flag then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-        vim.cmd("noh")
-    end
-    if success then
-        engin.clear_keeped_highlight()
-        go.clear_keeped_hl()
-    end
+        if flag then
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+            vim.cmd("noh")
+        end
+        if success then
+            engin.clear_keeped_highlight()
+            go.clear_keeped_hl()
+        end
 
-    local extmarks = vim.api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
-    if #extmarks > 0 or _G.minidiff then
-        require("mini.diff").toggle_overlay()
-        _G.minidiff = false
-    end
+        local extmarks = vim.api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
+        if #extmarks > 0 or _G.minidiff then
+            require("mini.diff").toggle_overlay()
+            _G.minidiff = false
+        end
+    end)
 end)
 -- illuminate
 keymap("n", "H", function()

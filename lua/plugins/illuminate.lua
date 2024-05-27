@@ -1,5 +1,5 @@
 return {
-    "RRethy/vim-illuminate",
+    dir = "~/Project/lua/vim-illuminate/",
     keys = {
         { "<a-p>", false },
     },
@@ -14,6 +14,7 @@ return {
             "Glance",
             "fugitive",
         },
+        -- delay = 90,
         delay = 1,
         under_cursor = true,
         min_count_to_highlight = 1,

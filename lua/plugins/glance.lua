@@ -6,12 +6,12 @@ return {
         local glance = require("glance")
         local actions = glance.actions
         local function clear_and_restore()
-            for bufnr, _ in pairs(_G.glancebuffer) do
+            for bufnr, _ in pairs(_G.glance_buffer) do
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
             end
-            _G.glancebuffer = {} -- 重置glancebuffer
+            _G.glance_buffer = {} -- 重置glancebuffer
             vim.keymap.set("v", "<CR>", function()
                 vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
             end)
@@ -34,6 +34,10 @@ return {
         end
 
         function Close_with_q()
+            vim.g.neovide_cursor_animation_length = 0.0
+            vim.defer_fn(function()
+                vim.g.neovide_cursor_animation_length = 0.06
+            end, 100)
             clear_and_restore()
             vim.defer_fn(actions.close, 1)
         end
@@ -125,12 +129,12 @@ return {
                     ["q"] = Close_with_q,
                     ["Q"] = Close_with_q,
                     ["<Esc>"] = Close_with_q,
-                    ["<C-t>"] = quickfix,
+                    ["<C-q>"] = quickfix,
                     -- ['<Esc>'] = false -- disable a mapping
                 },
                 preview = {
                     ["n"] = actions.next_location,
-                    ["<C-t>"] = quickfix,
+                    ["<C-q>"] = quickfix,
                     ["N"] = actions.previous_location,
                     ["<C-f>"] = actions.enter_win("list"),
                     ["<Tab>"] = actions.enter_win("list"), -- Focus list window
@@ -145,6 +149,7 @@ return {
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
                         open(result)
+                        FeedKeys("<Tab>", "t")
                     elseif method == "references" then
                         if #result == 1 then
                             vim.cmd("normal! m'")

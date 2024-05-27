@@ -1,5 +1,6 @@
 return {
     "coffebar/neovim-project",
+    -- enabled = false,
     commit = "db586796f67e206f0494b1d64492b1db8c109589",
     keys = {
         { "<D-9>", "<cmd>NeovimProjectLoadRecent<CR>" },
@@ -53,7 +54,7 @@ return {
     end,
     dependencies = {
         { "Shatur/neovim-session-manager" },
-        { "nvim-telescope/telescope.nvim" },
+        -- { dir = "~/Project/lua/telescope.nvim/" },
     },
     lazy = false,
     priority = 100,
