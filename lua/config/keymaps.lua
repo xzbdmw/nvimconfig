@@ -191,21 +191,25 @@ keymap("c", "<C-n>", "<down>", opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><leader>h", function()
-    return "<C-w>H<cmd>FocusAutoresize<CR>"
+    return "<C-w>H"
 end, { expr = true })
 keymap("n", "<leader><leader>l", function()
-    return "<C-w>L<cmd>FocusAutoresize<CR>"
+    return "<C-w>L"
 end, { expr = true })
 keymap("n", "<leader><leader>j", function()
-    return "<C-w>J<cmd>FocusAutoresize<CR>"
+    return "<C-w>J"
 end, { expr = true })
 keymap("n", "<leader><leader>k", function()
-    return "<C-w>K<cmd>FocusAutoresize<CR>"
+    return "<C-w>K"
 end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
-
+keymap("n", "<leader><leader>d", function()
+    local s = vim.fn.undotree(vim.api.nvim_get_current_buf())
+    -- __AUTO_GENERATED_PRINT_VAR_START__
+    print([==[function s:]==], vim.inspect(s)) -- __AUTO_GENERATED_PRINT_VAR_END__
+end, opts)
 keymap("i", "<D-v>", function()
     return '<C-g>u<C-r><C-o>"'
 end, { expr = true })

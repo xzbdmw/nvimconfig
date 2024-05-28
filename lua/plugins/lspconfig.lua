@@ -244,15 +244,11 @@ return {
                         }, ]]
                     },
                 },
+                clangd = {},
             },
             -- you can do any additional lsp server setup here
             -- return true if you don't want this server to be setup with lspconfig
             setup = {
-                -- example to setup with typescript.nvim
-                clangd = function(_, opts)
-                    require("lspconfig").clangd.setup()
-                    return true
-                end,
                 -- Specify * to use this function as a fallback for any server
                 -- ["*"] = function(server, opts) end,
             },

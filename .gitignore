@@ -2,7 +2,7 @@ tt.*
 .tests
 doc/tags
 debug
-# repro.lua
+repro.lua
 .repro
 foo.*
 *.log

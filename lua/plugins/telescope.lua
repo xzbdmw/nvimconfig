@@ -190,6 +190,7 @@ return {
             {
                 "<D-e>",
                 function()
+                    require("config.utils").cmd_e()
                     -- ST = os.clock()
                     require("telescope").extensions.smart_open.smart_open({
                         on_complete = {
@@ -355,6 +356,84 @@ return {
                     },
                     mappings = {
                         i = {
+                            ["<D-a>"] = function()
+                                FeedKeys("a", "n")
+                            end,
+                            ["<D-b>"] = function()
+                                FeedKeys("b", "n")
+                            end,
+                            ["<D-c>"] = function()
+                                FeedKeys("c", "n")
+                            end,
+                            ["<D-d>"] = function()
+                                FeedKeys("d", "n")
+                            end,
+                            ["<D-e>"] = function()
+                                FeedKeys("e", "n")
+                            end,
+                            ["<D-f>"] = function()
+                                FeedKeys("f", "n")
+                            end,
+                            ["<D-g>"] = function()
+                                FeedKeys("g", "n")
+                            end,
+                            ["<f13>"] = function()
+                                FeedKeys("h", "n")
+                            end,
+                            ["<D-i>"] = function()
+                                FeedKeys("i", "n")
+                            end,
+                            ["<D-j>"] = function()
+                                FeedKeys("j", "n")
+                            end,
+                            ["<D-k>"] = function()
+                                FeedKeys("k", "n")
+                            end,
+                            ["<f12>"] = function()
+                                FeedKeys("l", "n")
+                            end,
+                            ["<D-m>"] = function()
+                                FeedKeys("m", "n")
+                            end,
+                            ["<D-n>"] = function()
+                                FeedKeys("n", "n")
+                            end,
+                            ["<D-o>"] = function()
+                                FeedKeys("o", "n")
+                            end,
+                            ["<D-p>"] = function()
+                                FeedKeys("p", "n")
+                            end,
+                            ["<f16>"] = function()
+                                FeedKeys("k", "n")
+                            end,
+                            ["<D-q>"] = function()
+                                FeedKeys("q", "n")
+                            end,
+                            ["<D-r>"] = function()
+                                FeedKeys("r", "n")
+                            end,
+                            ["<D-s>"] = function()
+                                FeedKeys("s", "n")
+                            end,
+                            ["<D-t>"] = function()
+                                FeedKeys("t", "n")
+                            end,
+                            ["<D-u>"] = function()
+                                FeedKeys("u", "n")
+                            end,
+                            ["<D-w>"] = function()
+                                FeedKeys("w", "n")
+                            end,
+                            ["<D-x>"] = function()
+                                FeedKeys("x", "n")
+                            end,
+                            ["<D-y>"] = function()
+                                FeedKeys("y", "n")
+                            end,
+                            ["<D-z>"] = function()
+                                FeedKeys("z", "n")
+                            end,
                             ["<C-y>"] = "toggle_selection",
                             ["<Tab>"] = "to_fuzzy_refine",
                             ["("] = function()
@@ -365,7 +444,7 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                require("trouble").open("qflist")
+                                require("trouble").open("before_qflist")
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
@@ -429,14 +508,17 @@ return {
                             end,
                         },
                         n = {
-                            ["<C-y>"] = "toggle_selection",
+                            ["s"] = function(bufnr)
+                                actions.toggle_selection(bufnr)
+                                FeedKeys("j", "m")
+                            end,
                             ["<Tab>"] = function(bufnr)
                                 actions.to_fuzzy_refine(bufnr)
                                 FeedKeys("i", "n")
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                require("trouble").open("qflist")
+                                require("trouble").open("before_qflist")
                             end,
                             ["<c-t>"] = function(bufnr)
                                 require("trouble.sources.telescope").open(bufnr)
@@ -461,6 +543,14 @@ return {
                                 actions.select_default(bufnr)
                                 actions.center(bufnr)
                             end,
+                            ["q"] = function(bufnr)
+                                _G.last = nil
+                                vim.g.neovide_cursor_animation_length = 0.0
+                                vim.defer_fn(function()
+                                    vim.g.neovide_cursor_animation_length = 0.06
+                                end, 100)
+                                actions.close(bufnr)
+                            end,
                             ["Y"] = yank_preview_lines,
                             ["y"] = yank_selected_entry,
                             ["<C-->"] = actions.preview_scrolling_left,
@@ -472,7 +562,6 @@ return {
                                     true
                                 )
                             end,
-                            s = flash,
                         },
                     },
                 },

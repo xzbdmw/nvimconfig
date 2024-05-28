@@ -76,7 +76,7 @@ end
 
 local has_map = false
 function M.inert_mode_space()
-    FeedKeys("<Space>", "n")
+    -- FeedKeys("<Space>", "n")
     if has_map or vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
         return
     end

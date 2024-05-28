@@ -10,7 +10,7 @@ return {
         },
         {
             "<leader>xq",
-            "<cmd>Trouble qflist toggle focus=false<cr>",
+            "<cmd>Trouble before_qflist toggle focus=false<cr>",
             desc = "Diagnostics (Trouble)",
         },
         {
@@ -162,13 +162,19 @@ return {
                     zindex = 20,
                 },
             },
-            test = {
-                mode = "diagnostics",
-                preview = {
-                    type = "split",
-                    relative = "win",
-                    position = "right",
-                    size = 0.3,
+            before_qflist = {
+                mode = "qflist",
+                auto_refresh = false, -- auto refresh when open
+                auto_jump = false, -- auto jump to the item when there's only one
+                focus = false, -- Focus the window when opened
+                restore = true, -- restores the last location in the list when opening
+                follow = false, -- Follow the current item
+                throttle = {
+                    refresh = 9999999, -- fetches new data when needed
+                    update = 9999999, -- updates the window
+                    render = 9999999, -- renders the window
+                    follow = 9999999, -- follows the current item
+                    preview = { ms = 1, debounce = true }, -- shows the preview for the current item
                 },
             },
             symbols = {

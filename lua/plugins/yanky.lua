@@ -21,8 +21,8 @@ return {
         },
         { "P", "<Plug>(YankyPutBefore)" },
 
-        { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
-        { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
+        -- { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
+        -- { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
 
         -- visual mode paste
         { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },

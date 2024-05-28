@@ -300,11 +300,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function()
-        local telescopeUtilities = require("telescope.utils")
-        local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
         if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
             return
         end
+        local filename = vim.fn.expand("%:t")
+        local devicons = require("nvim-web-devicons")
+        local icon, iconHighlight = devicons.get_icon(filename, vim.bo.filetype, { default = true })
         local winid = vim.api.nvim_get_current_win()
         local winconfig = vim.api.nvim_win_get_config(winid)
         if winconfig.relative ~= "" then
@@ -313,7 +314,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
         local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
         local path = vim.fn.expand("%:~:.:h")
         local cwd = vim.fn.getcwd()
-        local filename = vim.fn.expand("%:t")
         if filename:match("%.rs$") then
             iconHighlight = "RustIcon"
             icon = "󱘗"

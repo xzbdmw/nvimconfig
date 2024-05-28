@@ -30,6 +30,16 @@ return {
                     -- suffix = long line, see screenshot
                     -- EXAMPLE ON HOW TO ADD PREFIX!
                     prefixes = {
+                        ["`"] = {
+                            -- #$REMAINDER
+                            -- # is caught prefix
+                            -- `input` becomes $REMAINDER
+                            -- in the above example #lua,md -> input: lua,md
+                            flag = "glob",
+                            cb = function(input)
+                                return string.format([[*.{%s}]], input)
+                            end,
+                        },
                         -- ADDED ! to invert matches
                         -- example prompt: ! sorter
                         -- matches all lines that do not comprise sorter
