@@ -23,6 +23,7 @@ return {
             "~/Project/Typescript/*",
             "~/Project/Go/*",
             "~/Project/C/*",
+            "~/Project/C++/*",
             "/Users/xzb/Downloads/nvim-macos/share/nvim/*",
             "/Users/xzb/Downloads/lih-admin_2",
             "/Users/xzb/.local/share/nvim/lazy/*",

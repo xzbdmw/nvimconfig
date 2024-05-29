@@ -84,6 +84,6 @@ return {
     { "jinh0/eyeliner.nvim", enabled = false },
     { "nvim-telescope/telescope-file-browser.nvim", enabled = false },
     { "neanias/everforest-nvim", enabled = false },
-    { "rktjmp/lush.nvim", enabled = false },
+    -- { "rktjmp/lush.nvim", enabled = false },
     -- { "nvim-treesitter/nvim-treesitter", enabled = false },
 }

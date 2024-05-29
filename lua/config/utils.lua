@@ -18,6 +18,12 @@ function M.load_appropriate_theme()
     end
 end
 
+_G.no_animation = function()
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+end
 function M.close_win()
     local nvimtree_present = false
     -- 遍历所有窗口
@@ -76,7 +82,7 @@ end
 
 local has_map = false
 function M.inert_mode_space()
-    -- FeedKeys("<Space>", "n")
+    FeedKeys("<Space>", "n")
     if has_map or vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
         return
     end
@@ -186,6 +192,7 @@ function M.normal_tab()
     end
     local is_terminal = vim.opt.buftype:get() == "terminal"
     if is_terminal then
+        _G.no_animation()
         vim.cmd(":startinsert")
     end
 end
@@ -271,7 +278,14 @@ M.qf_populate = function(lines, opts)
     vim.cmd(commands)
 end
 
-M.cursor = function(callback, length)
+_G.no_animation = function()
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+end
+
+_G.Cursor = function(callback, length)
     length = length or 0
     return function(...)
         vim.g.neovide_cursor_animation_length = length
@@ -281,324 +295,321 @@ M.cursor = function(callback, length)
         end, 100)
     end
 end
-_G.rust_query = vim.treesitter.query.parse(
-    "rust",
-    [[
-(type_identifier) @type
-(primitive_type) @type.builtin
-(self) @variable.special
-(field_identifier) @property
-
-(call_expression
-  function: [
-    (identifier) @function
-    (scoped_identifier
-      name: (identifier) @function)
-    (field_expression
-      field: (field_identifier) @function.method)
-  ])
-
-(generic_function
-  function: [
-        (identifier) @function
-    (scoped_identifier
-      name: (identifier) @function)
-    (field_expression
-      field: (field_identifier) @function.method)
-  ])
-
-(function_item name: (identifier) @function.definition)
-(function_signature_item name: (identifier) @function.definition)
-
-(macro_invocation
-  macro: [
-    (identifier) @function.special
-    (scoped_identifier
-      name: (identifier) @function.special)
-  ])
-
-(macro_definition
-  name: (identifier) @function.special.definition)
-
-; Identifier conventions
-
-; Assume uppercase names are types/enum-constructors
-((identifier) @type
- (#match? @type "^[A-Z]"))
-
-; Assume all-caps names are constants
-((identifier) @constant
- (#match? @constant "^_*[A-Z][A-Z\\d_]*$"))
-
-[
-  "("
-  ")"
-  "{"
-  "}"
-  "["
-  "]"
-] @punctuation.bracket.special
-
-(_
-  .
-  "<" @punctuation.bracket.special
-  ">" @punctuation.bracket.special)
-
-[
-  "as"
-  "async"
-  "await"
-  "break"
-  "const"
-  "continue"
-  "default"
-  "dyn"
-  "else"
-  "enum"
-  "extern"
-  "fn"
-  "for"
-  "if"
-  "impl"
-  "in"
-  "let"
-  "loop"
-  "macro_rules!"
-  "match"
-  "mod"
-  "move"
-  "pub"
-  "ref"
-  "return"
-  "static"
-  "struct"
-  "trait"
-  "type"
-  "union"
-  "unsafe"
-  "use"
-  "where"
-  "while"
-  "yield"
-  (crate)
-  (mutable_specifier)
-  (super)
-] @keyword
-
-[
-  (string_literal)
-  (raw_string_literal)
-  (char_literal)
-] @string
-
-[
-  (integer_literal)
-  (float_literal)
-] @number
-
-(boolean_literal) @constant
-
-[
-  (line_comment)
-  (block_comment)
-] @comment]]
-)
-function M.parseEntry(entryStr)
-    ::POS::
-    local s, e, betweenParentheses = entryStr:find("%((.-)%)")
-    local sub = string.sub(entryStr, s, e)
-    if string.find(sub, "%:") == nil then
-        entryStr = string.sub(e, string.len(entryStr))
-        goto POS
-    end
-    if betweenParentheses then
-        local parts = {}
-        for part in betweenParentheses:gmatch("[^:]+") do
-            table.insert(parts, tonumber(part))
-        end
-
-        if #parts == 2 then
-            return parts[1], parts[2]
-        else
-            return nil, nil
-        end
-    else
-        return nil, nil
-    end
-end
-function M.WriteToFile(content)
-    local filename = "/Users/xzb/.local/share/nvim/lazy/multicursors.nvim/demo.txt"
-    local file = io.open(filename, "a")
-    if file then
-        file:write(content)
-
-        file:flush()
-    else
-    end
-end
-function M.get_visual_selection_text()
-    local _, srow, scol = unpack(vim.fn.getpos("v"))
-    local _, erow, ecol = unpack(vim.fn.getpos("."))
-
-    -- visual line mode
-    if vim.fn.mode() == "V" then
-        if srow > erow then
-            return vim.api.nvim_buf_get_lines(0, erow - 1, srow, true)
-        else
-            return vim.api.nvim_buf_get_lines(0, srow - 1, erow, true)
-        end
-    end
-
-    -- regular visual mode
-    if vim.fn.mode() == "v" then
-        if srow < erow or (srow == erow and scol <= ecol) then
-            return vim.api.nvim_buf_get_text(0, srow - 1, scol - 1, erow - 1, ecol, {})
-        else
-            return vim.api.nvim_buf_get_text(0, erow - 1, ecol - 1, srow - 1, scol, {})
-        end
-    end
-
-    -- visual block mode
-    if vim.fn.mode() == "\22" then
-        local lines = {}
-        if srow > erow then
-            srow, erow = erow, srow
-        end
-        if scol > ecol then
-            scol, ecol = ecol, scol
-        end
-        for i = srow, erow do
-            table.insert(
-                lines,
-                vim.api.nvim_buf_get_text(0, i - 1, math.min(scol - 1, ecol), i - 1, math.max(scol - 1, ecol), {})[1]
-            )
-        end
-        return lines
-    end
-end
-local function qf_rename()
-    local what = 1
-    what = 4
-    what = 5
-    local new_name = vim.fn.expand("<cword>")
-    vim.cmd("undo!")
-    local position_param = vim.lsp.util.make_position_params()
-    position_param.oldName = vim.fn.expand("<cword>")
-    position_param.newName = new_name
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[qf_rename tesdt.oldName:]==], vim.inspect(position_param.oldName)) -- __AUTO_GENERATED_PRINT_VAR_END__
-    vim.lsp.buf_request(0, "textDocument/rename", position_param, function(err, result, ...)
-        if not result or not result.changes then
-            print(string.format("could not perform rename"))
-            return
-        end
-
-        vim.lsp.handlers["textDocument/rename"](err, result, ...)
-
-        local notification, entries = "", {}
-        local num_files, num_updates = 0, 0
-        for uri, edits in pairs(result.changes) do
-            num_files = num_files + 1
-            local bufnr = vim.uri_to_bufnr(uri)
-
-            for _, edit in ipairs(edits) do
-                local start_line = edit.range.start.line + 1
-                local line = vim.api.nvim_buf_get_lines(bufnr, start_line - 1, start_line, false)[1]
-
-                num_updates = num_updates + 1
-                table.insert(entries, {
-                    bufnr = bufnr,
-                    lnum = start_line,
-                    col = edit.range.start.character + 1,
-                    text = line,
-                })
-                local ns = vim.api.nvim_create_namespace("rename-highlights")
-                local start = entries[#entries].col - 1
-                if bufnr == vim.api.nvim_get_current_buf() then
-                    pcall(function()
-                        vim.api.nvim_buf_set_extmark(bufnr, ns, start_line - 1, start, {
-                            end_row = start_line - 1,
-                            end_col = start + #position_param.newName,
-                            hl_group = "Search",
-                        })
-                    end)
-                end
-                vim.defer_fn(function()
-                    vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-                end, 1000)
-            end
-
-            local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
-            notification = notification .. string.format("made %d change(s) in %s\n", #edits, short_uri)
-        end
-
-        if num_files > 1 then
-            print(notification)
-            vim.fn.setqflist(entries, "r")
-            vim.cmd("Trouble qflist focus=false")
-        else
-            vim.notify(
-                string.format(
-                    "[lsp] rename %s -> %s in %s place",
-                    position_param.oldName,
-                    position_param.newName,
-                    num_updates
-                ),
-                vim.log.levels.INFO
-            )
-        end
-    end)
-end
--- keymap("n", "<leader>zz", function()
---     local start_time = vim.loop.hrtime()
---     local buf = vim.api.nvim_create_buf(false, true)
---     local str = "local lang = item:get_lang()"
+-- _G.rust_query = vim.treesitter.query.parse(
+--     "rust",
+--     [[
+-- (type_identifier) @type
+-- (primitive_type) @type.builtin
+-- (self) @variable.special
+-- (field_identifier) @property
 --
---     -- local str = 's:="adsasds"'
---     local filetype = "lua"
---     vim.api.nvim_buf_set_lines(buf, 0, -1, false, { str })
---     local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
---     local query = vim.treesitter.query.get(filetype, "highlights")
---     local parser = vim.treesitter.get_string_parser(str, filetype)
---     local tree = parser:parse(false)[1]
---     local root = tree:root()
---     -- for _ = 1, 500 do
---     for id, node in query:iter_captures(root, str, 0, -1) do
---         local name = "@" .. query.captures[id] .. "." .. filetype
---         local priority = 200
---         if name == "@interface.name" then
---             priority = 1000
+-- (call_expression
+--   function: [
+--     (identifier) @function
+--     (scoped_identifier
+--       nameb: (identifier) @function)
+--     (field_expression
+--       field: (field_identifier) @function.method)
+--   ])
+--
+-- (generic_function
+--   function: [
+--         (identifier) @function
+--     (scoped_identifier
+--       name: (identifier) @function)
+--     (field_expression
+--       field: (field_identifier) @function.method)
+--   ])
+--
+-- (function_item name: (identifier) @function.definition)
+-- (function_signature_item name: (identifier) @function.definition)
+--
+-- (macro_invocation
+--   macro: [
+--     (identifier) @function.special
+--     (scoped_identifier
+--       name: (identifier) @function.special)
+--   ])
+--
+-- (macro_definition
+--   name: (identifier) @function.special.definition)
+--
+-- ; Identifier conventions
+--
+-- ; Assume uppercase names are types/enum-constructors
+-- ((identifier) @type
+--  (#match? @type "^[A-Z]"))
+--
+-- ; Assume all-caps names are constants
+-- ((identifier) @constant
+--  (#match? @constant "^_*[A-Z][A-Z\\d_]*$"))
+--
+-- [
+--   "("
+--   ")"
+--   "{"
+--   "}"
+--   "["
+--   "]"
+-- ] @punctuation.bracket.special
+--
+-- (_
+--   .
+--   "<" @punctuation.bracket.special
+--   ">" @punctuation.bracket.special)
+--
+-- [
+--   "as"
+--   "async"
+--   "await"
+--   "break"
+--   "const"
+--   "continue"
+--   "default"
+--   "dyn"
+--   "else"
+--   "enum"
+--   "extern"
+--   "fn"
+--   "for"
+--   "if"
+--   "impl"
+--   "in"
+--   "let"
+--   "loop"
+--   "macro_rules!"
+--   "match"
+--   "mod"
+--   "move"
+--   "pub"
+--   "ref"
+--   "return"
+--   "static"
+--   "struct"
+--   "trait"
+--   "type"
+--   "union"
+--   "unsafe"
+--   "use"
+--   "where"
+--   "while"
+--   "yield"
+--   (crate)
+--   (mutable_specifier)
+--   (super)
+-- ] @keyword
+--
+-- [
+--   (string_literal)
+--   (raw_string_literal)
+--   (char_literal)
+-- ] @string
+--
+-- [
+--   (integer_literal)
+--   (float_literal)
+-- ] @number
+--
+-- (boolean_literal) @constant
+--
+-- [
+--   (line_comment)
+--   (block_comment)
+-- ] @comment]]
+-- )
+-- function M.parseEntry(entryStr)
+--     ::POS::
+--     local s, e, betweenParentheses = entryStr:find("%((.-)%)")
+--     local sub = string.sub(entryStr, s, e)
+--     if string.find(sub, "%:") == nil then
+--         entryStr = string.sub(e, string.len(entryStr))
+--         goto POS
+--     end
+--     if betweenParentheses then
+--         local parts = {}
+--         for part in betweenParentheses:gmatch("[^:]+") do
+--             table.insert(parts, tonumber(part))
 --         end
---         local hl = vim.api.nvim_get_hl_id_by_name(name)
---         -- __AUTO_GENERATED_PRINT_VAR_START__
---         -- print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
---         local range = { node:range() }
---         -- __AUTO_GENERATED_PRINT_VAR_START__
---         -- print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
---         local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
---         local ns_id = vim.api.nvim_create_namespace("cmp")
---         -- __AUTO_GENERATED_PRINT_VAR_START__
---         -- print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
---         -- __AUTO_GENERATED_PRINT_VAR_START__
---         -- print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
---         vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
---             end_col = necol,
---             priority = priority,
---             hl_group = hl,
---         })
---         -- end
+--
+--         if #parts == 2 then
+--             return parts[1], parts[2]
+--         else
+--             return nil, nil
+--         end
+--     else
+--         return nil, nil
 --     end
---     if start_time then
---         local duration = 0.000001 * (vim.loop.hrtime() - start_time)
---         -- __AUTO_GENERATED_PRINT_VAR_START__
---         print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
+-- end
+-- function M.WriteToFile(content)
+--     local filename = "/Users/xzb/.local/share/nvim/lazy/multicursors.nvim/demo.txt"
+--     local file = io.open(filename, "a")
+--     if file then
+--         file:write(content)
+--
+--         file:flush()
+--     else
 --     end
--- end, opts)
+-- end
+-- function M.get_visual_selection_text()
+--     local _, srow, scol = unpack(vim.fn.getpos("v"))
+--     local _, erow, ecol = unpack(vim.fn.getpos("."))
 --
+--     -- visual line mode
+--     if vim.fn.mode() == "V" then
+--         if srow > erow then
+--             return vim.api.nvim_buf_get_lines(0, erow - 1, srow, true)
+--         else
+--             return vim.api.nvim_buf_get_lines(0, srow - 1, erow, true)
+--         end
+--     end
 --
+--     -- regular visual mode
+--     if vim.fn.mode() == "v" then
+--         if srow < erow or (srow == erow and scol <= ecol) then
+--             return vim.api.nvim_buf_get_text(0, srow - 1, scol - 1, erow - 1, ecol, {})
+--         else
+--             return vim.api.nvim_buf_get_text(0, erow - 1, ecol - 1, srow - 1, scol, {})
+--         end
+--     end
 --
+--     -- visual block mode
+--     if vim.fn.mode() == "\22" then
+--         local lines = {}
+--         if srow > erow then
+--             srow, erow = erow, srow
+--         end
+--         if scol > ecol then
+--             scol, ecol = ecol, scol
+--         end
+--         for i = srow, erow do
+--             table.insert(
+--                 lines,
+--                 vim.api.nvim_buf_get_text(0, i - 1, math.min(scol - 1, ecol), i - 1, math.max(scol - 1, ecol), {})[1]
+--             )
+--         end
+--         return lines
+--     end
+-- end
+-- local function qf_rename()
+--     local what = 1
+--     what = 4
+--     what = 5
+--     local new_name = vim.fn.expand("<cword>")
+--     vim.cmd("undo!")
+--     local position_param = vim.lsp.util.make_position_params()
+--     position_param.oldName = vim.fn.expand("<cword>")
+--     position_param.newName = new_name
+--     -- __AUTO_GENERATED_PRINT_VAR_START__
+--     print([==[qf_rename tesdt.oldName:]==], vim.inspect(position_param.oldName)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--     vim.lsp.buf_request(0, "textDocument/rename", position_param, function(err, result, ...)
+--         if not result or not result.changes then
+--             print(string.format("could not perform rename"))
+--             return
+--         end
 --
--- keymap({ "n", "i" }, "<D-w>", function()
+--         vim.lsp.handlers["textDocument/rename"](err, result, ...)
+--
+--         local notification, entries = "", {}
+--         local num_files, num_updates = 0, 0
+--         for uri, edits in pairs(result.changes) do
+--             num_files = num_files + 1
+--             local bufnr = vim.uri_to_bufnr(uri)
+--
+--             for _, edit in ipairs(edits) do
+--                 local start_line = edit.range.start.line + 1
+--                 local line = vim.api.nvim_buf_get_lines(bufnr, start_line - 1, start_line, false)[1]
+--
+--                 num_updates = num_updates + 1
+--                 table.insert(entries, {
+--                     bufnr = bufnr,
+--                     lnum = start_line,
+--                     col = edit.range.start.character + 1,
+--                     text = line,
+--                 })
+--                 local ns = vim.api.nvim_create_namespace("rename-highlights")
+--                 local start = entries[#entries].col - 1
+--                 if bufnr == vim.api.nvim_get_current_buf() then
+--                     pcall(function()
+--                         vim.api.nvim_buf_set_extmark(bufnr, ns, start_line - 1, start, {
+--                             end_row = start_line - 1,
+--                             end_col = start + #position_param.newName,
+--                             hl_group = "Search",
+--                         })
+--                     end)
+--                 end
+--                 vim.defer_fn(function()
+--                     vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+--                 end, 1000)
+--             end
+--
+--             local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
+--             notification = notification .. string.format("made %d change(s) in %s\n", #edits, short_uri)
+--         end
+--
+--         if num_files > 1 then
+--             print(notification)
+--             vim.fn.setqflist(entries, "r")
+--             vim.cmd("Trouble qflist focus=false")
+--         else
+--             vim.notify(
+--                 string.format(
+--                     "[lsp] rename %s -> %s in %s place",
+--                     position_param.oldName,
+--                     position_param.newName,
+--                     num_updates
+--                 ),
+--                 vim.log.levels.INFO
+--             )
+--         end
+--     end)
+-- end
+
+vim.keymap.set("n", "<leader>zz", function()
+    local start_time = vim.loop.hrtime()
+    local buf = vim.api.nvim_create_buf(false, true)
+    local str = "&a ;int a "
+    -- local str = 's:="adsasds"'
+    local filetype = "cpp"
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { str })
+    local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
+    local query = vim.treesitter.query.get(filetype, "highlights")
+    local parser = vim.treesitter.get_string_parser(str, filetype)
+    local tree = parser:parse(false)[1]
+    local root = tree:root()
+    -- for _ = 1, 500 do
+    for id, node in query:iter_captures(root, str, 0, -1) do
+        local name = "@" .. query.captures[id] .. "." .. filetype
+        local priority = 200
+        if name == "@interface.name" then
+            priority = 1000
+        end
+        local hl = vim.api.nvim_get_hl_id_by_name(name)
+        -- __AUTO_GENERATED_PRINT_VAR_START__
+        -- print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
+        local range = { node:range() }
+        -- __AUTO_GENERATED_PRINT_VAR_START__
+        -- print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
+        local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
+        local ns_id = vim.api.nvim_create_namespace("cmp")
+        -- __AUTO_GENERATED_PRINT_VAR_START__
+        -- print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
+        -- __AUTO_GENERATED_PRINT_VAR_START__
+        -- print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
+        vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
+            end_col = necol,
+            priority = priority,
+            hl_group = hl,
+        })
+        -- end
+    end
+    if start_time then
+        local duration = 0.000001 * (vim.loop.hrtime() - start_time)
+        -- __AUTO_GENERATED_PRINT_VAR_START__
+        print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
+    end
+end, opts)
+
+-- kymap({ "n", "i" }, "<D-w>", function()
 --     local nvimtree_present = false
 --     local aerial_present = false
 --     local term_present = false

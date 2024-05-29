@@ -24,6 +24,7 @@ return {
                 vim.cmd(":startinsert")
             end, -- function to run when the terminal opens
             on_close = function()
+                _G.no_animation()
                 vim.cmd("set laststatus=0")
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout

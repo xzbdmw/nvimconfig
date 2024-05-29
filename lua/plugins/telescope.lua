@@ -190,7 +190,7 @@ return {
             {
                 "<D-e>",
                 function()
-                    require("config.utils").cmd_e()
+                    -- require("config.utls").cmd_e()
                     -- ST = os.clock()
                     require("telescope").extensions.smart_open.smart_open({
                         on_complete = {

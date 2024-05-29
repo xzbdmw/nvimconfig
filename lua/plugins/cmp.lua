@@ -291,7 +291,79 @@ local function c_fmt(entry, vim_item)
     end
     return kind
 end
+local function cpp_fmt(entry, vim_item)
+    local kind = require("lspkind").cmp_format({
+        mode = "symbol_text",
+    })(entry, vim_item)
+    -- detail = "int",
+    -- documentation = {
+    --   kind = "markdown",
+    --   value = "From `<cstdio>`"
+    -- }
+    -- filterText = "printf",
+    -- insertText = "printf(${1:const char *, ...})",
+    -- insertTextFormat = 2,
+    -- kind = 3,
+    -- label = "•printf",
+    -- labelDetails = {
+    --   detail = "(const char *, ...)"
+    -- },
+    local strings = vim.split(kind.kind, "%s", { trimempty = true })
+    local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
+    local completion_item = entry:get_completion_item()
+    if vim.startswith(completion_item.label, "•") then
+        completion_item.label = vim.trim(string.sub(completion_item.label, 4, #completion_item.label))
+    end
+    kind.abbr = vim.trim(kind.abbr)
+    if vim.startswith(kind.abbr, "•") then
+        kind.abbr = vim.trim(string.sub(kind.abbr, 4, #kind.abbr))
+    end
+    local label_detail = completion_item.labelDetails
+    local ducument = completion_item.documentation
+    if item_kind == 3 or item_kind == 2 then --Function
+        if label_detail ~= nil then
+            -- label = " get",
+            -- labelDetails = {
+            --   detail = "<class T1>(const tuple<Args...> &tup)"
+            -- },
+            kind.concat = string.format(
+                "%s%s; %s a//%s",
+                vim.trim(completion_item.label or ""),
+                vim.trim(label_detail.detail or ""),
+                vim.trim(completion_item.detail or ""),
+                vim.trim(ducument and ducument.value or "")
+            )
+            kind.abbr = string.format(
+                "%s%s: %s   %s",
+                vim.trim(completion_item.label or ""),
+                vim.trim(label_detail.detail or ""),
+                vim.trim(completion_item.detail or ""),
+                vim.trim(ducument and ducument.value or "")
+            )
+            -- kind.abbr = kind.concat
+            kind.offset = 0
+        end
+    elseif item_kind == 6 then -- Variable
+        -- detail = "int",
+        -- kind = 6,
+        -- label = " a",
+        kind.concat = string.format("&%s;%s a", vim.trim(completion_item.label), completion_item.detail)
+        kind.abbr = string.format("%s %s", vim.trim(completion_item.label), completion_item.detail)
+        kind.offset = 1
+    elseif item_kind == 1 then -- Text
+        kind.concat = '"' .. kind.abbr .. '"'
+        kind.offset = 1
+    else
+        kind.concat = kind.abbr
+    end
+    kind.kind = " " .. (strings[1] or "") .. " "
+    kind.menu = nil
+    if string.len(kind.abbr) > 50 then
+        kind.abbr = kind.abbr:sub(1, 50)
+    end
 
+    return kind
+end
 local function go_fmt(entry, vim_item)
     local kind = require("lspkind").cmp_format({
         mode = "symbol_text",
@@ -661,6 +733,8 @@ return {
                         return rust_fmt(entry, vim_item)
                     elseif vim.bo.filetype == "lua" then
                         return lua_fmt(entry, vim_item)
+                    elseif vim.bo.filetype == "c" or vim.bo.filetype == "cpp" then
+                        return cpp_fmt(entry, vim_item)
                     elseif vim.bo.filetype == "go" then
                         return go_fmt(entry, vim_item)
                     else

@@ -38,10 +38,16 @@ vim.o.scrolloff = 6
 vim.g.neovide_text_gamma = 1.4
 vim.opt.timeoutlen = 500
 vim.opt.swapfile = false
+-- vim.o.background = "light"
 -- vim.o.incsearch = false
 -- vim.opt.inccommand = "split"
 local str = string.rep(" ", vim.api.nvim_win_get_width(0))
 vim.opt.statusline = str
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "cpp",
+    command = "set nocindent",
+})
+-- vim.o.cindent = ""
 vim.g.loaded_matchparen = 1
 -- vim.opt.linebreak = true
 vim.g.cmp_completion = true
