@@ -273,7 +273,6 @@ local function c_fmt(entry, vim_item)
     })(entry, vim_item)
     local strings = vim.split(kind.kind, "%s", { trimempty = true })
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
-    local completion_item = entry:get_completion_item()
     if item_kind == 5 then -- Field
         kind.concat = "v." .. kind.abbr
         kind.offset = 2
@@ -591,6 +590,13 @@ return {
                         cmp.open_docs()
                     end
                 end),
+                ["<esc>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    fallback()
+                    vim.g.neovide_cursor_animation_length = 0
+                end),
                 ["<right>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         expand = false
@@ -620,6 +626,7 @@ return {
                     vim.schedule(fallback)
                 end),
                 ["<f7>"] = cmp.mapping(function()
+                    ---@diagnostic disable-next-line: missing-parameter
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                 end),
                 ["<C-9>"] = cmp.mapping.complete(),

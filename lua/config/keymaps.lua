@@ -36,6 +36,7 @@ keymap("n", "<leader>h", function()
     end)
 end, opts)
 
+-- <D-k>
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
 keymap("n", "<C-m>", "%", opts)
 
@@ -44,21 +45,49 @@ keymap("n", "o", function()
     _G.no_delay(0)
     return "o"
 end, { expr = true, remap = true })
-keymap("i", "<C-d>", "<C-w>", opts)
-
-keymap("n", "`", function()
-    vim.g.gd = true
-    vim.g.neovide_cursor_animation_length = 0
-    vim.defer_fn(function()
-        vim.g.gd = false
-        vim.g.neovide_cursor_animation_length = 0.06
-    end, 100)
-    return "<cmd>e #<cr>"
-end, { expr = true })
 
 keymap("n", "O", function()
     _G.no_delay(0)
     return "O"
+end, { expr = true })
+
+keymap("n", "i", function()
+    vim.g.neovide_cursor_animation_length = 0.06
+    return "i"
+end, { expr = true })
+
+keymap("n", "a", function()
+    vim.g.neovide_cursor_animation_length = 0.06
+    return "a"
+end, { expr = true })
+
+keymap("n", "I", function()
+    vim.schedule(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end)
+    return "I"
+end, { expr = true })
+
+keymap("n", "A", function()
+    vim.schedule(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end)
+    return "A"
+end, { expr = true })
+
+keymap({ "n", "v" }, "c", function()
+    vim.g.neovide_cursor_animation_length = 0.02
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.06
+    end, 100)
+    return '"_c'
+end, { expr = true })
+
+keymap("i", "<C-d>", "<C-w>", opts)
+
+keymap("n", "`", function()
+    _G.no_animation()
+    return "<cmd>e #<cr>"
 end, { expr = true })
 
 -- various textobjs
@@ -68,9 +97,6 @@ keymap({ "o", "x" }, "am", "<cmd>lua require('various-textobjs').chainMember('ou
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
-keymap("i", "<C-c>", function()
-    vim.cmd("messages clear")
-end, opts)
 
 keymap({ "n" }, "<C-n>", function()
     vim.g.cmp_completion = false
@@ -90,19 +116,21 @@ keymap({ "n", "x", "o" }, "L", "$", opts)
 keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
 keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-keymap("n", "U", "<C-r>", opts)
+
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
-keymap("n", "[p", '"0p', opts)
+
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
 keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
 keymap("n", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 keymap("v", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
 keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
+
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, opts)
+
 keymap("n", "<leader>uu", function()
     local is_enabled = require("noice.ui")._attached
     if is_enabled then
@@ -111,6 +139,7 @@ keymap("n", "<leader>uu", function()
         return "<cmd>Noice enable<CR>"
     end
 end, { expr = true })
+
 keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
     vim.cmd("DiffviewOpen")
@@ -146,21 +175,13 @@ end, { expr = true })
 
 utils.load_appropriate_theme()
 
-keymap({ "n", "v" }, "c", function()
-    vim.g.neovide_cursor_animation_length = 0.02
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end, 100)
-    return '"_c'
-end, { expr = true })
-
 -- dot trick
 keymap("n", "<space><esc>", ".", opts)
 
 -- mark trick
 keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
-keymap("n", "<space>,", "m6A,<esc>`6", opts)
+keymap("n", "<space>;", "m6A,<esc>`6", opts)
 
 keymap("i", "<space>", function()
     utils.inert_mode_space()
@@ -257,11 +278,12 @@ keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 --Nvimtree workaround
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
+
 keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
     vim.defer_fn(function()
         keymap("v", "J", "4j", { buffer = 0 })
-    end, 150)
+    end, 300)
     return "V"
 end, { expr = true, buffer = 0 })
 
@@ -289,20 +311,10 @@ end, opts)
 
 keymap("n", "<leader>d", function()
     ST = vim.uv.hrtime()
-    vim.g.gd = true
-    vim.defer_fn(function()
-        vim.g.gd = false
-    end, 100)
     vim.cmd("Glance definitions")
 end)
 
 keymap("n", "gd", function()
-    vim.g.gd = true
-    vim.g.neovide_cursor_animation_length = 0.0
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-        vim.g.gd = false
-    end, 100)
     vim.lsp.buf.definition()
 end)
 

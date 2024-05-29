@@ -18,13 +18,26 @@ function M.load_appropriate_theme()
     end
 end
 
-_G.no_animation = function()
-    vim.g.neovide_cursor_animation_length = 0
+function _G.hide_cursor(callback, timeout)
+    local hl = vim.api.nvim_get_hl_by_name("Cursor", true)
+    hl.blend = 100
+    timeout = timeout or 0
+    vim.opt.guicursor:append("a:Cursor/lCursor")
+    pcall(vim.api.nvim_set_hl, 0, "Cursor", hl)
+
+    callback()
+
+    local old_hl = hl
+    old_hl.blend = 0
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end, 100)
+        vim.opt.guicursor:remove("a:Cursor/lCursor")
+        pcall(vim.api.nvim_set_hl, 0, "Cursor", old_hl)
+    end, timeout)
 end
+
 function M.close_win()
+    -- __AUTO_GENERATED_PRINTF_START__
+    print([==[M.close_win 1]==]) -- __AUTO_GENERATED_PRINTF_END__
     local nvimtree_present = false
     -- 遍历所有窗口
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
@@ -64,7 +77,9 @@ function M.close_win()
         if is_split then
             vim.cmd("set laststatus=0")
         end
-        vim.cmd("close")
+        _G.hide_cursor(function()
+            vim.cmd("close")
+        end)
     end
 end
 function M.get_non_float_win_count()
@@ -281,7 +296,7 @@ end
 _G.no_animation = function()
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.neovide_cursor_animation_length = 0.0
     end, 100)
 end
 

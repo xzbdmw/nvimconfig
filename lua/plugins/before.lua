@@ -12,7 +12,7 @@ return {
         vim.keymap.set("n", "<C-'>", before.jump_to_next_edit, {})
 
         -- Look for previous edits in quickfix list
-        vim.keymap.set("n", "<leader>;", function()
+        vim.keymap.set("n", "<leader><C-;>", function()
             before.show_edits_in_quickfix()
         end, {})
 

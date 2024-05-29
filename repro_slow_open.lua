@@ -256,14 +256,6 @@ require("lazy").setup(plugins, {
 --     },
 -- })
 
-vim.api.nvim_create_autocmd("BufLeave", {
-    callback = function()
-        -- if vim.g.gd then
-        --     require("plenary.profile").start("profilef.log", { flame = true })
-        -- end
-        start_time = os.clock()
-    end,
-})
 vim.keymap.set("n", "gd", function()
     vim.g.gd = true
     vim.defer_fn(function()
@@ -282,17 +274,17 @@ end)
 --     end
 --     origin(src, opts)
 -- end
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function()
-        -- if vim.g.gd then
-        -- print(debug.traceback())
-        -- end
-        end_time = os.clock()
-        if start_time then
-            local elapsed_time = end_time - start_time
-        end
-    end,
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     callback = function()
+--         -- if vim.g.gd then
+--         -- print(debug.traceback())
+--         -- end
+--         end_time = os.clock()
+--         if start_time then
+--             local elapsed_time = end_time - start_time
+--         end
+--     end,
+-- })
 -- add anything else here
 vim.opt.termguicolors = true
 -- do not remove the colorscheme!

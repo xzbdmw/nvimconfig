@@ -129,6 +129,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {
+        "saga_codeaction",
         "txt",
         "PlenaryTestPopup",
         "help",
@@ -150,10 +151,8 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", function()
-            vim.g.neovide_cursor_animation_length = 0.0
-            vim.defer_fn(function()
-                vim.g.neovide_cursor_animation_length = 0.06
-            end, 100)
+            _G.no_animation()
+            _G.hide_cursor(function() end)
             return "<cmd>close<cr>"
         end, { expr = true, buffer = event.buf, silent = true })
     end,
@@ -174,12 +173,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
             end
 
             local function glance_close()
-                vim.g.neovide_cursor_animation_length = 0.0
                 pcall(satellite_close, vim.api.nvim_get_current_win())
                 pcall(close_stored_win, vim.api.nvim_get_current_win())
                 Close_with_q()
                 vim.defer_fn(function()
-                    vim.g.neovide_cursor_animation_length = 0.06
                     pcall(_G.indent_update)
                     pcall(_G.mini_indent_auto_draw)
                 end, 100)
@@ -197,9 +194,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
                 vim.g.neovide_cursor_animation_length = 0.0
                 pcall(satellite_close, vim.api.nvim_get_current_win())
                 pcall(close_stored_win, vim.api.nvim_get_current_win())
-                vim.defer_fn(function()
-                    vim.g.neovide_cursor_animation_length = 0.06
-                end, 100)
                 vim.defer_fn(function()
                     Open()
                 end, 5)
@@ -499,7 +493,6 @@ vim.api.nvim_create_autocmd({ "User" }, {
         local tree = require("nvim-tree.api").tree
         pcall(tree.toggle, { focus = false })
         vim.defer_fn(function()
-            vim.g.neovide_cursor_animation_length = 0.06
             vim.cmd("NvimTreeRefresh")
             pcall(_G.indent_update)
         end, 100)
@@ -580,9 +573,5 @@ vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
 local origin = vim.lsp.util.jump_to_location
 vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
     ST = vim.uv.hrtime()
-    vim.g.neovide_cursor_animation_length = 0.0
     origin(location, offset_encoding, reuse_win)
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end, 100)
 end

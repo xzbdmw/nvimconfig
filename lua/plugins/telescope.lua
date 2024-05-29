@@ -449,10 +449,6 @@ return {
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
                                 _G.last = nil
-                                vim.g.neovide_cursor_animation_length = 0.0
-                                vim.defer_fn(function()
-                                    vim.g.neovide_cursor_animation_length = 0.06
-                                end, 100)
                                 actions.close(bufnr)
                             end,
                             ["<C-d>"] = function()
@@ -471,12 +467,7 @@ return {
                             end,
                             ["<CR>"] = function(bufnr)
                                 ST = vim.uv.hrtime()
-                                vim.g.gd = true
                                 vim.g.neovide_cursor_animation_length = 0.0
-                                vim.defer_fn(function()
-                                    vim.g.gd = false
-                                    vim.g.neovide_cursor_animation_length = 0.06
-                                end, 100)
                                 actions.select_default(bufnr)
                                 actions.center(bufnr)
                             end,
@@ -527,28 +518,14 @@ return {
                             ["<C-g>"] = actions.to_fuzzy_refine,
                             ["<esc>"] = function(bufnr)
                                 _G.last = nil
-                                vim.g.neovide_cursor_animation_length = 0.0
-                                vim.defer_fn(function()
-                                    vim.g.neovide_cursor_animation_length = 0.06
-                                end, 100)
                                 actions.close(bufnr)
                             end,
                             ["<CR>"] = function(bufnr)
-                                vim.g.gd = true
-                                vim.g.neovide_cursor_animation_length = 0.0
-                                vim.defer_fn(function()
-                                    vim.g.gd = false
-                                    vim.g.neovide_cursor_animation_length = 0.06
-                                end, 100)
                                 actions.select_default(bufnr)
                                 actions.center(bufnr)
                             end,
                             ["q"] = function(bufnr)
                                 _G.last = nil
-                                vim.g.neovide_cursor_animation_length = 0.0
-                                vim.defer_fn(function()
-                                    vim.g.neovide_cursor_animation_length = 0.06
-                                end, 100)
                                 actions.close(bufnr)
                             end,
                             ["Y"] = yank_preview_lines,

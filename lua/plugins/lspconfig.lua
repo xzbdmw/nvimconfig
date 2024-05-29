@@ -20,6 +20,10 @@ return {
                 false,
             }
             keys[#keys + 1] = {
+                "<leader>ca",
+                false,
+            }
+            keys[#keys + 1] = {
                 "<f7>",
                 function()
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())

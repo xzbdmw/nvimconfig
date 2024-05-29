@@ -94,7 +94,7 @@ function telescopePickers.prettyFilesPicker(ftype)
     end
 
     -- Ensure 'options' integrity
-    options = pickerAndOptions.options or {}
+    local options = pickerAndOptions.options or {}
 
     -- Use Telescope's existing function to obtain a default 'entry_maker' function
     -- ----------------------------------------------------------------------------
@@ -185,7 +185,6 @@ end
 --                                      (optional) options = { ... }
 --                                   }
 function telescopePickers.prettyGrepPicker(search, default_text)
-    local filename = vim.fn.expand("%:p")
     local pickerAndOptions = {
         picker = search,
         options = {
@@ -202,8 +201,36 @@ function telescopePickers.prettyGrepPicker(search, default_text)
             },
         },
     }
+    local function escape_for_ripgrep(text)
+        local escapes = {
+            ["\\"] = [[\]],
+            ["^"] = [[\^]],
+            ["$"] = [[\$]],
+            ["."] = [[\.]],
+            ["["] = [[\[]],
+            ["]"] = "\\]",
+            ["("] = [[\(]],
+            [")"] = [[\)]],
+            ["{"] = [[\{]],
+            ["}"] = [[\}]],
+            ["*"] = [[\*]],
+            ["+"] = [[\+]],
+            ["-"] = [[\-]],
+            ["?"] = [[\?]],
+            ["|"] = [[\|]],
+            ["<"] = [[\<]],
+            [">"] = [[\>]],
+            ["#"] = [[\#]],
+            ["&"] = [[\&]],
+            ["%"] = [[\%]],
+        }
+        return text:gsub(".", function(c)
+            return escapes[c] or c
+        end)
+    end
     if default_text then
-        pickerAndOptions.options.default_text = default_text
+        local escaped_text = escape_for_ripgrep(default_text)
+        pickerAndOptions.options.default_text = escaped_text
         pickerAndOptions.options.initial_mode = "normal"
     end
 
@@ -218,7 +245,7 @@ function telescopePickers.prettyGrepPicker(search, default_text)
     end
 
     -- Ensure 'options' integrity
-    options = pickerAndOptions.options or {}
+    local options = pickerAndOptions.options or {}
 
     -- Use Telescope's existing function to obtain a default 'entry_maker' function
     -- ----------------------------------------------------------------------------
@@ -266,7 +293,7 @@ function telescopePickers.prettyGrepPicker(search, default_text)
             -------------------------------
 
             -- Get the Tail and the Path to display
-            local tail, pathToDisplay = telescopePickers.getPathAndTail(entry.filename)
+            local tail, _ = telescopePickers.getPathAndTail(entry.filename)
 
             -- Get the Icon with its corresponding Highlight information
             local icon, iconHighlight = telescopeUtilities.get_devicons(tail)
@@ -464,7 +491,7 @@ function telescopePickers.prettyWorkspaceSymbols(localOptions)
         originalEntryTable.display = function(entry)
             local tail, _ = telescopePickers.getPathAndTail(entry.filename)
             local tailForDisplay = tail .. " "
-            local pathToDisplay = telescopeUtilities.transform_path({
+            local _ = telescopeUtilities.transform_path({
                 path_display = { shorten = { num = 2, exclude = { -2, -1 } }, "truncate" },
             }, entry.value.filename)
 

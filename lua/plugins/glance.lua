@@ -25,19 +25,11 @@ return {
             actions.quickfix()
         end
         function Jump()
-            vim.g.neovide_cursor_animation_length = 0.0
-            vim.defer_fn(function()
-                vim.g.neovide_cursor_animation_length = 0.06
-            end, 100)
             clear_and_restore()
             actions.jump()
         end
 
         function Close_with_q()
-            vim.g.neovide_cursor_animation_length = 0.0
-            vim.defer_fn(function()
-                vim.g.neovide_cursor_animation_length = 0.06
-            end, 100)
             clear_and_restore()
             vim.defer_fn(actions.close, 1)
         end

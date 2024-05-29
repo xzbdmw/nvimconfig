@@ -20,7 +20,14 @@ return {
         },
         {
             "<leader>xx",
-            "<cmd>Trouble mydiags toggle filter.buf=0 focus=false<cr>",
+            function()
+                if require("trouble").is_open("before_qflist") then
+                    return "<cmd>Trouble before_qflist toggle focus=false<cr>"
+                else
+                    return "<cmd>Trouble mydiags toggle filter.buf=0 focus=false<cr>"
+                end
+            end,
+            expr = true,
             desc = "Buffer Diagnostics (Trouble)",
         },
         {

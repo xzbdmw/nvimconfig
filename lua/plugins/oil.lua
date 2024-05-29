@@ -9,10 +9,6 @@ return {
         {
             "-",
             function()
-                vim.g.neovide_cursor_animation_length = 0.0
-                vim.defer_fn(function()
-                    vim.g.neovide_cursor_animation_length = 0.06
-                end, 100)
                 return "<cmd>Oil<cr>"
             end,
             expr = true,

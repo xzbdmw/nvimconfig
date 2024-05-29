@@ -5,8 +5,8 @@ return {
         {
             "<leader>so",
             function()
-                if vim.bo.filetype == "NvimTree" then
-                    FeedKeys("<C-w><C-w>", "n")
+                if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
+                    FeedKeys("<tab>", "t")
                     vim.schedule(function()
                         MiniFiles.open(vim.api.nvim_buf_get_name(0))
                         -- MiniFiles.reveal_cwd()

@@ -1,5 +1,6 @@
 return {
     "nvimdev/lspsaga.nvim",
+    cmd = { "LspSaga code_action" },
     -- event = "LspAttach",
     commit = "2198c07124bef27ef81335be511c8abfd75db933",
     dependencies = {
@@ -65,7 +66,7 @@ return {
                 frequency = 14,
             },
             code_action = {
-                extend_gitsigns = true,
+                extend_gitsigns = false,
             },
             implement = {
                 enable = false,
