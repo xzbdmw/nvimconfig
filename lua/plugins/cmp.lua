@@ -487,7 +487,6 @@ return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter" },
-    -- enabled = false,
     dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
     -- dir = "~/Project/lua/origin/nvim-cmp/",
     dependencies = {
@@ -590,6 +589,16 @@ return {
                         cmp.open_docs()
                     end
                 end),
+                ["<S-space>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        expand = false
+                        cmp.confirm()
+                        FeedKeys("(<C-e>", "m")
+                    else
+                        fallback()
+                    end
+                    _G.has_moved_up = false
+                end),
                 ["<esc>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
@@ -654,14 +663,10 @@ return {
                     end
                 end,
                 ["<C-e>"] = cmp.mapping(function(fallback)
-                    if cmp.visible then
-                        cmp.abort()
-                    end
                     if cmp.visible() then
                         cmp.abort()
-                    else
-                        fallback()
                     end
+                    fallback()
                     _G.has_moved_up = false
                 end),
                 ["<C-n>"] = cmp.mapping(function(fallback)

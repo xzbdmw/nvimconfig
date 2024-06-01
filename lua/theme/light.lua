@@ -13,12 +13,12 @@ keymap("n", "n", function()
     then
         require("trouble").next({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
-        _G.Cursor(require("illuminate.goto").goto_next_keeped_reference, 0.03)(true)
+        require("illuminate.goto").goto_next_keeped_reference(true)
         return
     else
         local n = vim.v.hlsearch
         if n == 0 then
-            _G.Cursor(require("illuminate").goto_next_reference, 0.03)(true)
+            require("illuminate").goto_next_reference(true)
         else
             vim.cmd("normal! n")
         end
@@ -33,12 +33,12 @@ keymap("n", "N", function()
     then
         require("trouble").prev({ skip_groups = true, jump = true })
     elseif #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
-        _G.Cursor(require("illuminate.goto").goto_prev_keeped_reference, 0.03)(true)
+        require("illuminate.goto").goto_prev_keeped_reference(true)
         return
     else
         local n = vim.v.hlsearch
         if n == 0 then
-            _G.Cursor(require("illuminate").goto_prev_reference, 0.03)(true)
+            require("illuminate").goto_prev_reference(true)
         else
             vim.cmd("normal! N")
         end

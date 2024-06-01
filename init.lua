@@ -158,6 +158,16 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "*:n",
+    callback = function()
+        local len = vim.g.neovide_cursor_animation_length
+        if len ~= 0 then
+            vim.g.neovide_cursor_animation_length = 0
+        end
+    end,
+})
+
 _G.glance_buffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
@@ -166,18 +176,22 @@ vim.api.nvim_create_autocmd("BufEnter", {
             vim.cmd("set foldmethod=manual")
         end, 100)
         local winconfig = vim.api.nvim_win_get_config(0)
-        local bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区编号
+        local bufnr = vim.api.nvim_get_current_buf()
         if winconfig.relative ~= "" and winconfig.zindex == 10 then
             if _G.glance_buffer[bufnr] ~= nil then
                 return
             end
 
             local function glance_close()
+                ---@diagnostic disable-next-line: undefined-global
                 pcall(satellite_close, vim.api.nvim_get_current_win())
+                ---@diagnostic disable-next-line: undefined-global
                 pcall(close_stored_win, vim.api.nvim_get_current_win())
                 Close_with_q()
                 vim.defer_fn(function()
+                    ---@diagnostic disable-next-line: undefined-field
                     pcall(_G.indent_update)
+                    ---@diagnostic disable-next-line: undefined-field
                     pcall(_G.mini_indent_auto_draw)
                 end, 100)
             end
@@ -192,7 +206,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
             end, { buffer = bufnr })
             vim.keymap.set("n", "<CR>", function()
                 vim.g.neovide_cursor_animation_length = 0.0
+                ---@diagnostic disable-next-line: undefined-global
                 pcall(satellite_close, vim.api.nvim_get_current_win())
+                ---@diagnostic disable-next-line: undefined-global
                 pcall(close_stored_win, vim.api.nvim_get_current_win())
                 vim.defer_fn(function()
                     Open()
@@ -268,6 +284,7 @@ end, { desc = "load undotree" })
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
         vim.cmd([[silent! mkview!]])
+        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.indent_update)
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             -- Don't save while there's any 'nofile' buffer open.
@@ -321,7 +338,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
             arrow = " (" .. arrow .. ")"
             iconHighlight = "ArrowIcon"
         end
-        local winconfig = vim.api.nvim_win_get_config(winid)
         pcall(function()
             if path ~= "" and filename ~= "" then
                 if not vim.startswith(absolute_path, cwd) then
@@ -441,25 +457,7 @@ local config_group = vim.api.nvim_create_augroup("MyConfigGroup", {}) -- A globa
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
-        if vim.bo.filetype == "fzf" then
-            if
-                _G.fzf_win ~= nil
-                and _G.fzf_view ~= nil
-                and _G.fzf_buf ~= nil
-                and vim.api.nvim_win_is_valid(_G.fzf_win)
-                and _G.fzf_view ~= nil
-                and vim.api.nvim_buf_is_valid(_G.fzf_buf)
-            then
-                local ns = vim.api.nvim_create_namespace("symbol_highlight")
-                vim.api.nvim_buf_clear_namespace(_G.fzf_buf, ns, 0, -1)
-                vim.api.nvim_win_call(_G.fzf_win, function()
-                    vim.fn.winrestview(_G.fzf_view)
-                end)
-                return
-            end
-        else
-            vim.cmd([[silent! mkview!]])
-        end
+        vim.cmd([[silent! mkview!]])
     end,
 })
 
@@ -494,6 +492,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
         pcall(tree.toggle, { focus = false })
         vim.defer_fn(function()
             vim.cmd("NvimTreeRefresh")
+            ---@diagnostic disable-next-line: undefined-field
             pcall(_G.indent_update)
         end, 100)
     end,
@@ -502,6 +501,21 @@ vim.api.nvim_create_autocmd({ "User" }, {
 vim.api.nvim_create_autocmd("User", {
     pattern = {
         "MiniFilesActionCreate",
+    },
+    callback = function()
+        vim.api.nvim_create_autocmd("CursorMoved", {
+            once = true,
+            callback = function()
+                vim.schedule(function()
+                    MiniFiles.go_in({ close_on_file = true })
+                end)
+            end,
+        })
+    end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = {
         "MiniFilesActionRename",
         "MiniFilesActionCopy",
         "MiniFilesActionMove",
@@ -510,6 +524,29 @@ vim.api.nvim_create_autocmd("User", {
         vim.cmd("NvimTreeRefresh")
     end,
 })
+
+-- just for fun
+-- vim.api.nvim_create_autocmd("User", {
+--     pattern = {
+--         "MiniFilesBufferUpdate",
+--     },
+--     callback = function(data)
+--         local buf = data.data.buf_id
+--         vim.defer_fn(function()
+--             local path = vim.b[buf].minifile
+--             if path ~= nil then
+--                 local view = H.opened_buffers[buf]
+--                 local winid = vim.fn.win_findbuf(buf)[1]
+--                 if winid ~= nil then
+--                     vim.api.nvim_win_call(winid, function()
+--                         vim.cmd("e " .. path)
+--                     end)
+--                     H.opened_buffers[vim.api.nvim_win_get_buf(winid)] = view
+--                 end
+--             end
+--         end, 10)
+--     end,
+-- })
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesBufferCreate",
@@ -527,10 +564,17 @@ vim.api.nvim_create_autocmd("User", {
     callback = function(args)
         local from_path = args.data.from
         local bufnr = vim.fn.bufnr(from_path)
-        if bufnr ~= -1 then
-            vim.api.nvim_buf_delete(bufnr, {})
-        end
-        vim.cmd("NvimTreeRefresh")
+        pcall(function()
+            local win = vim.fn.win_findbuf(bufnr)[1]
+            vim.api.nvim_win_call(win, function()
+                vim.cmd("BufDel")
+            end)
+        end)
+        pcall(function()
+            vim.defer_fn(function()
+                MiniFiles.close()
+            end, 5)
+        end)
     end,
 })
 
@@ -570,8 +614,8 @@ vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
 --     end,
 -- })
 
-local origin = vim.lsp.util.jump_to_location
-vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
-    ST = vim.uv.hrtime()
-    origin(location, offset_encoding, reuse_win)
-end
+-- local origin = vim.lsp.util.jump_to_location
+-- vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
+--     ST = vim.uv.hrtime()
+--     origin(location, offset_encoding, reuse_win)
+-- end

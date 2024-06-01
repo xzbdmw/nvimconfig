@@ -39,7 +39,8 @@ end, opts)
 -- <D-k>
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
 keymap("n", "<C-m>", "%", opts)
-
+keymap("n", "g.", "`.", opts)
+keymap("n", "df", "diwmd(", { remap = true })
 keymap("n", "o", function()
     -- ST = vim.uv.hrtime()
     _G.no_delay(0)
@@ -52,38 +53,41 @@ keymap("n", "O", function()
 end, { expr = true })
 
 keymap("n", "i", function()
-    vim.g.neovide_cursor_animation_length = 0.06
+    vim.g.neovide_cursor_animation_length = 0.04
     return "i"
 end, { expr = true })
 
 keymap("n", "a", function()
-    vim.g.neovide_cursor_animation_length = 0.06
+    vim.g.neovide_cursor_animation_length = 0.04
     return "a"
 end, { expr = true })
 
 keymap("n", "I", function()
-    vim.schedule(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end)
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.04
+    end, 100)
     return "I"
 end, { expr = true })
 
 keymap("n", "A", function()
-    vim.schedule(function()
-        vim.g.neovide_cursor_animation_length = 0.06
-    end)
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = 0.04
+    end, 100)
     return "A"
 end, { expr = true })
 
 keymap({ "n", "v" }, "c", function()
     vim.g.neovide_cursor_animation_length = 0.02
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.neovide_cursor_animation_length = 0.04
     end, 100)
     return '"_c'
 end, { expr = true })
 
-keymap("i", "<C-d>", "<C-w>", opts)
+keymap("i", "<C-d>", function()
+    _G.no_animation()
+    return "<C-w>"
+end, { expr = true })
 
 keymap("n", "`", function()
     _G.no_animation()
@@ -113,8 +117,12 @@ keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
-keymap({ "n", "v" }, "<D-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
-keymap({ "n", "v" }, "<D-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+keymap({ "n", "v" }, "<D-=>", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1
+end, opts)
+keymap({ "n", "v" }, "<D-->", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1
+end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
@@ -184,7 +192,7 @@ keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 
 keymap("i", "<space>", function()
-    utils.inert_mode_space()
+    utils.insert_mode_space()
 end, opts)
 
 keymap("i", "<Tab>", function()
@@ -226,11 +234,6 @@ end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
-keymap("n", "<leader><leader>d", function()
-    local s = vim.fn.undotree(vim.api.nvim_get_current_buf())
-    -- __AUTO_GENERATED_PRINT_VAR_START__
-    print([==[function s:]==], vim.inspect(s)) -- __AUTO_GENERATED_PRINT_VAR_END__
-end, opts)
 keymap("i", "<D-v>", function()
     return '<C-g>u<C-r><C-o>"'
 end, { expr = true })
@@ -246,7 +249,7 @@ keymap("i", "<D-z>", "<C-o>u", opts)
 keymap("n", "<leader>j", function()
     vim.g.neovide_cursor_animation_length = 0.0
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.neovide_cursor_animation_length = 0.04
     end, 100)
     return "f{a<CR>"
 end, { expr = true, remap = true })
@@ -283,9 +286,9 @@ keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
     vim.defer_fn(function()
         keymap("v", "J", "4j", { buffer = 0 })
-    end, 300)
+    end, 150)
     return "V"
-end, { expr = true, buffer = 0 })
+end, { expr = true })
 
 keymap("x", "<bs>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)

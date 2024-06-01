@@ -18,6 +18,7 @@ return {
             "~/Project/rust/*",
             "~/raycast/*",
             "/Users/xzb/Project/Rust/myneovide/neovide/",
+            "/Users/xzb/Project/Rust/my_repo_neovide/neovide/",
             "~/Project/vim/*",
             "~/Project/lua/*",
             "~/Project/Typescript/*",

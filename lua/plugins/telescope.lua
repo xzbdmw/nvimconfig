@@ -26,10 +26,6 @@ local function on_complete(bo_line, bo_line_side, origin_height)
 end
 return {
     {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-    },
-    {
         -- "nvim-telescope/telescope.nvim",
         dir = "~/Project/lua/telescope.nvim/",
         -- commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
@@ -107,7 +103,7 @@ return {
                 "<leader>sg",
                 -- false,
                 function()
-                    require("custom.telescope-pikers").prettyGrepPicker("egrepify")
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", nil, vim.bo.filetype)
                 end,
             },
             {
@@ -118,26 +114,35 @@ return {
                         local get_selection = function()
                             return vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { mode = "v" })
                         end
-                        require("custom.telescope-pikers").prettyGrepPicker("egrepify", get_selection()[1])
+                        require("custom.telescope-pikers").prettyGrepPicker(
+                            "egrepify",
+                            get_selection()[1],
+                            vim.bo.filetype
+                        )
                     else
                         local s = vim.fn.getreg('"')
-                        require("custom.telescope-pikers").prettyGrepPicker("egrepify", s)
+                        require("custom.telescope-pikers").prettyGrepPicker("egrepify", s, vim.bo.filetype)
                     end
                 end,
                 mode = { "v", "n" },
             },
             {
+                "<leader>sb",
+                false,
+            },
+            {
                 "<leader>sw",
                 function()
+                    local filetype = vim.bo.filetype
                     local mode = vim.api.nvim_get_mode()
                     local w
-                    if mode.mode == "v" then
+                    if mode.mode == "v" or mode.mode == "V" then
                         vim.cmd([[noautocmd sil norm! "vy]])
                         w = vim.fn.getreg("v")
                     else
                         w = vim.fn.expand("<cword>")
                     end
-                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", w)
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", w, filetype)
                 end,
                 mode = { "n", "v" },
             },
@@ -359,6 +364,10 @@ return {
                             ["<D-a>"] = function()
                                 FeedKeys("a", "n")
                             end,
+                            ["`"] = function()
+                                FeedKeys("<space>", "n")
+                                FeedKeys("`", "n")
+                            end,
                             ["<D-b>"] = function()
                                 FeedKeys("b", "n")
                             end,
@@ -444,7 +453,8 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                require("trouble").open("before_qflist")
+                                vim.cmd("Trouble before_qflist")
+                                -- require("trouble").open("before_qflist")
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
@@ -499,6 +509,11 @@ return {
                             end,
                         },
                         n = {
+                            ["`"] = function()
+                                FeedKeys("a", "n")
+                                FeedKeys("<space>", "n")
+                                FeedKeys("`", "n")
+                            end,
                             ["s"] = function(bufnr)
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
@@ -509,7 +524,7 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                require("trouble").open("before_qflist")
+                                vim.cmd("Trouble before_qflist")
                             end,
                             ["<c-t>"] = function(bufnr)
                                 require("trouble.sources.telescope").open(bufnr)

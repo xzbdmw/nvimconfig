@@ -1,5 +1,6 @@
 return {
-    "folke/trouble.nvim",
+    -- "folke/trouble.nvim",
+    dir = "~/Project/lua/trouble.nvim/",
     -- branch = "dev", -- IMPORTANT!
     commit = "ab7d4a80883df2733204556746dba0714fe966d1",
     keys = {
@@ -64,19 +65,16 @@ return {
         auto_preview = true, -- automatically open preview when on an item
         auto_refresh = true, -- auto refresh when open
         auto_jump = false, -- auto jump to the item when there's only one
-        focus = true, -- Focus the window when opened
+        focus = false, -- Focus the window when opened
         restore = true, -- restores the last location in the list when opening
         follow = true, -- Follow the current item
         indent_guides = true, -- show indent guides
         max_items = 200, -- limit number of items that can be displayed per section
         multiline = true, -- render multi-line messages
         pinned = false, -- When pinned, the opened trouble window will be bound to the current buffer
-        ---@type trouble.Window.opts
-        win = { zindex = 20 }, -- window options for the results window. Can be a split or a floating window.
         -- Window options for the preview window. Can be a split, floating window,
         -- or `main` to show the preview in the main editor window.
-        ---@type trouble.Window.opts
-        preview = { type = "main" },
+        preview = { type = "main", scratch = true },
         -- Throttle/Debounce settings. Should usually not be changed.
         ---@type table<string, number|{ms:number, debounce?:boolean}>
         throttle = {
@@ -88,7 +86,6 @@ return {
         },
         -- Key mappings can be set to the name of a builtin action,
         -- or you can define your own custom action.
-        ---@type table<string, string|trouble.Action>
         keys = {
             ["?"] = "help",
             r = "refresh",
@@ -128,7 +125,6 @@ return {
             zN = "fold_enable",
             zi = "fold_toggle_enable",
         },
-        ---@type table<string, trouble.Mode>
         modes = {
             mydiags = {
                 mode = "diagnostics", -- inherit from diagnostics mode
@@ -171,18 +167,6 @@ return {
             },
             before_qflist = {
                 mode = "qflist",
-                auto_refresh = false, -- auto refresh when open
-                auto_jump = false, -- auto jump to the item when there's only one
-                focus = false, -- Focus the window when opened
-                restore = true, -- restores the last location in the list when opening
-                follow = false, -- Follow the current item
-                throttle = {
-                    refresh = 9999999, -- fetches new data when needed
-                    update = 9999999, -- updates the window
-                    render = 9999999, -- renders the window
-                    follow = 9999999, -- follows the current item
-                    preview = { ms = 1, debounce = true }, -- shows the preview for the current item
-                },
             },
             symbols = {
                 desc = "document symbols",
@@ -216,7 +200,6 @@ return {
             },
         },
         icons = {
-            ---@type trouble.Indent.symbols
             indent = {
                 top = "│ ",
                 middle = "├╴",

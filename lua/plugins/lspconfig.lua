@@ -12,7 +12,7 @@ return {
             keys[#keys + 1] = {
                 "<leader>i",
                 function()
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = nil }))
                 end,
             }
             keys[#keys + 1] = {
@@ -22,11 +22,12 @@ return {
             keys[#keys + 1] = {
                 "<leader>ca",
                 false,
+                mode = { "n", "v" },
             }
             keys[#keys + 1] = {
                 "<f7>",
                 function()
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = nil }))
                 end,
                 mode = { "x", "v", "n", "i" },
             }

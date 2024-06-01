@@ -3,7 +3,6 @@ return {
     version = false,
     event = "InsertEnter",
     keys = function()
-        local cmp = require("cmp")
         return {
             {
                 "<C-n>",
@@ -248,6 +247,19 @@ return {
                     vim.defer_fn(function()
                         vim.g.neovide_cursor_animation_length = 0.06
                     end, 100)<finish>
+                    ]],
+                    {
+                        ["finish"] = i(0),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
+                "lo",
+                fmta(
+                    [[
+                    local <finish>
                     ]],
                     {
                         ["finish"] = i(0),

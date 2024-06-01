@@ -184,7 +184,7 @@ end
 --                                      picker = '<pickerName>',
 --                                      (optional) options = { ... }
 --                                   }
-function telescopePickers.prettyGrepPicker(search, default_text)
+function telescopePickers.prettyGrepPicker(search, default_text, filetype)
     local pickerAndOptions = {
         picker = search,
         options = {
@@ -218,8 +218,6 @@ function telescopePickers.prettyGrepPicker(search, default_text)
             ["-"] = [[\-]],
             ["?"] = [[\?]],
             ["|"] = [[\|]],
-            ["<"] = [[\<]],
-            [">"] = [[\>]],
             ["#"] = [[\#]],
             ["&"] = [[\&]],
             ["%"] = [[\%]],
@@ -230,7 +228,8 @@ function telescopePickers.prettyGrepPicker(search, default_text)
     end
     if default_text then
         local escaped_text = escape_for_ripgrep(default_text)
-        pickerAndOptions.options.default_text = escaped_text
+        local reformated_body = escaped_text:gsub("%s*\r?\n%s*", " ")
+        pickerAndOptions.options.default_text = "`" .. filetype .. " " .. reformated_body
         pickerAndOptions.options.initial_mode = "normal"
     end
 

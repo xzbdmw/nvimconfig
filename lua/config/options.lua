@@ -43,10 +43,7 @@ vim.opt.swapfile = false
 -- vim.opt.inccommand = "split"
 local str = string.rep(" ", vim.api.nvim_win_get_width(0))
 vim.opt.statusline = str
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "cpp",
-    command = "set nocindent",
-})
+vim.o.cinkeys = "0{,0},0),0],0#,!^F,o,O,e"
 -- vim.o.cindent = ""
 vim.g.loaded_matchparen = 1
 -- vim.opt.linebreak = true

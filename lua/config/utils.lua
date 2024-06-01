@@ -22,6 +22,7 @@ function _G.hide_cursor(callback, timeout)
     local hl = vim.api.nvim_get_hl_by_name("Cursor", true)
     hl.blend = 100
     timeout = timeout or 0
+    ---@diagnostic disable-next-line: undefined-field
     vim.opt.guicursor:append("a:Cursor/lCursor")
     pcall(vim.api.nvim_set_hl, 0, "Cursor", hl)
 
@@ -30,14 +31,13 @@ function _G.hide_cursor(callback, timeout)
     local old_hl = hl
     old_hl.blend = 0
     vim.defer_fn(function()
+        ---@diagnostic disable-next-line: undefined-field
         vim.opt.guicursor:remove("a:Cursor/lCursor")
         pcall(vim.api.nvim_set_hl, 0, "Cursor", old_hl)
     end, timeout)
 end
 
 function M.close_win()
-    -- __AUTO_GENERATED_PRINTF_START__
-    print([==[M.close_win 1]==]) -- __AUTO_GENERATED_PRINTF_END__
     local nvimtree_present = false
     -- 遍历所有窗口
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
@@ -78,7 +78,7 @@ function M.close_win()
             vim.cmd("set laststatus=0")
         end
         _G.hide_cursor(function()
-            vim.cmd("close")
+            vim.cmd("BufDel")
         end)
     end
 end
@@ -96,7 +96,8 @@ function M.get_non_float_win_count()
 end
 
 local has_map = false
-function M.inert_mode_space()
+function M.insert_mode_space()
+    _G.no_animation()
     FeedKeys("<Space>", "n")
     if has_map or vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
         return
@@ -146,6 +147,7 @@ function M.inert_mode_space()
         local map = vim.api.nvim_buf_get_keymap(0, "i")
         for _, m in ipairs(map) do
             if m.desc == "dot" then
+                ---@diagnostic disable-next-line: undefined-field
                 vim.keymap.del("i", m.lhs, { buffer = 0 })
             end
         end
@@ -253,10 +255,12 @@ _G.no_delay = function(animation)
         end
     end)
     vim.defer_fn(function()
+        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.update_indent, true)
+        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
         vim.g.type_o = false
-        vim.g.neovide_cursor_animation_length = 0.06
+        vim.g.neovide_cursor_animation_length = 0.04
     end, 50)
 end
 _G.Time = function(start, msg)
@@ -293,7 +297,8 @@ M.qf_populate = function(lines, opts)
     vim.cmd(commands)
 end
 
-_G.no_animation = function()
+_G.no_animation = function(length)
+    length = length or 0
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
         vim.g.neovide_cursor_animation_length = 0.0
@@ -306,7 +311,7 @@ _G.Cursor = function(callback, length)
         vim.g.neovide_cursor_animation_length = length
         callback(...)
         vim.defer_fn(function()
-            vim.g.neovide_cursor_animation_length = 0.06
+            vim.g.neovide_cursor_animation_length = 0.04
         end, 100)
     end
 end
@@ -591,7 +596,9 @@ vim.keymap.set("n", "<leader>zz", function()
     local parser = vim.treesitter.get_string_parser(str, filetype)
     local tree = parser:parse(false)[1]
     local root = tree:root()
-    -- for _ = 1, 500 do
+    if query == nil then
+        return
+    end
     for id, node in query:iter_captures(root, str, 0, -1) do
         local name = "@" .. query.captures[id] .. "." .. filetype
         local priority = 200
@@ -622,7 +629,7 @@ vim.keymap.set("n", "<leader>zz", function()
         -- __AUTO_GENERATED_PRINT_VAR_START__
         print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
     end
-end, opts)
+end)
 
 -- kymap({ "n", "i" }, "<D-w>", function()
 --     local nvimtree_present = false
