@@ -1,5 +1,6 @@
 return {
     "linux-cultist/venv-selector.nvim",
+    commit = "d946b1e86212f38ff9c42e3b622a8178bbc93461",
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
     opts = {
         anaconda_base_path = "/opt/homebrew/Caskroom/miniconda/base",

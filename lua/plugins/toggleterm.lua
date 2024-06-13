@@ -21,10 +21,12 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
+                vim.g.neovide_underline_stroke_scale = 0
                 vim.cmd(":startinsert")
             end, -- function to run when the terminal opens
             on_close = function()
                 _G.no_animation()
+                vim.g.neovide_underline_stroke_scale = 2
                 vim.cmd("set laststatus=0")
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout

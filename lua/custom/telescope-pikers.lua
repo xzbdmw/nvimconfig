@@ -210,6 +210,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             ["["] = [[\[]],
             ["]"] = "\\]",
             ["("] = [[\(]],
+            [":"] = [[\:]],
             [")"] = [[\)]],
             ["{"] = [[\{]],
             ["}"] = [[\}]],
@@ -227,10 +228,22 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
         end)
     end
     if default_text then
-        local escaped_text = escape_for_ripgrep(default_text)
-        local reformated_body = escaped_text:gsub("%s*\r?\n%s*", " ")
-        pickerAndOptions.options.default_text = "`" .. filetype .. " " .. reformated_body
-        pickerAndOptions.options.initial_mode = "normal"
+        if filetype == nil then
+            pickerAndOptions.options.default_text = default_text
+            pickerAndOptions.options.initial_mode = "insert"
+        else
+            local escaped_text = escape_for_ripgrep(default_text)
+            local reformated_body = escaped_text:gsub("%s*\r?\n%s*", " ")
+            if filetype == "rust" then
+                filetype = "rs"
+            end
+            if filetype ~= "" then
+                pickerAndOptions.options.default_text = "`" .. filetype .. " " .. reformated_body
+            else
+                pickerAndOptions.options.default_text = reformated_body
+            end
+            pickerAndOptions.options.initial_mode = "normal"
+        end
     end
 
     -- Parameter integrity check

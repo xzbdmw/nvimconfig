@@ -104,10 +104,10 @@ return {
             lazy_load = false,
 
             -- Disable aerial on files with this many lines
-            disable_max_lines = 10000,
+            disable_max_lines = 10000000,
 
             -- Disable aerial on files this size or larger (in bytes)
-            disable_max_size = 2000000, -- Default 2MB
+            disable_max_size = 20000000, -- Default 2MB
 
             -- A list of all symbols to display. Set to false to display all symbols.
             -- This can be a filetype map (see :help aerial-filetype-map)
@@ -257,14 +257,14 @@ return {
             update_events = "TextChanged,InsertLeave",
 
             -- Show box drawing characters for the tree hierarchy
-            show_guides = false,
+            show_guides = true,
 
             -- Customize the characters used when show_guides = true
             guides = {
                 -- When the child item has a sibling below it
-                mid_item = "├─",
+                mid_item = "├╴",
                 -- When the child item is the last in the list
-                last_item = "└─",
+                last_item = "└╴",
                 -- When there are nested child guides to the right
                 nested_top = "│ ",
                 -- Raw indentation

@@ -7,8 +7,7 @@ return {
             "r",
             function()
                 local cword = vim.fn.expand("<cword>")
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "x", true)
-                vim.cmd("Noice disable")
+                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "x", true)
                 vim.api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
@@ -17,7 +16,7 @@ return {
                         end, 10)
                     end,
                 })
-                return ":IncRename " .. cword
+                return "o<esc>:IncRename " .. cword
             end,
             expr = true,
             mode = { "x" },

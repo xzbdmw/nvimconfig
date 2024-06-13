@@ -2,7 +2,6 @@ return {
     "fdschmidt93/telescope-egrepify.nvim",
     -- dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
     config = function()
-        local egrep_actions = require("telescope._extensions.egrepify.actions")
         require("telescope").setup({
             extensions = {
                 egrepify = {
@@ -30,6 +29,16 @@ return {
                     -- suffix = long line, see screenshot
                     -- EXAMPLE ON HOW TO ADD PREFIX!
                     prefixes = {
+                        -- filter for (partial) file names
+                        -- example prompt: &egrep $MY_PROMPT
+                        -- searches with ripgrep prompt $MY_PROMPT in paths that have "egrep" in file name
+                        -- i.e. rg --glob="*egrep*" -- $MY_PROMPT
+                        ["@"] = {
+                            flag = "glob",
+                            cb = function(input)
+                                return string.format([[*{%s}]], input)
+                            end,
+                        },
                         ["`"] = {
                             -- #$REMAINDER
                             -- # is caught prefix

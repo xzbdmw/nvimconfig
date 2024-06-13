@@ -1,6 +1,5 @@
 return {
     "coffebar/neovim-project",
-    -- enabled = false,
     commit = "db586796f67e206f0494b1d64492b1db8c109589",
     keys = {
         { "<D-9>", "<cmd>NeovimProjectLoadRecent<CR>" },
@@ -13,12 +12,14 @@ return {
             "/usr/local/share/nvim/runtime/lua/vim",
             "/Users/xzb/Project/lua/lua/fzf-lua",
             "/Users/xzb/Project/lua/fork/*",
-            "/Users/xzb/Project/lua/color/nvim-cmp",
             "/Users/xzb/Project/lua/origin/nvim-cmp",
+            "/Users/xzb/Project/lua/oricmp/nvim-cmp",
+            "/Users/xzb/Project/lua/color/nvim-cmp",
             "~/Project/rust/*",
             "~/raycast/*",
             "/Users/xzb/Project/Rust/myneovide/neovide/",
             "/Users/xzb/Project/Rust/my_repo_neovide/neovide/",
+            "/Users/xzb/Documents/xzbdmw的副本",
             "~/Project/vim/*",
             "~/Project/lua/*",
             "~/Project/Typescript/*",
@@ -59,5 +60,5 @@ return {
         -- { dir = "~/Project/lua/telescope.nvim/" },
     },
     lazy = false,
-    priority = 100,
+    priority = 10000000,
 }

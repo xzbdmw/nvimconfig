@@ -107,6 +107,15 @@ return {
                 end,
             },
             {
+                "<leader>sc",
+                -- false,
+                function()
+                    local filename = vim.fn.expand("%:t")
+                    local default_text = "@" .. filename .. " "
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", default_text, nil)
+                end,
+            },
+            {
                 "<leader>sa",
                 function()
                     local mode = vim.fn.mode()
@@ -363,10 +372,6 @@ return {
                         i = {
                             ["<D-a>"] = function()
                                 FeedKeys("a", "n")
-                            end,
-                            ["`"] = function()
-                                FeedKeys("<space>", "n")
-                                FeedKeys("`", "n")
                             end,
                             ["<D-b>"] = function()
                                 FeedKeys("b", "n")

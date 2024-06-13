@@ -34,6 +34,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "deprecated" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "BufLeave" },
                     opts = { skip = true },
                 },
@@ -43,6 +47,10 @@ return {
                 },
                 {
                     filter = { event = "msg_show", find = "jdtls" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "notify", find = "client" },
                     opts = { skip = true },
                 },
                 {
@@ -84,7 +92,7 @@ return {
                                 col = "50%",
                             },
                             size = {
-                                width = 40,
+                                width = 39,
                                 height = "auto",
                             },
                         }, -- global options for the cmdline. See section on views
@@ -202,12 +210,13 @@ return {
             throttle = 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
             views = {
                 cmdline_popup = {
+                    zindex = 20,
                     border = {
                         style = "rounded",
                         padding = { 0, 1 },
                     },
                     position = {
-                        row = 10,
+                        row = 20,
                         col = "50%",
                     },
                     size = {
@@ -228,6 +237,18 @@ return {
                     },
                 },
                 mini = {
+                    win_options = {
+                        winbar = "",
+                        foldenable = false,
+                        winblend = 1,
+                        winhighlight = {
+                            Normal = "Normal",
+                            IncSearch = "",
+                            CurSearch = "",
+                            Search = "",
+                        },
+                    },
+                    zindex = 21,
                     focusable = false,
                     timeout = 2000,
                 },

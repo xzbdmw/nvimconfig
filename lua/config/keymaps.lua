@@ -1,9 +1,6 @@
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 local utils = require("config.utils")
-local lazy_view_config = require("lazy.view.config")
-lazy_view_config.keys.hover = "gh"
-
 keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
@@ -38,48 +35,44 @@ end, opts)
 
 -- <D-k>
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
+keymap({ "n" }, "<leader>rr", "<cmd>NvimTreeRefresh<CR>", opts)
 keymap("n", "<C-m>", "%", opts)
 keymap("n", "g.", "`.", opts)
-keymap("n", "df", "diwmd(", { remap = true })
 keymap("n", "o", function()
-    -- ST = vim.uv.hrtime()
     _G.no_delay(0)
     return "o"
 end, { expr = true, remap = true })
-
 keymap("n", "O", function()
     _G.no_delay(0)
     return "O"
 end, { expr = true })
 
 keymap("n", "i", function()
-    vim.g.neovide_cursor_animation_length = 0.04
+    vim.g.neovide_cursor_animation_length = _G.CI
     return "i"
 end, { expr = true })
-
 keymap("n", "a", function()
-    vim.g.neovide_cursor_animation_length = 0.04
+    vim.g.neovide_cursor_animation_length = _G.CI
     return "a"
 end, { expr = true })
 
 keymap("n", "I", function()
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.04
+        vim.g.neovide_cursor_animation_length = _G.CI
     end, 100)
     return "I"
 end, { expr = true })
 
 keymap("n", "A", function()
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.04
+        vim.g.neovide_cursor_animation_length = _G.CI
     end, 100)
     return "A"
 end, { expr = true })
-
 keymap({ "n", "v" }, "c", function()
     vim.g.neovide_cursor_animation_length = 0.02
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.04
+        vim.g.neovide_cursor_animation_length = _G.CI
     end, 100)
     return '"_c'
 end, { expr = true })
@@ -89,6 +82,10 @@ keymap("i", "<C-d>", function()
     return "<C-w>"
 end, { expr = true })
 
+keymap("n", "<space><space>", function()
+    _G.no_animation()
+    return "<cmd>e #<cr>"
+end, { expr = true })
 keymap("n", "`", function()
     _G.no_animation()
     return "<cmd>e #<cr>"
@@ -156,15 +153,11 @@ keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     vim.cmd("DiffviewClose")
 end, opts)
-
 keymap("n", "<leader>ur", function()
     vim.o.relativenumber = vim.o.relativenumber == false and true or false
 end, opts)
 
 keymap("n", "za", "zfai", { remap = true })
-keymap("n", "<leader><leader>s", function()
-    vim.cmd("source %")
-end, opts)
 
 keymap("n", "<leader>sm", function()
     vim.cmd("messages")
@@ -219,16 +212,16 @@ keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
-keymap("n", "<leader><leader>h", function()
+keymap("n", "<leader><left>", function()
     return "<C-w>H"
 end, { expr = true })
-keymap("n", "<leader><leader>l", function()
+keymap("n", "<leader><right>", function()
     return "<C-w>L"
 end, { expr = true })
-keymap("n", "<leader><leader>j", function()
+keymap("n", "<leader><down>", function()
     return "<C-w>J"
 end, { expr = true })
-keymap("n", "<leader><leader>k", function()
+keymap("n", "<leader><up>", function()
     return "<C-w>K"
 end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
@@ -249,7 +242,7 @@ keymap("i", "<D-z>", "<C-o>u", opts)
 keymap("n", "<leader>j", function()
     vim.g.neovide_cursor_animation_length = 0.0
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.04
+        vim.g.neovide_cursor_animation_length = _G.CI
     end, 100)
     return "f{a<CR>"
 end, { expr = true, remap = true })
@@ -262,15 +255,12 @@ keymap("t", "<D-v>", function()
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
-
 keymap("t", "<c-->", function()
     require("smart-splits").resize_left()
 end, opts)
-
 keymap("t", "<c-=>", function()
     require("smart-splits").resize_right()
 end, opts)
-
 keymap("t", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
 keymap("t", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
 
@@ -297,7 +287,7 @@ end, opts)
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if success then
+        if success and win_config.height == 1 then
             print(vim.inspect(win))
             print(vim.inspect(win_config))
             vim.api.nvim_win_close(win, true)
@@ -309,6 +299,8 @@ keymap("n", "]q", function()
     vim.cmd("cnext")
 end, opts)
 keymap("n", "[q", function()
+    local a = 1
+    a = a + 1 + 2
     vim.cmd("cprev")
 end, opts)
 
@@ -328,7 +320,6 @@ del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>fn")
 del("n", "<leader>w|")
-del("n", "<leader>qq")
 -- del({ "n", "x" }, "<space>qÞ")
 -- del({ "n", "x" }, "<space>wÞ")
 del("n", "gsh")

@@ -1,6 +1,7 @@
 return {
     "bloznelis/before.nvim",
     lazy = false,
+    enbaled = false,
     config = function()
         local before = require("before")
         before.setup()

@@ -2,7 +2,6 @@ _G.reference = false
 return {
     {
         "neovim/nvim-lspconfig",
-        -- lazy = false,
         init = function()
             local keys = require("lazyvim.plugins.lsp.keymaps").get()
             -- disable a keymap
@@ -235,8 +234,8 @@ return {
                                 -- parameterNames = true,
                                 rangeVariableTypes = true,
                             },
-                            semanticTokens = true,
-                            experimentalPostfixCompletions = false,
+                            semanticTokens = false,
+                            experimentalPostfixCompletions = true,
                             analyses = {
                                 unusedparams = true,
                                 shadow = true,

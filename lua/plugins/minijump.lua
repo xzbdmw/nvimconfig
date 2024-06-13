@@ -1,6 +1,7 @@
 return {
     "echasnovski/mini.jump",
     version = false,
+    enabled = false,
     config = function()
         require("mini.jump").setup(
             -- No need to copy this inside `setup()`. Will be used automatically.

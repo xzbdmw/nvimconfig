@@ -11,6 +11,7 @@ return {
         indent = { enable = false },
         auto_install = true,
         ensure_installed = {
+            "markdown",
             "rust",
             "vue",
             "java",

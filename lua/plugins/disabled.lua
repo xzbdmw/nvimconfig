@@ -70,7 +70,7 @@ return {
     -- { "L3MON4D3/LuaSnip", enabled = false },
     -- { "folke/noice.nvim", enabled = false },
     { "nvim-lualine/lualine.nvim", enabled = false },
-    { "shortcuts/no-neck-pain.nvim", enabled = false },
+    -- { "shortcuts/no-neck-pain.nvim", enabled = false },
     -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
     { "echasnovski/mini.pairs", enabled = false },
     -- { "shellRaining/hlchunk.nvim", enabled = false },

@@ -214,6 +214,10 @@ function M.normal_tab()
     end
 end
 function M.insert_mode_tab()
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
+        vim.g.neovide_cursor_animation_length = _G.CI
+    end, 100)
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
     local line = vim.fn.getline(".") -- 获取当前行的内容
@@ -235,6 +239,7 @@ end
 _G.no_delay = function(animation)
     -- TYO = vim.uv.hrtime()
     vim.g.type_o = true
+    vim.g.enter = true
     vim.g.neovide_cursor_animation_length = animation
     vim.schedule(function()
         -- Time(TYO, "no_delay: ")
@@ -260,7 +265,8 @@ _G.no_delay = function(animation)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
         vim.g.type_o = false
-        vim.g.neovide_cursor_animation_length = 0.04
+        vim.g.enter = false
+        vim.g.neovide_cursor_animation_length = _G.CI
     end, 50)
 end
 _G.Time = function(start, msg)
@@ -301,7 +307,7 @@ _G.no_animation = function(length)
     length = length or 0
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = 0.0
+        vim.g.neovide_cursor_animation_length = length
     end, 100)
 end
 
@@ -311,7 +317,7 @@ _G.Cursor = function(callback, length)
         vim.g.neovide_cursor_animation_length = length
         callback(...)
         vim.defer_fn(function()
-            vim.g.neovide_cursor_animation_length = 0.04
+            vim.g.neovide_cursor_animation_length = _G.CI
         end, 100)
     end
 end
@@ -584,52 +590,52 @@ end
 --     end)
 -- end
 
-vim.keymap.set("n", "<leader>zz", function()
-    local start_time = vim.loop.hrtime()
-    local buf = vim.api.nvim_create_buf(false, true)
-    local str = "&a ;int a "
-    -- local str = 's:="adsasds"'
-    local filetype = "cpp"
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { str })
-    local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
-    local query = vim.treesitter.query.get(filetype, "highlights")
-    local parser = vim.treesitter.get_string_parser(str, filetype)
-    local tree = parser:parse(false)[1]
-    local root = tree:root()
-    if query == nil then
-        return
-    end
-    for id, node in query:iter_captures(root, str, 0, -1) do
-        local name = "@" .. query.captures[id] .. "." .. filetype
-        local priority = 200
-        if name == "@interface.name" then
-            priority = 1000
-        end
-        local hl = vim.api.nvim_get_hl_id_by_name(name)
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        -- print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        local range = { node:range() }
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        -- print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
-        local ns_id = vim.api.nvim_create_namespace("cmp")
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        -- print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        -- print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
-            end_col = necol,
-            priority = priority,
-            hl_group = hl,
-        })
-        -- end
-    end
-    if start_time then
-        local duration = 0.000001 * (vim.loop.hrtime() - start_time)
-        -- __AUTO_GENERATED_PRINT_VAR_START__
-        print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
-    end
-end)
+-- vim.keymap.set("n", "<leader>zz", function()
+--     local start_time = vim.loop.hrtime()
+--     local buf = vim.api.nvim_create_buf(false, true)
+--     local str = "&a ;int a "
+--     -- local str = 's:="adsasds"'
+--     local filetype = "cpp"
+--     vim.api.nvim_buf_set_lines(buf, 0, -1, false, { str })
+--     local win = vim.api.nvim_open_win(buf, true, { relative = "editor", row = 0, col = 0, height = 10, width = 40 })
+--     local query = vim.treesitter.query.get(filetype, "highlights")
+--     local parser = vim.treesitter.get_string_parser(str, filetype)
+--     local tree = parser:parse(false)[1]
+--     local root = tree:root()
+--     if query == nil then
+--         return
+--     end
+--     for id, node in query:iter_captures(root, str, 0, -1) do
+--         local name = "@" .. query.captures[id] .. "." .. filetype
+--         local priority = 200
+--         if name == "@interface.name" then
+--             priority = 1000
+--         end
+--         local hl = vim.api.nvim_get_hl_id_by_name(name)
+--         -- __AUTO_GENERATED_PRINT_VAR_START__
+--         -- print([==[function#for name:]==], vim.inspect(name)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--         local range = { node:range() }
+--         -- __AUTO_GENERATED_PRINT_VAR_START__
+--         -- print([==[function#for range:]==], vim.inspect(range)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--         local nsrow, nscol, nerow, necol = range[1], range[2], range[3], range[4]
+--         local ns_id = vim.api.nvim_create_namespace("cmp")
+--         -- __AUTO_GENERATED_PRINT_VAR_START__
+--         -- print([==[function#for nscol:]==], vim.inspect(nscol)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--         -- __AUTO_GENERATED_PRINT_VAR_START__
+--         -- print([==[function#for nsrow:]==], vim.inspect(nsrow)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--         vim.api.nvim_buf_set_extmark(buf, ns_id, nsrow, nscol, {
+--             end_col = necol,
+--             priority = priority,
+--             hl_group = hl,
+--         })
+--         -- end
+--     end
+--     if start_time then
+--         local duration = 0.000001 * (vim.loop.hrtime() - start_time)
+--         -- __AUTO_GENERATED_PRINT_VAR_START__
+--         print([==[function duration:]==], vim.inspect(duration)) -- __AUTO_GENERATED_PRINT_VAR_END__
+--     end
+-- end)
 
 -- kymap({ "n", "i" }, "<D-w>", function()
 --     local nvimtree_present = false

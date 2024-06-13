@@ -1,6 +1,7 @@
 return {
     "L3MON4D3/LuaSnip",
     version = false,
+    -- lazy = false,
     event = "InsertEnter",
     keys = function()
         return {
@@ -8,12 +9,13 @@ return {
                 "<C-n>",
                 mode = { "i", "s" },
                 function()
-                    vim.g.neovide_cursor_animation_length = 0.02
-                    vim.defer_fn(function()
-                        vim.g.neovide_cursor_animation_length = 0.06
-                    end, 20)
+                    -- vim.g.neovide_cursor_animation_length = 0.02
+                    -- vim.defer_fn(function()
+                    --     vim.g.neovide_cursor_animation_length = 0.06
+                    -- end, 20)
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(1) then
+                        _G.no_animation(_G.CI)
                         luasnip.jump(1)
                         -- if cmp.visible() then
                         --     cmp.close()
@@ -27,11 +29,8 @@ return {
                 mode = { "i", "s" },
                 function()
                     local luasnip = require("luasnip")
-                    vim.g.neovide_cursor_animation_length = 0.02
-                    vim.defer_fn(function()
-                        vim.g.neovide_cursor_animation_length = 0.06
-                    end, 20)
                     if luasnip.jumpable(-1) then
+                        _G.no_animation(_G.CI)
                         luasnip.jump(-1)
                         -- if cmp.visible() then
                         --     cmp.close()

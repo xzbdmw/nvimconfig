@@ -1,7 +1,9 @@
 require("config.lazy")
 vim.uv = vim.loop
-
+_G.CI = 0.04
 vim.cmd("syntax off")
+local lazy_view_config = require("lazy.view.config")
+lazy_view_config.keys.hover = "gh"
 vim.api.nvim_create_augroup("LeapIlluminate", {})
 
 -- sync system clipboard while yanking
@@ -9,9 +11,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
         local v = vim.v.event
         local regcontents = v.regcontents
-        vim.defer_fn(function()
+        vim.schedule(function()
             vim.fn.setreg("+", regcontents)
-        end, 100)
+        end)
     end,
 })
 
@@ -53,13 +55,21 @@ vim.api.nvim_create_autocmd({ "User" }, {
     end,
 })
 _G.leapjump = false
+
 vim.api.nvim_create_autocmd("User", {
-    pattern = { "LeapSelectPre" },
+    pattern = { "LeapSelectPre", "LeapJumpRepeat" },
     callback = function()
         _G.leapjump = true
         local buf = vim.api.nvim_get_current_buf()
         local win = vim.api.nvim_get_current_win()
         require("illuminate.engine").refresh_references(buf, win)
+    end,
+    group = "LeapIlluminate",
+})
+vim.api.nvim_create_autocmd("User", {
+    pattern = { "LeapPatternPost" },
+    callback = function()
+        _G.leapfirst = true
     end,
     group = "LeapIlluminate",
 })
@@ -316,7 +326,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
         end
         local filename = vim.fn.expand("%:t")
         local devicons = require("nvim-web-devicons")
-        local icon, iconHighlight = devicons.get_icon(filename, vim.bo.filetype, { default = true })
+        local icon, iconHighlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
         local winid = vim.api.nvim_get_current_win()
         local winconfig = vim.api.nvim_win_get_config(winid)
         if winconfig.relative ~= "" then
@@ -577,7 +587,6 @@ vim.api.nvim_create_autocmd("User", {
         end)
     end,
 })
-
 vim.lsp.set_log_level("off")
 local should_profile = os.getenv("NVIM_PROFILE")
 if should_profile then
@@ -603,12 +612,11 @@ local function toggle_profile()
     end
 end
 vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
-
 -- vim.api.nvim_create_autocmd("CursorMoved", {
 --     callback = function()
 --         if vim.g.gd then
 --             if ST ~= nil then
---                 Time(ST, "CursorMoved")
+-- Time(ST, "CursorMoved")
 --             end
 --         end
 --     end,

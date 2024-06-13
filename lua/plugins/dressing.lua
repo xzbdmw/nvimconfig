@@ -26,7 +26,7 @@ return {
             start_in_insert = true,
 
             -- These are passed to nvim_open_win
-            border = "rounded",
+            border = "none",
             -- 'editor' and 'win' will default to being centered
             relative = "cursor",
 

@@ -25,6 +25,7 @@ local CompletionItemKind = {
     Operator = 24,
     TypeParameter = 25,
 }
+
 local function findLast(haystack, needle)
     local i = haystack:match(".*" .. needle .. "()")
     if i == nil then
@@ -61,7 +62,6 @@ local function trim_detail(detail)
     end
     return detail
 end
-
 local function match_fn(description)
     return string.match(description, "^pub fn")
         or string.match(description, "^fn")
@@ -319,7 +319,7 @@ local function cpp_fmt(entry, vim_item)
     end
     local label_detail = completion_item.labelDetails
     local ducument = completion_item.documentation
-    if item_kind == 3 or item_kind == 2 then --Function
+    if item_kind == 3 or item_kind == 2 or item_kind == 4 then --Function
         if label_detail ~= nil then
             -- label = " get",
             -- labelDetails = {
@@ -360,7 +360,6 @@ local function cpp_fmt(entry, vim_item)
     if string.len(kind.abbr) > 50 then
         kind.abbr = kind.abbr:sub(1, 50)
     end
-
     return kind
 end
 local function go_fmt(entry, vim_item)
@@ -488,7 +487,8 @@ return {
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter" },
     dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
-    -- dir = "~/Project/lua/origin/nvim-cmp/",
+    -- lazy = false,
+    -- dir = "~/Project/lua/oricmp/nvim-cmp/",
     dependencies = {
         "lukas-reineke/cmp-rg",
         "zbirenbaum/copilot-cmp",
@@ -514,10 +514,10 @@ return {
             kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
             kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
             if kind1 ~= kind2 then
-                if kind1 == types.lsp.CompletionItemKind.Snippet then
+                if kind1 == types.lsp.CompletionItemKind.Snippet or kind1 == 9 then
                     return false
                 end
-                if kind2 == types.lsp.CompletionItemKind.Snippet then
+                if kind2 == types.lsp.CompletionItemKind.Snippet or kind2 == 9 then
                     return true
                 end
             end
@@ -562,7 +562,7 @@ return {
                 debounce = 0,
                 throttle = 0,
                 fetching_timeout = 80,
-                confirm_resolve_timeout = 1,
+                confirm_resolve_timeout = 100,
                 async_budget = 1,
                 max_view_entries = 20,
             },
@@ -591,9 +591,8 @@ return {
                 end),
                 ["<S-space>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        expand = false
                         cmp.confirm()
-                        FeedKeys("(<C-e>", "m")
+                        FeedKeys("(<C-e><esc>", "m")
                     else
                         fallback()
                     end
@@ -632,7 +631,7 @@ return {
                         cmp.close()
                     end
                     _G.has_moved_up = false
-                    vim.schedule(fallback)
+                    fallback()
                 end),
                 ["<f7>"] = cmp.mapping(function()
                     ---@diagnostic disable-next-line: missing-parameter
@@ -642,8 +641,8 @@ return {
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                            -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                             cmp.select_next_item()
+                            -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         else
                             cmp.select_prev_item()
                         end
@@ -665,8 +664,9 @@ return {
                 ["<C-e>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.abort()
+                    else
+                        fallback()
                     end
-                    fallback()
                     _G.has_moved_up = false
                 end),
                 ["<C-n>"] = cmp.mapping(function(fallback)
@@ -676,6 +676,9 @@ return {
                     fallback()
                 end),
                 ["<C-p>"] = cmp.mapping(function(fallback)
+                    if cmp.visible then
+                        cmp.close()
+                    end
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -688,20 +691,35 @@ return {
                         fallback()
                     end
                 end),
-                ["<cr>"] = cmp.mapping(function(fallback)
+                ["<c-o>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        ST = vim.uv.hrtime()
-                        -- local origin = vim.o.eventignore
-                        -- vim.o.eventignore = "all"
-                        vim.g.neovide_cursor_animation_length = 0
                         vim.g.enter = true
-                        -- vim.g.no_redraw = true
+                        _G.no_animation(_G.CI)
                         vim.defer_fn(function()
                             vim.g.enter = false
-                            -- vim.o.eventignore = origin
-                            vim.g.neovide_cursor_animation_length = 0.06
-                        end, 100)
-                        -- Time(ST, "optionset")
+                        end, 10)
+                        cmp.confirm({ select = true })
+                    else
+                        _G.no_delay(0.0)
+                        fallback()
+                    end
+                    vim.defer_fn(function()
+                        -- hlchunk
+                        ---@diagnostic disable-next-line: undefined-field
+                        pcall(_G.update_indent, true)
+                        -- mini-indentscope
+                        ---@diagnostic disable-next-line: undefined-field
+                        pcall(_G.mini_indent_auto_draw)
+                    end, 100)
+                    _G.has_moved_up = false
+                end),
+                ["<cr>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        vim.g.enter = true
+                        _G.no_animation(_G.CI)
+                        vim.defer_fn(function()
+                            vim.g.enter = false
+                        end, 10)
                         cmp.confirm({ select = true })
                     else
                         _G.no_delay(0.0)
@@ -765,11 +783,11 @@ return {
                 comparators = {
                     -- reverse_prioritize,
                     cmp.config.compare.exact,
+                    put_down_snippet,
                     compare.score,
                     compare.recently_used,
                     compare.locality,
                     compare.offset,
-                    put_down_snippet,
                 },
             },
         }
@@ -814,13 +832,9 @@ return {
                         end
                     end,
                 },
-                -- ["<C-p>"] = cmp.mapping(function(fallback)
-                --     -- if  then
-                --     --
-                --     -- end
-                --     -- cmp.close()
-                --     fallback()
-                -- end, { "i", "c", "s" }),
+                ["<C-d>"] = cmp.mapping(function(fallback)
+                    fallback()
+                end, { "i", "c", "s" }),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     cmp.close()
                     fallback()
@@ -845,6 +859,9 @@ return {
                         end
                     end,
                 },
+                ["<C-d>"] = cmp.mapping(function(fallback)
+                    fallback()
+                end, { "i", "c", "s" }),
                 ["<up>"] = {
                     c = function(fallback)
                         if cmp.visible() then
