@@ -516,6 +516,7 @@ vim.api.nvim_create_autocmd("User", {
         vim.api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
+                vim.cmd("NvimTreeRefresh")
                 vim.schedule(function()
                     MiniFiles.go_in({ close_on_file = true })
                 end)
@@ -584,6 +585,7 @@ vim.api.nvim_create_autocmd("User", {
             vim.defer_fn(function()
                 MiniFiles.close()
             end, 5)
+            vim.cmd("NvimTreeRefresh")
         end)
     end,
 })
