@@ -618,7 +618,7 @@ vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
 --     callback = function()
 --         if vim.g.gd then
 --             if ST ~= nil then
--- Time(ST, "CursorMoved")
+--                 Time(ST, "CursorMoved")
 --             end
 --         end
 --     end,

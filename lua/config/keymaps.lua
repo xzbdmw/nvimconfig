@@ -164,13 +164,6 @@ keymap("n", "<leader>sm", function()
 end, opts)
 
 keymap("x", ":", function()
-    vim.cmd("Noice disable")
-    vim.api.nvim_create_autocmd("CmdlineLeave", {
-        once = true,
-        callback = function()
-            vim.cmd("Noice enable")
-        end,
-    })
     return ":"
 end, { expr = true })
 
