@@ -20,7 +20,17 @@ keymap("i", "<c-g>", function()
         },
     })
 end)
-
+keymap("i", "<D-g>", function()
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "copilot",
+                },
+            },
+        },
+    })
+end)
 keymap("n", "<leader>h", function()
     FeedKeys("0", "n")
     vim.fn.winrestview({ leftcol = 0 })
@@ -48,11 +58,15 @@ keymap("n", "O", function()
 end, { expr = true })
 
 keymap("n", "i", function()
-    vim.g.neovide_cursor_animation_length = _G.CI
+    vim.schedule(function()
+        vim.g.neovide_cursor_animation_length = _G.CI
+    end)
     return "i"
 end, { expr = true })
 keymap("n", "a", function()
-    vim.g.neovide_cursor_animation_length = _G.CI
+    vim.schedule(function()
+        vim.g.neovide_cursor_animation_length = _G.CI
+    end)
     return "a"
 end, { expr = true })
 
@@ -176,6 +190,7 @@ keymap("n", "<space><esc>", ".", opts)
 keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
+keymap("n", "<D-w>", "<cmd>close<CR>", opts)
 
 keymap("i", "<space>", function()
     utils.insert_mode_space()

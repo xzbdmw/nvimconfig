@@ -509,64 +509,45 @@ vim.api.nvim_create_autocmd({ "User" }, {
 })
 
 vim.api.nvim_create_autocmd("User", {
-    pattern = {
-        "MiniFilesActionCreate",
-    },
-    callback = function()
-        vim.api.nvim_create_autocmd("CursorMoved", {
-            once = true,
-            callback = function()
-                vim.cmd("NvimTreeRefresh")
-                vim.schedule(function()
-                    MiniFiles.go_in({ close_on_file = true })
-                end)
-            end,
-        })
-    end,
-})
-
-vim.api.nvim_create_autocmd("User", {
-    pattern = {
-        "MiniFilesActionRename",
-        "MiniFilesActionCopy",
-        "MiniFilesActionMove",
-    },
-    callback = function()
-        vim.cmd("NvimTreeRefresh")
-    end,
-})
-
--- just for fun
--- vim.api.nvim_create_autocmd("User", {
---     pattern = {
---         "MiniFilesBufferUpdate",
---     },
---     callback = function(data)
---         local buf = data.data.buf_id
---         vim.defer_fn(function()
---             local path = vim.b[buf].minifile
---             if path ~= nil then
---                 local view = H.opened_buffers[buf]
---                 local winid = vim.fn.win_findbuf(buf)[1]
---                 if winid ~= nil then
---                     vim.api.nvim_win_call(winid, function()
---                         vim.cmd("e " .. path)
---                     end)
---                     H.opened_buffers[vim.api.nvim_win_get_buf(winid)] = view
---                 end
---             end
---         end, 10)
---     end,
--- })
-
-vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniFilesBufferCreate",
+    pattern = "OilActionsPost",
     callback = function(args)
-        local buf_id = args.data.buf_id
-        -- Tweak keys to your liking
-        vim.keymap.set("n", "q", function()
-            MiniFiles.close()
-        end, { buffer = buf_id })
+        if args.data.err then
+            return
+        end
+        for _, action in ipairs(args.data.actions) do
+            if action.type == "delete" then
+                local _, path = require("oil.util").parse_url(action.url)
+                local bufnr = vim.fn.bufnr(path)
+                if bufnr ~= -1 then
+                    vim.cmd("bw " .. bufnr)
+                end
+            end
+            vim.cmd("NvimTreeRefresh")
+        end
+    end,
+})
+
+function OilDir()
+    local path = require("oil").get_current_dir()
+    return "   " .. path
+end
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    callback = function(ev)
+        if vim.bo[ev.buf].filetype == "oil" and vim.api.nvim_get_current_buf() == ev.buf then
+            local winbar_content = "%#LibPath#%{%v:lua.OilDir()%}%*"
+            vim.api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
+            vim.keymap.set("n", "q", function()
+                local is_split = require("config.utils").check_splits()
+                -- __AUTO_GENERATED_PRINT_VAR_START__
+                print([==[function#if#function is_split:]==], vim.inspect(is_split)) -- __AUTO_GENERATED_PRINT_VAR_END__
+                if is_split then
+                    vim.cmd("close")
+                else
+                    require("oil").close()
+                end
+            end, { buffer = 0 })
+        end
     end,
 })
 

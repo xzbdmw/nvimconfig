@@ -158,7 +158,22 @@ return {
                             },
                         },
                     },
-                    input = {}, -- Used by input()
+                    input = {
+                        opts = {
+                            border = {
+                                style = "rounded",
+                                padding = { 0, 1 },
+                            },
+                            position = {
+                                row = "30%",
+                                col = "50%",
+                            },
+                            size = {
+                                width = 40,
+                                height = "auto",
+                            },
+                        },
+                    }, -- Used by input()
                 },
             },
             lsp = {
@@ -209,6 +224,9 @@ return {
 
             throttle = 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
             views = {
+                confirm = {
+                    zindex = 21,
+                },
                 cmdline_popup = {
                     zindex = 20,
                     border = {

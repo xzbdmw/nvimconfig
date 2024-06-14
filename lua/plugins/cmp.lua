@@ -26,6 +26,16 @@ local CompletionItemKind = {
     TypeParameter = 25,
 }
 
+local function copilot(kind, strings)
+    kind.abbr = kind.abbr
+    kind.kind = " " .. (strings[1] or "") .. " "
+    kind.menu = nil
+    if string.len(kind.abbr) > 50 then
+        kind.abbr = kind.abbr:sub(1, 50)
+    end
+    return kind
+end
+
 local function findLast(haystack, needle)
     local i = haystack:match(".*" .. needle .. "()")
     if i == nil then
@@ -248,6 +258,12 @@ local function lua_fmt(entry, vim_item)
         mode = "symbol_text",
     })(entry, vim_item)
     local strings = vim.split(kind.kind, "%s", { trimempty = true })
+
+    local is_copilot = entry:get_completion_item().copilot
+    if is_copilot then
+        return copilot(kind, strings)
+    end
+
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
     if item_kind == 5 then -- Field
         kind.concat = "v." .. kind.abbr
@@ -369,6 +385,11 @@ local function go_fmt(entry, vim_item)
     local strings = vim.split(kind.kind, "%s", { trimempty = true })
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
     local completion_item = entry:get_completion_item()
+
+    local is_copilot = entry:get_completion_item().copilot
+    if is_copilot then
+        return copilot(kind, strings)
+    end
 
     local detail = completion_item.detail
     if item_kind == 5 then -- Field
@@ -561,8 +582,8 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 80,
-                confirm_resolve_timeout = 100,
+                fetching_timeout = 10000,
+                confirm_resolve_timeout = 10000,
                 async_budget = 1,
                 max_view_entries = 20,
             },
@@ -740,10 +761,9 @@ return {
                 { name = "nvim_lsp" },
                 { name = "luasnip", keyword_length = 2 },
                 { name = "path" },
-                -- { name = "copilot" },
             }, {
                 { name = "rg", keyword_length = 2 },
-            }),
+            }, { { name = "copilot" } }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
                 fields = { "kind", "abbr", "menu" },

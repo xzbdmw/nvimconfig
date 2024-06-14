@@ -15,7 +15,7 @@ return {
             desc = "Diagnostics (Trouble)",
         },
         {
-            "<leader>xx",
+            "<D-d>",
             function()
                 if require("trouble").is_open("before_qflist") then
                     return "<cmd>Trouble before_qflist toggle focus=false<cr>"

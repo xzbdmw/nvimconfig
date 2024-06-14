@@ -38,6 +38,7 @@ function _G.hide_cursor(callback, timeout)
 end
 
 function M.close_win()
+    local time = vim.uv.hrtime()
     local nvimtree_present = false
     -- 遍历所有窗口
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
@@ -78,7 +79,12 @@ function M.close_win()
             vim.cmd("set laststatus=0")
         end
         _G.hide_cursor(function()
-            vim.cmd("BufDel")
+            Time(time, "close_win")
+            if M.check_splits() then
+                vim.cmd("close")
+            else
+                vim.cmd("BufDel")
+            end
         end)
     end
 end
@@ -269,6 +275,7 @@ _G.no_delay = function(animation)
         vim.g.neovide_cursor_animation_length = _G.CI
     end, 50)
 end
+
 _G.Time = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
@@ -277,6 +284,22 @@ _G.Time = function(start, msg)
     else
         print(msg .. ":", vim.inspect(duration))
     end
+end
+
+function M.check_splits()
+    local windows = vim.api.nvim_list_wins()
+    local real_file_count = 0
+
+    for _, win_id in ipairs(windows) do
+        local buf_id = vim.api.nvim_win_get_buf(win_id)
+        local file_path = vim.api.nvim_buf_get_name(buf_id)
+
+        if vim.bo[buf_id].filetype == "oil" or (file_path ~= "" and vim.loop.fs_stat(file_path)) then
+            real_file_count = real_file_count + 1
+        end
+    end
+
+    return real_file_count > 1
 end
 
 M.qf_populate = function(lines, opts)

@@ -209,7 +209,7 @@ return {
                 CmpItemKindFile = { fg = "#7E8294" },
                 CmpItemKindUnit = { fg = "#D4A959" },
                 CmpItemKindSnippet = { fg = "#7E8294" },
-                CmpItemKindCopilot = { fg = "#DCDACB" },
+                CmpItemKindCopilot = { fg = "#112386" },
                 RustIcon = { fg = "#C58C6E" },
                 CmpItemKindFolder = { fg = "#D4A959" },
                 CmpItemKindMethod = { fg = "#6C8ED4" },
