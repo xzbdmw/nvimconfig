@@ -528,19 +528,28 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 function OilDir()
+    local cwd = vim.fn.getcwd()
     local path = require("oil").get_current_dir()
-    return "   " .. path
+    if vim.startswith(path, cwd) then
+        path = string.sub(path, #cwd + 2)
+        if path == "" then
+            path = "."
+        end
+        return "  " .. path, "NvimTreeFolderName"
+    else
+        return "  " .. path, "LibPath"
+    end
 end
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
     callback = function(ev)
         if vim.bo[ev.buf].filetype == "oil" and vim.api.nvim_get_current_buf() == ev.buf then
-            local winbar_content = "%#LibPath#%{%v:lua.OilDir()%}%*"
+            local path, hl = OilDir()
+            local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
             vim.api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
+
             vim.keymap.set("n", "q", function()
                 local is_split = require("config.utils").check_splits()
-                -- __AUTO_GENERATED_PRINT_VAR_START__
-                print([==[function#if#function is_split:]==], vim.inspect(is_split)) -- __AUTO_GENERATED_PRINT_VAR_END__
                 if is_split then
                     vim.cmd("close")
                 else
