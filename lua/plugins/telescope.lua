@@ -37,6 +37,8 @@ return {
             { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
             { "<leader>sr", "<cmd>Telescope resume<CR>" },
             { "<leader>sd", false },
+            { "<leader>sh", false },
+            { "<leader>sH", "<cmd>Telescope highlights<CR>" },
             {
                 "<leader>ss",
                 function()
