@@ -166,6 +166,8 @@ return {
                 NvimTreeFolderArrowOpen = { link = "Comment" },
                 NvimTreeFolderArrowClosed = { link = "Comment" },
                 NvimTreeNormalFloat = { bg = "#FAF7E8", fg = "#3B4D56" },
+                TabLine = { link = "Normal" },
+                TabLineFill = { link = "Normal" },
                 NvimTreeRootFolder = { fg = "#3B4D56", style = "" },
                 NvimTreeOpenedFileIcon = { fg = "#8094b4" },
                 GithubSign = { bg = "#F6F8FA" },

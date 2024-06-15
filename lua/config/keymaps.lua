@@ -150,6 +150,8 @@ keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
 end, opts)
 
+keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
+
 keymap("n", "<leader>uu", function()
     local is_enabled = require("noice.ui")._attached
     if is_enabled then
@@ -166,7 +168,7 @@ end, opts)
 keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     pcall(function()
-        vim.cmd("DiffviewClose")
+        vim.cmd("tabclose")
     end)
 end, opts)
 keymap("n", "<leader>ur", function()
