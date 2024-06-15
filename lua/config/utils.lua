@@ -38,7 +38,6 @@ function _G.hide_cursor(callback, timeout)
 end
 
 function M.close_win()
-    local time = vim.uv.hrtime()
     local nvimtree_present = false
     -- 遍历所有窗口
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
@@ -79,7 +78,6 @@ function M.close_win()
             vim.cmd("set laststatus=0")
         end
         _G.hide_cursor(function()
-            Time(time, "close_win")
             if M.check_splits() then
                 vim.cmd("close")
             else
@@ -243,7 +241,7 @@ function M.insert_mode_tab()
 end
 
 _G.no_delay = function(animation)
-    -- TYO = vim.uv.hrtime()
+    TYO = vim.uv.hrtime()
     vim.g.type_o = true
     vim.g.enter = true
     vim.g.neovide_cursor_animation_length = animation
@@ -280,9 +278,13 @@ _G.Time = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
     if msg == "" then
-        print(vim.inspect(duration))
+        vim.schedule(function()
+            print(vim.inspect(duration))
+        end)
     else
-        print(msg .. ":", vim.inspect(duration))
+        vim.schedule(function()
+            print(msg .. ":", vim.inspect(duration))
+        end)
     end
 end
 

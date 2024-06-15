@@ -165,7 +165,9 @@ keymap("n", "<leader>sd", function()
 end, opts)
 keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
-    vim.cmd("DiffviewClose")
+    pcall(function()
+        vim.cmd("DiffviewClose")
+    end)
 end, opts)
 keymap("n", "<leader>ur", function()
     vim.o.relativenumber = vim.o.relativenumber == false and true or false

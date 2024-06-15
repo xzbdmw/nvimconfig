@@ -182,9 +182,6 @@ _G.glance_buffer = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
     callback = function()
-        vim.defer_fn(function()
-            vim.cmd("set foldmethod=manual")
-        end, 100)
         local winconfig = vim.api.nvim_win_get_config(0)
         local bufnr = vim.api.nvim_get_current_buf()
         if winconfig.relative ~= "" and winconfig.zindex == 10 then
