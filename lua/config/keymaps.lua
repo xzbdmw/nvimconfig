@@ -192,6 +192,7 @@ keymap("n", "<space><esc>", ".", opts)
 
 -- mark trick
 keymap("n", "<space>;", "m6A;<esc>`6", opts)
+
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
@@ -299,7 +300,7 @@ end, opts)
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(vim.api.nvim_list_wins()) do
         local success, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if success and win_config.height == 1 then
+        if success and win_config.relative ~= "" then
             print(vim.inspect(win))
             print(vim.inspect(win_config))
             vim.api.nvim_win_close(win, true)
@@ -328,6 +329,7 @@ end)
 local del = vim.keymap.del
 del("n", "<leader>w-")
 del("n", "<leader>ww")
+
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>fn")
