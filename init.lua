@@ -1,7 +1,7 @@
 require("config.lazy")
 vim.uv = vim.loop
 _G.CI = 0.04
--- vim.cmd("syntax off")
+vim.cmd("syntax off")
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 vim.api.nvim_create_augroup("LeapIlluminate", {})
