@@ -288,6 +288,16 @@ _G.Time = function(start, msg)
     end
 end
 
+function M.search_to_qf()
+    -- 获取当前光标下的单词
+    local word = vim.fn.expand("<cword>")
+    -- 清空当前的 quickfix 列表
+    vim.fn.setqflist({}, "r")
+    -- 使用 Neovim 的 vim.grep 函数或通过 vim.cmd 执行外部 grep 命令
+    -- 这里使用 ripgrep (rg), 你可以换成 'grep -rnw . -e' 如果没有安装 rg
+    vim.cmd("silent vimgrep /" .. word .. "/ %")
+end
+
 function M.check_splits()
     local windows = vim.api.nvim_list_wins()
     local real_file_count = 0
