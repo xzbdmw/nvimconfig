@@ -641,10 +641,6 @@ return {
                         cmp.close()
                     end
                     fallback()
-                    -- vim.defer_fn(function()
-                    --     pcall(_G.indent_update)
-                    --     pcall(_G.mini_indent_auto_draw)
-                    -- end, 100)
                     _G.has_moved_up = false
                 end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
