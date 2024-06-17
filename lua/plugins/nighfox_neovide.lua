@@ -78,7 +78,7 @@ return {
                 ArrowNoteMode = { bg = "#215062" },
                 CopilotSuggestion = { fg = "#1D6D8D" },
                 ArrowCursorLine = { link = "CursorLine" },
-                Folded = { bg = "#F1EEE1" },
+                Folded = { bg = "#EEEBE1", fg = "#CECECD" },
                 MoreMsg = { fg = "#286983" },
                 lualine_c_normal = { bg = "#FAF7E8" },
                 diffChanged = { link = "Keyword" },

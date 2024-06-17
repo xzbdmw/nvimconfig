@@ -185,7 +185,14 @@ keymap("n", "<leader>ur", function()
     vim.o.relativenumber = vim.o.relativenumber == false and true or false
 end, opts)
 
-keymap("n", "za", "zfai", { remap = true })
+keymap("n", "za", function()
+    local is_comment = vim.fn.foldclosed(vim.fn.line("."))
+    if is_comment ~= -1 then
+        return "zo"
+    else
+        return "zfai"
+    end
+end, { remap = true, expr = true })
 
 keymap("n", "<leader>sm", function()
     vim.cmd("messages")
