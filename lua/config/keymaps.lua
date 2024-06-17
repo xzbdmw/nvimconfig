@@ -174,6 +174,7 @@ keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
     vim.cmd("DiffviewOpen")
 end, opts)
+
 keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     pcall(function()
@@ -190,7 +191,9 @@ keymap("n", "za", function()
     if is_comment ~= -1 then
         return "zo"
     else
-        return "zfai"
+        FeedKeys("m6", "n")
+        FeedKeys("zfai", "m")
+        FeedKeys("`6", "n")
     end
 end, { remap = true, expr = true })
 
