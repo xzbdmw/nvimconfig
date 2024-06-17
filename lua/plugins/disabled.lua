@@ -10,7 +10,7 @@ return {
     -- { "novim/nvim-lspconfig", enabled = false },
     -- { "williamboman/mason.nvim", enabled = false },
     -- { "williamboman/mason-lspconfig.nvim", enabled = false },
-    -- { "nvim-treesitter/nvim-treesitter-textobjects", enabled = false },
+    { "nvim-treesitter/nvim-treesitter-textobjects", enabled = false },
     -- { "nvimdev/dashboard-nvim", enabled = false },
     -- { "folke/noice.nvim", enabled = false },
     -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
