@@ -6,7 +6,8 @@ return {
         anaconda_base_path = "/opt/homebrew/Caskroom/miniconda/base",
         anaconda_envs_path = "/opt/homebrew/Caskroom/miniconda/base/envs",
     },
-    event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
+    cmd = "VenvSelect",
+    -- event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
     -- keys = {
     --     -- Keymap to open VenvSelector to pick a venv.
     --     { "<leader>vs", "<cmd>VenvSelect<cr>" },
