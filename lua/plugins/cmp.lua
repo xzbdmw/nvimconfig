@@ -763,7 +763,7 @@ return {
                 { name = "path" },
             }, {
                 { name = "rg", keyword_length = 2 },
-            }, { { name = "copilot" } }),
+            }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
                 fields = { "kind", "abbr", "menu" },
