@@ -187,29 +187,24 @@ function M.normal_tab()
         end
     end
     if flag == false and window_count ~= 2 then
-        -- print(window_count)
-        vim.cmd([[
-        let w0 = winnr()
-        let nok = 1
-        while nok
-          exe 'wincmd ' 'w'
-          let w = winnr()
-          let n = bufname('%')
-        let nok = ( n=~'NVimTree' )   && (w != w0)
-        endwhile
-      ]])
-        -- 当前有两个窗口的时候,可以切换到nvimtree
+        local cur = vim.api.nvim_get_current_win()
+        local ok = true
+        while ok do
+            vim.cmd("wincmd w")
+            local buf = vim.api.nvim_get_current_buf()
+            local new_win = vim.api.nvim_get_current_win()
+            if new_win == cur then
+                break
+            end
+            local ft = vim.bo[buf].filetype
+            if ft == "trouble" or ft == "NvimTree" then
+                ok = true
+            else
+                ok = false
+            end
+        end
     elseif flag == false then
-        vim.cmd([[
-        let w0 = winnr()
-        let nok = 1
-        while nok
-          exe 'wincmd ' 'w'
-          let w = winnr()
-          let n = bufname('%')
-          let nok = (n=~'NVmTree') && (w != w0)
-        endwhile
-      ]])
+        vim.cmd("wincmd w")
     end
 end
 
