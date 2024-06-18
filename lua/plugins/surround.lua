@@ -50,5 +50,11 @@ return {
         keymap("x", "(", function()
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ma(", true, false, true), "t", true)
         end, keymap_ops)
+
+        keymap("o", "af", function()
+            FeedKeys("<esc>m6", "n")
+            FeedKeys("mdf", "m")
+            FeedKeys("`6", "n")
+        end)
     end,
 }
