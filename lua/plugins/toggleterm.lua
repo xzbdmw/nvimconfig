@@ -23,6 +23,7 @@ return {
             on_open = function()
                 vim.g.neovide_underline_stroke_scale = 0
                 vim.cmd(":startinsert")
+                vim.keymap.set("t", "q", "q", { buffer = true })
             end, -- function to run when the terminal opens
             on_close = function()
                 _G.no_animation()
