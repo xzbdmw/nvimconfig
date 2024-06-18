@@ -194,7 +194,7 @@ function M.normal_tab()
                 break
             end
             local ft = vim.bo[buf].filetype
-            if ft == "trouble" or ft == "NvimTree" then
+            if ft == "NvimTree" then
                 ok = true
             else
                 ok = false
