@@ -40,6 +40,15 @@ return {
             { "<leader>sh", false },
             { "<leader>sH", "<cmd>Telescope highlights<CR>" },
             {
+                "<leader>sc",
+                function()
+                    require("treesitter-context").close_all()
+                    return "<cmd>Telescope git_commits<CR>"
+                end,
+                desc = "Commits",
+                expr = true,
+            },
+            {
                 "<leader>ss",
                 function()
                     require("custom.telescope-pikers").prettyWorkspaceSymbols()
@@ -103,14 +112,12 @@ return {
             },
             {
                 "<leader>sg",
-                -- false,
                 function()
                     require("custom.telescope-pikers").prettyGrepPicker("egrepify", nil, vim.bo.filetype)
                 end,
             },
             {
-                "<leader>sc",
-                -- false,
+                "<leader>sb",
                 function()
                     local filename = vim.fn.expand("%:t")
                     local default_text = "@" .. filename .. " "
@@ -136,10 +143,6 @@ return {
                     end
                 end,
                 mode = { "v", "n" },
-            },
-            {
-                "<leader>sb",
-                false,
             },
             {
                 "<leader>sw",

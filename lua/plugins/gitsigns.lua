@@ -78,7 +78,7 @@ return {
                 enable = false,
             },
         })
-        vim.keymap.set("n", "<leader>sb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
+        vim.keymap.set("n", "<leader><leader>b", "<cmd>Gitsigns toggle_current_line_blame<CR>")
         vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
     end,
 }
