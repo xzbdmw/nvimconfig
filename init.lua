@@ -318,7 +318,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function()
-        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" then
+        if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "DiffviewFiles" then
             return
         end
         local filename = vim.fn.expand("%:t")
