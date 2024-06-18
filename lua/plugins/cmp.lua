@@ -598,7 +598,9 @@ return {
                         args.body = remove_bracket_contents(args.body)
                         expand = true
                     end
+                    local time = vim.uv.hrtime()
                     require("luasnip").lsp_expand(args.body)
+                    Time(time, "expand")
                     -- vim.snippet.expand(args.body)
                 end,
             },
@@ -734,8 +736,10 @@ return {
                     if cmp.visible() then
                         vim.g.enter = true
                         _G.no_animation(_G.CI)
+                        _G.CON = true
                         vim.defer_fn(function()
                             vim.g.enter = false
+                            _G.CON = nil
                         end, 10)
                         cmp.confirm({ select = true })
                     else
