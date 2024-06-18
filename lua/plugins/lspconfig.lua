@@ -221,6 +221,7 @@ return {
                     },
                 },
                 gopls = {
+                    mason = false,
                     settings = {
                         gopls = {
                             usePlaceholders = true,
