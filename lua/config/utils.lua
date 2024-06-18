@@ -211,12 +211,8 @@ function M.normal_tab()
         endwhile
       ]])
     end
-    local is_terminal = vim.opt.buftype:get() == "terminal"
-    if is_terminal then
-        _G.no_animation()
-        vim.cmd(":startinsert")
-    end
 end
+
 function M.insert_mode_tab()
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
