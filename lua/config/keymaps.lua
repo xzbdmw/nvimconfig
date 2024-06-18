@@ -146,6 +146,7 @@ keymap("n", "<leader>cq", function()
 end)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
+keymap("n", "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
 
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)

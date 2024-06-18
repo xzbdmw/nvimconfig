@@ -241,7 +241,7 @@ function M.insert_mode_tab()
 end
 
 _G.no_delay = function(animation)
-    TYO = vim.uv.hrtime()
+    TST = vim.uv.hrtime()
     vim.g.type_o = true
     vim.g.enter = true
     vim.g.neovide_cursor_animation_length = animation
