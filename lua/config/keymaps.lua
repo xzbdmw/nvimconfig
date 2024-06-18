@@ -83,12 +83,15 @@ keymap("n", "A", function()
     end, 100)
     return "A"
 end, { expr = true })
-keymap({ "n", "v" }, "c", function()
-    vim.g.neovide_cursor_animation_length = 0.02
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
-    end, 100)
+
+keymap({ "v", "n" }, "c", function()
+    _G.no_animation(_G.CI)
     return '"_c'
+end, { expr = true })
+
+keymap("o", "c", function()
+    _G.no_animation(_G.CI)
+    return "c"
 end, { expr = true })
 
 keymap("i", "<C-d>", function()

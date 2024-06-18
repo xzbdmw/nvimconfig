@@ -623,8 +623,8 @@ return {
                     if cmp.visible() then
                         cmp.close()
                     end
-                    fallback()
                     vim.g.neovide_cursor_animation_length = 0
+                    fallback()
                 end),
                 ["<right>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
