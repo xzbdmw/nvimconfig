@@ -2,7 +2,7 @@ return {
     "tzachar/highlight-undo.nvim",
     lazy = false,
     opts = {
-        duration = 500,
+        duration = 200,
         undo = {
             hlgroup = "YankyPut",
             mode = "n",
