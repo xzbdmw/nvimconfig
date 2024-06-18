@@ -26,9 +26,9 @@ local function on_complete(bo_line, bo_line_side, origin_height)
 end
 return {
     {
-        -- "nvim-telescope/telescope.nvim",
-        dir = "~/Project/lua/telescope.nvim/",
-        -- commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
+        "nvim-telescope/telescope.nvim",
+        -- dir = "~/Project/lua/telescope.nvim/",
+        commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
         version = false,
         lazy = false,
         keys = {
@@ -645,8 +645,6 @@ return {
             })
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("egrepify")
-
-            -- require("telescope").load_extension("zf-native")
         end,
     },
 }

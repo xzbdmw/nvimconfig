@@ -11,7 +11,7 @@ return {
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
             end
-            _G.glance_buffer = {} -- 重置glancebuffer
+            _G.glance_buffer = {}
             vim.keymap.set("v", "<CR>", function()
                 vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
             end)
@@ -35,12 +35,10 @@ return {
         end
 
         function OpenAndKeepHighlight()
-            -- 获取当前光标位置
             local cursor = vim.api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
             local col = cursor[2]
 
-            -- 获取当前编辑的文件名
             local filename = vim.fn.expand("%:p")
 
             clear_and_restore()
@@ -56,26 +54,8 @@ return {
             actions.close()
         end
         function Open()
-            -- local cursor = vim.api.nvim_win_get_cursor(0)
-            -- local lnum = cursor[1]
-            -- local col = cursor[2]
-            -- 获取当前编辑的文件名
-            -- local filename = vim.fn.expand("%:p")
-
             clear_and_restore()
-            -- local uri = vim.uri_from_fname(filename)
-            -- local bufnr = vim.uri_to_bufnr(uri)
             actions.close(vim.api.nvim_get_current_buf())
-            -- vim.schedule(function()
-            --     local sequnce = "<cmd>lua vim.api.nvim_win_set_buf(0, "
-            --         .. bufnr
-            --         .. ")<CR><cmd>lua vim.api.nvim_win_set_cursor(0, { "
-            --         .. lnum
-            --         .. ", "
-            --         .. col
-            --         .. " })<CR><CMD>norm! zz<CR>"
-            --     FeedKeys(sequnce, "n")
-            -- end)
         end
 
         require("glance").setup({
