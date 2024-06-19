@@ -441,8 +441,7 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                vim.cmd("Trouble before_qflist")
-                                -- require("trouble").open("before_qflist")
+                                FeedKeys("<C-q>", "m")
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-e>"] = function(bufnr)
@@ -512,7 +511,7 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                vim.cmd("Trouble before_qflist")
+                                FeedKeys("<C-q>", "m")
                             end,
                             ["<c-t>"] = function(bufnr)
                                 require("trouble.sources.telescope").open(bufnr)

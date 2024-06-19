@@ -37,7 +37,22 @@ function _G.hide_cursor(callback, timeout)
     end, timeout)
 end
 
+local function check_trouble()
+    local ret = false
+    if require("trouble").is_open("before_qflist") then
+        vim.cmd("Trouble before_qflist toggle focus=false")
+        ret = true
+    elseif require("trouble").is_open("mydiags") then
+        vim.cmd("Trouble mydiags toggle filter.buf=0 focus=false")
+        ret = true
+    end
+    return ret
+end
+
 function M.close_win()
+    if check_trouble() then
+        return
+    end
     local nvimtree_present = false
     for _, win_id in ipairs(vim.api.nvim_list_wins()) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
