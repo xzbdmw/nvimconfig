@@ -598,9 +598,7 @@ return {
                         args.body = remove_bracket_contents(args.body)
                         expand = true
                     end
-                    local time = vim.uv.hrtime()
                     require("luasnip").lsp_expand(args.body)
-                    Time(time, "expand")
                     -- vim.snippet.expand(args.body)
                 end,
             },
