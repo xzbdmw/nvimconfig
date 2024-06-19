@@ -195,15 +195,15 @@ return {
                         actions.conflict_choose("theirs"),
                         { desc = "Choose the THEIRS version of a conflict" },
                     },
+                    -- {
+                    --     "n",
+                    --     "<leader>cb",
+                    --     actions.conflict_choose("base"),
+                    --     { desc = "Choose the BASE version of a conflict" },
+                    -- },
                     {
                         "n",
                         "<leader>cb",
-                        actions.conflict_choose("base"),
-                        { desc = "Choose the BASE version of a conflict" },
-                    },
-                    {
-                        "n",
-                        "<leader>ca",
                         actions.conflict_choose("all"),
                         { desc = "Choose all the versions of a conflict" },
                     },
