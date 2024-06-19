@@ -76,7 +76,7 @@ return {
                 git_clean = false,
                 no_buffer = false,
                 no_bookmark = false,
-                custom = { ".git", "go.sum", ".vscode", ".idea", ".DS_Store", "root/*" },
+                custom = { "go.sum", ".vscode", ".idea", ".DS_Store", "root/*" },
                 exclude = {},
             },
             on_attach = my_on_attach,
