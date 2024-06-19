@@ -144,9 +144,9 @@ keymap("n", "*", function()
     return "*"
 end, { expr = true })
 
-keymap("n", "<leader>cq", function()
-    vim.fn.setqflist({}, "r")
-end)
+-- keymap("n", "<leader>cq", function()
+--     vim.fn.setqflist({}, "r")
+-- end)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap("n", "<f17>", "<cmd>qall!<CR>", opts)
