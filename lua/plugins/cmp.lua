@@ -629,6 +629,7 @@ return {
                 ["<right>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         expand = false
+                        _G.no_animation(_G.CI)
                         cmp.confirm()
                     else
                         fallback()
@@ -741,6 +742,8 @@ return {
                         end, 10)
                         if require("config.utils").if_multicursor() then
                             expand = false
+                        else
+                            expand = true
                         end
                         cmp.confirm({ select = true })
                     else
