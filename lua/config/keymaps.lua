@@ -1,6 +1,8 @@
 local opts = { noremap = true, silent = true }
-local keymap = vim.keymap.set
 local utils = require("config.utils")
+
+local keymap = vim.keymap.set
+
 keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
@@ -31,6 +33,7 @@ keymap("i", "<D-g>", function()
         },
     })
 end)
+
 keymap("n", "<leader>h", function()
     FeedKeys("0", "n")
     vim.fn.winrestview({ leftcol = 0 })
@@ -99,10 +102,6 @@ keymap("i", "<C-d>", function()
     return "<C-w>"
 end, { expr = true })
 
-keymap("n", "<space><space>", function()
-    _G.no_animation()
-    return "<cmd>e #<cr>"
-end, { expr = true })
 keymap("n", "`", function()
     _G.no_animation()
     return "<cmd>e #<cr>"
@@ -289,12 +288,14 @@ keymap("t", "<D-v>", function()
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
+
 keymap("t", "<c-->", function()
     require("smart-splits").resize_left()
 end, opts)
 keymap("t", "<c-=>", function()
     require("smart-splits").resize_right()
 end, opts)
+
 keymap("t", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
 keymap("t", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
 
@@ -348,13 +349,10 @@ end)
 local del = vim.keymap.del
 del("n", "<leader>w-")
 del("n", "<leader>ww")
-
 del("n", "<leader>wd")
 del("t", "<esc><esc>")
 del("n", "<leader>fn")
 del("n", "<leader>w|")
--- del({ "n", "x" }, "<space>qÞ")
--- del({ "n", "x" }, "<space>wÞ")
 del("n", "gsh")
 del("n", "gshn")
 del("n", "gshl")
