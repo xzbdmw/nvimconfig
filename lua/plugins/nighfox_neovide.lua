@@ -59,6 +59,8 @@ return {
                 -- I have the same problem and more
                 AerialGuide = { link = "LineNr" },
                 Title = { fg = "#268BD2", style = "bold" },
+                MultiCursorMain = { bg = "#C9D2F5" },
+                MultiCursor = { bg = "#C9D2F5" },
                 TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },
                 GitConflictIncomingLabel = { link = "DiffText" },
                 GitConflictCurrent = { bg = "#E1E5E2" },
@@ -70,8 +72,6 @@ return {
                 Comment = { fg = "#7E7D7D" },
                 Ufo = { link = "MyNormalDocFloat" },
                 LazyNormal = { link = "MyNormalDocFloat" },
-                MultiCursor = { link = "Substitute" },
-                MultiCursorMain = { link = "MultiCursor" },
                 MasonNormal = { link = "MyNormalDocFloat" },
                 TroubleNormal = { link = "Normal" },
                 TroubleTextError = { fg = "#B4637A" },

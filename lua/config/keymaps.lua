@@ -336,8 +336,6 @@ keymap("n", "]q", function()
     vim.cmd("cnext")
 end, opts)
 keymap("n", "[q", function()
-    local a = 1
-    a = a + 1 + 2
     vim.cmd("cprev")
 end, opts)
 
