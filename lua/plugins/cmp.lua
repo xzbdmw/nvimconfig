@@ -1,3 +1,4 @@
+local expand = true
 local CompletionItemKind = {
     Text = 1,
     Method = 2,
@@ -502,7 +503,6 @@ local function go_fmt(entry, vim_item)
     end
     return kind
 end
-local expand = true
 return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -739,6 +739,9 @@ return {
                             vim.g.enter = false
                             _G.CON = nil
                         end, 10)
+                        if require("config.utils").if_multicursor() then
+                            expand = false
+                        end
                         cmp.confirm({ select = true })
                     else
                         _G.no_delay(0.0)

@@ -167,8 +167,22 @@ function M.insert_mode_space()
                 vim.keymap.del("i", m.lhs, { buffer = 0 })
             end
         end
+        if M.if_multicursor() then
+            vim.keymap.set("i", "<C-d>", function()
+                require("multicursors.insert_mode").C_w_method()
+            end, { buffer = true })
+        end
         has_map = false
     end, 150)
+end
+
+function M.if_multicursor()
+    local ns = vim.api.nvim_create_namespace("multicursors")
+    local extmark = vim.api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
+    if extmark ~= nil and #extmark ~= 0 then
+        return true
+    end
+    return false
 end
 
 ---@diagnostic disable-next-line: lowercase-global
