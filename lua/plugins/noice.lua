@@ -92,7 +92,8 @@ return {
                                 col = "50%",
                             },
                             size = {
-                                width = 39,
+                                min_width = 39,
+                                width = "auto",
                                 height = "auto",
                             },
                         }, -- global options for the cmdline. See section on views
@@ -113,7 +114,8 @@ return {
                                 col = "50%",
                             },
                             size = {
-                                width = 40,
+                                min_width = 40,
+                                width = "auto",
                                 height = "auto",
                             },
                         }, -- global options for the cmdline. See section on views
