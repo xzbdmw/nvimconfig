@@ -119,12 +119,13 @@ keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap({ "n" }, "<C-n>", function()
     vim.g.cmp_completion = false
     vim.cmd("MCstart")
+    FeedKeys("n", "m")
 end)
 
 keymap({ "x" }, "<C-n>", function()
     vim.g.cmp_completion = false
-    return "<cmd>MCstart<cr>"
-end, { expr = true })
+    vim.cmd("MCstart")
+end)
 
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
@@ -204,10 +205,6 @@ end, { remap = true, expr = true })
 keymap("n", "<leader>sm", function()
     vim.cmd("messages")
 end, opts)
-
-keymap("x", ":", function()
-    return ":"
-end, { expr = true })
 
 utils.load_appropriate_theme()
 
