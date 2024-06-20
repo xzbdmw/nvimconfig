@@ -86,7 +86,7 @@ return {
                 lualine_c_normal = { bg = "#FAF7E8" },
                 diffChanged = { link = "Keyword" },
                 LeapBackdrop = { fg = "none" },
-                LeapMatch = { fg = "#9294C2", bg = "none" },
+                LeapMatch = { fg = "#112386", bg = "none", style = "italic" },
                 LeapLabelPrimary = { link = "LeapMatch" },
                 -- diffRemoved = { fg = "#E7EADE" },
                 MiniDiffSignAdd = { link = "GitSignsAdd" },
