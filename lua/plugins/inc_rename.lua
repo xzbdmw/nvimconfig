@@ -59,7 +59,7 @@ return {
                 if num_files > 1 then
                     print(notification)
                     vim.fn.setqflist(entries, "r")
-                    vim.cmd("Trouble qflist focus=false")
+                    FeedKeys("<c-q>", "m")
                 end
             end,
             -- cmd_name = "Rename",
