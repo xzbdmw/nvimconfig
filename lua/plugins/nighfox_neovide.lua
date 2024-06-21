@@ -46,7 +46,7 @@ return {
                 GitSignsChangeInline = { bg = "#A1BDC4" },
                 GitSignsAddInline = { bg = "#A1BDC4" },
                 GitSignsDeleteInline = { bg = "#A1BDC4" },
-                GitSignsDeleteVirtLnInLine = { bg = "#F2B4B6" },
+                GitSignsDeleteVirtLnInLine = { bg = "#EABAB8" },
                 Directory = { link = "Comment" },
                 MatchParen = { fg = "#000000", style = "italic,bold" },
                 SatelliteBar = { bg = "#faf7e8" },
