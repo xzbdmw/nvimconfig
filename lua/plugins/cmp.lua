@@ -690,17 +690,18 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
+                        vim.schedule(fallback)
+                    else
+                        fallback()
                     end
-                    fallback()
                 end),
                 ["<C-p>"] = cmp.mapping(function(fallback)
-                    if cmp.visible then
-                        cmp.close()
-                    end
                     if cmp.visible() then
                         cmp.close()
+                        vim.schedule(fallback)
+                    else
+                        fallback()
                     end
-                    fallback()
                 end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -906,6 +907,15 @@ return {
                 }),
                 ["<C-p>"] = cmp.mapping(function(fallback)
                     cmp.close()
+                    fallback()
+                end, { "i", "c" }),
+                ["<C-f>"] = cmp.mapping(function(fallback)
+                    fallback()
+                end, { "i", "c" }),
+                ["<C-b>"] = cmp.mapping(function(fallback)
+                    fallback()
+                end, { "i", "c" }),
+                ["<C-a>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "c" }),
                 ["<C-n>"] = cmp.mapping(function(fallback)
