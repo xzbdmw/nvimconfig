@@ -291,6 +291,258 @@ _G.no_delay = function(animation)
     end, 50)
 end
 
+function M.checkSplitAndSetLaststatus()
+    local windows = vim.api.nvim_list_wins()
+    local is_split = false
+    for _, win in ipairs(windows) do
+        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if success then
+            if win_config.relative ~= "" then
+                goto continue
+            end
+        end
+        local win_height = vim.api.nvim_win_get_height(win)
+        ---@diagnostic disable-next-line: deprecated
+        local screen_height = vim.api.nvim_get_option("lines")
+        if win_height + 1 < screen_height then
+            is_split = true
+            break
+        end
+        ::continue::
+    end
+
+    if is_split then
+        vim.cmd("set laststatus=3")
+    else
+        vim.cmd("set laststatus=0")
+    end
+end
+
+function M.setUndotreeWinSize()
+    local api = vim.api
+    local winList = api.nvim_list_wins()
+    for _, winHandle in ipairs(winList) do
+        if
+            api.nvim_win_is_valid(winHandle)
+            ---@diagnostic disable-next-line: deprecated
+            and api.nvim_buf_get_option(api.nvim_win_get_buf(winHandle), "filetype") == "undotree"
+        then
+            api.nvim_win_set_width(winHandle, 33)
+        end
+    end
+end
+
+function M.set_glance_keymap()
+    local winconfig = vim.api.nvim_win_get_config(0)
+    local bufnr = vim.api.nvim_get_current_buf()
+    if winconfig.relative ~= "" and winconfig.zindex == 10 then
+        if _G.glance_buffer[bufnr] ~= nil then
+            return
+        end
+
+        local function glance_close()
+            ---@diagnostic disable-next-line: undefined-global
+            pcall(satellite_close, vim.api.nvim_get_current_win())
+            ---@diagnostic disable-next-line: undefined-global
+            pcall(close_stored_win, vim.api.nvim_get_current_win())
+            Close_with_q()
+            vim.defer_fn(function()
+                ---@diagnostic disable-next-line: undefined-field
+                pcall(_G.indent_update)
+                ---@diagnostic disable-next-line: undefined-field
+                pcall(_G.mini_indent_auto_draw)
+            end, 100)
+        end
+
+        _G.glance_buffer[bufnr] = true
+        vim.keymap.set("n", "<Esc>", function()
+            glance_close()
+        end, { buffer = bufnr })
+
+        vim.keymap.set("n", "q", function()
+            glance_close()
+        end, { buffer = bufnr })
+        vim.keymap.set("n", "<CR>", function()
+            vim.g.neovide_cursor_animation_length = 0.0
+            ---@diagnostic disable-next-line: undefined-global
+            pcall(satellite_close, vim.api.nvim_get_current_win())
+            ---@diagnostic disable-next-line: undefined-global
+            pcall(close_stored_win, vim.api.nvim_get_current_win())
+            vim.defer_fn(function()
+                Open()
+            end, 5)
+        end, { buffer = bufnr })
+    end
+end
+
+function OilDir()
+    local cwd = vim.fn.getcwd()
+    local path = require("oil").get_current_dir()
+    if vim.startswith(path, cwd) then
+        path = string.sub(path, #cwd + 2)
+        if path == "" then
+            path = "."
+        end
+        return "  " .. path, "NvimTreeFolderName"
+    else
+        return "  " .. path, "LibPath"
+    end
+end
+
+function M.set_oil_winbar(ev)
+    if vim.bo[ev.buf].filetype == "oil" and vim.api.nvim_get_current_buf() == ev.buf then
+        local path, hl = OilDir()
+        local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
+        vim.api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
+
+        vim.keymap.set("n", "q", function()
+            local is_split = require("config.utils").check_splits()
+            if is_split then
+                vim.cmd("close")
+            else
+                require("oil").close()
+            end
+        end, { buffer = 0 })
+    end
+end
+
+function M.set_glance_winbar()
+    local winconfig = vim.api.nvim_win_get_config(0)
+    if winconfig.relative ~= "" and winconfig.zindex == 9 then
+        local function checkGlobalVarAndSetWinBar()
+            -- 检查全局变量是否设置
+            if _G.glance_listnr ~= nil then
+                -- 如果已设置，执行 vim.wo 操作
+                vim.wo.winbar = " %#Comment#"
+                    .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
+            else
+                -- 如果未设置，10 毫秒后再次检查
+                vim.defer_fn(checkGlobalVarAndSetWinBar, 1)
+            end
+        end
+
+        -- 开始轮询
+        checkGlobalVarAndSetWinBar()
+    end
+    if winconfig.relative ~= "" and winconfig.zindex == 10 then
+        local telescopeUtilities = require("telescope.utils")
+        local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
+        local path = vim.fn.expand("%:~:.:h")
+
+        local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
+        local filename = vim.fn.expand("%:t")
+        local cwd = vim.fn.getcwd()
+        if path == nil or filename == nil then
+            return
+        end
+        if filename:match("%.rs$") then
+            iconHighlight = "RustIcon"
+            icon = "󱘗"
+        end
+        if not vim.startswith(absolute_path, cwd) then
+            vim.wo.winbar = " "
+                .. "%#"
+                .. iconHighlight
+                .. "#"
+                .. icon
+                .. " %#GlanceWinbarFileName#"
+                .. filename
+                .. "%*"
+                .. " "
+                .. "%#LibPath#"
+                .. path
+        else
+            -- 在当前工作目录下，使用默认颜色
+            vim.wo.winbar = " "
+                .. "%#"
+                .. iconHighlight
+                .. "#"
+                .. icon
+                .. " %#GlanceWinbarFileName#"
+                .. filename
+                .. "%*"
+                .. " "
+                .. "%#Comment#"
+                .. path
+        end
+    end
+end
+function M.set_winbar()
+    if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "DiffviewFiles" then
+        return
+    end
+    local filename = vim.fn.expand("%:t")
+    local devicons = require("nvim-web-devicons")
+    local icon, iconHighlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
+    local winid = vim.api.nvim_get_current_win()
+    local winconfig = vim.api.nvim_win_get_config(winid)
+    if winconfig.relative ~= "" then
+        return
+    end
+    local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
+    local path = vim.fn.expand("%:~:.:h")
+    local cwd = vim.fn.getcwd()
+    if filename:match("%.rs$") then
+        iconHighlight = "RustIcon"
+        icon = "󱘗"
+    end
+    local statusline = require("arrow.statusline")
+    local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
+    local arrow_icon = ""
+    if arrow ~= "" then
+        arrow_icon = "󰣉"
+        icon = ""
+        arrow = " (" .. arrow .. ")"
+        iconHighlight = "ArrowIcon"
+    end
+    pcall(function()
+        if path ~= "" and filename ~= "" then
+            if not vim.startswith(absolute_path, cwd) then
+                vim.wo[winid].winbar = " "
+                    .. " "
+                    .. "%#LibPath#"
+                    .. path
+                    .. "%#Comment#"
+                    .. " => "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow_icon
+                    .. icon
+                    .. " %#WinbarFileName#"
+                    .. filename
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow
+                    .. "%*"
+            else
+                vim.wo[winid].winbar = " "
+                    .. "%#NvimTreeFolderName#"
+                    .. " "
+                    .. path
+                    .. " => "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow_icon
+                    .. icon
+                    .. " %#WinbarFileName#"
+                    .. filename
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. arrow
+                    .. "%*"
+            end
+        elseif filename ~= "" then
+            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
+        else
+            vim.wo.winbar = ""
+        end
+    end)
+end
+
 _G.Time = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
