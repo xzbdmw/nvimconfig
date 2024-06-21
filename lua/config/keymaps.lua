@@ -61,15 +61,17 @@ keymap("n", "O", function()
 end, { expr = true })
 
 keymap("n", "i", function()
-    vim.schedule(function()
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
         vim.g.neovide_cursor_animation_length = _G.CI
-    end)
+    end, 10)
     return "i"
 end, { expr = true })
 keymap("n", "a", function()
-    vim.schedule(function()
+    vim.g.neovide_cursor_animation_length = 0
+    vim.defer_fn(function()
         vim.g.neovide_cursor_animation_length = _G.CI
-    end)
+    end, 10)
     return "a"
 end, { expr = true })
 
@@ -103,6 +105,7 @@ keymap("i", "<C-d>", function()
 end, { expr = true })
 
 keymap("n", "`", function()
+    vim.g.gd = true
     _G.no_animation()
     return "<cmd>e #<cr>"
 end, { expr = true })
