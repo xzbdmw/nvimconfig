@@ -229,8 +229,6 @@ keymap("n", "<Tab>", function()
     utils.normal_tab()
 end, { desc = "swicth window" })
 
-keymap("c", "<C-d>", "<C-w>", opts)
-
 keymap("x", "<C-r>", '"', opts)
 
 keymap({ "n", "o" }, "0", "^", opts)
@@ -241,8 +239,6 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 
-keymap("c", "<C-p>", "<up>", opts)
-keymap("c", "<C-n>", "<down>", opts)
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><left>", function()
@@ -267,8 +263,6 @@ end, { expr = true })
 -- don't messy up indent
 keymap("i", "<C-r>", "<C-r><C-o>", opts)
 
-keymap("c", "<D-v>", "<C-r>+<CR>", opts)
-
 keymap("n", "<D-z>", "u", opts)
 keymap("i", "<D-z>", "<C-o>u", opts)
 
@@ -283,19 +277,29 @@ end, { expr = true, remap = true })
 keymap("n", "<M-w>", "<c-w>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 
+-- Command line mapping
+keymap("c", "<C-d>", "<C-w>", opts)
+keymap("c", "<C-p>", "<up>", opts)
+keymap("c", "<C-n>", "<down>", opts)
+keymap("c", "<c-f>", "<S-Right>", opts)
+keymap("c", "<c-b>", "<S-Left>", opts)
+keymap("c", "<c-a>", "<Home>", opts)
+keymap("c", "<D-v>", "<C-r>+<CR>", opts)
+
+-- Terminal mapping
+keymap("t", "<c-f>", "<M-right>", opts)
+keymap("t", "<c-b>", "<M-left>", opts)
 keymap("t", "<D-v>", function()
     local next_char_code = 48
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
-
 keymap("t", "<c-->", function()
     require("smart-splits").resize_left()
 end, opts)
 keymap("t", "<c-=>", function()
     require("smart-splits").resize_right()
 end, opts)
-
 keymap("t", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
 keymap("t", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
 
