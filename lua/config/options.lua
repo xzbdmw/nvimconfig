@@ -1,11 +1,9 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
 vim.g.root_spec = { "cwd" }
 vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
+vim.o.scrollback = 100000
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
 vim.o.termsync = false
@@ -52,7 +50,6 @@ vim.g.neovide_underline_stroke_scale = 2
 vim.g.neovide_flatten_floating_zindex = "20,21,22,23,30,35,31,32,51,52,1002,1003"
 vim.g.neovide_floating_z_height = 18
 vim.g.neovide_light_angle_degrees = 180
--- vim.g.neovide_light_radius = 90
 vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_in_insert_mode = true
 vim.g.neovide_cursor_animate_command_line = false
@@ -60,6 +57,7 @@ vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0.00
 vim.g.neovide_hide_mouse_when_typing = true
+
 vim.g.rustaceanvim = {
     server = {
         cmd = function()
