@@ -14,6 +14,7 @@ return {
             "Glance",
             "fugitive",
             "aerial",
+            "toggleterm",
         },
         -- delay = 90,
         delay = 1,
