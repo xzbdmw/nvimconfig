@@ -83,6 +83,7 @@ return {
                         lang = "vim",
                         conceal = true,
                         opts = {
+                            zindex = 100,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },
@@ -105,6 +106,7 @@ return {
                         lang = "regex",
                         conceal = true,
                         opts = {
+                            zindex = 100,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },
