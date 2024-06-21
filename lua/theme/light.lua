@@ -68,12 +68,12 @@ keymap({ "s", "n" }, "<esc>", function()
                 _G.no_animation()
                 vim.api.nvim_win_close(win, true)
             elseif win_config.zindex == 10 then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+                FeedKeys("<esc>", "n")
             end
         end
     end
     if flag then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+        FeedKeys("<esc>", "n")
         vim.cmd("noh")
     end
     if success then

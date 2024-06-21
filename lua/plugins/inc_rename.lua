@@ -7,7 +7,6 @@ return {
             "r",
             function()
                 local cword = vim.fn.expand("<cword>")
-                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "x", true)
                 vim.api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()

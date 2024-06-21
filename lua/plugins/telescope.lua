@@ -449,18 +449,10 @@ return {
                                 actions.close(bufnr)
                             end,
                             ["<C-d>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<C-w>", true, false, true),
-                                    "t",
-                                    true
-                                )
+                                FeedKeys("<c-w>", "t")
                             end,
                             ["<C-u>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<C-CR>", true, false, true),
-                                    "t",
-                                    true
-                                )
+                                FeedKeys("<C-CR>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
                                 ST = vim.uv.hrtime()
@@ -478,21 +470,13 @@ return {
                             ["<C-->"] = actions.preview_scrolling_up,
                             ["<C-=>"] = actions.preview_scrolling_down,
                             ["<D-v>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<C-r>1", true, false, true),
-                                    "t",
-                                    true
-                                )
+                                FeedKeys("<C-r>1", "t")
                             end,
                             ["<C-g>"] = function(bufnr)
                                 actions.to_fuzzy_refine(bufnr)
                             end,
                             ["<f17>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<Cr>", true, false, true),
-                                    "t",
-                                    true
-                                )
+                                FeedKeys("<CR>", "t")
                             end,
                         },
                         n = {
@@ -535,11 +519,7 @@ return {
                             ["<C-->"] = actions.preview_scrolling_left,
                             ["<C-=>"] = actions.preview_scrolling_right,
                             ["<f16>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<Cr>", true, false, true),
-                                    "t",
-                                    true
-                                )
+                                FeedKeys("<CR>", "t")
                             end,
                         },
                     },

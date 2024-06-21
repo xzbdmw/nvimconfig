@@ -82,8 +82,8 @@ return {
         {
             "<leader>uf",
             function()
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zm", true, false, true), "t", true)
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("zr", true, false, true), "t", true)
+                FeedKeys("zm", "t")
+                FeedKeys("zr", "t")
             end,
         },
         {

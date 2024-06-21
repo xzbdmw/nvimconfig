@@ -316,7 +316,7 @@ keymap("n", "V", function()
 end, { expr = true })
 
 keymap("x", "<bs>", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("holo", true, false, true), "t", false)
+    FeedKeys("holo", "t")
 end, opts)
 
 keymap({ "s", "i", "n" }, "<C-7>", function()

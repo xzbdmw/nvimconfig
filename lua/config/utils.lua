@@ -244,15 +244,15 @@ function M.insert_mode_tab()
     local line = vim.fn.getline(".")
     local line_len = #line
     if col == line_len then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
+        FeedKeys("<Tab>", "n")
         return
     end
     ---@diagnostic disable-next-line: param-type-mismatch
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
+        FeedKeys("<Tab>", "n")
         return
     else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "t", true)
+        FeedKeys("<right>", "t")
         return
     end
 end

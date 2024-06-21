@@ -46,7 +46,7 @@ return {
                     function()
                         require("refactoring").debug.print_var()
                         vim.schedule(function()
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
+                            FeedKeys("jjj", "n")
                         end)
                     end,
                     description = "variable",

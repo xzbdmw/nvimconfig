@@ -900,7 +900,7 @@ return {
                         if cmp.visible() then
                             cmp.close()
                         else
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+                            FeedKeys("<c-c>", "n")
                         end
                     end,
                 }),

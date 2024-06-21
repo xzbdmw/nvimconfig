@@ -16,7 +16,6 @@ return {
         {
             "<leader>ca",
             function()
-                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
                 vim.cmd("Lspsaga code_action")
             end,
             mode = { "n", "v" },
@@ -25,7 +24,6 @@ return {
         {
             "<C-cr>",
             function()
-                -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<leader>ca", true, false, true), "t", true)
                 local origin = vim.o.eventignore
                 vim.o.eventignore = "all"
                 vim.cmd([[:stopinsert]])
