@@ -375,6 +375,26 @@ function M.set_glance_keymap()
     end
 end
 
+function EditFromLazygit(file_path)
+    local path = vim.fn.expand("%:p")
+    if path == file_path then
+        return
+    else
+        vim.cmd("e " .. file_path)
+    end
+end
+
+function EditLineFromLazygit(file_path, line)
+    local path = vim.fn.expand("%:p")
+    if path == file_path then
+        vim.cmd(tostring(line))
+        return
+    else
+        vim.cmd("e " .. file_path)
+        vim.cmd(tostring(line))
+    end
+end
+
 function OilDir()
     local cwd = vim.fn.getcwd()
     local path = require("oil").get_current_dir()
