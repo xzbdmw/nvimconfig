@@ -93,7 +93,7 @@ keymap("n", "A", function()
     return "A"
 end, { expr = true })
 
-keymap({ "v", "n" }, "c", function()
+keymap({ "x", "n" }, "c", function()
     _G.no_animation(_G.CI)
     return '"_c'
 end, { expr = true })
