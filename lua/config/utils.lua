@@ -426,6 +426,33 @@ function M.set_oil_winbar(ev)
     end
 end
 
+_G.last = nil
+_G.first_time = false
+function M.on_complete(bo_line, bo_line_side, origin_height)
+    vim.schedule(function()
+        ---@diagnostic disable-next-line: undefined-field
+        local obj = _G.telescope_picker
+        if not vim.api.nvim_buf_is_valid(obj.results_bufnr) then
+            return
+        end
+        local count = vim.api.nvim_buf_line_count(obj.results_bufnr)
+        local top_win = vim.api.nvim_win_get_config(obj.results_win)
+        local buttom_buf = vim.api.nvim_win_get_buf(obj.results_win + 1)
+        local bottom_win = vim.api.nvim_win_get_config(obj.results_win + 1)
+        top_win.height = math.max(count, 1)
+        top_win.height = math.min(top_win.height, origin_height)
+        bottom_win.height = math.max(count + 2, 3)
+        bottom_win.height = math.min(bottom_win.height, origin_height + 2)
+        vim.api.nvim_win_set_config(obj.results_win + 1, bottom_win)
+        vim.api.nvim_win_set_config(obj.results_win, top_win)
+        if _G.last ~= nil then
+            vim.api.nvim_buf_set_lines(buttom_buf, _G.last, _G.last + 1, false, { bo_line_side })
+        end
+        vim.api.nvim_buf_set_lines(buttom_buf, math.max(count + 1, 2), math.max(count + 2, 3), false, { bo_line })
+        _G.last = math.max(count + 1, 2)
+    end)
+end
+
 function M.set_glance_winbar()
     local winconfig = vim.api.nvim_win_get_config(0)
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
