@@ -143,7 +143,9 @@ end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 
 keymap("n", "*", function()
-    utils.search_to_qf()
+    if not vim.bo.filetype == "noice" then
+        utils.search_to_qf()
+    end
     return "*"
 end, { expr = true })
 
