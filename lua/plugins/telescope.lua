@@ -291,6 +291,22 @@ return {
                 vim.fn.setreg('"', display)
             end
 
+            local delta = require("telescope.previewers").new_termopen_previewer({
+                get_command = function(entry)
+                    return {
+                        "git",
+                        "-c",
+                        "core.pager=delta",
+                        "-c",
+                        "delta.side-by-side=false",
+                        "diff",
+                        entry.value .. "^!",
+                        "--",
+                        entry.current_file,
+                    }
+                end,
+            })
+
             local function gitsign_change_base(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
@@ -327,7 +343,10 @@ return {
                     layout_strategy = "horizontal",
                     -- borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
                     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-
+                    set_env = {
+                        LESS = "",
+                        DELTA_PAGER = "less",
+                    },
                     layout_config = {
                         horizontal = {
                             width = 0.9,
@@ -515,6 +534,20 @@ return {
                 pickers = {
                     git_commits = {
                         initial_mode = "normal",
+                        layout_config = {
+                            horizontal = {
+                                width = 0.95,
+                                height = 0.95,
+                                preview_cutoff = 0,
+                                prompt_position = "top",
+                                preview_width = 0.65,
+                            },
+                        },
+                        previewer = {
+                            delta,
+                            require("telescope.previewers").git_commit_message.new({}),
+                            require("telescope.previewers").git_commit_diff_as_was.new({}),
+                        },
                         mappings = {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
