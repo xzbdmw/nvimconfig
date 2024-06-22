@@ -82,6 +82,10 @@ keymap("n", "I", function()
     return "I"
 end, { expr = true })
 
+keymap("n", "<leader><leader>g", function()
+    vim.notify(_G.base_commit_msg, vim.log.levels.INFO)
+end, opts)
+
 keymap("n", "A", function()
     vim.defer_fn(function()
         vim.g.neovide_cursor_animation_length = _G.CI

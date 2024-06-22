@@ -1,6 +1,15 @@
 return {
     "folke/noice.nvim",
     dependencies = { { "MunifTanjim/nui.nvim" } },
+    keys = {
+        {
+            "<leader>na",
+            function()
+                vim.cmd("NoiceAll")
+                vim.cmd("wincmd L")
+            end,
+        },
+    },
     config = function()
         local noice = require("noice")
         noice.setup({
