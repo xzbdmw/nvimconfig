@@ -334,7 +334,7 @@ return {
                             height = 0.9,
                             preview_cutoff = 0,
                             prompt_position = "top",
-                            preview_width = 0.65,
+                            preview_width = 0.6,
                         },
                     },
                     mappings = {
@@ -466,6 +466,8 @@ return {
                             end,
                         },
                         n = {
+                            J = actions.preview_scrolling_down,
+                            K = actions.preview_scrolling_up,
                             ["`"] = function()
                                 FeedKeys("a", "n")
                                 FeedKeys("<space>", "n")
