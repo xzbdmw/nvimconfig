@@ -301,8 +301,9 @@ return {
         },
         config = function()
             local actions = require("telescope.actions")
+            local action_state = require("telescope.actions.state")
+
             local yank_selected_entry = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
                 local entry_display = require("telescope.pickers.entry_display")
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local manager = picker.manager
@@ -315,9 +316,24 @@ return {
 
                 vim.fn.setreg('"', display)
             end
+
+            local function gitsign_change_base(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                local commit = selection.value
+                require("gitsigns").change_base(commit, true)
+                vim.notify(selection.ordinal, vim.log.levels.INFO)
+            end
+
+            local function diffview_base(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                local commit = selection.value
+                vim.cmd("DiffviewOpen " .. commit)
+            end
+
             -- yank preview
             local yank_preview_lines = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local previewer = picker.previewer
                 local winid = previewer.state.winid
@@ -526,6 +542,19 @@ return {
                     },
                 },
                 pickers = {
+                    git_commits = {
+                        initial_mode = "normal",
+                        mappings = {
+                            n = {
+                                gg = gitsign_change_base,
+                                sd = diffview_base,
+                            },
+                            i = {
+                                ["<c-b>"] = gitsign_change_base,
+                                ["<C-d>"] = diffview_base,
+                            },
+                        },
+                    },
                     find_files = {
                         disable_devicons = true,
                     },
