@@ -10,7 +10,6 @@ return {
         "zbirenbaum/copilot-cmp",
         { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
         { dir = "~/Project/lua/cmp-rg/" },
-        "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
@@ -54,7 +53,7 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 10000,
+                fetching_timeout = 80,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
                 max_view_entries = 20,
@@ -327,8 +326,20 @@ return {
         cmp.setup.cmdline("/", {
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
-                    i = cmp.mapping.confirm({ select = true }),
-                    c = cmp.mapping.confirm({ select = false }),
+                    -- i = cmp.mapping.confirm({ select = true }),
+                    -- c = cmp.mapping.confirm({ select = true }),
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.confirm({ select = true })
+                            FeedKeys("<space><bs>", "n")
+                        else
+                            fallback()
+                        end
+                    end,
+                    -- c = function()
+                    --     cmp.mapping.confirm({ select = true })
+                    --     -- vim.cmd("redraw")
+                    -- end,
                 }),
                 ["<down>"] = {
                     c = function(fallback)
@@ -357,7 +368,7 @@ return {
                 end, { "i", "c" }),
             }),
             sources = {
-                { name = "buffer" },
+                { name = "rg" },
             },
         })
         cmp.setup.cmdline(":", {
