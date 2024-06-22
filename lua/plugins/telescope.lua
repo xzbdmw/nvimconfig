@@ -295,15 +295,10 @@ return {
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 local commit = selection.value
+                _G.base_commit = commit
+                _G.base_commit_msg = selection.ordinal
                 require("gitsigns").change_base(commit, true)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
-            end
-
-            local function diffview_base(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                local commit = selection.value
-                vim.cmd("DiffviewOpen " .. commit)
             end
 
             -- yank preview
@@ -520,12 +515,10 @@ return {
                         initial_mode = "normal",
                         mappings = {
                             n = {
-                                gg = gitsign_change_base,
-                                sd = diffview_base,
+                                ["<CR>"] = gitsign_change_base,
                             },
                             i = {
-                                ["<c-b>"] = gitsign_change_base,
-                                ["<C-d>"] = diffview_base,
+                                ["<CR>"] = gitsign_change_base,
                             },
                         },
                     },

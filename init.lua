@@ -3,6 +3,7 @@ local utils = require("config.utils")
 
 vim.uv = vim.loop
 _G.CI = 0.04
+_G.base_commit = ""
 vim.cmd("syntax off")
 
 local lazy_view_config = require("lazy.view.config")

@@ -177,7 +177,11 @@ end, { expr = true })
 
 keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
-    vim.cmd("DiffviewOpen")
+    if _G.base_commit == "" then
+        vim.cmd("DiffviewOpen")
+    else
+        vim.cmd("DiffviewOpen " .. base_commit)
+    end
 end, opts)
 
 keymap("n", "<leader>sf", function()
