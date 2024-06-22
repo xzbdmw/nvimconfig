@@ -1,4 +1,4 @@
 return {
-    "lukas-reineke/cmp-rg",
+    dir = "~/Project/lua/cmp-rg/",
     event = "InsertEnter",
 }

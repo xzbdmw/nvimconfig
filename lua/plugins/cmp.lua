@@ -511,9 +511,9 @@ return {
     -- lazy = false,
     -- dir = "~/Project/lua/oricmp/nvim-cmp/",
     dependencies = {
-        "lukas-reineke/cmp-rg",
         "zbirenbaum/copilot-cmp",
         { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
+        { dir = "~/Project/lua/cmp-rg/" },
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "saadparwaiz1/cmp_luasnip",
@@ -583,7 +583,7 @@ return {
                 debounce = 0,
                 throttle = 0,
                 fetching_timeout = 10000,
-                confirm_resolve_timeout = 10000,
+                confirm_resolve_timeout = 1,
                 async_budget = 1,
                 max_view_entries = 20,
             },
@@ -767,7 +767,7 @@ return {
                 { name = "luasnip", keyword_length = 2 },
                 { name = "path" },
             }, {
-                { name = "rg", keyword_length = 2 },
+                { name = "rg" },
             }),
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
