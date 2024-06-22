@@ -61,7 +61,7 @@ return {
                 virt_text_priority = 100,
             },
             -- current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
-            current_line_blame_formatter = "      <author_time:%Y-%m-%d> - <summary>",
+            current_line_blame_formatter = "    <author> <author_time:%Y-%m-%d> - <summary>",
             sign_priority = 6,
             update_debounce = 100,
             status_formatter = nil, -- Use default
