@@ -763,8 +763,27 @@ return {
                 end),
             }),
             sources = cmp.config.sources({
-                { name = "nvim_lsp" },
-                { name = "luasnip", keyword_length = 2 },
+                {
+                    name = "nvim_lsp",
+                    entry_filter = function(entry)
+                        if vim.bo.filetype == "go" then
+                            local word = entry:get_word()
+                            if word == "ifaceassert" then
+                                return false
+                            end
+                            if word == "if" and entry:get_kind() == 14 then
+                                return false
+                            end
+                        elseif vim.bo.filetype == "lua" then
+                            local word = entry:get_word()
+                            if word == "re" then
+                                return false
+                            end
+                        end
+                        return true
+                    end,
+                },
+                { name = "luasnip" },
                 { name = "path" },
             }, {
                 { name = "rg" },
