@@ -184,6 +184,11 @@ keymap("n", "<leader>sd", function()
     vim.cmd("DiffviewOpen")
 end, opts)
 
+keymap("n", "<leader>sf", function()
+    vim.g.neovide_underline_stroke_scale = 0
+    vim.cmd("DiffviewFileHistory %")
+end, opts)
+
 keymap("n", "<leader>cd", function()
     vim.g.neovide_underline_stroke_scale = 2
     pcall(function()

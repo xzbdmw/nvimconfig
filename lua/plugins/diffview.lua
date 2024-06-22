@@ -1,6 +1,6 @@
 return {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose" },
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
     config = function()
         local actions = require("diffview.actions")
         require("diffview").setup({

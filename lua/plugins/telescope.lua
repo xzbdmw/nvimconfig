@@ -34,6 +34,7 @@ return {
         keys = {
             { "<leader><space>", false },
             { "<leader>so", false },
+            { "<leader>sf", false },
             { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
             { "<leader>sr", "<cmd>Telescope resume<CR>" },
             { "<leader>sd", false },
