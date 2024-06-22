@@ -27,8 +27,8 @@ M.CompletionItemKind = {
     Operator = 24,
     TypeParameter = 25,
 }
+
 M.reverse_prioritize = function(entry1, entry2)
-    local is_snip = entry1:get_completion_item().insertTextFormat == 2
     if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
         return false
     elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
@@ -126,7 +126,7 @@ function M.rust_fmt(entry, vim_item)
         } ]]
         if label_detail then
             local detail = label_detail.detail
-            detail = trim_detail(detail)
+            detail = M.trim_detail(detail)
             local description = label_detail.description
             if description then
                 if string.sub(description, #description, #description) == "," then
@@ -140,7 +140,7 @@ function M.rust_fmt(entry, vim_item)
                 goto OUT
             end
             if detail and description then
-                if match_fn(description) then
+                if M.match_fn(description) then
                     local start_index, _ = string.find(description, "(", nil, true)
                     if start_index then
                         description = description:sub(start_index, #description)
@@ -162,7 +162,7 @@ function M.rust_fmt(entry, vim_item)
                 kind.concat = "fn " .. kind.abbr .. "{}//" .. detail
                 kind.abbr = kind.abbr .. " " .. detail
             elseif description then
-                if match_fn(description) then
+                if M.match_fn(description) then
                     local start_index, _ = string.find(description, "%(")
                     if start_index then
                         description = description:sub(start_index, #description)
@@ -185,7 +185,7 @@ function M.rust_fmt(entry, vim_item)
     elseif item_kind == 15 then
     elseif item_kind == 5 then -- Field
         local detail = completion_item.detail
-        detail = trim_detail(detail)
+        detail = M.trim_detail(detail)
         if detail then
             kind.concat = "struct S {" .. kind.abbr .. ": " .. detail .. "}"
             kind.abbr = kind.abbr .. ": " .. detail
@@ -213,7 +213,7 @@ function M.rust_fmt(entry, vim_item)
         end
     elseif item_kind == 9 then -- Module
         local detail = label_detail.detail
-        detail = trim_detail(detail)
+        detail = M.trim_detail(detail)
         if detail then
             kind.concat = kind.abbr .. "  //" .. detail
             kind.abbr = kind.abbr .. " " .. detail
@@ -223,7 +223,7 @@ function M.rust_fmt(entry, vim_item)
         end
     elseif item_kind == 8 then -- Trait
         local detail = label_detail.detail
-        detail = trim_detail(detail)
+        detail = M.trim_detail(detail)
         if detail then
             kind.concat = "trait " .. kind.abbr .. "{}//" .. detail
             kind.abbr = kind.abbr .. " " .. detail
@@ -234,7 +234,7 @@ function M.rust_fmt(entry, vim_item)
         kind.offset = 6
     elseif item_kind == 22 then -- Struct
         local detail = label_detail.detail
-        detail = trim_detail(detail)
+        detail = M.trim_detail(detail)
         if detail then
             kind.concat = kind.abbr .. "  //" .. detail
             kind.abbr = kind.abbr .. " " .. detail
@@ -288,7 +288,7 @@ function M.lua_fmt(entry, vim_item)
 
     local is_copilot = entry:get_completion_item().copilot
     if is_copilot then
-        return copilot(kind, strings)
+        return M.copilot(kind, strings)
     end
 
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
@@ -415,13 +415,13 @@ function M.go_fmt(entry, vim_item)
 
     local is_copilot = entry:get_completion_item().copilot
     if is_copilot then
-        return copilot(kind, strings)
+        return M.copilot(kind, strings)
     end
 
     local detail = completion_item.detail
     if item_kind == 5 then -- Field
         if detail then
-            local last = findLast(kind.abbr, "%.")
+            local last = M.findLast(kind.abbr, "%.")
             if last then
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
                 local space_hole = string.rep(" ", last)
@@ -445,7 +445,7 @@ function M.go_fmt(entry, vim_item)
         kind.concat = ""
         kind.offset = 1
     elseif item_kind == 6 or item_kind == 21 then -- Variable
-        local last = findLast(kind.abbr, "%.")
+        local last = M.findLast(kind.abbr, "%.")
         if detail then
             if last then
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
@@ -462,7 +462,7 @@ function M.go_fmt(entry, vim_item)
             end
         end
     elseif item_kind == 22 then -- Struct
-        local last = findLast(kind.abbr, "%.")
+        local last = M.findLast(kind.abbr, "%.")
         if last then
             local catstr = kind.abbr:sub(last + 1, #kind.abbr)
             local space_hole = string.rep(" ", last)
@@ -475,7 +475,7 @@ function M.go_fmt(entry, vim_item)
             kind.offset = 5
         end
     elseif item_kind == 3 or item_kind == 2 then -- Function/Method
-        local last = findLast(kind.abbr, "%.")
+        local last = M.findLast(kind.abbr, "%.")
         if last then
             if detail then
                 detail = detail:sub(5, #detail)
@@ -507,7 +507,7 @@ function M.go_fmt(entry, vim_item)
             kind.concat = "import " .. detail
         end
     elseif item_kind == 8 then -- Interface
-        local last = findLast(kind.abbr, "%.")
+        local last = M.findLast(kind.abbr, "%.")
         if last then
             local catstr = kind.abbr:sub(last + 1, #kind.abbr)
             local space_hole = string.rep(" ", last)

@@ -1,4 +1,4 @@
-local f = require("config.cmp_format")
+local f = require("config.cmpformat")
 return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
