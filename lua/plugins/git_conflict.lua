@@ -2,11 +2,20 @@ return {
     "akinsho/git-conflict.nvim",
     version = "*",
     lazy = false,
-    keys = { {
-        "<leader>cq",
-        "<cmd>GitConflictListQf<CR>",
-        desc = "GitConflictListQf",
-    } },
+    keys = {
+        {
+            "<leader>cq",
+            function()
+                vim.fn.setqflist({}, "r")
+                vim.api.nvim_exec_autocmds("User", {
+                    pattern = "SatelliteRedresh",
+                })
+                return "<cmd>GitConflictListQf<CR>"
+            end,
+            desc = "GitConflictListQf",
+            expr = true,
+        },
+    },
     config = function()
         require("git-conflict").setup({
             default_mappings = {

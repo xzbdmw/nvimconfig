@@ -143,15 +143,11 @@ end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 
 keymap("n", "*", function()
-    if not vim.bo.filetype == "noice" then
+    if vim.bo.filetype ~= "noice" then
         utils.search_to_qf()
     end
     return "*"
 end, { expr = true })
-
--- keymap("n", "<leader>cq", function()
---     vim.fn.setqflist({}, "r")
--- end)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap("n", "<f17>", "<cmd>qall!<CR>", opts)
