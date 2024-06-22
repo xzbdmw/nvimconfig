@@ -146,7 +146,7 @@ return {
                 -- barbecue_normal = { link = "Normal" },
                 barbecue_dirname = { fg = "#3b4d56" },
                 barbecue_ellipsis = { link = "barbecue_dirname" },
-                NormalFloat = { bg = "#FAF7E6", fg = "#000000" },
+                NormalFloat = { link = "Normal" },
                 LazyNormal = { link = "Normal" },
                 MyNormalFloat = { bg = "#FAF7E6" },
                 MyNormalDocFloat = { bg = "#f1efe1" },
