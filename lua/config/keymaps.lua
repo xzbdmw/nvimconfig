@@ -301,7 +301,7 @@ keymap("c", "<c-a>", "<Home>", opts)
 keymap("c", "<D-v>", "<C-r>+<CR>", opts)
 
 -- Terminal mapping
-keymap("t", "<c-f>", "<M-right>", opts)
+-- keymap("t", "<c-f>", "<M-right>", opts)
 keymap("t", "<c-b>", "<M-left>", opts)
 keymap("t", "<D-v>", function()
     local next_char_code = 48
