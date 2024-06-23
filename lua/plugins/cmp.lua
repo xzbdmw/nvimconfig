@@ -53,7 +53,7 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 80,
+                fetching_timeout = 200,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
                 max_view_entries = 20,
@@ -326,8 +326,6 @@ return {
         cmp.setup.cmdline("/", {
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
-                    -- i = cmp.mapping.confirm({ select = true }),
-                    -- c = cmp.mapping.confirm({ select = true }),
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.confirm({ select = true })
@@ -336,10 +334,6 @@ return {
                             fallback()
                         end
                     end,
-                    -- c = function()
-                    --     cmp.mapping.confirm({ select = true })
-                    --     -- vim.cmd("redraw")
-                    -- end,
                 }),
                 ["<down>"] = {
                     c = function(fallback)
