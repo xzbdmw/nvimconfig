@@ -192,7 +192,7 @@ return {
                                     -- "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
                                     -- "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",
                                 },
-                                -- library = vim.api.nvim_get_runtime_file("", true),
+                                -- library = api.nvim_get_runtime_file("", true),
                             },
                             hint = {
                                 enable = true,

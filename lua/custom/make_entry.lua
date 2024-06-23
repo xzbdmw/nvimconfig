@@ -64,7 +64,7 @@ local function gen_from_quickfix(opts)
                 return c
             end
 
-            local n = vim.api.nvim_buf_get_name(bufnr)
+            local n = api.nvim_buf_get_name(bufnr)
             bufnr_name_cache[bufnr] = n
             return n
         end

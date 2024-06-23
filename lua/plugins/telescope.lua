@@ -123,7 +123,7 @@ return {
                 "<leader>sw",
                 function()
                     local filetype = vim.bo.filetype
-                    local mode = vim.api.nvim_get_mode()
+                    local mode = api.nvim_get_mode()
                     local w
                     if mode.mode == "v" or mode.mode == "V" then
                         vim.cmd([[noautocmd sil norm! "vy]])
@@ -147,10 +147,10 @@ return {
                 function()
                     _G.first_time = true
                     _G.aerial = true
-                    _G.a_win = vim.api.nvim_get_current_win()
-                    _G.a_buf = vim.api.nvim_get_current_buf()
+                    _G.a_win = api.nvim_get_current_win()
+                    _G.a_buf = api.nvim_get_current_buf()
                     _G.aerial_view = vim.fn.winsaveview()
-                    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
+                    api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
                     require("telescope").extensions.aerial.aerial({
                         on_complete = {
                             function()
@@ -326,7 +326,7 @@ return {
                 local line_start = vim.fn.line("w0", winid)
                 local line_end = vim.fn.line("w$", winid)
 
-                local lines = vim.api.nvim_buf_get_lines(bufnr, line_start, line_end, false)
+                local lines = api.nvim_buf_get_lines(bufnr, line_start, line_end, false)
 
                 local text = table.concat(lines, "\n")
                 actions.close(prompt_bufnr)
@@ -466,11 +466,7 @@ return {
                                 actions.center(bufnr)
                             end,
                             ["<esc>"] = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
-                                    "n",
-                                    true
-                                )
+                                api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
                             end,
                             ["<C-->"] = actions.preview_scrolling_up,
                             ["<C-=>"] = actions.preview_scrolling_down,

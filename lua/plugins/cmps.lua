@@ -449,7 +449,7 @@
 --         local compare = cmp.config.compare
 --         return {
 --             -- enabled = function()
---             --     return vim.api.nvim_buf_line_count(0) < 20000
+--             --     return api.nvim_buf_line_count(0) < 20000
 --             -- end,
 --             preselect = cmp.PreselectMode.None,
 --             window = {
@@ -523,11 +523,11 @@
 --                         fallback()
 --                     end
 --                     vim.keymap.set("i", "<esc>", function()
---                         local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---                         vim.api.nvim_buf_set_text(0, row - 1, col - 1, row - 1, col, { "." })
+--                         local row, col = unpack(api.nvim_win_get_cursor(0))
+--                         api.nvim_buf_set_text(0, row - 1, col - 1, row - 1, col, { "." })
 --                     end, { buffer = 0, desc = "dot" })
 --                     vim.defer_fn(function()
---                         local map = vim.api.nvim_buf_get_keymap(0, "i")
+--                         local map = api.nvim_buf_get_keymap(0, "i")
 --                         for _, v in ipairs(map) do
 --                             if v.desc == "dot" then
 --                                 vim.keymap.del("i", "<esc>", { buffer = 0 })
@@ -758,7 +758,7 @@
 --                         if cmp.visible() then
 --                             cmp.close()
 --                         else
---                             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+--                             api.nvim_feedkeys(api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
 --                         end
 --                     end,
 --                 }),

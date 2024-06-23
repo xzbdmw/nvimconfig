@@ -1,4 +1,4 @@
-local bufnr = vim.api.nvim_get_current_buf()
+local bufnr = api.nvim_get_current_buf()
 local keymap = vim.keymap.set
 keymap({ "n", "v" }, "gl", function()
     vim.cmd.RustLsp({ "hover", "actions" })

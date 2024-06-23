@@ -8,12 +8,8 @@ return {
         })
         vim.keymap.set("n", "<leader>D", function()
             local num = 0
-            for _, buf in pairs(vim.api.nvim_list_bufs()) do
-                if
-                    vim.fn.buflisted(buf) == 1
-                    and vim.api.nvim_buf_get_name(buf) ~= ""
-                    and vim.api.nvim_buf_is_loaded(buf)
-                then
+            for _, buf in pairs(api.nvim_list_bufs()) do
+                if vim.fn.buflisted(buf) == 1 and api.nvim_buf_get_name(buf) ~= "" and api.nvim_buf_is_loaded(buf) then
                     num = num + 1
                 end
             end

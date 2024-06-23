@@ -12,9 +12,9 @@ return {
         -- local ignore_buftypes = { "nofile", "prompt", "popup" }
         local ignore_buftypes = { "prompt", "popup" }
 
-        local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
+        local augroup = api.nvim_create_augroup("FocusDisable", { clear = true })
 
-        -- vim.api.nvim_create_autocmd("BufEnter", {
+        -- api.nvim_create_autocmd("BufEnter", {
         --     group = augroup,
         --     callback = function(event)
         --         if vim.bo.buftype == "nofile" and vim.bo.filetype ~= "glance" then
@@ -29,7 +29,7 @@ return {
         --     desc = "Disable focus autoresize for BufType",
         -- })
 
-        vim.api.nvim_create_autocmd("FileType", {
+        api.nvim_create_autocmd("FileType", {
             group = augroup,
             callback = function(_)
                 if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then

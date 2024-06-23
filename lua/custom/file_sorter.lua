@@ -25,20 +25,20 @@ local get_buffers = function(opts)
             return false
         end
         -- only hide unloaded buffers if opts.show_all_buffers is false, keep them listed if true or nil
-        if opts.show_all_buffers == false and not vim.api.nvim_buf_is_loaded(b) then
+        if opts.show_all_buffers == false and not api.nvim_buf_is_loaded(b) then
             return false
         end
-        if opts.ignore_current_buffer and b == vim.api.nvim_get_current_buf() then
+        if opts.ignore_current_buffer and b == api.nvim_get_current_buf() then
             return false
         end
-        if opts.cwd_only and not string.find(vim.api.nvim_buf_get_name(b), vim.loop.cwd(), 1, true) then
+        if opts.cwd_only and not string.find(api.nvim_buf_get_name(b), vim.loop.cwd(), 1, true) then
             return false
         end
-        if not opts.cwd_only and opts.cwd and not string.find(vim.api.nvim_buf_get_name(b), opts.cwd, 1, true) then
+        if not opts.cwd_only and opts.cwd and not string.find(api.nvim_buf_get_name(b), opts.cwd, 1, true) then
             return false
         end
         return true
-    end, vim.api.nvim_list_bufs())
+    end, api.nvim_list_bufs())
     if not next(bufnrs) then
         return
     end
@@ -64,12 +64,12 @@ local get_buffers = function(opts)
             local idx = ((buffers[1] ~= nil and buffers[1].flag == "%") and 2 or 1)
             -- print(vim.inspect(element.info))
             -- print(element.flag)
-            -- print(vim.inspect(vim.api.nvim_get_mode()))
+            -- print(vim.inspect(api.nvim_get_mode()))
             table.insert(buffers, idx, element)
         else
             -- print(vim.inspect(element.info))
             -- print("Hello")
-            -- print(vim.inspect(vim.api.nvim_get_mode()))
+            -- print(vim.inspect(api.nvim_get_mode()))
             -- print(element.info)
             table.insert(buffers, element)
         end

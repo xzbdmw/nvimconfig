@@ -1,4 +1,4 @@
-local hl = vim.api.nvim_set_hl
+local hl = api.nvim_set_hl
 hl(0, "NoiceFormatProgressDone", { bg = "#D1D8D8" })
 hl(0, "LspInlayHint", { fg = "#595655" })
 hl(0, "IlluminatedWordRead", { underline = false, bg = "#D2D0D0" })

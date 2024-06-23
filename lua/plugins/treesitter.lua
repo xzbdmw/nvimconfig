@@ -3,7 +3,7 @@ return {
     version = false, -- last release is way too old and doesn't work on Windows
     opts = {
         disable = function(_, bufnr) -- Disable in files with more than 5K
-            return vim.api.nvim_buf_line_count(bufnr) > 5000
+            return api.nvim_buf_line_count(bufnr) > 5000
             -- return vim.bo.filetype == "rust"
         end,
         -- highlight = { enable = true, disable = { "markdown" } },

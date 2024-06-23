@@ -7,9 +7,9 @@ return {
         local actions = glance.actions
         local function clear_and_restore()
             for bufnr, _ in pairs(_G.glance_buffer) do
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
-                vim.api.nvim_buf_del_keymap(bufnr, "n", "q")
+                api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
+                api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
+                api.nvim_buf_del_keymap(bufnr, "n", "q")
             end
             _G.glance_buffer = {}
             vim.keymap.set("v", "<CR>", function()
@@ -35,7 +35,7 @@ return {
         end
 
         function OpenAndKeepHighlight()
-            local cursor = vim.api.nvim_win_get_cursor(0)
+            local cursor = api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
             local col = cursor[2]
 
@@ -45,9 +45,9 @@ return {
             vim.schedule(function()
                 local uri = vim.uri_from_fname(filename)
                 local bufnr = vim.uri_to_bufnr(uri)
-                vim.api.nvim_win_set_buf(0, bufnr)
+                api.nvim_win_set_buf(0, bufnr)
                 vim.schedule(function()
-                    vim.api.nvim_win_set_cursor(0, { lnum, col })
+                    api.nvim_win_set_cursor(0, { lnum, col })
                     require("illuminate.engine").keep_highlight(bufnr)
                 end)
             end)
@@ -55,7 +55,7 @@ return {
         end
         function Open()
             clear_and_restore()
-            actions.close(vim.api.nvim_get_current_buf())
+            actions.close(api.nvim_get_current_buf())
         end
 
         require("glance").setup({
@@ -130,7 +130,7 @@ return {
                         elseif #result == 2 then
                             print("2")
                             vim.cmd("normal! m'")
-                            local lnum = vim.api.nvim_win_get_cursor(0)[1]
+                            local lnum = api.nvim_win_get_cursor(0)[1]
                             local locations = vim.tbl_filter(function(v)
                                 return not (v.range.start.line + 1 == lnum)
                             end, vim.F.if_nil(result, {}))

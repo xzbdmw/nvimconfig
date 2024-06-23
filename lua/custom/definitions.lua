@@ -1,5 +1,7 @@
 -- print("else branch")
 -- print("else branch")
+-- print("else branch")
+-- print("else branch")
 local methods = {
     definitions = {
         name = "textDocument/definition",
@@ -133,7 +135,7 @@ local function make_params()
 end
 
 local function definitions()
-    local current_cursor = vim.api.nvim_win_get_cursor(0)
+    local current_cursor = api.nvim_win_get_cursor(0)
     local current_bufnr = vim.fn.bufnr("%")
     vim.lsp.buf_request(0, methods.definitions.name, make_params(), function(_, result, context, _)
         methods.definitions.is_pending = false

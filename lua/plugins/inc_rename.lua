@@ -7,7 +7,7 @@ return {
             "r",
             function()
                 local cword = vim.fn.expand("<cword>")
-                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.defer_fn(function()
@@ -40,7 +40,7 @@ return {
 
                     for _, edit in ipairs(edits) do
                         local start_line = edit.range.start.line + 1
-                        local line = vim.api.nvim_buf_get_lines(bufnr, start_line - 1, start_line, false)[1]
+                        local line = api.nvim_buf_get_lines(bufnr, start_line - 1, start_line, false)[1]
 
                         num_updates = num_updates + 1
                         table.insert(entries, {

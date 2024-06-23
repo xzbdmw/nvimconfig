@@ -10,7 +10,7 @@ return {
             "<leader>rf",
             function()
                 vim.cmd("Noice disable")
-                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.cmd("Noice enable")
@@ -25,7 +25,7 @@ return {
             "<leader>ri",
             function()
                 vim.cmd("Noice disable")
-                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.cmd("Noice enable")
@@ -40,7 +40,7 @@ return {
             "<leader>re",
             function()
                 vim.cmd("Noice disable")
-                vim.api.nvim_create_autocmd("CmdlineLeave", {
+                api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.cmd("Noice enable")
@@ -97,7 +97,7 @@ return {
         -- vim.keymap.set({ "x", "n" }, "<leader>vp", function()
         --     require("refactoring").debug.print_var()
         --     -- vim.schedule(function()
-        --     --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
+        --     --     api.nvim_feedkeys(api.nvim_replace_termcodes("jjj", true, false, true), "n", true)
         --     -- end)
         -- end)
         -- -- Supports both visual and normal mode

@@ -5,6 +5,7 @@
         "deprecated"
     ],
     "diagnostics.globals": [
-        "MiniFiles"
+        "MiniFiles",
+        "api"
     ]
 }

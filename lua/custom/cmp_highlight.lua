@@ -1,4 +1,4 @@
-local hl = vim.api.nvim_set_hl
+local hl = api.nvim_set_hl
 hl(0, "CmpItemKindField", { fg = "#000000", bg = "#B5585F" })
 -- hl(0, "CmpItemMenu", { fg = "#3F4D56", bold = false })
 hl(0, "CmpItemKindProperty", { fg = "#000000", bg = "#7E8294" })

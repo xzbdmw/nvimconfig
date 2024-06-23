@@ -2,11 +2,11 @@ local success, engin = pcall(require, "illuminate.engine")
 local success, ref = pcall(require, "illuminate.reference")
 local success, go = pcall(require, "illuminate.goto")
 _G.minidiff = false
-local ns = vim.api.nvim_create_namespace("MiniDiffOverlay")
+local ns = api.nvim_create_namespace("MiniDiffOverlay")
 local keymap = vim.keymap.set
 
 keymap("n", "n", function()
-    if #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
+    if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_next_keeped_reference(true)
         return
     elseif
@@ -26,7 +26,7 @@ keymap("n", "n", function()
 end)
 
 keymap("n", "N", function()
-    if #require("illuminate.reference").buf_get_keeped_references(vim.api.nvim_get_current_buf()) > 0 then
+    if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_prev_keeped_reference(true)
         return
     elseif
@@ -47,12 +47,12 @@ end)
 
 keymap({ "s", "n" }, "<esc>", function()
     -- pcall(function()
-    vim.api.nvim_exec_autocmds("User", {
+    api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })
     local flag = true
-    for _, win in pairs(vim.api.nvim_list_wins()) do
-        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+    for _, win in pairs(api.nvim_list_wins()) do
+        local success, win_config = pcall(api.nvim_win_get_config, win)
         if success then
             if
                 win_config.relative ~= "" and win_config.zindex == 45
@@ -66,7 +66,7 @@ keymap({ "s", "n" }, "<esc>", function()
             then
                 flag = false
                 _G.no_animation()
-                vim.api.nvim_win_close(win, true)
+                api.nvim_win_close(win, true)
             elseif win_config.zindex == 10 then
                 FeedKeys("<esc>", "n")
             end
@@ -84,6 +84,6 @@ keymap({ "s", "n" }, "<esc>", function()
 end)
 -- illuminate
 keymap("n", "H", function()
-    local bufnr = vim.api.nvim_get_current_buf()
+    local bufnr = api.nvim_get_current_buf()
     pcall(engin.keep_highlight, bufnr)
 end)

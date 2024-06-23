@@ -38,8 +38,8 @@ keymap("n", "<leader>h", function()
     FeedKeys("0", "n")
     vim.fn.winrestview({ leftcol = 0 })
     vim.schedule(function()
-        local col = vim.api.nvim_win_get_cursor(0)[2]
-        local char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
+        local col = api.nvim_win_get_cursor(0)[2]
+        local char = api.nvim_get_current_line():sub(col + 1, col + 1)
         if char == " " then
             FeedKeys("w", "n")
         end
@@ -338,12 +338,12 @@ keymap("x", "<bs>", function()
 end, opts)
 
 keymap({ "s", "i", "n" }, "<C-7>", function()
-    for _, win in pairs(vim.api.nvim_list_wins()) do
-        local success, win_config = pcall(vim.api.nvim_win_get_config, win)
+    for _, win in pairs(api.nvim_list_wins()) do
+        local success, win_config = pcall(api.nvim_win_get_config, win)
         if success and win_config.relative ~= "" then
             print(vim.inspect(win))
             print(vim.inspect(win_config))
-            vim.api.nvim_win_close(win, true)
+            api.nvim_win_close(win, true)
         end
     end
 end, opts)

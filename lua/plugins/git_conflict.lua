@@ -7,7 +7,7 @@ return {
             "<leader>cq",
             function()
                 vim.fn.setqflist({}, "r")
-                vim.api.nvim_exec_autocmds("User", {
+                api.nvim_exec_autocmds("User", {
                     pattern = "SatelliteRedresh",
                 })
                 return "<cmd>GitConflictListQf<CR>"
