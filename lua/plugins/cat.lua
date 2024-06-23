@@ -3,24 +3,24 @@ return {
     name = "catppuccin",
     init = function()
         local selection_mode = false
-        vim.api.nvim_create_autocmd("ModeChanged", {
-            pattern = "*:s",
-            callback = function()
-                if selection_mode == false then
-                    vim.api.nvim_set_hl(0, "Visual", { bg = "#375D7C" })
-                    selection_mode = true
-                end
-            end,
-        })
-        vim.api.nvim_create_autocmd("ModeChanged", {
-            pattern = "*:v",
-            callback = function()
-                if selection_mode then
-                    vim.api.nvim_set_hl(0, "Visual", { bg = "#39424A" })
-                    selection_mode = false
-                end
-            end,
-        })
+        -- vim.api.nvim_create_autocmd("ModeChanged", {
+        --     pattern = "*:s",
+        --     callback = function()
+        --         if selection_mode == false then
+        --             vim.api.nvim_set_hl(0, "Visual", { bg = "#375D7C" })
+        --             selection_mode = true
+        --         end
+        --     end,
+        -- })
+        -- vim.api.nvim_create_autocmd("ModeChanged", {
+        --     pattern = "*:v",
+        --     callback = function()
+        --         if selection_mode then
+        --             vim.api.nvim_set_hl(0, "Visual", { bg = "#39424A" })
+        --             selection_mode = false
+        --         end
+        --     end,
+        -- })
     end,
     -- priority = 1000,
     config = function()
