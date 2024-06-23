@@ -119,13 +119,19 @@ return {
                     {
                         "n",
                         "n",
-                        "]czz",
+                        function()
+                            local gs = package.loaded.gitsigns
+                            gs.next_hunk()
+                        end,
                         { desc = "next hunk" },
                     },
                     {
                         "n",
                         "N",
-                        "[czz",
+                        function()
+                            local gs = package.loaded.gitsigns
+                            gs.prev_hunk()
+                        end,
                         { desc = "prev hunk" },
                     },
                     {
