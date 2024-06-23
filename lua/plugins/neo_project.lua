@@ -57,6 +57,7 @@ return {
     end,
     dependencies = {
         { "Shatur/neovim-session-manager" },
+        { "nvim-tree/nvim-tree" },
         -- { dir = "~/Project/lua/telescope.nvim/" },
     },
     lazy = false,
