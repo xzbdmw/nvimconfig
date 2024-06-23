@@ -1,9 +1,12 @@
+vim.uv = vim.loop
+
 require("config.lazy")
 local utils = require("config.utils")
 
-vim.uv = vim.loop
 _G.CI = 0.04
 _G.base_commit = ""
+_G.base_commit_msg = ""
+
 vim.cmd("syntax off")
 
 local lazy_view_config = require("lazy.view.config")
@@ -274,9 +277,13 @@ vim.cmd([[set viewoptions-=curdir]])
 vim.api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
+        -- reset commit information
+        _G.base_commit = ""
+        _G.base_commit_msg = ""
         local tree = require("nvim-tree.api").tree
         pcall(tree.toggle, { focus = false })
         vim.defer_fn(function()
+            -- because arrow does not update when changing sessions
             vim.cmd("NvimTreeRefresh")
             ---@diagnostic disable-next-line: undefined-field
             pcall(_G.indent_update)

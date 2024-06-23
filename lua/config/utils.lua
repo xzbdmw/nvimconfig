@@ -388,10 +388,12 @@ function EditLineFromLazygit(file_path, line)
     local path = vim.fn.expand("%:p")
     if path == file_path then
         vim.cmd(tostring(line))
+        vim.cmd("norm! zz")
         return
     else
         vim.cmd("e " .. file_path)
         vim.cmd(tostring(line))
+        vim.cmd("norm! zz")
     end
 end
 
