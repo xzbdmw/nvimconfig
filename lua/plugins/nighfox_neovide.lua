@@ -271,6 +271,7 @@ return {
                 FlashCurrent = { fg = "#3D4D56", bg = "#A2F7E4" },
                 LibPath = { fg = "#2D5D22" },
                 ["@string.regexp.lua"] = { link = "@string.escape" },
+                ["@spell.xml"] = { link = "@none" },
                 ["@string.documentation.python"] = { link = "Comment" },
                 ["@keyword.operator.lua"] = { link = "Keyword" },
                 ["@spell.python"] = { link = "Comment" },
