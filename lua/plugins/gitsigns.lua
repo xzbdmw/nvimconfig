@@ -35,7 +35,7 @@ return {
                     gs.prev_hunk()
                 end)
 
-                map("n", "<leader>sh", function()
+                map("n", "<leader>sH", function()
                     vim.cmd("Gitsigns stage_hunk")
                 end)
                 map("n", "<leader>uh", function()
