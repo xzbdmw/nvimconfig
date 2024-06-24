@@ -190,6 +190,7 @@ return {
                 MiniFilesDirectory = { link = "NvimTreeFolderName" },
                 NvimTreeFolderName = { fg = "#3B4D56" },
                 NvimTreeOpenedFile = { fg = "#000000" },
+                NvimTreeOpenedHL = { fg = "#000000" },
                 NvimTreeOpenedFolderName = { fg = "#3B4D56" },
                 CmpItemAbbr = { fg = "#000000" },
                 CmpItemAbbrMatch = { fg = "none", style = "bold" },
