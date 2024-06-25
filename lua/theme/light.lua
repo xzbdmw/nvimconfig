@@ -1,6 +1,7 @@
 local success, engin = pcall(require, "illuminate.engine")
 local success, ref = pcall(require, "illuminate.reference")
 local success, go = pcall(require, "illuminate.goto")
+local utils = require("config.utils")
 _G.minidiff = false
 local ns = api.nvim_create_namespace("MiniDiffOverlay")
 local keymap = vim.keymap.set
@@ -9,11 +10,7 @@ keymap("n", "n", function()
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_next_keeped_reference(true)
         return
-    elseif
-        require("trouble").is_open("mydiags")
-        or require("trouble").is_open("qflist")
-        or require("trouble").is_open("before_qflist")
-    then
+    elseif utils.has_filetype("trouble") then
         require("trouble").next({ skip_groups = true, jump = true })
     else
         local n = vim.v.hlsearch
@@ -29,11 +26,7 @@ keymap("n", "N", function()
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_prev_keeped_reference(true)
         return
-    elseif
-        require("trouble").is_open("mydiags")
-        or require("trouble").is_open("qflist")
-        or require("trouble").is_open("before_qflist")
-    then
+    elseif utils.has_filetype("trouble") then
         require("trouble").prev({ skip_groups = true, jump = true })
     else
         local n = vim.v.hlsearch

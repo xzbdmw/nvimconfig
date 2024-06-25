@@ -455,6 +455,17 @@ function M.on_complete(bo_line, bo_line_side, origin_height)
     end)
 end
 
+function M.has_filetype(filetype)
+    local windows = api.nvim_list_wins()
+    for _, win in ipairs(windows) do
+        local buf = api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == filetype then
+            return true
+        end
+    end
+    return false
+end
+
 function M.set_glance_winbar()
     local winconfig = api.nvim_win_get_config(0)
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
