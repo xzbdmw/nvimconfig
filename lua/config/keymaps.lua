@@ -110,6 +110,9 @@ end, { expr = true })
 
 keymap("n", "`", function()
     vim.g.gd = true
+    vim.defer_fn(function()
+        vim.g.gd = false
+    end, 100)
     _G.no_animation()
     return "<cmd>e #<cr>"
 end, { expr = true })

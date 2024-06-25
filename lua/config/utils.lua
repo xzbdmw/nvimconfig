@@ -466,6 +466,66 @@ function M.has_filetype(filetype)
     return false
 end
 
+function M.real_enter(callback, filter, who)
+    who = who or ""
+    local timer = vim.loop.new_timer()
+    vim.defer_fn(function()
+        local is_active = timer:is_active()
+        if is_active then
+            vim.notify(who .. "Timer haven't been closed!", vim.log.levels.ERROR)
+        end
+    end, 2000)
+    local has_start = false
+    local timout = function(opts)
+        local force = opts.force
+        if not filter() then
+            if timer:is_active() then
+                timer:close()
+            end
+            return
+        end
+        if (not force) and has_start then
+            return
+        end
+        if timer:is_active() then
+            timer:close()
+            -- haven't start
+            has_start = true
+            callback()
+        end
+    end
+    vim.defer_fn(function()
+        timout({ force = false, time = 30 })
+    end, 30)
+    vim.defer_fn(function()
+        timout({ force = true, time = 1000 })
+    end, 1000)
+    local col = vim.fn.screencol()
+    local row = vim.fn.screenrow()
+    timer:start(2, 2, function()
+        vim.schedule(function()
+            if not filter() then
+                if timer:is_active() then
+                    timer:close()
+                end
+                return
+            end
+            if has_start then
+                return
+            end
+            local new_col = vim.fn.screencol()
+            local new_row = vim.fn.screenrow()
+            if new_row ~= row or new_col ~= col then
+                if timer:is_active() then
+                    timer:close()
+                    has_start = true
+                    callback()
+                end
+            end
+        end)
+    end)
+end
+
 function M.set_glance_winbar()
     local winconfig = api.nvim_win_get_config(0)
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
