@@ -81,14 +81,6 @@ return {
                         cmp.open_docs()
                     end
                 end),
-                ["<S-space>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.confirm()
-                        FeedKeys("(<C-e><esc>", "m")
-                    else
-                        fallback()
-                    end
-                end),
                 ["<esc>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
@@ -117,10 +109,6 @@ return {
                         cmp.close()
                     end
                     fallback()
-                end),
-                ["<f7>"] = cmp.mapping(function()
-                    ---@diagnostic disable-next-line: missing-parameter
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
                 end),
                 ["<C-9>"] = cmp.mapping.complete(),
                 ["<down>"] = function(fallback)
@@ -176,27 +164,6 @@ return {
                         fallback()
                     end
                 end),
-                ["<c-o>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        vim.g.enter = true
-                        _G.no_animation(_G.CI)
-                        vim.defer_fn(function()
-                            vim.g.enter = false
-                        end, 10)
-                        cmp.confirm({ select = true })
-                    else
-                        _G.no_delay(0.0)
-                        fallback()
-                    end
-                    vim.defer_fn(function()
-                        -- hlchunk
-                        ---@diagnostic disable-next-line: undefined-field
-                        pcall(_G.update_indent, true)
-                        -- mini-indentscope
-                        ---@diagnostic disable-next-line: undefined-field
-                        pcall(_G.mini_indent_auto_draw)
-                    end, 100)
-                end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
@@ -217,12 +184,10 @@ return {
                         fallback()
                     end
                     vim.defer_fn(function()
-                        -- hlchunk
                         ---@diagnostic disable-next-line: undefined-field
-                        pcall(_G.update_indent, true)
-                        -- mini-indentscope
+                        pcall(_G.update_indent, true) -- hlchunk
                         ---@diagnostic disable-next-line: undefined-field
-                        pcall(_G.mini_indent_auto_draw)
+                        pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                     end, 100)
                 end),
             }),
