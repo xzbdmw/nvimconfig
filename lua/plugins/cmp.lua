@@ -152,7 +152,7 @@ return {
                 end,
                 ["<C-e>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.abort()
+                        cmp.close()
                     else
                         fallback()
                     end
@@ -205,19 +205,19 @@ return {
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        vim.g.enter = true
                         _G.no_animation(_G.CI)
+                        vim.g.enter = true
                         _G.CON = true
                         vim.defer_fn(function()
                             vim.g.enter = false
                             _G.CON = nil
                         end, 10)
                         if require("config.utils").if_multicursor() then
-                            f.expand = false
+                            cmp.select_cur_item()
+                            vim.schedule(cmp.close)
                         else
-                            f.expand = true
+                            cmp.confirm({ select = true })
                         end
-                        cmp.confirm({ select = true })
                     else
                         _G.no_delay(0.0)
                         fallback()
