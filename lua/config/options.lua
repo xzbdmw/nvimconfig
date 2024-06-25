@@ -32,7 +32,6 @@ local str = string.rep(" ", api.nvim_win_get_width(0))
 vim.opt.statusline = str
 vim.o.cinkeys = "0{,0},0),0],0#,!^F,o,O,e"
 vim.g.loaded_matchparen = 1
-vim.g.cmp_completion = true
 
 -- Neovide
 vim.g.neovide_unlink_border_highlights = false
