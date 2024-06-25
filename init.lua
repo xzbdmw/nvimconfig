@@ -103,14 +103,6 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- nvim-cmp
-api.nvim_create_autocmd({ "ModeChanged" }, {
-    pattern = "*:n",
-    callback = function()
-        _G.has_moved_up = false
-    end,
-})
-
 api.nvim_create_autocmd({ "TermEnter", "BufEnter" }, {
     callback = function()
         if vim.opt.buftype:get() == "terminal" then

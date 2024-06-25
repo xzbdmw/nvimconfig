@@ -88,13 +88,11 @@ return {
                     else
                         fallback()
                     end
-                    _G.has_moved_up = false
                 end),
                 ["<esc>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
                     end
-                    vim.g.neovide_cursor_animation_length = 0
                     fallback()
                 end),
                 ["<right>"] = cmp.mapping(function(fallback)
@@ -107,21 +105,17 @@ return {
                     else
                         fallback()
                     end
-                    _G.has_moved_up = false
                 end),
                 ["<space>"] = cmp.mapping(function(fallback)
-                    vim.g.space = true
                     if cmp.visible() then
                         cmp.close()
                     end
                     fallback()
-                    _G.has_moved_up = false
                 end),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
                     end
-                    _G.has_moved_up = false
                     fallback()
                 end),
                 ["<f7>"] = cmp.mapping(function()
@@ -158,7 +152,6 @@ return {
                     else
                         fallback()
                     end
-                    _G.has_moved_up = false
                 end),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -203,7 +196,6 @@ return {
                         ---@diagnostic disable-next-line: undefined-field
                         pcall(_G.mini_indent_auto_draw)
                     end, 100)
-                    _G.has_moved_up = false
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -232,7 +224,6 @@ return {
                         ---@diagnostic disable-next-line: undefined-field
                         pcall(_G.mini_indent_auto_draw)
                     end, 100)
-                    _G.has_moved_up = false
                 end),
             }),
             sources = cmp.config.sources({
