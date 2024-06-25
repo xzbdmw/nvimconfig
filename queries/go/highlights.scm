@@ -236,3 +236,7 @@
 ;   (#not-has-parent? @spell import_spec))
 
 ((type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))@interface.declaration)
+((identifier) @receiver (#eq? @receiver "self"))
+type: (qualified_type 
+    package: (package_identifier) @receiver (#eq? @receiver "self")
+    name: (type_identifier)@function.method.call)

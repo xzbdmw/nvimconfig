@@ -272,6 +272,7 @@ return {
                 LibPath = { fg = "#2D5D22" },
                 ["@string.regexp.lua"] = { link = "@string.escape" },
                 ["@spell.xml"] = { link = "@none" },
+                ["@receiver"] = { fg = "#000000", style = "italic" },
                 ["@string.documentation.python"] = { link = "Comment" },
                 ["@keyword.operator.lua"] = { link = "Keyword" },
                 ["@spell.python"] = { link = "Comment" },
