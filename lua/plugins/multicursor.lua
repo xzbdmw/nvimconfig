@@ -8,11 +8,13 @@ return {
     config = function()
         local extend = require("multicursors.extend_mode")
         local insert = require("multicursors.insert_mode")
+        local normal = require("multicursors.normal_mode")
         require("multicursors").setup({
             updatetime = 0, -- selections get updated if this many milliseconds nothing is typed in the insert mode see :help updatetime
             normal_keys = {
                 -- use extend motions in normal mode
                 ["w"] = { method = extend.w_method, opts = { desc = "next word start" } },
+                ["d"] = { method = normal.delete, opts = { nowait = true, desc = "next word start" } },
                 ["b"] = { method = extend.b_method, opts = { desc = "backward word" } },
                 ["l"] = { method = extend.l_method, opts = { desc = "right" } },
                 ["h"] = { method = extend.h_method, opts = { desc = "left" } },

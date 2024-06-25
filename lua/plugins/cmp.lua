@@ -100,7 +100,10 @@ return {
                 ["<right>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
-                        cmp.confirm()
+                        cmp.select_cur_item()
+                        vim.schedule(function()
+                            cmp.close()
+                        end)
                     else
                         fallback()
                     end
