@@ -167,9 +167,13 @@ return {
                         fallback()
                     end
                 end),
-                ["<right>"] = cmp.mapping(function()
+                ["<left>"] = cmp.mapping(function(fallback)
+                    _G.no_animation(_G.CI)
+                    fallback()
+                end),
+                ["<c-r>"] = cmp.mapping(function(fallback)
+                    _G.no_animation(_G.CI)
                     if cmp.visible() then
-                        _G.no_animation(_G.CI)
                         _G.CON = true
                         vim.defer_fn(function()
                             _G.CON = nil
@@ -182,6 +186,27 @@ return {
                             ---@diagnostic disable-next-line: undefined-field
                             pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                         end, 20)
+                    else
+                        fallback()
+                    end
+                end),
+                ["<right>"] = cmp.mapping(function(fallback)
+                    _G.no_animation(_G.CI)
+                    if cmp.visible() then
+                        _G.CON = true
+                        vim.defer_fn(function()
+                            _G.CON = nil
+                        end, 10)
+                        f.expand = false
+                        cmp.confirm({ select = true })
+                        vim.defer_fn(function()
+                            ---@diagnostic disable-next-line: undefined-field
+                            pcall(_G.update_indent, true) -- hlchunk
+                            ---@diagnostic disable-next-line: undefined-field
+                            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                        end, 20)
+                    else
+                        fallback()
                     end
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
