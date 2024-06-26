@@ -1,4 +1,5 @@
 local M = {}
+M.expand = true
 M.CompletionItemKind = {
     Text = 1,
     Method = 2,

@@ -89,6 +89,7 @@ return {
                 end),
                 ["<right>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
+                        f.expand = false
                         _G.no_animation(_G.CI)
                         cmp.select_cur_item()
                         vim.schedule(function()

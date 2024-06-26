@@ -126,11 +126,13 @@ keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 
 keymap({ "n" }, "<C-n>", function()
+    vim.g.cmp_completion = false
     vim.cmd("MCstart")
     FeedKeys("n", "m")
 end)
 
 keymap({ "x" }, "<C-n>", function()
+    vim.g.cmp_completion = false
     vim.cmd("MCstart")
 end)
 
