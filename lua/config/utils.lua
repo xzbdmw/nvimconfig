@@ -112,6 +112,8 @@ function M.get_non_float_win_count()
 end
 
 local has_map = false
+local original_keymaps = {}
+
 function M.insert_mode_space()
     _G.no_animation()
     FeedKeys("<Space>", "n")
@@ -119,34 +121,37 @@ function M.insert_mode_space()
         return
     end
     local changed_keys = {
-        ["<esc>"] = "<esc>",
-        ["<C-a>"] = "a",
-        ["<C-b>"] = "b",
-        ["<C-c>"] = "c",
-        ["<C-d>"] = "d",
-        ["<C-e>"] = "e",
-        ["<C-f>"] = "f",
-        ["<C-g>"] = "g",
-        ["<C-h>"] = "h",
-        ["<C-i>"] = "i",
-        ["<C-j>"] = "j",
-        ["<C-k>"] = "k",
-        ["<C-l>"] = "l",
-        ["<C-m>"] = "m",
-        ["<C-n>"] = "n",
-        ["<C-o>"] = "o",
-        ["<C-p>"] = "p",
-        ["<C-q>"] = "q",
-        ["<C-r>"] = "r",
-        ["<C-s>"] = "s",
-        ["<C-t>"] = "t",
-        ["<C-u>"] = "u",
-        ["<C-v>"] = "v",
-        ["<C-w>"] = "w",
-        ["<C-x>"] = "x",
-        ["<C-y>"] = "y",
-        ["<C-z>"] = "z",
+        ["<Esc>"] = "<esc>",
+        ["<C-A>"] = "a",
+        ["<C-B>"] = "b",
+        ["<C-C>"] = "c",
+        ["<C-D>"] = "d",
+        ["<C-E>"] = "e",
+        ["<C-F>"] = "f",
+        ["<C-G>"] = "g",
+        ["<C-H>"] = "h",
+        ["<C-I>"] = "i",
+        ["<C-J>"] = "j",
+        ["<C-K>"] = "k",
+        ["<C-L>"] = "l",
+        ["<C-M>"] = "m",
+        ["<C-N>"] = "n",
+        ["<C-O>"] = "o",
+        ["<C-P>"] = "p",
+        ["<C-Q>"] = "q",
+        ["<C-R>"] = "r",
+        ["<C-S>"] = "s",
+        ["<C-T>"] = "t",
+        ["<C-U>"] = "u",
+        ["<C-V>"] = "v",
+        ["<C-W>"] = "w",
+        ["<C-X>"] = "x",
+        ["<C-Y>"] = "y",
+        ["<C-Z>"] = "z",
     }
+
+    original_keymaps = vim.api.nvim_get_keymap("i")
+
     for k, v in pairs(changed_keys) do
         vim.keymap.set("i", k, function()
             if v == "<esc>" then
@@ -158,13 +163,51 @@ function M.insert_mode_space()
             end
         end, { desc = "dot" })
     end
+
     has_map = true
+
+    local allowed_fields = {
+        noremap = true,
+        nowait = true,
+        silent = true,
+        script = true,
+        expr = true,
+        unique = true,
+        callback = true,
+        desc = true,
+        replace_keycodes = true,
+    }
+
+    local function remove_extra_fields(tbl)
+        for key in pairs(tbl) do
+            if not allowed_fields[key] then
+                tbl[key] = nil
+            end
+        end
+    end
+
     vim.defer_fn(function()
-        local map = api.nvim_get_keymap("i")
-        for _, m in ipairs(map) do
+        for _, m in ipairs(api.nvim_get_keymap("i")) do
             if m.desc == "dot" then
                 ---@diagnostic disable-next-line: undefined-field
                 vim.keymap.del("i", m.lhs)
+            end
+        end
+
+        for _, map in pairs(original_keymaps) do
+            for k in pairs(changed_keys) do
+                ---@diagnostic disable-next-line: undefined-field
+                if map.lhs == k then
+                    ---@diagnostic disable-next-line: undefined-field
+                    local rhs = tostring(map.rhs)
+                    ---@diagnostic disable-next-line: undefined-field
+                    local should_map = map.rhs ~= map.lhs
+                    remove_extra_fields(map)
+                    if should_map then
+                        vim.api.nvim_set_keymap("i", k, rhs, map)
+                    end
+                    break
+                end
             end
         end
         has_map = false
@@ -460,6 +503,7 @@ function M.real_enter(callback, filter, who)
     who = who or ""
     local timer = vim.loop.new_timer()
     vim.defer_fn(function()
+        ---@diagnostic disable-next-line: need-check-nil
         local is_active = timer:is_active()
         if is_active then
             vim.notify(who .. "Timer haven't been closed!", vim.log.levels.ERROR)
@@ -469,7 +513,9 @@ function M.real_enter(callback, filter, who)
     local timout = function(opts)
         local force = opts.force
         if not filter() then
+            ---@diagnostic disable-next-line: need-check-nil
             if timer:is_active() then
+                ---@diagnostic disable-next-line: need-check-nil
                 timer:close()
             end
             return
@@ -477,7 +523,9 @@ function M.real_enter(callback, filter, who)
         if (not force) and has_start then
             return
         end
+        ---@diagnostic disable-next-line: need-check-nil
         if timer:is_active() then
+            ---@diagnostic disable-next-line: need-check-nil
             timer:close()
             -- haven't start
             has_start = true
@@ -492,10 +540,13 @@ function M.real_enter(callback, filter, who)
     end, 1000)
     local col = vim.fn.screencol()
     local row = vim.fn.screenrow()
+    ---@diagnostic disable-next-line: need-check-nil
     timer:start(2, 2, function()
         vim.schedule(function()
             if not filter() then
+                ---@diagnostic disable-next-line: need-check-nil
                 if timer:is_active() then
+                    ---@diagnostic disable-next-line: need-check-nil
                     timer:close()
                 end
                 return
@@ -506,7 +557,9 @@ function M.real_enter(callback, filter, who)
             local new_col = vim.fn.screencol()
             local new_row = vim.fn.screenrow()
             if new_row ~= row or new_col ~= col then
+                ---@diagnostic disable-next-line: need-check-nil
                 if timer:is_active() then
+                    ---@diagnostic disable-next-line: need-check-nil
                     timer:close()
                     has_start = true
                     callback()

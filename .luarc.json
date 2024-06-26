@@ -6,6 +6,7 @@
     ],
     "diagnostics.globals": [
         "MiniFiles",
-        "api"
+        "api",
+        "get_lsp_method_label"
     ]
 }
