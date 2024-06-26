@@ -717,6 +717,9 @@ _G.no_animation = function(length)
     length = length or 0
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
+        if vim.api.nvim_get_mode().mode ~= "i" then
+            return
+        end
         vim.g.neovide_cursor_animation_length = length
     end, 100)
 end
@@ -727,6 +730,9 @@ _G.Cursor = function(callback, length)
         vim.g.neovide_cursor_animation_length = length
         callback(...)
         vim.defer_fn(function()
+            if vim.api.nvim_get_mode().mode ~= "i" then
+                return
+            end
             vim.g.neovide_cursor_animation_length = _G.CI
         end, 100)
     end
