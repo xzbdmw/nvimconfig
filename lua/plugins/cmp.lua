@@ -87,18 +87,18 @@ return {
                     end
                     fallback()
                 end),
-                ["<right>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        f.expand = false
-                        _G.no_animation(_G.CI)
-                        cmp.select_cur_item()
-                        vim.schedule(function()
-                            cmp.close()
-                        end)
-                    else
-                        fallback()
-                    end
-                end),
+                -- ["<right>"] = cmp.mapping(function(fallback)
+                --     if cmp.visible() then
+                --         f.expand = false
+                --         _G.no_animation(_G.CI)
+                --         cmp.select_cur_item()
+                --         vim.schedule(function()
+                --             cmp.close()
+                --         end)
+                --     else
+                --         fallback()
+                --     end
+                -- end),
                 ["<space>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
@@ -115,6 +115,7 @@ return {
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                            _G.no_animation(_G.CI)
                             cmp.select_next_item()
                             -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         else
@@ -127,6 +128,7 @@ return {
                 ["<up>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                            _G.no_animation(_G.CI)
                             cmp.select_prev_item()
                         else
                             cmp.select_next_item()
@@ -165,6 +167,25 @@ return {
                         fallback()
                     end
                 end),
+                ["<right>"] = cmp.mapping(function()
+                    if cmp.visible() then
+                        _G.no_animation(_G.CI)
+                        vim.g.enter = true
+                        _G.CON = true
+                        vim.defer_fn(function()
+                            vim.g.enter = false
+                            _G.CON = nil
+                        end, 10)
+                        f.expand = false
+                        cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
+                        vim.defer_fn(function()
+                            ---@diagnostic disable-next-line: undefined-field
+                            pcall(_G.update_indent, true) -- hlchunk
+                            ---@diagnostic disable-next-line: undefined-field
+                            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                        end, 20)
+                    end
+                end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
@@ -189,7 +210,7 @@ return {
                         pcall(_G.update_indent, true) -- hlchunk
                         ---@diagnostic disable-next-line: undefined-field
                         pcall(_G.mini_indent_auto_draw) -- mini-indentscope
-                    end, 100)
+                    end, 20)
                 end),
             }),
             sources = cmp.config.sources({
