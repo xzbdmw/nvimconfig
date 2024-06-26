@@ -156,21 +156,16 @@ function M.insert_mode_space()
                 local key_comb = "." .. v
                 FeedKeys("<bs>" .. key_comb, "n")
             end
-        end, { buffer = 0, desc = "dot" })
+        end, { desc = "dot" })
     end
     has_map = true
     vim.defer_fn(function()
-        local map = api.nvim_buf_get_keymap(0, "i")
+        local map = api.nvim_get_keymap("i")
         for _, m in ipairs(map) do
             if m.desc == "dot" then
                 ---@diagnostic disable-next-line: undefined-field
-                vim.keymap.del("i", m.lhs, { buffer = 0 })
+                vim.keymap.del("i", m.lhs)
             end
-        end
-        if M.if_multicursor() then
-            vim.keymap.set("i", "<C-d>", function()
-                require("multicursors.insert_mode").C_w_method()
-            end, { buffer = true })
         end
         has_map = false
     end, 150)
