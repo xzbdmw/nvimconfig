@@ -5,8 +5,8 @@ require("config.lazy")
 local utils = require("config.utils")
 
 _G.CI = 0.04
-_G.base_commit = ""
-_G.base_commit_msg = ""
+vim.g.Base_commit = ""
+vim.g.Base_commit_msg = ""
 
 vim.cmd("syntax off")
 
@@ -270,9 +270,9 @@ vim.cmd([[set viewoptions-=curdir]])
 api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
-        -- reset commit information
-        _G.base_commit = ""
-        _G.base_commit_msg = ""
+        if vim.g.Base_commit ~= "" then
+            require("gitsigns").change_base(vim.g.Base_commit, true)
+        end
         local tree = require("nvim-tree.api").tree
         pcall(tree.toggle, { focus = false })
         vim.defer_fn(function()

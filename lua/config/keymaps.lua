@@ -83,7 +83,7 @@ keymap("n", "I", function()
 end, { expr = true })
 
 keymap("n", "<leader><leader>g", function()
-    vim.notify(_G.base_commit_msg, vim.log.levels.INFO)
+    vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
 end, opts)
 
 keymap("n", "A", function()
@@ -182,10 +182,10 @@ end, { expr = true })
 
 keymap("n", "<leader>sd", function()
     vim.g.neovide_underline_stroke_scale = 0
-    if _G.base_commit == "" then
+    if vim.g.Base_commit == "" then
         vim.cmd("DiffviewOpen")
     else
-        vim.cmd("DiffviewOpen " .. base_commit)
+        vim.cmd("DiffviewOpen " .. vim.g.Base_commit)
     end
 end, opts)
 

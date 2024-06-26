@@ -309,8 +309,8 @@ return {
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 local commit = selection.value
-                _G.base_commit = commit
-                _G.base_commit_msg = selection.ordinal
+                vim.g.Base_commit = commit
+                vim.g.Base_commit_msg = selection.ordinal
                 require("gitsigns").change_base(commit, true)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
             end
