@@ -170,10 +170,8 @@ return {
                 ["<right>"] = cmp.mapping(function()
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
-                        vim.g.enter = true
                         _G.CON = true
                         vim.defer_fn(function()
-                            vim.g.enter = false
                             _G.CON = nil
                         end, 10)
                         f.expand = false
@@ -189,10 +187,8 @@ return {
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
-                        vim.g.enter = true
                         _G.CON = true
                         vim.defer_fn(function()
-                            vim.g.enter = false
                             _G.CON = nil
                         end, 10)
                         if require("config.utils").if_multicursor() then

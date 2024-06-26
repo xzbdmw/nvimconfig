@@ -230,10 +230,7 @@ function M.normal_tab()
 end
 
 function M.insert_mode_tab()
-    vim.g.neovide_cursor_animation_length = 0
-    vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
-    end, 100)
+    _G.no_animation(_G.CI)
     local col = vim.fn.col(".") - 1
     ---@diagnostic disable-next-line: param-type-mismatch
     local line = vim.fn.getline(".")
@@ -255,7 +252,6 @@ end
 _G.no_delay = function(animation)
     TST = vim.uv.hrtime()
     vim.g.type_o = true
-    vim.g.enter = true
     vim.g.neovide_cursor_animation_length = animation
     vim.schedule(function()
         -- Time(TST, "no_delay: ")
@@ -281,7 +277,6 @@ _G.no_delay = function(animation)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
         vim.g.type_o = false
-        vim.g.enter = false
         vim.g.neovide_cursor_animation_length = _G.CI
     end, 50)
 end
