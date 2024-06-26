@@ -244,7 +244,7 @@ function M.insert_mode_tab()
         FeedKeys("<Tab>", "n")
         return
     else
-        FeedKeys("<right>", "t")
+        FeedKeys("<right>", "n")
         return
     end
 end

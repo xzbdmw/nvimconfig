@@ -109,7 +109,7 @@ return {
                     if cmp.visible() then
                         cmp.close()
                     end
-                    fallback()
+                    vim.schedule(fallback)
                 end),
                 ["<C-9>"] = cmp.mapping.complete(),
                 ["<down>"] = function(fallback)
