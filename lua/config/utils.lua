@@ -297,6 +297,7 @@ _G.no_delay = function(animation)
     vim.g.type_o = true
     vim.g.neovide_cursor_animation_length = animation
     vim.schedule(function()
+        vim.g.type_o = false
         -- Time(TST, "no_delay: ")
         local row, col = unpack(api.nvim_win_get_cursor(0))
         local ts_indent = require("nvim-treesitter.indent")
@@ -319,7 +320,6 @@ _G.no_delay = function(animation)
         pcall(_G.update_indent, true)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
-        vim.g.type_o = false
         vim.g.neovide_cursor_animation_length = _G.CI
     end, 50)
 end
