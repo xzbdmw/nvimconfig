@@ -721,9 +721,8 @@ _G.Time = function(start, msg)
 end
 
 function M.search_to_qf()
-    local word = vim.fn.expand("<cword>")
     vim.fn.setqflist({}, "r")
-    vim.cmd("silent vimgrep /" .. word .. "/ %")
+    vim.cmd("silent vimgrep //gj %")
 end
 
 function M.check_splits()

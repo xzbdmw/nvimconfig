@@ -146,14 +146,18 @@ keymap({ "n", "v" }, "<D-->", function()
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1
 end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-
 keymap("n", "<leader><c-r>", "<cmd>e!<cr>", opts)
+
 keymap("n", "*", function()
     if vim.bo.filetype ~= "noice" then
-        utils.search_to_qf()
+        vim.schedule(function()
+            utils.search_to_qf()
+        end)
     end
-    return "*"
-end, { expr = true })
+    local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline
+    vim.cmd("keepjumps normal! mi*`i")
+    vim.fn.winrestview({ topline = topline })
+end)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap("n", "<f17>", "<cmd>qall!<CR>", opts)
