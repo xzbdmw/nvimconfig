@@ -198,7 +198,7 @@ return {
                 FileChangedIcon = { fg = "#1D6D8D" },
                 -- CmpItemAbbrMatch = { fg = "#152381", style = "bold" },
                 -- CmpItemAbbrMatchFuzzy = { fg = "#152381", style = "bold" },
-                CmpGhostText = { fg = "#7E7D7D", style = "italic" },
+                CmpGhostText = { fg = "#7E7D7D" },
                 -- CmpGhostText = { link = "@variable" },
                 TreesitterContext = { fg = "#AFB3C1", bg = "#FAF7E8" },
                 TreesitterContextBottom = { sp = "#E8E7E0", style = "underline" },
