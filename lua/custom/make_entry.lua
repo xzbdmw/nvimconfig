@@ -50,7 +50,6 @@ local function add_metadata_to_locations(locations)
 end
 
 local function gen_from_quickfix(opts)
-    local utils = require("telescope.utils")
     local make_entry = require("telescope.make_entry")
     local entry_display = require("telescope.pickers.entry_display")
     opts = opts or {}
@@ -120,6 +119,7 @@ local handle_entry_index = function(opts, t, k)
     end
     return val
 end
+
 local function gen_from_vimgrep(opts)
     local lookup_keys = {
         display = 1,
@@ -223,6 +223,7 @@ local function gen_from_vimgrep(opts)
     local display_string = "%s%s%s"
 
     mt_vimgrep_entry = {
+        ---@diagnostic disable-next-line: param-type-mismatch
         cwd = vim.fn.expand(opts.cwd or vim.loop.cwd()),
 
         display = function(entry)
@@ -409,6 +410,7 @@ do
         local display_string = "%s%s%s"
 
         mt_vimgrep_entry = {
+            ---@diagnostic disable-next-line: param-type-mismatch
             cwd = vim.fn.expand(opts.cwd or vim.loop.cwd()),
 
             display = function(entry)
