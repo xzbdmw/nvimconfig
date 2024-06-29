@@ -31,6 +31,10 @@ return {
                     gs.next_hunk()
                 end)
 
+                map("n", "<leader>rh", function()
+                    gs.reset_hunk()
+                end)
+
                 map("n", "[c", function()
                     gs.prev_hunk()
                 end)
