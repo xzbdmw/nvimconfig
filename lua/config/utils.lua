@@ -573,18 +573,13 @@ function M.set_glance_winbar()
     local winconfig = api.nvim_win_get_config(0)
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
         local function checkGlobalVarAndSetWinBar()
-            -- 检查全局变量是否设置
             if _G.glance_listnr ~= nil then
-                -- 如果已设置，执行 vim.wo 操作
                 vim.wo.winbar = " %#Comment#"
                     .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
             else
-                -- 如果未设置，10 毫秒后再次检查
                 vim.defer_fn(checkGlobalVarAndSetWinBar, 1)
             end
         end
-
-        -- 开始轮询
         checkGlobalVarAndSetWinBar()
     end
     if winconfig.relative ~= "" and winconfig.zindex == 10 then
