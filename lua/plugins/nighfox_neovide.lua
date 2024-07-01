@@ -264,7 +264,12 @@ return {
                 TelescopePromptTitle = { fg = "#3D4D56" },
                 TelescopeFileName = { fg = "#BEACC5" },
                 PmenuThumb = { bg = "#DBDFDF" },
-
+                DiagnosticVirtualTextError = { fg = "#B40329", bg = "none" },
+                DiagnosticVirtualTextWarn = { fg = "#ac5402", bg = "none" },
+                DiagnosticWarn = { fg = "#EBAF66" },
+                DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },
+                DiagnosticVirtualTextHint = { fg = "#215062", bg = "none" },
+                NoiceSearch = { fg = "#3D4D56", bg = "#C7D2F8" },
                 SagaBeacon = { bg = "#F1D694" },
                 TelescopeTitle = { fg = "#3D4D56" },
                 TelescopeNormal = { fg = "#000000" },
