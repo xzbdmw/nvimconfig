@@ -172,6 +172,15 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+api.nvim_create_autocmd("CmdlineLeave", {
+    callback = function()
+        local len = vim.g.neovide_cursor_animation_length
+        if len ~= 0 then
+            vim.g.neovide_cursor_animation_length = 0
+        end
+    end,
+})
+
 _G.glance_buffer = {}
 api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
