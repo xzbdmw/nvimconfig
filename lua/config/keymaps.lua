@@ -284,6 +284,7 @@ end, { expr = true })
 keymap("i", "<C-r>", "<C-r><C-o>", opts)
 
 keymap("n", "<D-z>", "u", opts)
+
 keymap("i", "<D-z>", "<C-o>u", opts)
 
 keymap("n", "<leader>j", function()
@@ -299,6 +300,16 @@ keymap("n", "<leader>k", "<C-i>", opts)
 
 -- Command line mapping
 keymap("c", "<C-d>", "<C-w>", opts)
+
+keymap("c", "<space>", function()
+    local mode = vim.fn.getcmdtype()
+    if mode == "?" or mode == "/" then
+        return ".*"
+    else
+        return " "
+    end
+end, { expr = true })
+
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
 -- keymap("c", "<c-f>", "<S-Right>", opts)
