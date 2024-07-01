@@ -11,6 +11,23 @@ keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
 
+local has_diagnostic = false
+keymap("n", "<leader>ud", function()
+    if has_diagnostic then
+        vim.diagnostic.config({ virtual_text = false })
+        has_diagnostic = false
+    else
+        vim.diagnostic.config({
+            virtual_text = {
+                prefix = "",
+                source = "if_many",
+                spacing = 4,
+            },
+        })
+        has_diagnostic = true
+    end
+end, opts)
+
 keymap("i", "<c-g>", function()
     require("cmp").complete({
         config = {
@@ -160,7 +177,7 @@ keymap("n", "*", function()
 end)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
-keymap("n", "<f17>", "<cmd>qall!<CR>", opts)
+keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
 
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
