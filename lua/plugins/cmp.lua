@@ -330,6 +330,16 @@ return {
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.confirm({ select = true })
+                            FeedKeys("<space><bs><CR>", "n")
+                        else
+                            fallback()
+                        end
+                    end,
+                }),
+                ["<right>"] = cmp.mapping({
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.confirm({ select = true })
                             FeedKeys("<space><bs>", "n")
                         else
                             fallback()
