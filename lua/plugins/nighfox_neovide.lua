@@ -409,6 +409,11 @@ return {
                 AerialTypeParameter = { link = "@lsp.type.typeParameter" },
                 AerialVariable = { link = "@variable" },
             },
+            dayfox = {
+                CursorLine = { bg = "#EFEFF0" },
+                Normal = {bg = "#FAFAFA"}
+                FloatNormal = {bg = "#FAFAFA"}
+            },
         }
 
         require("nightfox").setup({

@@ -640,10 +640,6 @@ function M.set_winbar()
     local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
     local path = vim.fn.expand("%:~:.:h")
     local cwd = vim.fn.getcwd()
-    if filename:match("%.rs$") then
-        iconHighlight = "RustIcon"
-        icon = "󱘗"
-    end
     local statusline = require("arrow.statusline")
     local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
     local arrow_icon = ""
