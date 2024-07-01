@@ -47,7 +47,7 @@ vim.g.neovide_padding_right = 0
 vim.g.neovide_padding_left = 0
 vim.g.neovide_cursor_animation_length = 0.00
 vim.g.neovide_floating_shadow = true
-vim.g.neovide_underline_stroke_scale = 2
+vim.g.neovide_underline_stroke_scale = 1.5
 vim.g.neovide_flatten_floating_zindex = "20,21,22,23,30,35,31,32,51,52,1002,1003"
 vim.g.neovide_floating_z_height = 18
 vim.g.neovide_light_angle_degrees = 180
@@ -121,7 +121,7 @@ vim.g.rustaceanvim = {
             replace_builtin_hover = true,
         },
         float_win_config = {
-            border = "none",
+            border = "rounded",
             max_width = 140,
             max_height = 15,
             auto_focus = false,
