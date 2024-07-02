@@ -29,10 +29,6 @@ return {
         --     end,
         --     desc = "go to sticky scroll",
         -- },
-        {
-            "<leader>uc",
-            "<cmd>TSContextToggle<CR>",
-        },
     },
     opts = {
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
