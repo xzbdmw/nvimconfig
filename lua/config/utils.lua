@@ -272,6 +272,20 @@ function M.normal_tab()
     end
 end
 
+function M.search(mode)
+    api.nvim_create_autocmd("CmdlineChanged", {
+        once = true,
+        callback = function()
+            vim.o.scrolloff = 999
+        end,
+    })
+    _G.parent_winid = vim.api.nvim_get_current_win()
+    _G.parent_bufnr = vim.api.nvim_get_current_buf()
+    vim.cmd("Noice disable")
+    _G.searchmode = mode
+    FeedKeys(mode, "n")
+end
+
 function M.insert_mode_tab()
     _G.no_animation(_G.CI)
     local col = vim.fn.col(".") - 1

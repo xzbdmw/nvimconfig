@@ -17,7 +17,7 @@ return {
                     -- - SatelliteCursor (default links to NonText
                 },
                 search = {
-                    enable = true,
+                    enable = false,
                     signs = { "=" },
                     -- Highlights:
                     -- - SatelliteSearch (default links to Search)

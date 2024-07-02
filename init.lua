@@ -156,6 +156,13 @@ api.nvim_create_autocmd("ModeChanged", {
 
 api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
+        local is_enabled = require("noice.ui")._attached
+        if not is_enabled then
+            vim.cmd("Noice enable")
+        end
+        vim.defer_fn(function()
+            vim.o.scrolloff = 6
+        end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
             vim.g.neovide_cursor_animation_length = 0

@@ -8,15 +8,11 @@ keymap({ "n", "i" }, "<D-s>", function()
 end, opts)
 
 keymap({ "n" }, "/", function()
-    _G.searchmode = "/"
-    require("treesitter-context").close_all()
-    FeedKeys("/", "n")
+    require("config.utils").search("/")
 end, opts)
 
 keymap({ "n" }, "?", function()
-    _G.searchmode = "?"
-    require("treesitter-context").close_all()
-    FeedKeys("?", "n")
+    require("config.utils").search("?")
 end, opts)
 
 keymap({ "c" }, "<c-n>", "<c-g>", opts)
@@ -99,6 +95,7 @@ keymap("n", "i", function()
     end, 10)
     return "i"
 end, { expr = true })
+
 keymap("n", "a", function()
     vim.g.neovide_cursor_animation_length = 0
     vim.defer_fn(function()
@@ -358,7 +355,9 @@ keymap("c", "<C-n>", "<down>", opts)
 -- keymap("c", "<c-f>", "<S-Right>", opts)
 keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)
-keymap("c", "<D-v>", "<C-r>+<CR>", opts)
+keymap("c", "<D-v>", function()
+    FeedKeys("<C-r>+", "t")
+end, opts)
 
 -- Terminal mapping
 -- keymap("t", "<c-f>", "<M-right>", opts)
