@@ -365,6 +365,16 @@ function M.setUndotreeWinSize()
     end
 end
 
+function M.update_preview_state(bufnr, winid)
+    vim.defer_fn(function()
+        pcall(function()
+            require("treesitter-context").context_force_update(bufnr, winid)
+            ---@diagnostic disable-next-line: undefined-field
+            pcall(_G.indent_update, winid)
+        end)
+    end, 5)
+end
+
 function M.set_glance_keymap()
     local winconfig = api.nvim_win_get_config(0)
     local bufnr = api.nvim_get_current_buf()

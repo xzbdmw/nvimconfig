@@ -188,6 +188,21 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
     local pickerAndOptions = {
         picker = search,
         options = {
+            on_complete = {
+                function()
+                    vim.schedule(function()
+                        ---@diagnostic disable-next-line: undefined-field
+                        local obj = _G.telescope_picker
+                        if not api.nvim_buf_is_valid(obj.results_bufnr) then
+                            return
+                        end
+                        local count = api.nvim_buf_line_count(obj.results_bufnr)
+                        if count == 1 then
+                            require("treesitter-context").close_all()
+                        end
+                    end)
+                end,
+            },
             layout_strategy = "vertical",
             layout_config = {
                 vertical = {
@@ -196,7 +211,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
                     height = 0.95,
                     mirror = true,
                     preview_cutoff = 0,
-                    preview_height = 0.45,
+                    preview_height = 0.5,
                 },
             },
         },

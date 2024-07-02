@@ -5,6 +5,7 @@ require("config.lazy")
 local utils = require("config.utils")
 
 _G.CI = 0.04
+_G.searchmode = "/"
 vim.g.Base_commit = ""
 vim.g.Base_commit_msg = ""
 
@@ -36,35 +37,16 @@ api.nvim_create_autocmd("FocusGained", {
     end,
 })
 
--- Not needed because delete also trigger TextYankPost
--- api.nvim_create_autocmd("TextChanged", {
---     callback = function()
---         if vim.system == nil then
---             return
---         end
---         vim.schedule(function()
---             local s = vim.fn.getreg('"')
---             vim.system({ "echo", s, "| pbcopy" })
---         end)
---     end,
--- })
-
 api.nvim_create_autocmd({ "User" }, {
     pattern = "TelescopePreviewerLoaded",
     callback = function(data)
         local winid = data.data.winid
         vim.wo[winid].number = true
-        vim.defer_fn(function()
-            pcall(function()
-                require("treesitter-context").context_force_update(api.nvim_win_get_buf(winid), winid)
-                ---@diagnostic disable-next-line: undefined-field
-                pcall(_G.indent_update, winid)
-            end)
-        end, 5)
+        utils.update_preview_state(api.nvim_win_get_buf(winid), winid)
     end,
 })
-_G.leapjump = false
 
+_G.leapjump = false
 api.nvim_create_autocmd("User", {
     pattern = { "LeapSelectPre", "LeapJumpRepeat" },
     callback = function()
