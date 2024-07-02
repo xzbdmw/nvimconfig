@@ -267,6 +267,7 @@ return {
                 DiagnosticVirtualTextError = { fg = "#B40329", bg = "none" },
                 DiagnosticVirtualTextWarn = { fg = "#ac5402", bg = "none" },
                 DiagnosticWarn = { fg = "#EBAF66" },
+                DiagnosticUnnecessary = { fg = "none", bg = "none" },
                 DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },
                 DiagnosticVirtualTextHint = { fg = "#215062", bg = "none" },
                 NoiceSearch = { fg = "#3D4D56", bg = "#C7D2F8" },
