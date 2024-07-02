@@ -287,6 +287,7 @@ return {
                 actions.close(prompt_bufnr)
 
                 vim.fn.setreg('"', display)
+                vim.fn.setreg("+", display)
             end
 
             local delta = require("telescope.previewers").new_termopen_previewer({
@@ -313,6 +314,21 @@ return {
                 vim.g.Base_commit_msg = selection.ordinal
                 require("gitsigns").change_base(commit, true)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
+            end
+
+            local focus_preview = function(prompt_bufnr)
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local prompt_win = picker.prompt_win
+                local previewer = picker.previewer
+                local winid = previewer.state.winid
+                local bufnr = previewer.state.bufnr
+                vim.keymap.set("n", "<Tab>", function()
+                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "q", function()
+                    actions.close(prompt_bufnr)
+                end, { buffer = bufnr })
+                vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))
             end
 
             -- yank preview
@@ -435,7 +451,8 @@ return {
                                 FeedKeys("z", "n")
                             end,
                             ["<C-y>"] = "toggle_selection",
-                            ["<Tab>"] = "to_fuzzy_refine",
+                            ["<Tab>"] = focus_preview,
+                            ["<c-g>"] = "to_fuzzy_refine",
                             ["("] = function()
                                 FeedKeys("\\(", "n")
                             end,
@@ -483,6 +500,8 @@ return {
                             end,
                         },
                         n = {
+                            ["<Tab>"] = focus_preview,
+                            ["<c-g>"] = "to_fuzzy_refine",
                             J = actions.preview_scrolling_down,
                             K = actions.preview_scrolling_up,
                             ["`"] = function()
@@ -493,10 +512,6 @@ return {
                             ["s"] = function(bufnr)
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
-                            end,
-                            ["<Tab>"] = function(bufnr)
-                                actions.to_fuzzy_refine(bufnr)
-                                FeedKeys("i", "n")
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
