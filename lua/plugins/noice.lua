@@ -71,7 +71,10 @@ return {
                 --     opts = { skip = true },
                 -- },
             },
-            presets = { inc_rename = true },
+            presets = {
+                inc_rename = true,
+                -- bottom_search = true, -- use a classic bottom cmdline for search
+            },
             messages = {
                 -- NOTE: If you enable messages, then the cmdline is enabled automatically.
                 -- This is a current Neovim limitation.
@@ -109,28 +112,36 @@ return {
                         }, -- global options for the cmdline. See section on views
                     },
                     search_down = {
-                        kind = "search",
-                        pattern = "^/",
-                        icon = "?",
-                        lang = "regex",
-                        conceal = true,
-                        opts = {
-                            zindex = 100,
-                            border = {
-                                style = "none",
-                                padding = { 0, 2 },
-                            },
-                            position = {
-                                row = "30%",
-                                col = "50%",
-                            },
-                            size = {
-                                min_width = 40,
-                                width = "auto",
-                                height = "auto",
-                            },
-                        }, -- global options for the cmdline. See section on views
+                        view = "cmdline",
+                        icon = " ?",
                     },
+                    search_up = {
+                        view = "cmdline",
+                        icon = " ?",
+                    },
+                    -- search_down = {
+                    --     kind = "search",
+                    --     pattern = "^/",
+                    --     icon = "?",
+                    --     lang = "regex",
+                    --     conceal = true,
+                    --     opts = {
+                    --         zindex = 100,
+                    --         border = {
+                    --             style = "none",
+                    --             padding = { 0, 2 },
+                    --         },
+                    --         position = {
+                    --             row = "30%",
+                    --             col = "50%",
+                    --         },
+                    --         size = {
+                    --             min_width = 40,
+                    --             width = "auto",
+                    --             height = "auto",
+                    --         },
+                    --     }, -- global options for the cmdline. See section on views
+                    -- },
                     filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
