@@ -313,7 +313,7 @@ return {
         for _, source in ipairs(opts.sources) do
             source.group_index = source.group_index or 1
         end
-        cmp.setup.cmdline("/", {
+        cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
                     c = function(fallback)
@@ -340,7 +340,7 @@ return {
                         end
                     end,
                 }),
-                ["<down>"] = {
+                ["<up>"] = {
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
@@ -349,7 +349,17 @@ return {
                         end
                     end,
                 },
-                ["<up>"] = {
+                ["<c-n>"] = {
+                    c = function()
+                        FeedKeys("<C-g>", "n")
+                    end,
+                },
+                ["<c-p>"] = {
+                    c = function()
+                        FeedKeys("<C-t>", "n")
+                    end,
+                },
+                ["<down>"] = {
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
@@ -370,10 +380,6 @@ return {
                         FeedKeys("<space><bs>", "n")
                     end)
                 end, { "i", "c", "s" }),
-                ["<C-n>"] = cmp.mapping(function(fallback)
-                    cmp.close()
-                    fallback()
-                end, { "i", "c" }),
             }),
             sources = {
                 { name = "buffer" },
@@ -415,10 +421,6 @@ return {
                         end
                     end,
                 }),
-                ["<C-p>"] = cmp.mapping(function(fallback)
-                    cmp.close()
-                    fallback()
-                end, { "i", "c" }),
                 ["<C-f>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "c" }),
@@ -426,10 +428,6 @@ return {
                     fallback()
                 end, { "i", "c" }),
                 ["<C-a>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end, { "i", "c" }),
-                ["<C-n>"] = cmp.mapping(function(fallback)
-                    cmp.close()
                     fallback()
                 end, { "i", "c" }),
             }),

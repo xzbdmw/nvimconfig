@@ -8,9 +8,19 @@ keymap({ "n", "i" }, "<D-s>", function()
 end, opts)
 
 keymap({ "n" }, "/", function()
+    _G.searchmode = "/"
     require("treesitter-context").close_all()
     FeedKeys("/", "n")
 end, opts)
+
+keymap({ "n" }, "?", function()
+    _G.searchmode = "?"
+    require("treesitter-context").close_all()
+    FeedKeys("?", "n")
+end, opts)
+
+keymap({ "c" }, "<c-n>", "<c-g>", opts)
+keymap({ "c" }, "<c-p>", "<c-t>", opts)
 
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
@@ -377,8 +387,10 @@ keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>
 
 keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
+    keymap("v", "K", "k", { buffer = 0 })
     vim.defer_fn(function()
         keymap("v", "J", "4j", { buffer = 0 })
+        keymap("v", "K", "4k", { buffer = 0 })
     end, 150)
     return "V"
 end, { expr = true })
