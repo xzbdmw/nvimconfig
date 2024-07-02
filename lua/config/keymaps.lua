@@ -7,6 +7,11 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
 
+keymap({ "n" }, "/", function()
+    require("treesitter-context").close_all()
+    FeedKeys("/", "n")
+end, opts)
+
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
