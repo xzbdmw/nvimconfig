@@ -207,7 +207,7 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = 0.35,
+                                width = 0.27,
                                 height = 0.7,
                             },
                             mirror = false,
@@ -468,9 +468,8 @@ return {
                             ["<D-z>"] = function()
                                 FeedKeys("z", "n")
                             end,
-                            ["<C-y>"] = "toggle_selection",
                             ["<Tab>"] = focus_preview,
-                            ["<c-g>"] = "to_fuzzy_refine",
+                            ["<c-f>"] = "to_fuzzy_refine",
                             ["("] = function()
                                 FeedKeys("\\(", "n")
                             end,
@@ -510,23 +509,18 @@ return {
                             ["<D-v>"] = function()
                                 FeedKeys("<C-r>1", "t")
                             end,
-                            ["<C-g>"] = function(bufnr)
-                                actions.to_fuzzy_refine(bufnr)
-                            end,
                             ["<f17>"] = function()
                                 FeedKeys("<CR>", "t")
                             end,
                         },
                         n = {
                             ["<Tab>"] = focus_preview,
-                            ["<c-g>"] = "to_fuzzy_refine",
+                            ["<C-f>"] = function(bufnr)
+                                vim.cmd("startinsert")
+                                actions.to_fuzzy_refine(bufnr)
+                            end,
                             J = actions.preview_scrolling_down,
                             K = actions.preview_scrolling_up,
-                            ["`"] = function()
-                                FeedKeys("a", "n")
-                                FeedKeys("<space>", "n")
-                                FeedKeys("`", "n")
-                            end,
                             ["s"] = function(bufnr)
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
@@ -535,11 +529,7 @@ return {
                                 actions.smart_send_to_qflist(bufnr)
                                 FeedKeys("<C-q>", "m")
                             end,
-                            ["<c-t>"] = function(bufnr)
-                                require("trouble.sources.telescope").open(bufnr)
-                            end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
-                            ["<C-g>"] = actions.to_fuzzy_refine,
                             ["<esc>"] = function(bufnr)
                                 _G.last = nil
                                 actions.close(bufnr)
