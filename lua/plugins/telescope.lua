@@ -325,7 +325,17 @@ return {
                 vim.keymap.set("n", "<Tab>", function()
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
                 end, { buffer = bufnr })
+                vim.keymap.set("n", "<cr>", function()
+                    local filename = vim.b[bufnr].filepath
+                    local row, col = unpack(api.nvim_win_get_cursor(winid))
+                    actions.close(prompt_bufnr)
+
+                    vim.cmd(
+                        string.format("lua EditLineFromLazygit('%s','%s','%s')", filename, tostring(row), tostring(col))
+                    )
+                end, { buffer = bufnr })
                 vim.keymap.set("n", "q", function()
+                    _G.hide_cursor(function() end)
                     actions.close(prompt_bufnr)
                 end, { buffer = bufnr })
                 vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))

@@ -193,7 +193,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
                 vertical = {
                     prompt_position = "top",
                     width = 0.8,
-                    height = 0.9,
+                    height = 0.95,
                     mirror = true,
                     preview_cutoff = 0,
                     preview_height = 0.45,

@@ -417,15 +417,23 @@ function EditFromLazygit(file_path)
     end
 end
 
-function EditLineFromLazygit(file_path, line)
+function EditLineFromLazygit(file_path, line, col)
     local path = vim.fn.expand("%:p")
     if path == file_path then
-        vim.cmd(tostring(line))
+        if col == nil then
+            vim.cmd(tostring(line))
+        else
+            api.nvim_win_set_cursor(0, { tonumber(line), tonumber(col) })
+        end
         vim.cmd("norm! zz")
         return
     else
         vim.cmd("e " .. file_path)
-        vim.cmd(tostring(line))
+        if col == nil then
+            vim.cmd(tostring(line))
+        else
+            api.nvim_win_set_cursor(0, { tonumber(line), tonumber(col) })
+        end
         vim.cmd("norm! zz")
     end
 end
