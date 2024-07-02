@@ -120,6 +120,17 @@ keymap("o", "c", function()
     return "c"
 end, { expr = true })
 
+local darker = false
+keymap("n", "<leader>uc", function()
+    if darker then
+        api.nvim_set_hl(0, "@spell.go", { fg = "#717070" })
+        darker = false
+    else
+        api.nvim_set_hl(0, "@spell.go", { fg = "#364E57" })
+        darker = true
+    end
+end, opts)
+
 keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<C-w>"
