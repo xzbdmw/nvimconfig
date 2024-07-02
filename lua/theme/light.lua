@@ -17,7 +17,7 @@ keymap("n", "n", function()
         if n == 0 then
             require("illuminate").goto_next_reference(true)
         else
-            local mode = vim.fn.getcmdtype()
+            local mode = _G.searchmode
             if mode == "/" then
                 vim.cmd("normal! n")
             else
@@ -38,7 +38,7 @@ keymap("n", "N", function()
         if n == 0 then
             require("illuminate").goto_prev_reference(true)
         else
-            local mode = vim.fn.getcmdtype()
+            local mode = _G.searchmode
             if mode ~= "/" then
                 vim.cmd("normal! n")
             else
