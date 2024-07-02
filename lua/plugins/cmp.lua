@@ -11,6 +11,7 @@ return {
         { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
         { dir = "~/Project/lua/cmp-rg/" },
         "hrsh7th/cmp-path",
+        "hrsh7th/cmp-buffer",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
     },
@@ -325,7 +326,7 @@ return {
                             cmp.confirm({ select = true })
                             FeedKeys("<space><bs><CR>", "n")
                         else
-                            fallback()
+                            FeedKeys("<CR>", "n")
                         end
                     end,
                 }),
@@ -359,6 +360,15 @@ return {
                 },
                 ["<C-d>"] = cmp.mapping(function(fallback)
                     fallback()
+                    vim.schedule(function()
+                        FeedKeys("<space><bs>", "n")
+                    end)
+                end, { "i", "c", "s" }),
+                ["<C-u>"] = cmp.mapping(function(fallback)
+                    fallback()
+                    vim.schedule(function()
+                        FeedKeys("<space><bs>", "n")
+                    end)
                 end, { "i", "c", "s" }),
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     cmp.close()
@@ -366,7 +376,7 @@ return {
                 end, { "i", "c" }),
             }),
             sources = {
-                { name = "rg" },
+                { name = "buffer" },
             },
         })
         cmp.setup.cmdline(":", {

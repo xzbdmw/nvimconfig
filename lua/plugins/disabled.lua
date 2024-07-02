@@ -5,7 +5,6 @@ return {
     -- { "nvim-focus/focus.nvim", enabled = false },
     -- { "echasnovski/mini.indentscope", enabled = false },
     { "echasnovski/mini.bufremove", enabled = false },
-    { "hrsh7th/cmp-buffer", enabled = false },
     -- -- { "nvim-treesitter/nvim-treesitter", enabled = false },
     -- { "nvim-ts-autotag", enabled = false },
     -- { "novim/nvim-lspconfig", enabled = false },
