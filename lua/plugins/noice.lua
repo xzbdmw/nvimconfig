@@ -118,7 +118,7 @@ return {
                             zindex = 100,
                             border = {
                                 style = "none",
-                                padding = { 0, 1 },
+                                padding = { 0, 2 },
                             },
                             position = {
                                 row = "30%",
