@@ -322,7 +322,14 @@ return {
                 local previewer = picker.previewer
                 local winid = previewer.state.winid
                 local bufnr = previewer.state.bufnr
+                if previewer.state.winid == nil then
+                    bufnr = previewer.state.termopen_bufnr
+                    winid = vim.fn.win_findbuf(bufnr)[1]
+                end
+                local cursor = api.nvim_win_get_cursor(winid)
                 vim.keymap.set("n", "<Tab>", function()
+                    api.nvim_win_set_cursor(winid, cursor)
+                    require("config.utils").update_preview_state(bufnr, winid)
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
                 end, { buffer = bufnr })
                 vim.keymap.set("n", "<cr>", function()
@@ -356,6 +363,7 @@ return {
                 actions.close(prompt_bufnr)
                 vim.fn.setreg('"', text)
             end
+
             require("telescope").setup({
                 defaults = {
                     disable_devicons = true,
