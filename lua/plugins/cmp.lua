@@ -87,18 +87,6 @@ return {
                     end
                     fallback()
                 end),
-                -- ["<right>"] = cmp.mapping(function(fallback)
-                --     if cmp.visible() then
-                --         f.expand = false
-                --         _G.no_animation(_G.CI)
-                --         cmp.select_cur_item()
-                --         vim.schedule(function()
-                --             cmp.close()
-                --         end)
-                --     else
-                --         fallback()
-                --     end
-                -- end),
                 ["<space>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
@@ -327,6 +315,11 @@ return {
         cmp.setup.cmdline("/", {
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
+                    c = function(fallback)
+                        fallback()
+                    end,
+                }),
+                ["<Tab>"] = cmp.mapping({
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.confirm({ select = true })
