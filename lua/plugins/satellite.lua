@@ -2,7 +2,7 @@ return {
     "lewis6991/satellite.nvim",
     config = function()
         require("satellite").setup({
-            current_only = false,
+            current_only = true,
             winblend = 0,
             zindex = 20,
             excluded_filetypes = { "minifiles", "NvimTree" },
@@ -11,14 +11,14 @@ return {
                 cursor = {
                     enable = true,
                     -- Supports any number of symbols
-                    symbols = { " " },
-                    -- symbols = { '⎻', '⎼' }
+                    -- symbols = { " " },
+                    symbols = { "⎻" },
                     -- Highlights:
                     -- - SatelliteCursor (default links to NonText
                 },
                 search = {
                     enable = true,
-                    -- symbols = { "=" },
+                    signs = { "=" },
                     -- Highlights:
                     -- - SatelliteSearch (default links to Search)
                     -- - SatelliteSearchCurrent (default links to SearchCurrent)
