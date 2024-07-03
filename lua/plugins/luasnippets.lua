@@ -7,7 +7,7 @@ return {
         return {
             {
                 "<C-n>",
-                mode = { "i", "s" },
+                mode = { "i", "s", "v" },
                 function()
                     -- vim.g.neovide_cursor_animation_length = 0.02
                     -- vim.defer_fn(function()
@@ -26,7 +26,7 @@ return {
             },
             {
                 "<C-p>",
-                mode = { "i", "s" },
+                mode = { "i", "s", "v" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(-1) then
