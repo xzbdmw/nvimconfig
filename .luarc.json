@@ -8,6 +8,7 @@
         "MiniFiles",
         "api",
         "get_lsp_method_label",
-        "indent_update"
+        "indent_update",
+        "MiniSplitjoin"
     ]
 }

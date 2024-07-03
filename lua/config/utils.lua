@@ -441,6 +441,29 @@ function EditFromLazygit(file_path)
     end
 end
 
+function M.set_cr(bufnr, winid)
+    if winid ~= api.nvim_get_current_win() then
+        return
+    end
+    if not api.nvim_buf_is_valid(bufnr) then
+        return
+    end
+    local winbar = vim.wo.winbar
+    if vim.startswith(winbar, " WORKING TREE") then
+        local pathes = vim.split(winbar, "-")
+        local path = vim.trim(pathes[2])
+        local filename = vim.fn.getcwd() .. "/" .. path
+        vim.keymap.set("n", "<cr>", function()
+            local row, col = unpack(api.nvim_win_get_cursor(0))
+            vim.cmd("tabnext")
+            vim.cmd(string.format("lua EditLineFromLazygit('%s','%s','%s')", filename, tostring(row), tostring(col)))
+            vim.keymap.set("n", "<CR>", function()
+                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+            end, { buffer = true })
+        end, { buffer = true })
+    end
+end
+
 function EditLineFromLazygit(file_path, line, col)
     local path = vim.fn.expand("%:p")
     if path == file_path then
@@ -449,7 +472,7 @@ function EditLineFromLazygit(file_path, line, col)
         else
             api.nvim_win_set_cursor(0, { tonumber(line), tonumber(col) })
         end
-        vim.cmd("norm! zz")
+        M.adjust_view(0, 4)
         return
     else
         vim.cmd("e " .. file_path)
@@ -458,7 +481,17 @@ function EditLineFromLazygit(file_path, line, col)
         else
             api.nvim_win_set_cursor(0, { tonumber(line), tonumber(col) })
         end
-        vim.cmd("norm! zz")
+        M.adjust_view(0, 4)
+    end
+end
+
+function M.adjust_view(buf, size)
+    vim.cmd("norm! zz")
+    local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline
+    if topline > size and buf ~= vim.api.nvim_get_current_buf() then
+        vim.schedule(function()
+            vim.fn.winrestview({ topline = topline + size })
+        end)
     end
 end
 
