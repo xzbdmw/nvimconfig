@@ -59,11 +59,6 @@ return {
                         FeedKeys("n", "t")
                     end)
                 end)
-                map("n", "<leader>cb", function()
-                    vim.g.Base_commit = ""
-                    vim.g.Base_commit_msg = ""
-                    vim.cmd("Gitsigns change_base")
-                end)
 
                 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
             end,
@@ -94,5 +89,10 @@ return {
         })
         vim.keymap.set("n", "<leader><leader>b", "<cmd>Gitsigns toggle_current_line_blame<CR>")
         vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
+        vim.keymap.set("n", "<leader>cb", function()
+            vim.g.Base_commit = ""
+            vim.g.Base_commit_msg = ""
+            vim.cmd("Gitsigns change_base")
+        end)
     end,
 }

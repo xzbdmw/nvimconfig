@@ -284,6 +284,9 @@ api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
         if vim.g.Base_commit ~= "" then
+            vim.defer_fn(function()
+                require("gitsigns").change_base(vim.g.Base_commit, true)
+            end, 300)
             require("gitsigns").change_base(vim.g.Base_commit, true)
         end
         vim.defer_fn(function()
