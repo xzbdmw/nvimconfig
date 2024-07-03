@@ -103,7 +103,7 @@ return {
                 lualine_c_normal = { bg = "#FAF7E8" },
                 diffChanged = { link = "Keyword" },
                 NoiceSearch = { link = "HlSearchLensNear" },
-                HlSearchLensNear = { fg = "#364E57", bg = "#C9D2F5" },
+                HlSearchLensNear = { fg = "#000000", bg = "#C9D2F5" },
                 LeapBackdrop = { fg = "none" },
                 LeapMatch = { fg = "#112386", bg = "none", style = "bold" },
                 LeapLabelPrimary = { link = "LeapMatch" },
