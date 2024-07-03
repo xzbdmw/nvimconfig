@@ -9,7 +9,19 @@ return {
             { "<leader><space>", false },
             { "<leader>so", false },
             { "<leader>sf", false },
-            { "<leader>sh", "<cmd>Telescope highlights<cr>", desc = "telescope highlights" },
+            {
+                "<leader>sH",
+                function()
+                    require("treesitter-context").close_all()
+                    return "<cmd>Telescope highlights<cr>"
+                end,
+                desc = "telescope highlights",
+                expr = true,
+            },
+            {
+                "<leader>sh",
+                false,
+            },
             { "<leader>sr", "<cmd>Telescope resume<CR>" },
             { "<leader>sd", false },
             {
@@ -148,7 +160,6 @@ return {
                     _G.a_win = api.nvim_get_current_win()
                     _G.a_buf = api.nvim_get_current_buf()
                     _G.aerial_view = vim.fn.winsaveview()
-                    api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
                     require("telescope").extensions.aerial.aerial({
                         on_complete = {
                             function()
@@ -188,8 +199,8 @@ return {
                         on_complete = {
                             function()
                                 require("config.utils").on_complete(
-                                    "╰────────────────────────────────────────────────────────╯",
-                                    "│                                                        │",
+                                    "╰──────────────────────────────────────────╯",
+                                    "│                                          │",
                                     19
                                 )
                             end,
