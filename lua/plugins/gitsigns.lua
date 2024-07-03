@@ -39,17 +39,22 @@ return {
                     gs.prev_hunk()
                 end)
 
-                map("n", "<leader>sH", function()
+                map("n", "<leader>sh", function()
                     vim.cmd("Gitsigns stage_hunk")
                 end)
                 map("n", "<leader>uh", function()
                     vim.cmd("Gitsigns undo_stage_hunk")
                 end)
-                map("n", "<leader>sq", function()
+                map("n", "<leader><c-q>", function()
                     vim.cmd("Gitsigns setqflist")
                     vim.schedule(function()
                         FeedKeys("n", "t")
                     end)
+                end)
+                map("n", "<leader>cb", function()
+                    vim.g.Base_commit = ""
+                    vim.g.Base_commit_msg = ""
+                    vim.cmd("Gitsigns change_base")
                 end)
 
                 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
