@@ -79,6 +79,21 @@ api.nvim_create_autocmd("QuitPre", {
 })
 
 api.nvim_create_autocmd("FileType", {
+    pattern = { "gitsigns.blame" },
+    callback = function()
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
+    pattern = { "git" },
+    callback = function()
+        vim.cmd([[syntax on]])
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
     pattern = { "undotree", "diff" },
     callback = function()
         vim.cmd([[syntax on]])
@@ -259,7 +274,7 @@ api.nvim_create_autocmd({ "BufReadPre" }, {
         vim.g.gd = true
         vim.defer_fn(function()
             vim.g.gd = false
-        end, 100)
+        end, 30)
     end,
 })
 
