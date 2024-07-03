@@ -189,15 +189,16 @@ keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("n", "<leader><c-r>", "<cmd>e!<cr>", opts)
 
 keymap("n", "*", function()
-    if vim.bo.filetype ~= "noice" then
-        vim.schedule(function()
-            utils.search_to_qf()
-        end)
-    end
     local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline
     vim.cmd("keepjumps normal! mi*`i")
     vim.fn.winrestview({ topline = topline })
+    require("hlslens").start()
 end)
+
+keymap("n", "<leader>sq", function()
+    require("hlslens").exportLastSearchToQuickfix()
+    vim.cmd("Trouble before_qflist toggle focus=false")
+end, opts)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
