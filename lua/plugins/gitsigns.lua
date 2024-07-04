@@ -63,7 +63,7 @@ return {
                     gs.stage_buffer()
                 end)
 
-                map("n", "<leader>usb", function()
+                map("n", "<leader>ub", function()
                     gs.reset_buffer_index()
                 end)
 

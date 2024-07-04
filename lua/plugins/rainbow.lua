@@ -2,7 +2,7 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     keys = {
         {
-            "<leader>ub",
+            "<leader>uB",
             function()
                 require("rainbow-delimiters").toggle(0)
             end,
