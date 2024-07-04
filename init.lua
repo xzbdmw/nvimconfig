@@ -208,29 +208,6 @@ api.nvim_create_autocmd("BufEnter", {
     callback = utils.set_glance_keymap,
 })
 
-api.nvim_create_autocmd({ "BufWinEnter", "WinEnter" }, {
-    pattern = "*",
-    callback = function(args)
-        local tabnum = vim.fn.tabpagenr()
-        if tabnum == 1 then
-            return
-        end
-        local winid = api.nvim_get_current_win()
-        local bufnr = args.buf
-        local set_cr = require("config.utils").set_cr
-        set_cr(bufnr, winid)
-        vim.defer_fn(function()
-            set_cr(bufnr, winid)
-        end, 500)
-        vim.defer_fn(function()
-            set_cr(bufnr, winid)
-        end, 1000)
-        vim.defer_fn(function()
-            set_cr(bufnr, winid)
-        end, 1500)
-    end,
-})
-
 api.nvim_create_autocmd("WinResized", {
     pattern = "*",
     callback = function()
