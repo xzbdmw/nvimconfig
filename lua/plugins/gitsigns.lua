@@ -49,6 +49,14 @@ return {
                     gs.reset_hunk()
                 end)
 
+                map("n", "<leader>sb", function()
+                    gs.stage_buffer()
+                end)
+
+                map("n", "<leader>usb", function()
+                    gs.reset_buffer_index()
+                end)
+
                 map("n", "[c", function()
                     gs.prev_hunk()
                 end)
