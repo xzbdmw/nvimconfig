@@ -65,7 +65,7 @@ return {
             mode = { "x", "n" },
         },
         {
-            "<leader>cc",
+            "<leader>cu",
             function()
                 require("refactoring").debug.cleanup({})
             end,
