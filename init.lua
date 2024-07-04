@@ -104,7 +104,7 @@ api.nvim_create_autocmd("FileType", {
             end,
         })
         vim.defer_fn(function()
-            vim.keymap.set("n", "<CR>", "<cmd>wq<CR>", { buffer = true })
+            vim.keymap.set({ "n", "i" }, "<CR>", "<cmd>wq<CR><esc>", { buffer = true })
         end, 100)
     end,
 })

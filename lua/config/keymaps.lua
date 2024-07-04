@@ -195,7 +195,7 @@ keymap("n", "*", function()
     require("hlslens").start()
 end)
 
-keymap("n", "<leader>sq", function()
+keymap("n", "<leader><c-q>", function()
     require("hlslens").exportLastSearchToQuickfix()
     vim.cmd("Trouble before_qflist toggle focus=false")
 end, opts)
