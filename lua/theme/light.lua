@@ -19,9 +19,9 @@ keymap("n", "n", function()
         else
             local mode = _G.searchmode
             if mode == "/" then
-                vim.cmd("normal! n")
+                vim.cmd("normal! nzz")
             else
-                vim.cmd("normal! N")
+                vim.cmd("normal! Nzz")
             end
         end
     end
@@ -40,9 +40,9 @@ keymap("n", "N", function()
         else
             local mode = _G.searchmode
             if mode ~= "/" then
-                vim.cmd("normal! n")
+                vim.cmd("normal! nzz")
             else
-                vim.cmd("normal! N")
+                vim.cmd("normal! Nzz")
             end
         end
     end
