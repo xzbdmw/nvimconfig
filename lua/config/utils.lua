@@ -53,6 +53,10 @@ function M.close_win()
     if check_trouble() then
         return
     end
+    if require("config.utils").has_filetype("gitsigns.blame") then
+        FeedKeys("<Tab>q<d-1><tab>", "m")
+        return
+    end
     local nvimtree_present = false
     for _, win_id in ipairs(api.nvim_list_wins()) do
         local buf_id = api.nvim_win_get_buf(win_id)

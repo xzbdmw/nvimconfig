@@ -73,6 +73,18 @@ return {
                 map("n", "<leader>uh", function()
                     vim.cmd("Gitsigns undo_stage_hunk")
                 end)
+
+                map("n", "<leader>bb", function()
+                    if require("config.utils").has_filetype("gitsigns.blame") then
+                        FeedKeys("<Tab>q<d-1><tab>", "m")
+                        return
+                    end
+                    if require("config.utils").has_filetype("NvimTree") then
+                        require("nvim-tree.api").tree.toggle({ focus = false })
+                    end
+                    vim.cmd("Gitsigns blame")
+                end)
+
                 map("n", "<leader>sq", function()
                     vim.cmd("Gitsigns setqflist")
                     api.nvim_create_autocmd("QuickFixCmdPost", {
