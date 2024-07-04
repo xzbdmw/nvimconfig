@@ -36,12 +36,22 @@ return {
 
                 -- Navigation
                 map("n", "]c", function()
-                    gs.next_hunk()
+                    gs.nav_hunk("next", { target = "unstaged" })
                     vim.cmd("norm! zz")
                 end)
 
                 map("n", "[c", function()
-                    gs.prev_hunk()
+                    gs.nav_hunk("prev", { target = "unstaged" })
+                    vim.cmd("norm! zz")
+                end)
+
+                map("n", "]s", function()
+                    gs.nav_hunk("next", { target = "staged" })
+                    vim.cmd("norm! zz")
+                end)
+
+                map("n", "[s", function()
+                    gs.nav_hunk("prev", { target = "staged" })
                     vim.cmd("norm! zz")
                 end)
 
@@ -55,10 +65,6 @@ return {
 
                 map("n", "<leader>usb", function()
                     gs.reset_buffer_index()
-                end)
-
-                map("n", "[c", function()
-                    gs.prev_hunk()
                 end)
 
                 map("n", "<leader>sh", function()
