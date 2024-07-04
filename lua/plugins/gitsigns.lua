@@ -37,6 +37,12 @@ return {
                 -- Navigation
                 map("n", "]c", function()
                     gs.next_hunk()
+                    vim.cmd("norm! zz")
+                end)
+
+                map("n", "[c", function()
+                    gs.prev_hunk()
+                    vim.cmd("norm! zz")
                 end)
 
                 map("n", "<leader>rh", function()
