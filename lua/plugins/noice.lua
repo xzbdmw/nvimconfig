@@ -35,6 +35,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "notify", find = "swapfile" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "_watch" },
                     opts = { skip = true },
                 },
