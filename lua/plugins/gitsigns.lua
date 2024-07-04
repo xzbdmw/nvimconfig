@@ -96,12 +96,6 @@ return {
                 end)
                 map("n", "<leader>aq", function()
                     gs.setqflist("all")
-                    api.nvim_create_autocmd("WinResized", {
-                        once = true,
-                        callback = vim.schedule_wrap(function()
-                            FeedKeys("n", "t")
-                        end),
-                    })
                 end)
 
                 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
