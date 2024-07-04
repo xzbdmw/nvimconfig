@@ -40,7 +40,7 @@ return {
                 end,
             },
             {
-                "<leader>fb",
+                "<leader>fB",
                 function()
                     require("custom.telescope-pikers").prettyBuffersPicker(true, "normal")
                 end,
@@ -102,7 +102,7 @@ return {
                 end,
             },
             {
-                "<leader>sb",
+                "<leader>fb",
                 function()
                     local filename = vim.fn.expand("%:t")
                     local default_text = "@" .. filename .. " "
