@@ -398,7 +398,7 @@ return {
                 end, { "i", "c", "s" }),
             }),
             sources = {
-                { name = "buffer" },
+                { name = "rg" },
             },
         })
         cmp.setup.cmdline(":", {
