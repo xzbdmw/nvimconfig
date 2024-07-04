@@ -317,8 +317,17 @@ end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
+
 keymap("i", "<D-v>", function()
     return '<C-g>u<C-r><C-o>"'
+end, { expr = true })
+
+keymap("i", "<c-;>", function()
+    local body = vim.fn.getreg('"')
+    local reformated_body = body:gsub("%s*\r?\n%s*", " "):gsub("^%s*", ""):gsub("%s*$", "")
+    vim.fn.setreg("l", reformated_body, vim.fn.getregtype("'"))
+    _G.no_animation(_G.CI)
+    return "<c-r>l"
 end, { expr = true })
 
 -- don't messy up indent
