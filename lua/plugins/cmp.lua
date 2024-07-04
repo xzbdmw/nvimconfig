@@ -160,6 +160,13 @@ return {
                     _G.no_animation(_G.CI)
                     fallback()
                 end),
+                ["<c-cr>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    _G.no_animation(_G.CI)
+                    fallback()
+                end),
                 ["<c-r>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     if cmp.visible() then
