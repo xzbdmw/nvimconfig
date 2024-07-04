@@ -94,6 +94,22 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("FileType", {
+    pattern = { "gitcommit" },
+    callback = function()
+        vim.api.nvim_create_autocmd("BufEnter", {
+            once = true,
+            callback = function()
+                vim.cmd("norm! gg")
+                vim.cmd("startinsert")
+            end,
+        })
+        vim.defer_fn(function()
+            vim.keymap.set("n", "<CR>", "<cmd>wq<CR>", { buffer = true })
+        end, 100)
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
     pattern = { "undotree", "diff" },
     callback = function()
         vim.cmd([[syntax on]])
