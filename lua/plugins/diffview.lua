@@ -148,8 +148,11 @@ return {
                     },
                     {
                         "n",
-                        "gf",
-                        actions.goto_file_edit,
+                        "<cr>",
+                        function()
+                            actions.goto_file_edit()
+                            require("config.utils").adjust_view(0, 2)
+                        end,
                         { desc = "Open the file in the previous tabpage" },
                     },
                     {

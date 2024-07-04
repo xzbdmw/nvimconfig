@@ -493,6 +493,7 @@ function M.adjust_view(buf, size)
     vim.cmd("norm! zz")
     local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline
     if topline > size and buf ~= vim.api.nvim_get_current_buf() then
+        vim.fn.winrestview({ topline = topline + size })
         vim.schedule(function()
             vim.fn.winrestview({ topline = topline + size })
         end)
