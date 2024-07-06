@@ -101,8 +101,10 @@ api.nvim_create_autocmd("FileType", {
         vim.api.nvim_create_autocmd("BufEnter", {
             once = true,
             callback = function()
-                vim.cmd("norm! gg")
-                vim.cmd("startinsert")
+                vim.schedule(function()
+                    vim.cmd("norm! gg")
+                    vim.cmd("startinsert")
+                end)
             end,
         })
         vim.defer_fn(function()
