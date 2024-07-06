@@ -68,6 +68,7 @@ return {
                 end)
 
                 map("n", "<leader>sh", function()
+                    TT = vim.uv.hrtime()
                     vim.cmd("Gitsigns stage_hunk")
                 end)
                 map("n", "<leader>uh", function()
