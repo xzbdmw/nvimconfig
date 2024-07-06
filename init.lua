@@ -89,6 +89,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "git" },
     callback = function()
+        vim.b.miniindentscope_disable = true
         vim.cmd([[syntax on]])
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
     end,
