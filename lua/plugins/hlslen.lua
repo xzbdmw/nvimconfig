@@ -16,6 +16,11 @@ return {
                     cmd = c
                 end
 
+                if _G.star_search ~= nil then
+                    cmd = _G.star_search
+                    _G.star_search = nil
+                end
+
                 local lnum, col = unpack(posList[idx])
                 local cur_row = unpack(api.nvim_win_get_cursor(0))
                 if (not is_cmdline) and cur_row ~= lnum then
