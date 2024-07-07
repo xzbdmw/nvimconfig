@@ -322,7 +322,7 @@ keymap("i", "<D-v>", function()
     return '<C-g>u<C-r><C-o>"'
 end, { expr = true })
 
-keymap("i", "<c-;>", function()
+keymap("i", "<c-r>;", function()
     local body = vim.fn.getreg('"')
     local reformated_body = body:gsub("%s*\r?\n%s*", " "):gsub("^%s*", ""):gsub("%s*$", "")
     vim.fn.setreg("l", reformated_body, vim.fn.getregtype("'"))
