@@ -192,6 +192,7 @@ keymap("n", "*", function()
     local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline
     vim.cmd("keepjumps normal! mi*`i")
     vim.fn.winrestview({ topline = topline })
+    _G.star_search = vim.fn.getreg("/")
     require("hlslens").start()
 end)
 
