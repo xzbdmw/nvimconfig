@@ -304,17 +304,10 @@ api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
         if vim.g.Base_commit ~= "" then
-            vim.defer_fn(function()
-                require("gitsigns").change_base(vim.g.Base_commit, true)
-            end, 300)
             require("gitsigns").change_base(vim.g.Base_commit, true)
+        else
+            require("gitsigns").reset_base(vim.g.Base_commit, true)
         end
-        vim.defer_fn(function()
-            vim.cmd("Gitsigns attach")
-        end, 150)
-        vim.defer_fn(function()
-            vim.cmd("Gitsigns attach")
-        end, 200)
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
