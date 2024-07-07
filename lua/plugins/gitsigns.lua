@@ -67,10 +67,15 @@ return {
                     gs.reset_buffer_index()
                 end)
 
+                map("v", "<leader>sh", function()
+                    gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                end)
+
                 map("n", "<leader>sh", function()
                     TT = vim.uv.hrtime()
                     vim.cmd("Gitsigns stage_hunk")
                 end)
+
                 map("n", "<leader>uh", function()
                     vim.cmd("Gitsigns undo_stage_hunk")
                 end)
