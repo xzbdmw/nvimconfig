@@ -81,7 +81,7 @@ api.nvim_create_autocmd("QuitPre", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "gitsigns.blame" },
     callback = function()
-        FeedKeys("<leader>uw<Tab>", "m")
+        FeedKeys("<Tab>", "m")
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
     end,
 })
