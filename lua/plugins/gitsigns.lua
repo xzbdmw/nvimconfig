@@ -142,7 +142,7 @@ return {
         vim.keymap.set("n", "<leader>cb", function()
             vim.g.Base_commit = ""
             vim.g.Base_commit_msg = ""
-            vim.cmd("Gitsigns change_base")
+            require("gitsigns").reset_base(vim.g.Base_commit, true)
         end)
     end,
 }

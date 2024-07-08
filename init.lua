@@ -305,6 +305,10 @@ api.nvim_create_autocmd({ "User" }, {
     callback = function()
         if vim.g.Base_commit ~= "" then
             require("gitsigns").change_base(vim.g.Base_commit, true)
+            -- when nvim start at first time, gitsigns may choose index as base
+            vim.defer_fn(function()
+                require("gitsigns").change_base(vim.g.Base_commit, true)
+            end, 200)
         else
             require("gitsigns").reset_base(vim.g.Base_commit, true)
         end
