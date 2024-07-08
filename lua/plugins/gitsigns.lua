@@ -67,6 +67,10 @@ return {
                     gs.reset_buffer_index()
                 end)
 
+                map("n", "<leader>rb", function()
+                    gs.reset_buffer()
+                end)
+
                 map("v", "<leader>sh", function()
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
                 end)
