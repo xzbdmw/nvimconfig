@@ -333,7 +333,7 @@ api.nvim_create_autocmd("User", {
                 local _, path = require("oil.util").parse_url(action.url)
                 local bufnr = vim.fn.bufnr(path)
                 if bufnr ~= -1 then
-                    vim.cmd("bw " .. bufnr)
+                    vim.cmd("bw! " .. bufnr)
                 end
             end
             vim.cmd("NvimTreeRefresh")
