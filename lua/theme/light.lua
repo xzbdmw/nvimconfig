@@ -11,7 +11,7 @@ keymap("n", "n", function()
         require("illuminate.goto").goto_next_keeped_reference(true)
         return
     elseif utils.has_filetype("trouble") then
-        require("trouble").next({ skip_groups = true, jump = true })
+        require("trouble").main_next({ skip_groups = true, jump = true })
     else
         local n = vim.v.hlsearch
         if n == 0 then
@@ -32,7 +32,7 @@ keymap("n", "N", function()
         require("illuminate.goto").goto_prev_keeped_reference(true)
         return
     elseif utils.has_filetype("trouble") then
-        require("trouble").prev({ skip_groups = true, jump = true })
+        require("trouble").main_prev({ skip_groups = true, jump = true })
     else
         local n = vim.v.hlsearch
         if n == 0 then
