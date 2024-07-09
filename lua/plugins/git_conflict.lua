@@ -19,10 +19,10 @@ return {
     config = function()
         require("git-conflict").setup({
             default_mappings = {
-                ours = "<leader>co",
-                theirs = "<leader>ct",
-                none = "<leader>cn",
-                both = "<leader>cb",
+                ours = "co",
+                theirs = "ct",
+                none = "cn",
+                both = "cb",
                 next = "n",
                 prev = "N",
             },
