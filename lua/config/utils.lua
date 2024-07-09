@@ -39,8 +39,8 @@ end
 
 local function check_trouble()
     local ret = false
-    if require("trouble").is_open("before_qflist") then
-        vim.cmd("Trouble before_qflist toggle focus=false")
+    if require("trouble").is_open("qflist") then
+        vim.cmd("Trouble qflist toggle focus=false")
         ret = true
     elseif require("trouble").is_open("mydiags") then
         vim.cmd("Trouble mydiags toggle filter.buf=0 focus=false")
