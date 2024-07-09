@@ -18,6 +18,7 @@ return {
                 else
                     vim.cmd("Trouble qflist toggle focus=false")
                 end
+                _G.pre_gitsigns_qf_operation = ""
             end,
             desc = "Diagnostics (Trouble)",
         },

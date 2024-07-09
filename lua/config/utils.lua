@@ -41,16 +41,18 @@ local function check_trouble()
     local ret = false
     if require("trouble").is_open("qflist") then
         vim.cmd("Trouble qflist toggle focus=false")
+        _G.pre_gitsigns_qf_operation = ""
         ret = true
     elseif require("trouble").is_open("mydiags") then
         vim.cmd("Trouble mydiags toggle filter.buf=0 focus=false")
+        _G.pre_gitsigns_qf_operation = ""
         ret = true
     end
     return ret
 end
 
 function M.close_win()
-    if check_trouble() then
+    if M.has_filetype("trouble") and check_trouble() then
         return
     end
     if require("config.utils").has_filetype("gitsigns.blame") then

@@ -71,13 +71,28 @@ return {
                     gs.reset_buffer()
                 end)
 
+                local update_hunk_qflist = function()
+                    if require("trouble").is_open("qflist") then
+                        if _G.pre_gitsigns_qf_operation == "all" then
+                            vim.defer_fn(function()
+                                FeedKeys("<leader>aq", "m")
+                            end, 200)
+                        elseif _G.pre_gitsigns_qf_operation == "cur" then
+                            vim.defer_fn(function()
+                                FeedKeys("<leader>sq", "m")
+                            end, 200)
+                        end
+                    end
+                end
+
                 map("v", "<leader>sh", function()
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>sh", function()
-                    TT = vim.uv.hrtime()
                     vim.cmd("Gitsigns stage_hunk")
+                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>uh", function()
@@ -96,6 +111,7 @@ return {
                 end)
 
                 map("n", "<leader>sq", function()
+                    _G.pre_gitsigns_qf_operation = "cur"
                     vim.cmd("Gitsigns setqflist")
                     api.nvim_create_autocmd("WinResized", {
                         once = true,
@@ -105,6 +121,7 @@ return {
                     })
                 end)
                 map("n", "<leader>aq", function()
+                    _G.pre_gitsigns_qf_operation = "all"
                     gs.setqflist("all")
                     api.nvim_create_autocmd("WinResized", {
                         once = true,
