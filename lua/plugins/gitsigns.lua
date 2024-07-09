@@ -97,7 +97,7 @@ return {
 
                 map("n", "<leader>sq", function()
                     vim.cmd("Gitsigns setqflist")
-                    api.nvim_create_autocmd("QuickFixCmdPost", {
+                    api.nvim_create_autocmd("WinResized", {
                         once = true,
                         callback = vim.schedule_wrap(function()
                             FeedKeys("n", "t")
