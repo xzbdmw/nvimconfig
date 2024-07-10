@@ -95,7 +95,7 @@ return {
                 lspFloatWinNormal = { bg = "#F4F1E9" },
                 Normal = { fg = "#000000", bg = "#FAF7E8" },
                 -- Normal = { fg = "#3B3B3C", bg = "#ffffff" },
-                Comment = { fg = "#7E7D7D" },
+                Comment = { fg = "#7E7D7D", style = "italic" },
                 Ufo = { link = "MyNormalDocFloat" },
                 MasonNormal = { link = "MyNormalDocFloat" },
                 TroubleNormal = { link = "Normal" },
