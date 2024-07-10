@@ -28,10 +28,12 @@ return {
                 end
                 local cnt = #posList
                 local text = ("%s%s  [%d/%d]"):format(mode, cmd, idx, cnt)
-                local chunks = { { " " }, { text, "HlSearchLensNear" } }
                 if not is_cmdline then
                     extmark:clearBuf(0)
+                    -- because use cmp tab to select does not update search pattern
+                    text = ("%s%s  [%d/%d]"):format(mode, vim.fn.getreg("/"), idx, cnt)
                 end
+                local chunks = { { " " }, { text, "HlSearchLensNear" } }
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
             end,
         })
