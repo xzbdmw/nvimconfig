@@ -34,6 +34,7 @@ return {
         { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
     },
     config = function()
+        local width = vim.api.nvim_get_option("columns")
         require("nvim-tree").setup({
             git = {
                 enable = false,
@@ -82,7 +83,7 @@ return {
             on_attach = my_on_attach,
             view = {
                 signcolumn = "yes",
-                width = 35,
+                width = math.floor(0.25 * width),
                 preserve_window_proportions = true,
             },
             renderer = {
