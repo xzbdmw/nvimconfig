@@ -111,13 +111,11 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit" },
     callback = function()
-        vim.api.nvim_create_autocmd("BufEnter", {
+        vim.api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
-                vim.schedule(function()
-                    vim.cmd("norm! gg")
-                    vim.cmd("startinsert")
-                end)
+                vim.cmd("norm! gg")
+                FeedKeys("i", "n")
             end,
         })
         vim.defer_fn(function()
