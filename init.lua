@@ -88,6 +88,18 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("FileType", {
+    pattern = { "noice" },
+    callback = function()
+        api.nvim_create_autocmd("BufEnter", {
+            once = true,
+            callback = function()
+                vim.keymap.set("n", "K", "3k", { buffer = true })
+            end,
+        })
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
     pattern = { "git" },
     callback = function()
         vim.b.miniindentscope_disable = true
