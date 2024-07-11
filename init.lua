@@ -152,13 +152,21 @@ api.nvim_create_autocmd("TermOpen", {
     end,
 })
 
--- walkaroud for incremental selection
-api.nvim_create_augroup("cmdwin_treesitter", { clear = true })
 api.nvim_create_autocmd("FileType", {
     pattern = {
         "qf",
     },
-    command = "TSBufDisable incremental_selection",
+    callback = function()
+        vim.defer_fn(function()
+            vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
+        end, 100)
+    end,
+})
+
+api.nvim_create_autocmd("CmdwinEnter", {
+    callback = function()
+        vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
+    end,
 })
 
 api.nvim_create_autocmd("FileType", {
