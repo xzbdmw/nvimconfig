@@ -28,6 +28,20 @@ return {
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
 
+                local update_hunk_qflist = function()
+                    if require("trouble").is_open("qflist") then
+                        if _G.pre_gitsigns_qf_operation == "all" then
+                            vim.defer_fn(function()
+                                FeedKeys("<leader>aq", "m")
+                            end, 200)
+                        elseif _G.pre_gitsigns_qf_operation == "cur" then
+                            vim.defer_fn(function()
+                                FeedKeys("<leader>sq", "m")
+                            end, 200)
+                        end
+                    end
+                end
+
                 local function map(mode, l, r, opts)
                     opts = opts or {}
                     opts.buffer = bufnr
@@ -57,33 +71,23 @@ return {
 
                 map("n", "<leader>rh", function()
                     gs.reset_hunk()
-                end)
-
-                map("n", "<leader>sb", function()
-                    gs.stage_buffer()
+                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>ub", function()
                     gs.reset_buffer_index()
+                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>rb", function()
                     gs.reset_buffer()
+                    update_hunk_qflist()
                 end)
 
-                local update_hunk_qflist = function()
-                    if require("trouble").is_open("qflist") then
-                        if _G.pre_gitsigns_qf_operation == "all" then
-                            vim.defer_fn(function()
-                                FeedKeys("<leader>aq", "m")
-                            end, 200)
-                        elseif _G.pre_gitsigns_qf_operation == "cur" then
-                            vim.defer_fn(function()
-                                FeedKeys("<leader>sq", "m")
-                            end, 200)
-                        end
-                    end
-                end
+                map("n", "<leader>sb", function()
+                    gs.stage_buffer()
+                    update_hunk_qflist()
+                end)
 
                 map("v", "<leader>sh", function()
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
@@ -97,6 +101,7 @@ return {
 
                 map("n", "<leader>uh", function()
                     vim.cmd("Gitsigns undo_stage_hunk")
+                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>bb", function()
@@ -120,6 +125,7 @@ return {
                         end),
                     })
                 end)
+
                 map("n", "<leader>aq", function()
                     _G.pre_gitsigns_qf_operation = "all"
                     gs.setqflist("all")
