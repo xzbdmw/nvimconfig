@@ -5,6 +5,7 @@ return {
     config = function()
         local glance = require("glance")
         local actions = glance.actions
+
         local function clear_and_restore()
             for bufnr, _ in pairs(_G.glance_buffer) do
                 api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
@@ -20,11 +21,13 @@ return {
             end)
             _G.reference = false
         end
+
         local function quickfix()
             clear_and_restore()
             actions.quickfix()
         end
-        function Jump()
+
+        local function jump()
             clear_and_restore()
             actions.jump()
         end
@@ -34,7 +37,7 @@ return {
             vim.defer_fn(actions.close, 1)
         end
 
-        function OpenAndKeepHighlight()
+        local function openAndKeepHighlight()
             local cursor = api.nvim_win_get_cursor(0)
             local lnum = cursor[1]
             local col = cursor[2]
@@ -53,6 +56,7 @@ return {
             end)
             actions.close()
         end
+
         function Open()
             clear_and_restore()
             actions.close(api.nvim_get_current_buf())
@@ -92,7 +96,7 @@ return {
                     ["v"] = actions.jump_vsplit,
                     ["s"] = actions.jump_split,
                     ["t"] = actions.jump_tab,
-                    ["<CR>"] = Jump,
+                    ["<CR>"] = jump,
                     ["o"] = actions.jump,
                     ["l"] = actions.open_fold,
                     ["n"] = actions.next_location,
