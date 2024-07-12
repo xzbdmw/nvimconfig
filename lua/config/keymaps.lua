@@ -8,6 +8,11 @@ keymap({ "n", "i" }, "<D-s>", function()
 end, opts)
 
 keymap({ "n" }, "/", function()
+    utils.once(function()
+        vim.api.nvim_exec_autocmds("User", {
+            pattern = "SearchBegin",
+        })
+    end)
     require("config.utils").search("/")
 end, opts)
 

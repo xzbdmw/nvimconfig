@@ -278,6 +278,15 @@ function M.normal_tab()
     end
 end
 
+function M.once(callback)
+    local done = false
+    if done then
+        return
+    end
+    done = true
+    callback()
+end
+
 function M.search(mode)
     api.nvim_create_autocmd("CmdlineChanged", {
         once = true,

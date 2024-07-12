@@ -2,7 +2,7 @@ local f = require("config.cmpformat")
 return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter", "CmdlineEnter", "User SearchBegin" },
     dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
     -- lazy = false,
     -- dir = "~/Project/lua/oricmp/nvim-cmp/",
