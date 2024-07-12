@@ -228,7 +228,6 @@ keymap("n", "<leader>uu", function()
 end, { expr = true })
 
 keymap("n", "<leader>sd", function()
-    vim.g.neovide_underline_stroke_scale = 0
     if vim.g.Base_commit == "" then
         vim.cmd("DiffviewOpen")
     else
@@ -237,12 +236,10 @@ keymap("n", "<leader>sd", function()
 end, opts)
 
 keymap("n", "<leader>sf", function()
-    vim.g.neovide_underline_stroke_scale = 0
     vim.cmd("DiffviewFileHistory %")
 end, opts)
 
 keymap("n", "<leader>cd", function()
-    vim.g.neovide_underline_stroke_scale = 2
     pcall(function()
         vim.cmd("tabclose")
     end)

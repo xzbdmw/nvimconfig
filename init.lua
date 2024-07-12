@@ -108,6 +108,18 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+api.nvim_create_autocmd("TabEnter", {
+    callback = function()
+        local tabnum = vim.fn.tabpagenr()
+        if tabnum ~= 1 then
+            vim.g.neovide_underline_stroke_scale = 0
+            vim.b.miniindentscope_disable = true
+        else
+            vim.g.neovide_underline_stroke_scale = 1.5
+        end
+    end,
+})
+
 api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit" },
     callback = function()
