@@ -13,11 +13,11 @@ keymap({ "n" }, "/", function()
             pattern = "SearchBegin",
         })
     end)
-    require("config.utils").search("/")
+    utils.search("/")
 end, opts)
 
 keymap({ "n" }, "?", function()
-    require("config.utils").search("?")
+    utils.search("?")
 end, opts)
 
 keymap({ "c" }, "<c-n>", "<c-g>", opts)
@@ -79,8 +79,7 @@ keymap("n", "<leader>h", function()
     end)
 end, opts)
 
--- <D-k>
-keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
+keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", "<cmd>NvimTreeRefresh<CR>", opts)
 keymap("n", "<C-m>", "%", opts)
 keymap("n", "g.", "`.", opts)
