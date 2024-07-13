@@ -429,6 +429,22 @@ return {
                         end
                     end,
                 },
+                ["<c-n>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.close()
+                        end
+                        FeedKeys("<down>", "m")
+                    end,
+                },
+                ["<c-p>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.close()
+                        end
+                        FeedKeys("<up>", "m")
+                    end,
+                },
                 ["<Esc>"] = cmp.mapping({
                     c = function()
                         if cmp.visible() then
