@@ -323,10 +323,12 @@ return {
                 local commit = selection.value
                 vim.g.Base_commit = commit
                 vim.g.Base_commit_msg = selection.ordinal
-                require("gitsigns").change_base(commit, true)
-                vim.defer_fn(function()
-                    vim.cmd("Gitsigns attach")
-                end, 100)
+                pcall(function()
+                    require("gitsigns").change_base(commit, true)
+                    vim.defer_fn(function()
+                        vim.cmd("Gitsigns attach")
+                    end, 100)
+                end)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
             end
 

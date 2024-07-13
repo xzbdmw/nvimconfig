@@ -337,10 +337,12 @@ _G.no_delay = function(animation)
     vim.g.neovide_cursor_animation_length = animation
     vim.schedule(function()
         vim.g.type_o = false
-        local async = require("gitsigns.async")
-        local manager = require("gitsigns.manager")
-        local debounce_trailing = require("gitsigns.debounce").debounce_trailing
-        debounce_trailing(1, async.create(1, manager.update))(api.nvim_get_current_buf())
+        local ok, async = pcall(require, "gitsigns.async")
+        if ok then
+            local manager = require("gitsigns.manager")
+            local debounce_trailing = require("gitsigns.debounce").debounce_trailing
+            debounce_trailing(1, async.create(1, manager.update))(api.nvim_get_current_buf())
+        end
         -- Time(TST, "no_delay: ")
         local row, col = unpack(api.nvim_win_get_cursor(0))
         local ts_indent = require("nvim-treesitter.indent")
