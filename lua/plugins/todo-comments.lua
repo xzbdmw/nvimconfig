@@ -6,7 +6,7 @@ return {
         "<cmd>TodoQuickFix<cr>",
     } },
     event = "VeryLazy",
-    -- enabled = false,
+    enabled = false,
     opts = {
         signs = true, -- show icons in the signs column
         sign_priority = 8, -- sign priority

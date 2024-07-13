@@ -301,6 +301,16 @@ function M.search(mode)
     FeedKeys(mode, "n")
 end
 
+function M.is_big_file(bufnr)
+    if not api.nvim_buf_is_valid(bufnr) then
+        return true
+    end
+    local big_file = vim.b[bufnr].bigfile_detected
+    if big_file ~= nil and big_file == 1 then
+        return true
+    end
+end
+
 function M.insert_mode_tab()
     _G.no_animation(_G.CI)
     local col = vim.fn.col(".") - 1

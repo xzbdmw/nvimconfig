@@ -25,6 +25,7 @@ return {
                 disabled = disabled or (vim.bo.filetype == "oil" or vim.bo.filetype == "gitcommit")
                 disabled = disabled or (vim.fn.reg_recording() ~= "")
                 disabled = disabled or (vim.fn.reg_executing() ~= "")
+                disabled = disabled or require("config.utils").is_big_file(api.nvim_get_current_buf())
                 return not disabled
             end,
             preselect = cmp.PreselectMode.None,
