@@ -52,6 +52,10 @@ local function check_trouble()
 end
 
 function M.close_win()
+    if M.has_filetype("gitcommit") then
+        vim.cmd("close")
+        return
+    end
     if M.has_filetype("trouble") and check_trouble() then
         return
     end
