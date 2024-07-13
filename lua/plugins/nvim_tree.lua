@@ -83,7 +83,7 @@ return {
             on_attach = my_on_attach,
             view = {
                 signcolumn = "yes",
-                width = math.floor(0.25 * width),
+                width = math.floor(0.2 * width),
                 preserve_window_proportions = true,
             },
             renderer = {
