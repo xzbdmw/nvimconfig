@@ -32,11 +32,11 @@ return {
                     if require("trouble").is_open("qflist") then
                         if _G.pre_gitsigns_qf_operation == "all" then
                             vim.defer_fn(function()
-                                FeedKeys("<leader>aq", "m")
+                                gs.setqflist("all")
                             end, 200)
                         elseif _G.pre_gitsigns_qf_operation == "cur" then
                             vim.defer_fn(function()
-                                FeedKeys("<leader>sq", "m")
+                                vim.cmd("Gitsigns setqflist")
                             end, 200)
                         end
                     end
