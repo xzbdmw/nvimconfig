@@ -256,6 +256,8 @@ return {
                 { name = "path" },
             }, {
                 { name = "rg" },
+            }, {
+                { name = "buffer" },
             }),
             matching = {
                 disallow_fuzzy_matching = false,
@@ -303,7 +305,6 @@ return {
             sorting = {
                 compare.order,
                 comparators = {
-                    -- reverse_prioritize,
                     cmp.config.compare.exact,
                     f.put_down_snippet,
                     compare.score,
@@ -319,12 +320,6 @@ return {
         cmp.setup.filetype({ "markdown" }, {
             completion = {
                 autocomplete = false,
-            },
-        })
-
-        cmp.setup.filetype({ "query" }, {
-            sources = {
-                { name = "treesitter" },
             },
         })
         for _, source in ipairs(opts.sources) do
@@ -398,9 +393,11 @@ return {
                     end)
                 end, { "i", "c", "s" }),
             }),
-            sources = {
+            sources = cmp.config.sources({
                 { name = "rg" },
-            },
+            }, {
+                { name = "buffer" },
+            }),
         })
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline({
