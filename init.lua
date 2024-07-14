@@ -128,11 +128,18 @@ api.nvim_create_autocmd("FileType", {
             once = true,
             callback = function()
                 vim.cmd("norm! gg")
-                FeedKeys("i", "n")
+                FeedKeys("O", "m")
             end,
         })
         vim.defer_fn(function()
-            vim.keymap.set({ "n", "i" }, "<CR>", "<cmd>wq<CR><esc>", { buffer = true })
+            vim.keymap.set({ "n", "i" }, "<CR>", function()
+                vim.schedule(function()
+                    if vim.bo.filetype == "lazyterm" then
+                        FeedKeys("<C-v><c-l>", "n")
+                    end
+                end)
+                return "<cmd>wq<CR><esc>"
+            end, { expr = true, buffer = true })
         end, 100)
     end,
 })
