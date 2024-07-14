@@ -1,5 +1,6 @@
 return {
     "SuperBo/fugit2.nvim",
+    enabled = false,
     opts = {
         width = 70,
         libgit2_path = "/opt/homebrew/Cellar/libgit2/1.7.2/lib/libgit2.dylib",
