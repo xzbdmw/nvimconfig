@@ -69,7 +69,15 @@ return {
                 enable = true,
                 -- cause cwd to change
                 -- update_cwd = true,
-                ignore_list = {},
+                exclude = function(arg)
+                    local buf = arg.buf
+                    if api.nvim_buf_is_valid(buf) then
+                        local name = vim.api.nvim_buf_get_name(buf)
+                        return string.find(name, "COMMIT_EDITMSG", nil, true) ~= nil
+                    else
+                        return true
+                    end
+                end,
             },
             filters = {
                 git_ignored = true,
