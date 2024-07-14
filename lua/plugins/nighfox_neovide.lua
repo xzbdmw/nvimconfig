@@ -114,7 +114,7 @@ return {
                 NoiceSearch = { link = "HlSearchLensNear" },
                 HlSearchLensNear = { fg = "#000000", bg = "#C9D2F5" },
                 LeapBackdrop = { fg = "none" },
-                LeapMatch = { fg = "#FC2A69", bg = "none", style = "bold" },
+                LeapMatch = { fg = "#AA3622", bg = "none", style = "italic" },
                 LeapLabelPrimary = { link = "LeapMatch" },
                 -- diffRemoved = { fg = "#E7EADE" },
                 MiniDiffSignAdd = { link = "GitSignsAdd" },
