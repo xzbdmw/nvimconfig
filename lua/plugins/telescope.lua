@@ -211,7 +211,7 @@ return {
                         ignore_patterns = { "*.git/*", "*/tmp/*" },
                         match_algorithm = "fzf",
                         disable_devicons = false,
-                        open_buffer_indicators = { previous = "󰎂 ", others = "󱇽 " },
+                        open_buffer_indicators = { previous = "󱝂 ", others = "󰫣 " },
                         prompt_title = "Smart Open",
                         initial_mode = "insert",
                         layout_strategy = "horizontal",
