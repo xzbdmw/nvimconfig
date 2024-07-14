@@ -128,7 +128,7 @@ api.nvim_create_autocmd("FileType", {
             once = true,
             callback = function()
                 vim.cmd("norm! gg")
-                FeedKeys("O", "m")
+                FeedKeys("a", "m")
             end,
         })
         vim.defer_fn(function()
