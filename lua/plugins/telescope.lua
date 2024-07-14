@@ -12,7 +12,6 @@ return {
             {
                 "<leader>sH",
                 function()
-                    require("treesitter-context").close_all()
                     return "<cmd>Telescope highlights<cr>"
                 end,
                 desc = "telescope highlights",
@@ -27,7 +26,6 @@ return {
             {
                 "<leader>sc",
                 function()
-                    require("treesitter-context").close_all()
                     return "<cmd>Telescope git_commits<CR>"
                 end,
                 desc = "Commits",

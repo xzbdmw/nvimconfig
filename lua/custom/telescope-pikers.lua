@@ -450,48 +450,6 @@ function telescopePickers.prettyDocumentSymbols(localOptions)
 
     require("telescope.builtin").lsp_document_symbols(options)
 end
---[[ function telescopePickers.prettyDocumentSymbols(localOptions)
-    if localOptions ~= nil and type(localOptions) ~= "table" then
-        print("Options must be a table.")
-        return
-    end
-
-    local options = localOptions or {}
-
-    local originalEntryMaker = make_entry.gen_from_lsp_symbols(options)
-
-    options.entry_maker = function(line)
-        local originalEntryTable = originalEntryMaker(line)
-
-        local displayer = telescopeEntryDisplayModule.create({
-            separator = " ",
-            items = {
-                { width = 2 },
-                { width = 10 },
-                { remaining = true },
-            },
-        })
-
-        local function trim(s)
-            return (s:gsub("^%s*(.-)%s*$", "%1"))
-        end
-
-        originalEntryTable.display = function(entry)
-            return displayer({
-                {
-                    trim(kind_icons[entry.symbol_type]),
-                    lsp_type_highlight[entry.symbol_type],
-                },
-                { "[" .. entry.symbol_type:lower() .. "]", "TelescopeResultsVariable" },
-                { entry.symbol_name, lsp_type_highlight[entry.symbol_type] },
-            })
-        end
-
-        return originalEntryTable
-    end
-
-    require("telescope.builtin").lsp_document_symbols(options)
-end ]]
 
 function telescopePickers.prettyWorkspaceSymbols(localOptions)
     if localOptions ~= nil and type(localOptions) ~= "table" then
