@@ -9,17 +9,12 @@ return {
                 "<C-n>",
                 mode = { "i", "s", "v" },
                 function()
-                    -- vim.g.neovide_cursor_animation_length = 0.02
-                    -- vim.defer_fn(function()
-                    --     vim.g.neovide_cursor_animation_length = 0.06
-                    -- end, 20)
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(1) then
                         _G.no_animation(_G.CI)
                         luasnip.jump(1)
-                        -- if cmp.visible() then
-                        --     cmp.close()
-                        -- end
+                    else
+                        vim.cmd("MCstart")
                     end
                 end,
                 { silent = true },
@@ -32,9 +27,6 @@ return {
                     if luasnip.jumpable(-1) then
                         _G.no_animation(_G.CI)
                         luasnip.jump(-1)
-                        -- if cmp.visible() then
-                        --     cmp.close()
-                        -- end
                     end
                 end,
                 { silent = true },
@@ -58,8 +50,8 @@ return {
         local sn = ls.snippet_node
         local postfix = require("luasnip.extras.postfix").postfix
         -- Map of default values for types.
-        --  Some have a bit more complicated default values,
-        --  but that's OK :) Lua is flexible enough!
+        -- Some have a bit more complicated default values,
+        -- but that's OK :) Lua is flexible enough!
         local default_values = {
             int = "0",
             bool = "false",

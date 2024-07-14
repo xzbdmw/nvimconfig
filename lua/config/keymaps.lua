@@ -174,10 +174,6 @@ keymap({ "n" }, "<C-n>", function()
     FeedKeys("n", "m")
 end)
 
-keymap({ "x" }, "<C-n>", function()
-    vim.cmd("MCstart")
-end)
-
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "Q", "qa", opts)
