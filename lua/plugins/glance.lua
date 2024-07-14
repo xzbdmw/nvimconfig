@@ -37,26 +37,6 @@ return {
             vim.defer_fn(actions.close, 1)
         end
 
-        local function openAndKeepHighlight()
-            local cursor = api.nvim_win_get_cursor(0)
-            local lnum = cursor[1]
-            local col = cursor[2]
-
-            local filename = vim.fn.expand("%:p")
-
-            clear_and_restore()
-            vim.schedule(function()
-                local uri = vim.uri_from_fname(filename)
-                local bufnr = vim.uri_to_bufnr(uri)
-                api.nvim_win_set_buf(0, bufnr)
-                vim.schedule(function()
-                    api.nvim_win_set_cursor(0, { lnum, col })
-                    require("illuminate.engine").keep_highlight(bufnr)
-                end)
-            end)
-            actions.close()
-        end
-
         function Open()
             clear_and_restore()
             actions.close(api.nvim_get_current_buf())
@@ -117,10 +97,10 @@ return {
                 },
             },
             hooks = {
-                before_open = function(result, open, jump, method)
+                before_open = function(result, open, jumpfn, method)
                     if method == "definitions" and #result >= 1 then
                         vim.cmd("normal! m'")
-                        jump(result[1])
+                        jumpfn(result[1])
                         vim.cmd("norm! zz")
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
@@ -129,7 +109,7 @@ return {
                     elseif method == "references" then
                         if #result == 1 then
                             vim.cmd("normal! m'")
-                            jump(result[1])
+                            jumpfn(result[1])
                             vim.cmd("norm! zz")
                         elseif #result == 2 then
                             print("2")
@@ -140,7 +120,7 @@ return {
                             end, vim.F.if_nil(result, {}))
                             vim.cmd("normal! m'")
                             if locations ~= nil and #locations ~= 0 then
-                                jump(locations[1])
+                                jumpfn(locations[1])
                             else
                                 print("can't find reference")
                             end
