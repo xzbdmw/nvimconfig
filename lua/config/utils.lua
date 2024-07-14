@@ -476,6 +476,16 @@ function EditFromLazygit(file_path)
     end
 end
 
+function CloseFromLazygit()
+    if
+        _G.lazygit_previous_win ~= nil
+        and api.nvim_win_is_valid(_G.lazygit_previous_win)
+        and api.nvim_get_current_win() ~= _G.lazygit_previous_win
+    then
+        api.nvim_set_current_win(_G.lazygit_previous_win)
+    end
+end
+
 function M.set_cr(bufnr, winid)
     if winid ~= api.nvim_get_current_win() then
         return

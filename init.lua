@@ -6,9 +6,10 @@ local utils = require("config.utils")
 
 _G.CI = 0.04
 _G.searchmode = "/"
+_G.lazygit_previous_win = nil
+_G.pre_gitsigns_qf_operation = ""
 vim.g.Base_commit = ""
 vim.g.Base_commit_msg = ""
-_G.pre_gitsigns_qf_operation = ""
 
 vim.cmd("syntax off")
 
