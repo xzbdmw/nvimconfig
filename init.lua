@@ -232,7 +232,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
         local is_enabled = require("noice.ui")._attached
         if not is_enabled then
-            vim.cmd("Noice enable")
+            vim.schedule(function()
+                vim.cmd("Noice enable")
+            end)
         end
         vim.defer_fn(function()
             vim.o.scrolloff = 6
