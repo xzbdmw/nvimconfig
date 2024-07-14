@@ -156,6 +156,7 @@ return {
                 DropBarIconKindEnum = { fg = "#3b4d56" },
                 DropBarIconUIIndicator = {},
                 MyGlancePreviewBeforeContext = { bg = "#f1efe1", style = "bold,italic" },
+                LazygitFloatBorder = { fg = "#152381" },
                 GlanceListMatch = { fg = "#000000", bg = "#FAF0AA" },
                 GlanceListCursorLine = { bg = "#d0d8d8" },
                 GlanceBorderTop = { link = "WinSeparator" },
