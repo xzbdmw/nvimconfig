@@ -392,6 +392,8 @@ keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
 
+keymap("n", "<2-LeftMouse>", "<leader>d", { remap = true })
+
 keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
     keymap("v", "K", "k", { buffer = 0 })
