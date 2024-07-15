@@ -6,8 +6,7 @@ return {
             return api.nvim_buf_line_count(bufnr) > 5000
             -- return vim.bo.filetype == "rust"
         end,
-        -- highlight = { enable = true, disable = { "markdown" } },
-        highlight = { enable = true },
+        highlight = { enable = true, disable = { "gitcommit" } },
         indent = { enable = false },
         auto_install = true,
         ensure_installed = {
