@@ -112,6 +112,7 @@ function M.close_win()
         end)
     end
 end
+
 function M.get_non_float_win_count()
     local window_count = #api.nvim_list_wins()
     for _, win in pairs(api.nvim_list_wins()) do
@@ -304,11 +305,11 @@ function M.search(mode)
     })
     api.nvim_create_autocmd("CmdlineLeave", {
         once = true,
-    vim.cmd("Noice disable")
         callback = function()
             require("treesitter-context").close_all()
         end,
     })
+    vim.cmd("Noice disable")
     require("treesitter-context").close_all()
     _G.parent_winid = vim.api.nvim_get_current_win()
     _G.parent_bufnr = vim.api.nvim_get_current_buf()
@@ -747,6 +748,7 @@ function M.set_glance_winbar()
         end
     end
 end
+
 function M.set_winbar()
     if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "DiffviewFiles" then
         return

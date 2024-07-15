@@ -109,7 +109,7 @@ return {
                                 col = "50%",
                             },
                             size = {
-                                min_width = 39,
+                                min_width = 40,
                                 width = "auto",
                                 height = "auto",
                             },
@@ -149,7 +149,7 @@ return {
                     filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
-                        icon = "",
+                        icon = " ",
                         lang = "lua",
                         conceal = true,
                         opts = {
@@ -169,7 +169,7 @@ return {
                     },
                     help = {
                         pattern = "^:%s*he?l?p?%s+",
-                        icon = "?",
+                        icon = "? ",
                         conceal = true,
                         opts = {
                             border = {
