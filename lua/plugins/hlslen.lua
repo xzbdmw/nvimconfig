@@ -32,6 +32,8 @@ return {
                     extmark:clearBuf(0)
                     -- because use cmp tab to select does not update search pattern
                     text = ("%s%s  [%d/%d]"):format(mode, vim.fn.getreg("/"), idx, cnt)
+                else
+                    render.clear(true, 0, true)
                 end
                 local chunks = { { " " }, { text, "HlSearchLensNear" } }
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)

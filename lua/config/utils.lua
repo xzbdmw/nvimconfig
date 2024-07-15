@@ -302,9 +302,16 @@ function M.search(mode)
             vim.o.scrolloff = 999
         end,
     })
+    api.nvim_create_autocmd("CmdlineLeave", {
+        once = true,
+    vim.cmd("Noice disable")
+        callback = function()
+            require("treesitter-context").close_all()
+        end,
+    })
+    require("treesitter-context").close_all()
     _G.parent_winid = vim.api.nvim_get_current_win()
     _G.parent_bufnr = vim.api.nvim_get_current_buf()
-    vim.cmd("Noice disable")
     _G.searchmode = mode
     FeedKeys(mode, "n")
 end
