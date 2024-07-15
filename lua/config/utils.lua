@@ -56,6 +56,10 @@ function M.close_win()
         vim.cmd("close")
         return
     end
+    if M.has_filetype("toggleterm") then
+        FeedKeys("<f16>", "m")
+        return
+    end
     if M.has_filetype("trouble") and check_trouble() then
         return
     end
