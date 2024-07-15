@@ -101,7 +101,6 @@ return {
                     if method == "definitions" and #result >= 1 then
                         vim.cmd("normal! m'")
                         jumpfn(result[1])
-                        vim.cmd("norm! zz")
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
                         open(result)
@@ -110,7 +109,6 @@ return {
                         if #result == 1 then
                             vim.cmd("normal! m'")
                             jumpfn(result[1])
-                            vim.cmd("norm! zz")
                         elseif #result == 2 then
                             print("2")
                             vim.cmd("normal! m'")
