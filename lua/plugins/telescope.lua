@@ -172,6 +172,13 @@ return {
                         initial_mode = "insert",
                         layout_strategy = "horizontal",
                         previewer = false,
+                        attach_mappings = function(_, map)
+                            map({ "i", "n" }, "<Cr>", function(prompt_bufnr)
+                                require("telescope.actions").select_default(prompt_bufnr)
+                                require("config.utils").adjust_view(0, 4)
+                            end, { desc = "desc for which key" })
+                            return true
+                        end,
                         layout_config = {
                             horizontal = {
                                 height = 0.7, -- window height

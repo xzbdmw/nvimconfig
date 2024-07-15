@@ -360,6 +360,7 @@ return {
                 ["@lsp.type.interface.typescript"] = { fg = "#80462D" },
                 ["@lsp.type.function"] = { fg = "#215062" },
                 ["Functions"] = { fg = "#215062" },
+                ["@markup.italic"] = { style = "italic" },
                 ["Constant"] = { fg = "#0033b3" },
                 ["@lsp.typemod.method.library"] = { fg = "#215062" },
                 ["@lsp.typemod.enumMember.library"] = { fg = "#152381" },
