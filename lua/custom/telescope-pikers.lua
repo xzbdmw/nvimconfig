@@ -225,7 +225,6 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             ["["] = [[\[]],
             ["]"] = "\\]",
             ["("] = [[\(]],
-            [":"] = [[\:]],
             [")"] = [[\)]],
             ["{"] = [[\{]],
             ["}"] = [[\}]],
