@@ -27,9 +27,13 @@ return {
 
                 local cur_row = unpack(api.nvim_win_get_cursor(0))
 
-                local text = ("%s%s "):format(mode, cmd)
                 if posList == nil then
-                    local chunks = { { " " }, { text, "HlSearchLensNearFail" }, { "[0/0]", "HlSearchLensNearFail" } }
+                    local chunks = {
+                        { " " },
+                        { mode, "HlSearchLensCountFail" },
+                        { cmd, "HlSearchLensNearFail" },
+                        { " [0/0]", "HlSearchLensCountFail" },
+                    }
                     render.clear(true, 0, true)
                     render.setVirt(0, cur_row - 1, 0, chunks, true)
                     return
@@ -43,14 +47,13 @@ return {
                 local count = ("[%d/%d]"):format(idx, cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
-                    -- because use cmp tab to select does not update search pattern
-                    text = ("%s%s "):format(mode, vim.fn.getreg("/"))
+                    cmd = vim.trim(vim.fn.getreg("/")) -- because use cmp tab to select does not update search pattern
                 else
                     render.clear(true, 0, true)
                 end
                 local chunks = {
                     { " " },
-                    { mode, "HlSearchLensNear" },
+                    { mode, "HlSearchLensCount" },
                     { cmd, "HlSearchLensNear" },
                     { count, "HlSearchLensCount" },
                 }
