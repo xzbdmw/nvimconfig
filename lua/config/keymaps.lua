@@ -7,6 +7,14 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
 
+keymap({ "n" }, "g;", function()
+    return "g;zz"
+end, { expr = true })
+
+keymap({ "n" }, "g,", function()
+    return "g,zz"
+end, { expr = true })
+
 keymap({ "n" }, "/", function()
     utils.once(function()
         vim.api.nvim_exec_autocmds("User", {
