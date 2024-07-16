@@ -1,4 +1,5 @@
 local f = require("config.cmpformat")
+local utils = require("config.utils")
 return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -25,7 +26,7 @@ return {
                 disabled = disabled or (vim.bo.filetype == "oil" or vim.bo.filetype == "gitcommit")
                 disabled = disabled or (vim.fn.reg_recording() ~= "")
                 disabled = disabled or (vim.fn.reg_executing() ~= "")
-                disabled = disabled or require("config.utils").is_big_file(api.nvim_get_current_buf())
+                disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
                 return not disabled
             end,
             preselect = cmp.PreselectMode.None,
@@ -213,7 +214,7 @@ return {
                         vim.defer_fn(function()
                             _G.CON = nil
                         end, 10)
-                        if require("config.utils").if_multicursor() then
+                        if utils.if_multicursor() then
                             cmp.select_cur_item()
                             vim.schedule(cmp.close)
                         else
