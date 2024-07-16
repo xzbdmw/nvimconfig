@@ -27,15 +27,16 @@ return {
                     return
                 end
                 local cnt = #posList
-                local text = ("%s%s  [%d/%d]"):format(mode, cmd, idx, cnt)
+                local text = ("%s%s"):format(mode, cmd)
+                local count = ("  [%d/%d]"):format(idx, cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
                     -- because use cmp tab to select does not update search pattern
-                    text = ("%s%s  [%d/%d]"):format(mode, vim.fn.getreg("/"), idx, cnt)
+                    text = ("%s%s"):format(mode, vim.fn.getreg("/"))
                 else
                     render.clear(true, 0, true)
                 end
-                local chunks = { { " " }, { text, "HlSearchLensNear" } }
+                local chunks = { { " " }, { text, "HlSearchLensNear" }, { count, "HlSearchLensCount" } }
                 vim.defer_fn(function()
                     require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
                 end, 10)
