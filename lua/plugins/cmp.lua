@@ -332,6 +332,12 @@ return {
                         fallback()
                     end,
                 }),
+                ["<esc>"] = cmp.mapping({
+                    c = function()
+                        _G.hide_cursor(function() end)
+                        FeedKeys("<c-c>", "n")
+                    end,
+                }),
                 ["<Tab>"] = cmp.mapping({
                     c = function(fallback)
                         if cmp.visible() then
