@@ -316,11 +316,7 @@ keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 
-keymap("i", "<D-v>", function()
-    return '<C-g>u<C-r><C-o>"'
-end, { expr = true })
-
-keymap({ "t", "c", "i" }, "<c-r>;", function()
+keymap({ "c", "i" }, "<d-v>", function()
     local body = vim.fn.getreg('"')
     local reformated_body = body:gsub("%s*\r?\n%s*", " "):gsub("^%s*", ""):gsub("%s*$", "")
     vim.fn.setreg("l", reformated_body, vim.fn.getregtype("'"))
@@ -363,9 +359,6 @@ keymap("c", "<C-n>", "<down>", opts)
 -- keymap("c", "<c-f>", "<S-Right>", opts)
 keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)
-keymap("c", "<D-v>", function()
-    FeedKeys("<C-r>+", "t")
-end, opts)
 
 -- Terminal mapping
 -- keymap("t", "<c-f>", "<M-right>", opts)
