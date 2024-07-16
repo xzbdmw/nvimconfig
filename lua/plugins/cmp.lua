@@ -389,15 +389,15 @@ return {
                 },
                 ["<C-d>"] = cmp.mapping(function(fallback)
                     fallback()
-                    vim.schedule(function()
+                    vim.defer_fn(function()
                         FeedKeys("<space><bs>", "n")
-                    end)
+                    end, 15)
                 end, { "i", "c", "s" }),
                 ["<C-u>"] = cmp.mapping(function(fallback)
                     fallback()
-                    vim.schedule(function()
+                    vim.defer_fn(function()
                         FeedKeys("<space><bs>", "n")
-                    end)
+                    end, 15)
                 end, { "i", "c", "s" }),
             }),
             sources = cmp.config.sources({
