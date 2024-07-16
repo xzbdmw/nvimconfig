@@ -12,7 +12,7 @@ return {
                 local is_cmdline = vim.fn.getcmdline() ~= ""
                 if is_cmdline then
                     mode = vim.fn.getcmdtype()
-                    cmd = vim.fn.getcmdline()
+                    cmd = vim.trim(vim.fn.getcmdline())
                 end
 
                 if _G.star_search ~= nil then
@@ -44,7 +44,7 @@ return {
                     return
                 end
                 local cnt = #posList
-                local count = ("[%d/%d]"):format(idx, cnt)
+                local count = (" [%d/%d]"):format(idx, cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
                     cmd = vim.trim(vim.fn.getreg("/")) -- because use cmp tab to select does not update search pattern
