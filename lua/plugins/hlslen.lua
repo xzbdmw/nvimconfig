@@ -36,6 +36,9 @@ return {
                     render.clear(true, 0, true)
                 end
                 local chunks = { { " " }, { text, "HlSearchLensNear" } }
+                vim.defer_fn(function()
+                    require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
+                end, 10)
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
             end,
         })

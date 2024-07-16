@@ -310,7 +310,6 @@ function M.search(mode)
         end,
     })
     vim.cmd("Noice disable")
-    require("treesitter-context").close_all()
     _G.parent_winid = vim.api.nvim_get_current_win()
     _G.parent_bufnr = vim.api.nvim_get_current_buf()
     _G.searchmode = mode
