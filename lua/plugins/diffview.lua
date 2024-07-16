@@ -151,7 +151,7 @@ return {
                         "<cr>",
                         function()
                             actions.goto_file_edit()
-                            require("config.utils").adjust_view(0, 2)
+                            require("config.utils").adjust_view(0, 4)
                         end,
                         { desc = "Open the file in the previous tabpage" },
                     },
