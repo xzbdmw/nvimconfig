@@ -202,6 +202,7 @@ keymap("n", "*", function()
     vim.fn.winrestview({ topline = topline })
     _G.star_search = vim.fn.getreg("/")
     require("hlslens").start()
+    vim.cmd("redraw")
 end)
 
 keymap("n", "<leader><c-q>", function()
