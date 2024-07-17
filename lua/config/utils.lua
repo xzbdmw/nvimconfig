@@ -750,7 +750,12 @@ end
 
 function M.set_git_winbar()
     local function get_diff_file_count(commit)
-        local result = vim.system({ "git", "diff", "--name-only", commit }):wait()
+        local result
+        if commit == vim.g.Last_commit then
+            result = vim.system({ "git", "diff", "--name-only", "--cached" }):wait()
+        else
+            result = vim.system({ "git", "diff", "--name-only", commit }):wait()
+        end
         if result.code == 0 then
             local diff_files = result.stdout
             local file_count = 0
