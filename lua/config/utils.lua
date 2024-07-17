@@ -797,8 +797,8 @@ function M.set_git_winbar()
             return
         end
         local expr = vim.b.winbar_expr
-        expr = expr .. "%= "
         if expr ~= nil and expr ~= "" then
+            expr = expr .. "%= "
             local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
             if hunks ~= nil and #hunks > 0 then
                 if #hunks > 1 then
