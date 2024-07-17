@@ -780,7 +780,11 @@ function M.set_git_winbar()
         if expr ~= nil and expr ~= "" then
             local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
             if hunks ~= nil and #hunks > 0 then
-                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+                if #hunks > 1 then
+                    expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+                else
+                    expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
+                end
             end
             for index, icon in ipairs(icons) do
                 local name
