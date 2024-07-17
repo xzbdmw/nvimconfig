@@ -221,6 +221,7 @@ keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
+    require("config.utils").adjust_view(0, 4)
 end, opts)
 
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
