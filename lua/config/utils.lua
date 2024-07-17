@@ -754,6 +754,7 @@ function M.set_git_winbar()
         if result.code == 0 then
             local diff_files = result.stdout
             local file_count = 0
+            ---@diagnostic disable-next-line: param-type-mismatch
             for _ in string.gmatch(diff_files, "[^\n]+") do
                 file_count = file_count + 1
             end
@@ -762,18 +763,29 @@ function M.set_git_winbar()
             return 0
         end
     end
-    local icons = { removed = " ", changed = " ", added = " " }
+    local icons = { " ", " ", " " }
     local signs = vim.b.gitsigns_status_dict
     if signs ~= nil and signs ~= "" then
         local head = vim.g.gitsigns_head
-        local labels = {}
         if signs == nil then
             return
         end
         local expr = vim.b.winbar_expr
         expr = expr .. "%= "
         if expr ~= nil and expr ~= "" then
-            for name, icon in pairs(icons) do
+            local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+            if hunks ~= nil and #hunks > 0 then
+                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+            end
+            for index, icon in ipairs(icons) do
+                local name
+                if index == 1 then
+                    name = "removed"
+                elseif index == 2 then
+                    name = "added"
+                else
+                    name = "changed"
+                end
                 if tonumber(signs[name]) and signs[name] > 0 then
                     expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
                 end
