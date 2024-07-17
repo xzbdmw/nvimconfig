@@ -138,8 +138,11 @@ api.nvim_create_autocmd("FileType", {
                     if vim.bo.filetype == "lazyterm" then
                         FeedKeys("<C-v><c-l>", "n")
                     end
-                    utils.set_git_winbar()
                 end)
+                vim.defer_fn(function()
+                    utils.refresh_last_commit()
+                    utils.set_git_winbar()
+                end, 50)
                 return "<cmd>wq<CR><esc>"
             end, { expr = true, buffer = true })
         end, 100)
