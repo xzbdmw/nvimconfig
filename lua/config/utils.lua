@@ -767,7 +767,7 @@ function M.refresh_last_commit()
     end
 end
 
--- Only fire on SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
+-- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
 function M.get_diff_file_count()
     if vim.g.Base_commit ~= "" then
         return

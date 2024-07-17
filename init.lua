@@ -286,6 +286,7 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         vim.cmd([[silent! mkview!]])
         vim.defer_fn(function()
             utils.refresh_last_commit()
+            utils.get_diff_file_count()
             utils.set_git_winbar()
         end, 10)
         ---@diagnostic disable-next-line: undefined-field
