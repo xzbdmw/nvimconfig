@@ -285,7 +285,7 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         vim.defer_fn(function()
             utils.refresh_last_commit()
             utils.set_git_winbar()
-        end, 100)
+        end, 10)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.indent_update)
         for _, buf in ipairs(api.nvim_list_bufs()) do

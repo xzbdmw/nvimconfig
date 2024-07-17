@@ -495,9 +495,10 @@ function CloseFromLazygit()
     then
         api.nvim_set_current_win(_G.lazygit_previous_win)
     end
-
-    M.refresh_last_commit()
-    M.set_git_winbar()
+    vim.defer_fn(function()
+        M.refresh_last_commit()
+        M.set_git_winbar()
+    end, 10)
 end
 
 function M.set_cr(bufnr, winid)
