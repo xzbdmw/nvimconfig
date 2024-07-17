@@ -118,10 +118,14 @@ return {
                 map("n", "<leader>sq", function()
                     _G.pre_gitsigns_qf_operation = "cur"
                     vim.cmd("Gitsigns setqflist")
+                    local start = vim.uv.hrtime()
                     api.nvim_create_autocmd("WinResized", {
                         once = true,
                         callback = vim.schedule_wrap(function()
-                            FeedKeys("n", "t")
+                            local duration = 0.000001 * (vim.loop.hrtime() - start)
+                            if duration < 2000 then
+                                FeedKeys("n", "t")
+                            end
                         end),
                     })
                 end)
@@ -129,10 +133,14 @@ return {
                 map("n", "<leader>aq", function()
                     _G.pre_gitsigns_qf_operation = "all"
                     gs.setqflist("all")
+                    local start = vim.uv.hrtime()
                     api.nvim_create_autocmd("WinResized", {
                         once = true,
                         callback = vim.schedule_wrap(function()
-                            FeedKeys("n", "t")
+                            local duration = 0.000001 * (vim.loop.hrtime() - start)
+                            if duration < 2000 then
+                                FeedKeys("n", "t")
+                            end
                         end),
                     })
                 end)
