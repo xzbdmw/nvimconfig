@@ -447,7 +447,7 @@ function M.set_glance_keymap()
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
             ---@diagnostic disable-next-line: undefined-global
-            pcall(close_stored_win, api.nvim_get_current_win())
+            pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
             Close_with_q()
             vim.defer_fn(function()
                 ---@diagnostic disable-next-line: undefined-field
@@ -470,7 +470,7 @@ function M.set_glance_keymap()
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
             ---@diagnostic disable-next-line: undefined-global
-            pcall(close_stored_win, api.nvim_get_current_win())
+            pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
             vim.defer_fn(function()
                 Open()
             end, 5)
