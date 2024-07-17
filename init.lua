@@ -367,12 +367,12 @@ api.nvim_create_autocmd({ "User" }, {
                 vim.defer_fn(function()
                     utils.update_diff_file_count()
                     gs.change_base(vim.g.Base_commit, true)
-                end, 200)
+                end, 100)
             else
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
                     utils.update_diff_file_count()
-                end, 200)
+                end, 100)
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
