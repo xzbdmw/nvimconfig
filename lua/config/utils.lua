@@ -749,6 +749,19 @@ function M.set_glance_winbar()
 end
 
 function M.set_git_winbar()
+    local function get_diff_file_count(commit)
+        local result = vim.system({ "git", "diff", "--name-only", commit }):wait()
+        if result.code == 0 then
+            local diff_files = result.stdout
+            local file_count = 0
+            for _ in string.gmatch(diff_files, "[^\n]+") do
+                file_count = file_count + 1
+            end
+            return file_count
+        else
+            return 0
+        end
+    end
     local icons = { removed = " ", changed = " ", added = " " }
     local signs = vim.b.gitsigns_status_dict
     if signs ~= nil and signs ~= "" then
@@ -759,19 +772,36 @@ function M.set_git_winbar()
         end
         local expr = vim.b.winbar_expr
         expr = expr .. "%= "
-        for name, icon in pairs(icons) do
-            if tonumber(signs[name]) and signs[name] > 0 then
-                expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
+        if expr ~= nil and expr ~= "" then
+            for name, icon in pairs(icons) do
+                if tonumber(signs[name]) and signs[name] > 0 then
+                    expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
+                end
             end
+            if head ~= nil then
+                expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
+            end
+            if vim.g.Base_commit_msg ~= "" then
+                local diff_file_count = get_diff_file_count(vim.g.Base_commit)
+                if diff_file_count ~= 0 then
+                    expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+                    expr = expr .. "%#diffAdded#" .. " (" .. diff_file_count .. ") "
+                else
+                    expr = expr .. "%#CommitWinNCbar#" .. vim.trim(vim.g.Base_commit_msg)
+                    expr = expr .. "%#Comment#" .. " "
+                end
+            else
+                local diff_file_count = get_diff_file_count(vim.g.Last_commit)
+                if diff_file_count ~= 0 then
+                    expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#diffAdded#" .. " (" .. diff_file_count .. ") "
+                else
+                    expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#Comment#" .. " "
+                end
+            end
+            vim.wo.winbar = expr
         end
-        if head ~= nil then
-            expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
-        end
-        if vim.g.Base_commit_msg ~= "" then
-            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            expr = expr .. "%#Comment#" .. " "
-        end
-        vim.wo.winbar = expr
     end
 end
 
