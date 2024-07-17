@@ -364,12 +364,7 @@ api.nvim_create_autocmd({ "User" }, {
                     gs.change_base(vim.g.Base_commit, true)
                 end, 200)
             else
-                local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
-                if result.code == 0 then
-                    local splits = vim.split(result.stdout, "\n")
-                    vim.g.Last_commit = splits[1]
-                    vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
-                end
+                utils.refresh_last_commit()
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end

@@ -748,6 +748,15 @@ function M.set_glance_winbar()
     end
 end
 
+function M.refresh_last_commit()
+    local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
+    if result.code == 0 then
+        local splits = vim.split(result.stdout, "\n")
+        vim.g.Last_commit = splits[1]
+        vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
+    end
+end
+
 function M.set_git_winbar()
     local function get_diff_file_count(commit)
         local result
