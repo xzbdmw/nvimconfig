@@ -54,6 +54,8 @@ return {
                 CommitNCWinbar = { fg = "#636262", style = "italic,underline" },
                 CommitHasDiffWinbar = { fg = "#636262", style = "underdotted" },
                 CommitHasDiffNCWinbar = { fg = "#636262", style = "italic,underdotted" },
+                TelescopeResultDiffStaged = { fg = "#558873" },
+                TelescopeResultDiffUnStaged = { fg = "#C15E7A" },
                 WinBarHunk = { fg = "#363A72" },
                 IncSearch = { fg = "none", bg = "#C9D2F5" },
                 NoiceScrollbar = { fg = "#FBF7E6" },

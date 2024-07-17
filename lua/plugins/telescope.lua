@@ -35,6 +35,17 @@ return {
             {
                 "<leader>ss",
                 function()
+                    if vim.g.Base_commit ~= "" then
+                        require("telescope.builtin").git_status({ commit = vim.g.Base_commit })
+                    else
+                        require("telescope.builtin").git_status({})
+                    end
+                end,
+                desc = "Commits",
+            },
+            {
+                "<leader>sS",
+                function()
                     require("custom.telescope-pikers").prettyWorkspaceSymbols()
                 end,
             },
@@ -199,8 +210,6 @@ return {
             {
                 "<D-e>",
                 function()
-                    -- require("config.utls").cmd_e()
-                    -- ST = os.clock()
                     require("telescope").extensions.smart_open.smart_open({
                         on_complete = {
                             function()
@@ -307,7 +316,7 @@ return {
                 vim.fn.setreg("+", display)
             end
 
-            local delta = require("telescope.previewers").new_termopen_previewer({
+            local commit_delta = require("telescope.previewers").new_termopen_previewer({
                 get_command = function(entry)
                     return {
                         "git",
@@ -317,9 +326,38 @@ return {
                         "delta.side-by-side=false",
                         "diff",
                         entry.value .. "^!",
-                        "--",
-                        entry.current_file,
                     }
+                end,
+            })
+
+            local status_delta = require("telescope.previewers").new_termopen_previewer({
+                get_command = function(entry)
+                    local command
+                    if vim.g.Base_commit ~= "" then
+                        command = {
+                            "git",
+                            "-c",
+                            "core.pager=delta",
+                            "-c",
+                            "delta.side-by-side=false",
+                            "diff",
+                            vim.g.Base_commit,
+                            "--",
+                            entry.path,
+                        }
+                    else
+                        command = {
+                            "git",
+                            "-c",
+                            "core.pager=delta",
+                            "-c",
+                            "delta.side-by-side=false",
+                            "diff",
+                            "--",
+                            entry.path,
+                        }
+                    end
+                    return command
                 end,
             })
 
@@ -586,6 +624,59 @@ return {
                     },
                 },
                 pickers = {
+                    git_status = {
+                        initial_mode = "normal",
+                        layout_config = {
+                            horizontal = {
+                                width = 0.85,
+                                height = 0.85,
+                                preview_cutoff = 0,
+                                prompt_position = "top",
+                                preview_width = 0.65,
+                            },
+                        },
+                        previewer = {
+                            status_delta,
+                            require("telescope.previewers").git_commit_message.new({}),
+                            require("telescope.previewers").git_commit_diff_as_was.new({}),
+                        },
+                        mappings = {
+                            n = {
+                                ["<Tab>"] = focus_preview,
+                                ["<c-o>"] = actions.git_staging_toggle,
+                            },
+                            i = {
+                                ["<Tab>"] = focus_preview,
+                                ["<c-o>"] = actions.git_staging_toggle,
+                            },
+                        },
+                    },
+                    git_bcommits_range = {
+                        initial_mode = "normal",
+                        operator = true,
+                        layout_config = {
+                            horizontal = {
+                                width = 0.95,
+                                height = 0.95,
+                                preview_cutoff = 0,
+                                prompt_position = "top",
+                                preview_width = 0.65,
+                            },
+                        },
+                        previewer = {
+                            commit_delta,
+                            require("telescope.previewers").git_commit_message.new({}),
+                            require("telescope.previewers").git_commit_diff_as_was.new({}),
+                        },
+                        mappings = {
+                            n = {
+                                ["<CR>"] = gitsign_change_base,
+                            },
+                            i = {
+                                ["<CR>"] = gitsign_change_base,
+                            },
+                        },
+                    },
                     git_commits = {
                         initial_mode = "normal",
                         layout_config = {
@@ -598,7 +689,7 @@ return {
                             },
                         },
                         previewer = {
-                            delta,
+                            commit_delta,
                             require("telescope.previewers").git_commit_message.new({}),
                             require("telescope.previewers").git_commit_diff_as_was.new({}),
                         },
