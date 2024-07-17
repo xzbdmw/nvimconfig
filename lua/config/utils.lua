@@ -769,12 +769,13 @@ end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
 function M.update_diff_file_count()
+    local result
     if vim.g.Base_commit ~= "" then
-        return
+        result = vim.system({ "git", "diff", "--name-only", vim.g.Base_commit }):wait()
+    else
+        result = vim.system({ "git", "diff", "--name-only" }):wait()
     end
 
-    local result
-    result = vim.system({ "git", "diff", "--name-only" }):wait()
     if result.code == 0 then
         local diff_files = result.stdout
         local file_count = 0
@@ -828,7 +829,7 @@ function M.set_git_winbar()
                     expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
                     expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
                 else
-                    expr = expr .. "%#CommitWinNCbar#" .. vim.trim(vim.g.Base_commit_msg)
+                    expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
                     expr = expr .. "%#Comment#" .. " "
                 end
             else
@@ -836,7 +837,7 @@ function M.set_git_winbar()
                     expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
                     expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
                 else
-                    expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Last_commit_msg)
                     expr = expr .. "%#Comment#" .. " "
                 end
             end

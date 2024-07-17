@@ -1,3 +1,4 @@
+local utils = require("config.utils")
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -340,6 +341,7 @@ return {
                 pcall(function()
                     require("gitsigns").change_base(commit, true)
                     vim.defer_fn(function()
+                        utils.update_diff_file_count()
                         vim.cmd("Gitsigns attach")
                     end, 100)
                 end)

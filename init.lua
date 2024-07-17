@@ -365,11 +365,14 @@ api.nvim_create_autocmd({ "User" }, {
                 gs.change_base(vim.g.Base_commit, true)
                 -- when nvim start at first time, gitsigns may choose index as base
                 vim.defer_fn(function()
+                    utils.update_diff_file_count()
                     gs.change_base(vim.g.Base_commit, true)
                 end, 200)
             else
-                utils.refresh_last_commit()
-                utils.update_diff_file_count()
+                vim.defer_fn(function()
+                    utils.refresh_last_commit()
+                    utils.update_diff_file_count()
+                end, 200)
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
