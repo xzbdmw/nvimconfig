@@ -56,6 +56,27 @@ return {
                 end,
             },
             {
+                "<leader>rr",
+                function()
+                    local from, to = vim.fn.line("."), vim.fn.line("v")
+                    require("telescope.builtin").git_bcommits_range({ from = from, to = to })
+                end,
+                mode = { "x" },
+            },
+            {
+                "<leader>rr",
+                function()
+                    require("telescope.builtin").git_bcommits_range({})
+                end,
+            },
+            {
+                "<leader>rl",
+                function()
+                    local line = api.nvim_win_get_cursor(0)[1]
+                    require("telescope.builtin").git_bcommits_range({ from = line, to = line, operator = false })
+                end,
+            },
+            {
                 "<C-p>",
                 function()
                     require("telescope").extensions["neovim-project"].history({
