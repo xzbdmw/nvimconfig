@@ -9,6 +9,7 @@ _G.searchmode = "/"
 _G.lazygit_previous_win = nil
 _G.pre_gitsigns_qf_operation = ""
 vim.g.Base_commit = ""
+vim.g.diff_file_count = 0
 vim.g.Base_commit_msg = ""
 
 vim.cmd("syntax off")
@@ -141,6 +142,7 @@ api.nvim_create_autocmd("FileType", {
                 end)
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
+                    utils.get_diff_file_count()
                     utils.set_git_winbar()
                 end, 50)
                 return "<cmd>wq<CR><esc>"
@@ -366,6 +368,7 @@ api.nvim_create_autocmd({ "User" }, {
                 end, 200)
             else
                 utils.refresh_last_commit()
+                utils.get_diff_file_count()
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
@@ -405,6 +408,15 @@ api.nvim_create_autocmd("BufWinEnter", {
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsUpdate",
     callback = utils.set_git_winbar,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "GitSignsChanged",
+    callback = function()
+        vim.defer_fn(function()
+            utils.get_diff_file_count()
+        end, 300)
+    end,
 })
 
 api.nvim_create_autocmd("User", {

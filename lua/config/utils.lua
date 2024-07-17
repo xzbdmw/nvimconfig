@@ -497,6 +497,7 @@ function CloseFromLazygit()
     end
     vim.defer_fn(function()
         M.refresh_last_commit()
+        M.get_diff_file_count()
         M.set_git_winbar()
     end, 10)
 end
@@ -754,13 +755,36 @@ end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
 function M.refresh_last_commit()
-    if vim.g.Base_commit == "" then
-        local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
-        if result.code == 0 then
-            local splits = vim.split(result.stdout, "\n")
-            vim.g.Last_commit = splits[1]
-            vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
+    if vim.g.Base_commit ~= "" then
+        return
+    end
+
+    local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
+    if result.code == 0 then
+        local splits = vim.split(result.stdout, "\n")
+        vim.g.Last_commit = splits[1]
+        vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
+    end
+end
+
+-- Only fire on SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
+function M.get_diff_file_count()
+    if vim.g.Base_commit ~= "" then
+        return
+    end
+
+    local result
+    result = vim.system({ "git", "diff", "--name-only" }):wait()
+    if result.code == 0 then
+        local diff_files = result.stdout
+        local file_count = 0
+        ---@diagnostic disable-next-line: param-type-mismatch
+        for _ in string.gmatch(diff_files, "[^\n]+") do
+            file_count = file_count + 1
         end
+        vim.g.diff_file_count = file_count
+    else
+        vim.g.diff_file_count = 0
     end
 end
 
@@ -800,8 +824,13 @@ function M.set_git_winbar()
                 expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
             end
             if vim.g.Base_commit_msg ~= "" then
-                expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-                expr = expr .. "%#Comment#" .. " "
+                if vim.g.diff_file_count ~= 0 then
+                    expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+                    expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+                else
+                    expr = expr .. "%#CommitWinNCbar#" .. vim.trim(vim.g.Base_commit_msg)
+                    expr = expr .. "%#Comment#" .. " "
+                end
             else
                 if vim.g.diff_file_count ~= 0 then
                     expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
