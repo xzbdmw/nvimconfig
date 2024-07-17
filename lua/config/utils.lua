@@ -799,11 +799,16 @@ function M.set_git_winbar()
                 expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
             end
             if vim.g.Base_commit_msg ~= "" then
-                expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+                expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
                 expr = expr .. "%#Comment#" .. " "
             else
-                expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-                expr = expr .. "%#Comment#" .. " "
+                if vim.g.diff_file_count ~= 0 then
+                    expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+                else
+                    expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#Comment#" .. " "
+                end
             end
             vim.wo.winbar = expr
         end
