@@ -748,6 +748,33 @@ function M.set_glance_winbar()
     end
 end
 
+function M.set_git_winbar()
+    local icons = { removed = " ", changed = " ", added = " " }
+    local signs = vim.b.gitsigns_status_dict
+    if signs ~= nil and signs ~= "" then
+        local head = vim.g.gitsigns_head
+        local labels = {}
+        if signs == nil then
+            return
+        end
+        local expr = vim.b.winbar_expr
+        expr = expr .. "%= "
+        for name, icon in pairs(icons) do
+            if tonumber(signs[name]) and signs[name] > 0 then
+                expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
+            end
+        end
+        if head ~= nil then
+            expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
+        end
+        if vim.g.Base_commit_msg ~= "" then
+            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+            expr = expr .. "%#Comment#" .. " "
+        end
+        vim.wo.winbar = expr
+    end
+end
+
 function M.set_winbar()
     if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "DiffviewFiles" then
         return
@@ -775,7 +802,7 @@ function M.set_winbar()
     pcall(function()
         if path ~= "" and filename ~= "" then
             if not vim.startswith(absolute_path, cwd) then
-                vim.wo[winid].winbar = " "
+                local winbar_expr = " "
                     .. " "
                     .. "%#LibPath#"
                     .. path
@@ -793,8 +820,11 @@ function M.set_winbar()
                     .. "#"
                     .. arrow
                     .. "%*"
+                    .. "%=%m %f"
+                vim.wo[winid].winbar = winbar_expr
+                vim.b.winbar_expr = winbar_expr
             else
-                vim.wo[winid].winbar = " "
+                local winbar_expr = " "
                     .. "%#NvimTreeFolderName#"
                     .. " "
                     .. path
@@ -811,6 +841,8 @@ function M.set_winbar()
                     .. "#"
                     .. arrow
                     .. "%*"
+                vim.wo[winid].winbar = winbar_expr
+                vim.b.winbar_expr = winbar_expr
             end
         elseif filename ~= "" then
             vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"

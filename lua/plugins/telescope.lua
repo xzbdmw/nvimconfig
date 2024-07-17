@@ -327,7 +327,16 @@ return {
                 actions.close(prompt_bufnr)
                 local commit = selection.value
                 vim.g.Base_commit = commit
-                vim.g.Base_commit_msg = selection.ordinal
+                vim.g.Base_commit_msg = ""
+                local sts = vim.split(selection.ordinal, " ")
+                for i = 2, #sts do
+                    vim.g.Base_commit_msg = vim.g.Base_commit_msg .. sts[i] .. " "
+                end
+                -- __AUTO_GENERATED_PRINT_VAR_START__
+                print(
+                    [==[function#gitsign_change_base#for vim.g.Base_commit_msg:]==],
+                    vim.inspect(vim.g.Base_commit_msg)
+                ) -- __AUTO_GENERATED_PRINT_VAR_END__
                 pcall(function()
                     require("gitsigns").change_base(commit, true)
                     vim.defer_fn(function()

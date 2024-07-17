@@ -304,7 +304,13 @@ api.nvim_create_autocmd("FileType", {
 
 api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
-    callback = utils.set_winbar,
+    callback = function()
+        utils.set_winbar()
+        utils.set_git_winbar()
+        vim.defer_fn(function()
+            utils.set_git_winbar()
+        end, 100)
+    end,
 })
 
 api.nvim_create_autocmd("BufEnter", {
@@ -388,6 +394,11 @@ api.nvim_create_autocmd("User", {
 
 api.nvim_create_autocmd("BufWinEnter", {
     callback = utils.set_oil_winbar,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "GitSignsUpdate",
+    callback = utils.set_git_winbar,
 })
 
 api.nvim_create_autocmd("User", {

@@ -49,6 +49,8 @@ return {
                 Visual = { bg = "#d0d8d8" },
                 NormalNC = { link = "Normal" },
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
+                BranchName = { fg = "#3b4d56", style = "italic,bold" },
+                CommitWinbar = { fg = "#636262", style = "underline" },
                 IncSearch = { fg = "none", bg = "#C9D2F5" },
                 NoiceScrollbar = { fg = "#FBF7E6" },
                 -- NoiceCmdlinePopupBorder = { fg = "#ff0000" },
