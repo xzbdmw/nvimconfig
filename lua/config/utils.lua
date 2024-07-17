@@ -753,7 +753,7 @@ function M.set_glance_winbar()
 end
 
 function M.refresh_last_commit()
-    if vim.g.Base_commit ~= "" then
+    if vim.g.Base_commit == "" then
         local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
         if result.code == 0 then
             local splits = vim.split(result.stdout, "\n")
