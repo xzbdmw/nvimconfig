@@ -416,6 +416,7 @@ api.nvim_create_autocmd("User", {
     callback = function()
         vim.defer_fn(function()
             utils.update_diff_file_count()
+            utils.set_git_winbar()
         end, 300)
     end,
 })
