@@ -340,8 +340,9 @@ return {
                 ) -- __AUTO_GENERATED_PRINT_VAR_END__
                 pcall(function()
                     require("gitsigns").change_base(commit, true)
+                    utils.update_diff_file_count()
+                    utils.set_git_winbar()
                     vim.defer_fn(function()
-                        utils.update_diff_file_count()
                         vim.cmd("Gitsigns attach")
                     end, 100)
                 end)
