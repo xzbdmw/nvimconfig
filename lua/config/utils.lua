@@ -752,6 +752,7 @@ function M.set_glance_winbar()
     end
 end
 
+-- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
 function M.refresh_last_commit()
     if vim.g.Base_commit == "" then
         local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
