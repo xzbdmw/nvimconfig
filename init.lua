@@ -142,7 +142,7 @@ api.nvim_create_autocmd("FileType", {
                 end)
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
-                    utils.get_diff_file_count()
+                    utils.update_diff_file_count()
                     utils.set_git_winbar()
                 end, 50)
                 return "<cmd>wq<CR><esc>"
@@ -286,7 +286,7 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         vim.cmd([[silent! mkview!]])
         vim.defer_fn(function()
             utils.refresh_last_commit()
-            utils.get_diff_file_count()
+            utils.update_diff_file_count()
             utils.set_git_winbar()
         end, 10)
         ---@diagnostic disable-next-line: undefined-field
@@ -369,7 +369,7 @@ api.nvim_create_autocmd({ "User" }, {
                 end, 200)
             else
                 utils.refresh_last_commit()
-                utils.get_diff_file_count()
+                utils.update_diff_file_count()
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
@@ -415,7 +415,7 @@ api.nvim_create_autocmd("User", {
     pattern = "GitSignsChanged",
     callback = function()
         vim.defer_fn(function()
-            utils.get_diff_file_count()
+            utils.update_diff_file_count()
         end, 300)
     end,
 })

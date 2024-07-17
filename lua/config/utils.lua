@@ -497,7 +497,7 @@ function CloseFromLazygit()
     end
     vim.defer_fn(function()
         M.refresh_last_commit()
-        M.get_diff_file_count()
+        M.update_diff_file_count()
         M.set_git_winbar()
     end, 10)
 end
@@ -768,7 +768,7 @@ function M.refresh_last_commit()
 end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
-function M.get_diff_file_count()
+function M.update_diff_file_count()
     if vim.g.Base_commit ~= "" then
         return
     end
