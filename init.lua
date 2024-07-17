@@ -314,9 +314,7 @@ api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function()
         utils.set_winbar()
-        vim.defer_fn(function()
-            utils.set_git_winbar()
-        end, 100)
+        utils.set_git_winbar()
     end,
 })
 
