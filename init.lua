@@ -282,6 +282,10 @@ end, { desc = "load undotree" })
 api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
         vim.cmd([[silent! mkview!]])
+        vim.defer_fn(function()
+            utils.refresh_last_commit()
+            utils.set_git_winbar()
+        end, 100)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.indent_update)
         for _, buf in ipairs(api.nvim_list_bufs()) do
@@ -310,7 +314,6 @@ api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function()
         utils.set_winbar()
-        utils.set_git_winbar()
         vim.defer_fn(function()
             utils.set_git_winbar()
         end, 100)
