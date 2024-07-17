@@ -837,7 +837,7 @@ function M.set_git_winbar()
                     expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
                     expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
                 else
-                    expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+                    expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
                     expr = expr .. "%#Comment#" .. " "
                 end
             end
