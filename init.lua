@@ -382,6 +382,7 @@ api.nvim_create_autocmd({ "User" }, {
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
                     utils.update_diff_file_count()
+                    utils.set_git_winbar()
                 end, 100)
                 gs.reset_base(vim.g.Base_commit, true)
             end
