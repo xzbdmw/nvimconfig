@@ -672,10 +672,20 @@ return {
                             n = {
                                 ["<Tab>"] = focus_preview,
                                 ["<c-o>"] = actions.git_staging_toggle,
+                                ["<cr>"] = function(prompt_bufnr)
+                                    require("telescope.actions").select_default(prompt_bufnr)
+                                    vim.cmd("norm gg!")
+                                    FeedKeys("]c", "m")
+                                end,
                             },
                             i = {
                                 ["<Tab>"] = focus_preview,
                                 ["<c-o>"] = actions.git_staging_toggle,
+                                ["<cr>"] = function(prompt_bufnr)
+                                    require("telescope.actions").select_default(prompt_bufnr)
+                                    vim.cmd("norm gg!")
+                                    FeedKeys("]c", "m")
+                                end,
                             },
                         },
                     },
