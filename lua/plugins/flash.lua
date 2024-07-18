@@ -2,12 +2,14 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
+    enabled = false,
     -- -- stylua: ignore
     keys = {
         {
             "s",
             mode = { "n", "x", "o" },
             function()
+                vim.o.scrolloff = 0
                 require("flash").jump()
             end,
             desc = "Flash",
@@ -30,7 +32,7 @@ return {
             labels = "asdfghjklqwertyuiopzxcvbnm",
             search = {
                 -- search/jump in all windows
-                multi_window = true,
+                multi_window = false,
                 -- search direction
                 forward = true,
                 -- when `false`, find only matches in the given direction
@@ -91,12 +93,12 @@ return {
             },
             label = {
                 -- allow uppercase labels
-                uppercase = true,
+                uppercase = false,
                 -- add any labels with the correct case here, that you want to exclude
                 exclude = "",
                 -- add a label for the first match in the current window.
                 -- you can always jump to the first match with `<CR>`
-                current = true,
+                current = false,
                 -- show the label after the match
                 after = false, ---@type boolean|number[]
                 -- show the label before the match
@@ -110,7 +112,7 @@ return {
                 distance = true,
                 -- minimum pattern length to show labels
                 -- Ignored for custom labelers.
-                min_pattern_length = 0,
+                min_pattern_length = 1,
                 -- Enable this to use rainbow colors to highlight labels
                 -- Can be useful for visualizing Treesitter ranges.
                 rainbow = {
@@ -149,7 +151,7 @@ return {
             -- initial pattern to use when opening flash
             pattern = "",
             -- When `true`, flash will try to continue the last search
-            continue = false,
+            continue = true,
             -- Set config to a function to dynamically change the config
             config = nil,
             -- You can override the default options for a specific mode.
@@ -204,7 +206,7 @@ return {
                 enabled = true,
                 prefix = { { "", "FlashPromptIcon" } },
                 win_config = {
-                    relative = "editor",
+                    relative = "cursor",
                     width = 1, -- when <=1 it's a percentage of the editor width
                     height = 1,
                     row = -1, -- when negative it's an offset from the bottom

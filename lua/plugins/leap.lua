@@ -11,7 +11,7 @@ return {
         -- substitute_chars = {},
         -- safe_labels = "sfnut/SFNLHMUGTZ?",
         safe_labels = "",
-        labels = "fnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?",
+        labels = "sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?",
         special_keys = {
             next_target = ";",
             prev_target = ",",
@@ -21,10 +21,10 @@ return {
     },
     config = function(_, opts)
         local leap = require("leap")
-        -- for k, v in pairs(opts) do
-        --     leap.opts[k] = v
-        -- end
-        -- vim.keymap.set("n", "s", "<Plug>(leap)")
+        for k, v in pairs(opts) do
+            leap.opts[k] = v
+        end
+        vim.keymap.set({ "o", "n" }, "s", "<Plug>(leap)")
         -- vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
         -- vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)")
         -- vim.keymap.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward)")
