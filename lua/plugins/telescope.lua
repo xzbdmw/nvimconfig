@@ -358,6 +358,20 @@ return {
                 end,
             })
 
+            local goto_next_hunk_cr = function(prompt_bufnr)
+                require("telescope.actions").select_default(prompt_bufnr)
+                local fn = function()
+                    require("gitsigns").nav_hunk("first", { target = "unstaged" })
+                    require("config.utils").adjust_view(0, 3)
+                end
+                local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+                if hunks == nil or #hunks == 0 then
+                    vim.defer_fn(fn, 200)
+                else
+                    fn()
+                end
+            end
+
             local status_delta = require("telescope.previewers").new_termopen_previewer({
                 get_command = function(entry)
                     local command
@@ -399,11 +413,6 @@ return {
                 for i = 2, #sts do
                     vim.g.Base_commit_msg = vim.g.Base_commit_msg .. sts[i] .. " "
                 end
-                -- __AUTO_GENERATED_PRINT_VAR_START__
-                print(
-                    [==[function#gitsign_change_base#for vim.g.Base_commit_msg:]==],
-                    vim.inspect(vim.g.Base_commit_msg)
-                ) -- __AUTO_GENERATED_PRINT_VAR_END__
                 pcall(function()
                     require("gitsigns").change_base(commit, true)
                     utils.update_diff_file_count()
@@ -672,20 +681,12 @@ return {
                             n = {
                                 ["<Tab>"] = focus_preview,
                                 ["<c-o>"] = actions.git_staging_toggle,
-                                ["<cr>"] = function(prompt_bufnr)
-                                    require("telescope.actions").select_default(prompt_bufnr)
-                                    vim.cmd("norm gg!")
-                                    FeedKeys("]c", "m")
-                                end,
+                                ["<cr>"] = goto_next_hunk_cr,
                             },
                             i = {
                                 ["<Tab>"] = focus_preview,
                                 ["<c-o>"] = actions.git_staging_toggle,
-                                ["<cr>"] = function(prompt_bufnr)
-                                    require("telescope.actions").select_default(prompt_bufnr)
-                                    vim.cmd("norm gg!")
-                                    FeedKeys("]c", "m")
-                                end,
+                                ["<cr>"] = goto_next_hunk_cr,
                             },
                         },
                     },
