@@ -177,6 +177,7 @@ return {
         vim.keymap.set("n", "<leader>cb", function()
             vim.g.Base_commit = ""
             vim.g.Base_commit_msg = ""
+            require("config.utils").refresh_last_commit()
             require("config.utils").update_diff_file_count()
             require("config.utils").set_git_winbar()
             require("gitsigns").reset_base("", true)
