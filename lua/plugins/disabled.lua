@@ -1,7 +1,6 @@
 return {
     -- { "mfussenegger/nvim-lint", enabled = false },
     -- { "folke/todo-comments.nvim", enabled = false },
-    { "folke/flash.nvim", enabled = false },
     -- { "nvim-focus/focus.nvim", enabled = false },
     -- { "echasnovski/mini.indentscope", enabled = false },
     { "echasnovski/mini.bufremove", enabled = false },
