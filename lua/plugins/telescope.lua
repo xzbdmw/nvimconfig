@@ -35,11 +35,18 @@ return {
             {
                 "<leader>ss",
                 function()
+                    local options = {
+                        attach_mappings = function(_, map)
+                            map({ "i", "n" }, "<space>", function(prompt_bufnr)
+                                require("telescope.actions").git_staging_toggle(prompt_bufnr)
+                            end, { nowait = true, desc = "desc for which key" })
+                            return true
+                        end,
+                    }
                     if vim.g.Base_commit ~= "" then
-                        require("telescope.builtin").git_status({ commit = vim.g.Base_commit })
-                    else
-                        require("telescope.builtin").git_status({})
+                        options.commit = vim.g.Base_commit
                     end
+                    require("telescope.builtin").git_status(options)
                 end,
                 desc = "Commits",
             },
