@@ -51,22 +51,22 @@ return {
                 -- Navigation
                 map("n", "]c", function()
                     gs.nav_hunk("next", { target = "unstaged" })
-                    vim.cmd("norm! zz")
+                    require("config.utils").adjust_view(0, 3)
                 end)
 
                 map("n", "[c", function()
                     gs.nav_hunk("prev", { target = "unstaged" })
-                    vim.cmd("norm! zz")
+                    require("config.utils").adjust_view(0, 3)
                 end)
 
                 map("n", "]s", function()
                     gs.nav_hunk("next", { target = "staged" })
-                    vim.cmd("norm! zz")
+                    require("config.utils").adjust_view(0, 3)
                 end)
 
                 map("n", "[s", function()
                     gs.nav_hunk("prev", { target = "staged" })
-                    vim.cmd("norm! zz")
+                    require("config.utils").adjust_view(0, 3)
                 end)
 
                 map("n", "<leader>rh", function()
