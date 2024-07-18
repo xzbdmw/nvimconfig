@@ -248,9 +248,10 @@ keymap("n", "<leader>sf", function()
 end, opts)
 
 keymap("n", "<leader>cd", function()
-    pcall(function()
-        vim.cmd("tabclose")
-    end)
+    local tabcount = #vim.api.nvim_list_tabpages()
+    if tabcount > 1 then
+        vim.cmd("tabclose! " .. 2)
+    end
 end, opts)
 
 keymap("n", "<leader>ur", function()
