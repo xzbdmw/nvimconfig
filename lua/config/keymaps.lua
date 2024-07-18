@@ -197,10 +197,13 @@ keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
 keymap("n", "<leader><c-r>", "<cmd>e!<cr>", opts)
 
 keymap("n", "*", function()
+    vim.g.type_star = true
+    vim.defer_fn(function()
+        vim.g.type_star = false
+    end, 100)
     vim.cmd("keepjumps normal! mi*`i")
     _G.star_search = vim.fn.getreg("/")
     require("hlslens").start()
-    vim.cmd("redraw")
 end)
 
 keymap("n", "<leader><c-q>", function()
