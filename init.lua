@@ -357,6 +357,16 @@ api.nvim_create_autocmd({ "BufReadPre" }, {
 vim.cmd([[set viewoptions-=curdir]])
 
 api.nvim_create_autocmd({ "User" }, {
+    pattern = "SessionLoadPre",
+    callback = function()
+        local tabcount = #vim.api.nvim_list_tabpages()
+        if tabcount > 1 then
+            vim.cmd("tabclose! " .. 2)
+        end
+    end,
+})
+
+api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
         local ok, gs = pcall(require, "gitsigns")
