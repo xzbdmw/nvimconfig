@@ -37,7 +37,7 @@ return {
                 function()
                     local options = {
                         attach_mappings = function(_, map)
-                            map({ "i", "n" }, "<space>", function(prompt_bufnr)
+                            map({ "n" }, "<space>", function(prompt_bufnr)
                                 require("telescope.actions").git_staging_toggle(prompt_bufnr)
                             end, { nowait = true, desc = "desc for which key" })
                             return true
