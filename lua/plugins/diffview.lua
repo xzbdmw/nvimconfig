@@ -150,8 +150,13 @@ return {
                         "n",
                         "<cr>",
                         function()
-                            actions.goto_file_edit()
-                            require("config.utils").adjust_view(0, 4)
+                            local tabnum = vim.fn.tabpagenr()
+                            if tabnum ~= 1 then
+                                actions.goto_file_edit()
+                                require("config.utils").adjust_view(0, 4)
+                            else
+                                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+                            end
                         end,
                         { desc = "Open the file in the previous tabpage" },
                     },
