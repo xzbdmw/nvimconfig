@@ -27,10 +27,12 @@ return {
             {
                 "<leader>sc",
                 function()
-                    return "<cmd>Telescope git_commits<CR>"
+                    local options = {
+                        attach_mappings = utils.checkout,
+                    }
+                    require("telescope.builtin").git_commits(options)
                 end,
                 desc = "Commits",
-                expr = true,
             },
             {
                 "<leader>ss",
@@ -65,22 +67,23 @@ return {
             {
                 "<leader>rr",
                 function()
+                    local options = {
+                        attach_mappings = utils.checkout,
+                    }
                     local from, to = vim.fn.line("."), vim.fn.line("v")
-                    require("telescope.builtin").git_bcommits_range({ from = from, to = to })
+                    options.from = from
+                    options.to = to
+                    require("telescope.builtin").git_bcommits_range(options)
                 end,
                 mode = { "x" },
             },
             {
-                "<leader>rr",
-                function()
-                    require("telescope.builtin").git_bcommits_range({})
-                end,
-            },
-            {
                 "<leader>cl",
                 function()
-                    local line = api.nvim_win_get_cursor(0)[1]
-                    require("telescope.builtin").git_bcommits_range({ from = line, to = line, operator = false })
+                    local options = {
+                        attach_mappings = utils.checkout,
+                    }
+                    require("telescope.builtin").git_bcommits_range(options)
                 end,
             },
             {
@@ -712,7 +715,6 @@ return {
                     },
                     git_bcommits_range = {
                         initial_mode = "normal",
-                        operator = true,
                         layout_config = {
                             horizontal = {
                                 width = 0.95,

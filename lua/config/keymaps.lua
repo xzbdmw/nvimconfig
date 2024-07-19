@@ -159,14 +159,17 @@ keymap("n", "<leader>uc", function()
     end
 end, opts)
 
-vim.keymap.set("n", "<leader><leader>c", function()
+keymap("n", "<leader><c-c>", function()
     if vim.g.Base_commit ~= "" then
         local result = vim.system({ "git", "checkout", vim.g.Base_commit }):wait()
         if result.code ~= 0 then
             vim.notify(result.stderr, vim.log.levels.WARN)
         end
         if result.code == 0 then
+            require("gitsigns").detach_all()
+            vim.cmd("e!")
             require("gitsigns").change_base("", true)
+            vim.cmd("BufDelOthers")
             vim.g.Base_commit = ""
             vim.g.Base_commit_msg = ""
             vim.notify(result.stdout, vim.log.levels.INFO)
