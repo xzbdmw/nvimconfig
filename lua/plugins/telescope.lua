@@ -354,11 +354,9 @@ return {
                 get_command = function(entry)
                     return {
                         "git",
-                        "-c",
-                        "core.pager=delta",
-                        "-c",
-                        "delta.side-by-side=false",
-                        "diff",
+                        "show",
+                        "--stat",
+                        "-p",
                         entry.value .. "^!",
                     }
                 end,
@@ -384,10 +382,6 @@ return {
                     if vim.g.Base_commit ~= "" then
                         command = {
                             "git",
-                            "-c",
-                            "core.pager=delta",
-                            "-c",
-                            "delta.side-by-side=false",
                             "diff",
                             vim.g.Base_commit,
                             "--",
@@ -396,10 +390,6 @@ return {
                     else
                         command = {
                             "git",
-                            "-c",
-                            "core.pager=delta",
-                            "-c",
-                            "delta.side-by-side=false",
                             "diff",
                             "--",
                             entry.path,
@@ -671,11 +661,11 @@ return {
                         initial_mode = "normal",
                         layout_config = {
                             horizontal = {
-                                width = 0.85,
+                                width = 0.8,
                                 height = 0.85,
                                 preview_cutoff = 0,
                                 prompt_position = "top",
-                                preview_width = 0.65,
+                                preview_width = 0.7,
                             },
                         },
                         previewer = {
