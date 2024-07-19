@@ -123,7 +123,7 @@ return {
                         once = true,
                         callback = vim.schedule_wrap(function()
                             local duration = 0.000001 * (vim.loop.hrtime() - start)
-                            if duration < 2000 then
+                            if duration < 200 then
                                 FeedKeys("n", "t")
                             end
                         end),
@@ -138,7 +138,7 @@ return {
                         once = true,
                         callback = vim.schedule_wrap(function()
                             local duration = 0.000001 * (vim.loop.hrtime() - start)
-                            if duration < 2000 then
+                            if duration < 200 then
                                 FeedKeys("n", "t")
                             end
                         end),
