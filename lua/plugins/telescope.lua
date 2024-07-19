@@ -77,7 +77,7 @@ return {
                 end,
             },
             {
-                "<leader>rl",
+                "<leader>cl",
                 function()
                     local line = api.nvim_win_get_cursor(0)[1]
                     require("telescope.builtin").git_bcommits_range({ from = line, to = line, operator = false })
