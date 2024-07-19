@@ -165,6 +165,12 @@ vim.keymap.set("n", "<leader><leader>c", function()
         if result.code ~= 0 then
             vim.notify(result.stderr, vim.log.levels.WARN)
         end
+        if result.code == 0 then
+            require("gitsigns").change_base("", true)
+            vim.g.Base_commit = ""
+            vim.g.Base_commit_msg = ""
+            vim.notify(result.stdout, vim.log.levels.INFO)
+        end
     end
 end, opts)
 
