@@ -187,6 +187,9 @@ return {
         vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
         vim.keymap.set("n", "<leader>cb", function()
             vim.g.Base_commit = ""
+            local config = require("gitsigns.config").config
+            local Signs = require("gitsigns.signs")
+            Signs_staged = Signs.new(config.signs_staged, "staged")
             vim.g.Base_commit_msg = ""
             require("config.utils").refresh_last_commit()
             require("config.utils").update_diff_file_count()

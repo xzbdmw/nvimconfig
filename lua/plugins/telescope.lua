@@ -408,6 +408,7 @@ return {
                 if result.code == 0 then
                     local splits = vim.split(result.stdout, "\n")
                     vim.g.Base_commit = splits[1]:sub(1, 7)
+                    Signs_staged = nil
                     vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
                 end
                 pcall(function()
@@ -426,6 +427,7 @@ return {
                 actions.close(prompt_bufnr)
                 local commit = selection.value
                 vim.g.Base_commit = commit
+                Signs_staged = nil
                 vim.g.Base_commit_msg = ""
                 local sts = vim.split(selection.ordinal, " ")
                 for i = 2, #sts do
