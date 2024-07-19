@@ -333,6 +333,7 @@ return {
                 ["@spell"] = { link = "Comment" },
                 ["@string.escape"] = { fg = "#395C2A", style = "italic" },
                 ["@lsp.type.namespace"] = { fg = "#152381" },
+                ["@lsp.mod.injected.rust"] = { bg = "#EEE8D5" },
                 ["@lsp.type.macro.cpp"] = { fg = "#1F542E", style = "bold" },
                 ["preProc"] = { fg = "#9E880D" },
                 ["@lsp.type.macro.c"] = { link = "@lsp.type.macro.cpp" },
