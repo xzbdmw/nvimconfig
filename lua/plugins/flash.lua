@@ -87,7 +87,7 @@ return {
                 -- You can force inclusive/exclusive jumps by setting the
                 -- `inclusive` option. By default it will be automatically
                 -- set based on the mode.
-                inclusive = nil, ---@type boolean?
+                inclusive = false, ---@type boolean?
                 -- jump position offset. Not used for range jumps.
                 -- 0: default
                 -- 1: when pos == "end" and pos < current position
