@@ -21,6 +21,7 @@ return {
             mode = { "n", "x", "o" },
             function()
                 vim.g.treesitter_search = true
+                vim.g.flash_winbar = vim.wo.winbar
                 require("flash").treesitter()
             end,
             desc = "Flash Treesitter",
