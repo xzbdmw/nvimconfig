@@ -90,11 +90,19 @@ return {
                 end)
 
                 map("v", "<leader>sh", function()
+                    if vim.g.Base_commit ~= "" then
+                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
+                        return
+                    end
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
                     update_hunk_qflist()
                 end)
 
                 map("n", "<leader>sh", function()
+                    if vim.g.Base_commit ~= "" then
+                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
+                        return
+                    end
                     vim.cmd("Gitsigns stage_hunk")
                     update_hunk_qflist()
                 end)
@@ -131,6 +139,9 @@ return {
                 end)
 
                 map("n", "<leader>aq", function()
+                    if vim.g.Base_commit ~= "" then
+                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
+                    end
                     _G.pre_gitsigns_qf_operation = "all"
                     gs.setqflist("all")
                     local start = vim.uv.hrtime()
