@@ -765,6 +765,15 @@ function M.refresh_last_commit()
         vim.g.Last_commit = splits[1]
         vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
     end
+
+    result = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait()
+    if result.code == 0 then
+        vim.g.BranchName = vim.split(result.stdout, "\n")[1]
+        if vim.g.BranchName == "HEAD" then
+            local sub = vim.g.Last_commit:sub(1, 5)
+            vim.g.BranchName = "HEAD detached at" .. sub
+        end
+    end
 end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
@@ -820,7 +829,7 @@ function M.set_git_winbar()
     if expr == nil then
         return
     end
-    local head = vim.g.gitsigns_head
+    local head = vim.g.BranchName
     expr = expr .. "%= "
     if signs ~= nil and signs ~= "" then
         if signs == nil then
