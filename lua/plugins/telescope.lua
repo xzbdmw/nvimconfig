@@ -399,6 +399,28 @@ return {
                 end,
             })
 
+            local function gitsign_change_base_pre(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                local commit = selection.value
+
+                local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
+                if result.code == 0 then
+                    local splits = vim.split(result.stdout, "\n")
+                    vim.g.Base_commit = splits[1]:sub(1, 7)
+                    vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
+                end
+                pcall(function()
+                    require("gitsigns").change_base(commit, true)
+                    utils.update_diff_file_count()
+                    utils.set_git_winbar()
+                    vim.defer_fn(function()
+                        vim.cmd("Gitsigns attach")
+                    end, 100)
+                end)
+                vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
+            end
+
             local function gitsign_change_base(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
@@ -706,9 +728,11 @@ return {
                         mappings = {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
+                                ["p"] = gitsign_change_base_pre,
                             },
                             i = {
                                 ["<CR>"] = gitsign_change_base,
+                                ["<c-p>"] = gitsign_change_base_pre,
                             },
                         },
                     },
@@ -731,9 +755,11 @@ return {
                         mappings = {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
+                                ["p"] = gitsign_change_base_pre,
                             },
                             i = {
                                 ["<CR>"] = gitsign_change_base,
+                                ["<c-p>"] = gitsign_change_base_pre,
                             },
                         },
                     },
