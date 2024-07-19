@@ -311,6 +311,7 @@ return {
                 FlashLabel = { link = "LeapMatch" },
                 FLashPrompt = { fg = "#364E57", style = "italic,underline" },
                 NoiceCmdlineIconSearch = { fg = "#BEACC5" },
+                NoiceFormatLevelWarn = { fg = "#ac5402", bg = "#EEE8D5" },
                 PortalLabel = { bg = "#A2F7E4" },
                 TelescopeParent = { link = "TelescopeTitle" },
                 TelescopeSelection = { bg = "#F0ECDE", style = "bold" },

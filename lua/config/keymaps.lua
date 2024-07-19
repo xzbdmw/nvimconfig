@@ -159,6 +159,15 @@ keymap("n", "<leader>uc", function()
     end
 end, opts)
 
+vim.keymap.set("n", "<leader><leader>c", function()
+    if vim.g.Base_commit ~= "" then
+        local result = vim.system({ "git", "checkout", vim.g.Base_commit }):wait()
+        if result.code ~= 0 then
+            vim.notify(result.stderr, vim.log.levels.WARN)
+        end
+    end
+end, opts)
+
 keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<C-w>"
