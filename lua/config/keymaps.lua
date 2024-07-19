@@ -9,7 +9,11 @@ end, opts)
 
 keymap({ "n" }, "g;", function()
     return "g;zz"
-end, { expr = true })
+end, { expr = true, remap = true })
+
+keymap({ "n" }, "gi", function()
+    return "gi<C-o>zz"
+end, { expr = true, remap = true })
 
 keymap({ "n" }, "g,", function()
     return "g,zz"
@@ -258,7 +262,7 @@ keymap("n", "<leader>cd", function()
 end, opts)
 
 keymap("n", "<leader>ur", function()
-    vim.o.relativenumber = vim.o.relativenumber == false and true or false
+    vim.o.relativenumber = not vim.o.relativenumber
 end, opts)
 
 keymap("n", "za", function()
@@ -342,6 +346,10 @@ keymap("i", "<C-r>", "<C-r><C-o>", opts)
 keymap("n", "<D-z>", "u", opts)
 
 keymap("i", "<D-z>", "<C-o>u", opts)
+
+keymap("n", "e", function()
+    return "ea"
+end, { expr = true })
 
 keymap("n", "<leader>j", function()
     vim.g.neovide_cursor_animation_length = 0.0
@@ -429,6 +437,10 @@ keymap("n", "]q", function()
 end, opts)
 keymap("n", "[q", function()
     vim.cmd("cprev")
+end, opts)
+
+keymap("n", "zz", function()
+    utils.adjust_view(0, 3)
 end, opts)
 
 keymap("n", "<leader>d", function()

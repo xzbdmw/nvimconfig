@@ -891,7 +891,6 @@ function M.set_winbar()
                     .. "#"
                     .. arrow
                     .. "%*"
-                    .. "%=%m %f"
                 vim.wo[winid].winbar = winbar_expr
                 vim.b.winbar_expr = winbar_expr
             else
