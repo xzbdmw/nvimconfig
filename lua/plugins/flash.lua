@@ -11,6 +11,7 @@ return {
             function()
                 vim.o.scrolloff = 0
                 vim.g.flash_winbar = vim.wo.winbar
+                vim.cmd([[normal m']])
                 require("flash").jump()
             end,
             desc = "Flash",
