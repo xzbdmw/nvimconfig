@@ -309,6 +309,7 @@ return {
                 CurSearch = { link = "IncSearch" },
                 FlashCurrent = { link = "IncSearch" },
                 FlashLabel = { link = "LeapMatch" },
+                FLashPrompt = { fg = "#364E57", style = "italic,underline" },
                 NoiceCmdlineIconSearch = { fg = "#BEACC5" },
                 PortalLabel = { bg = "#A2F7E4" },
                 TelescopeParent = { link = "TelescopeTitle" },

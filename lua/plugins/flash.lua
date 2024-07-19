@@ -2,7 +2,7 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
-    enabled = false,
+    -- enabled = false,
     -- -- stylua: ignore
     keys = {
         {
@@ -10,6 +10,7 @@ return {
             mode = { "n", "x", "o" },
             function()
                 vim.o.scrolloff = 0
+                vim.g.flash_winbar = vim.wo.winbar
                 require("flash").jump()
             end,
             desc = "Flash",
