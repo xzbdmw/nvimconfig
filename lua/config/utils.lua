@@ -792,14 +792,17 @@ end
 function M.set_git_winbar()
     local icons = { " ", " ", " " }
     local signs = vim.b.gitsigns_status_dict
+    local expr = vim.b.winbar_expr
+    if expr == nil then
+        return
+    end
+    local head = vim.g.gitsigns_head
+    expr = expr .. "%= "
     if signs ~= nil and signs ~= "" then
-        local head = vim.g.gitsigns_head
         if signs == nil then
             return
         end
-        local expr = vim.b.winbar_expr
         if expr ~= nil and expr ~= "" then
-            expr = expr .. "%= "
             local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
             if hunks ~= nil and #hunks > 0 then
                 if #hunks > 1 then
@@ -821,29 +824,29 @@ function M.set_git_winbar()
                     expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
                 end
             end
-            if head ~= nil then
-                expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
-            end
-            if vim.g.Base_commit_msg ~= "" then
-                if vim.g.diff_file_count ~= 0 then
-                    expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-                    expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
-                else
-                    expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-                    expr = expr .. "%#Comment#" .. " "
-                end
-            else
-                if vim.g.diff_file_count ~= 0 then
-                    expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-                    expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
-                else
-                    expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-                    expr = expr .. "%#Comment#" .. " "
-                end
-            end
-            vim.wo.winbar = expr
         end
     end
+    if head ~= nil then
+        expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
+    end
+    if vim.g.Base_commit_msg ~= "" then
+        if vim.g.diff_file_count ~= 0 then
+            expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+            expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+        else
+            expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+            expr = expr .. "%#Comment#" .. " "
+        end
+    else
+        if vim.g.diff_file_count ~= 0 then
+            expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+            expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+        else
+            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+            expr = expr .. "%#Comment#" .. " "
+        end
+    end
+    vim.wo.winbar = expr
 end
 
 function M.set_winbar()
