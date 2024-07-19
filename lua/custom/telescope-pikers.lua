@@ -365,6 +365,11 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
         require("telescope.builtin").grep_string(options)
     elseif pickerAndOptions.picker == "egrepify" then
         require("telescope").extensions.egrepify.egrepify(options)
+    elseif pickerAndOptions.picker == "agitator" then
+        options.preview = {
+            timeout = 10000,
+        }
+        require("agitator").search_in_added(options)
     elseif pickerAndOptions.picker == "" then
         print("Picker was not specified")
     else

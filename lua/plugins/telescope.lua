@@ -148,6 +148,12 @@ return {
                 end,
             },
             {
+                "<leader>fd",
+                function()
+                    require("custom.telescope-pikers").prettyGrepPicker("agitator", nil, vim.bo.filetype)
+                end,
+            },
+            {
                 "<leader>sa",
                 function()
                     local mode = vim.fn.mode()
