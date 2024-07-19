@@ -755,23 +755,18 @@ end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
 function M.refresh_last_commit()
-    if vim.g.Base_commit ~= "" then
-        return
-    end
-
     local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
     if result.code == 0 then
         local splits = vim.split(result.stdout, "\n")
         vim.g.Last_commit = splits[1]
         vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
     end
-
     result = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait()
     if result.code == 0 then
         vim.g.BranchName = vim.split(result.stdout, "\n")[1]
         if vim.g.BranchName == "HEAD" then
             local sub = vim.g.Last_commit:sub(1, 5)
-            vim.g.BranchName = "HEAD detached at" .. sub
+            vim.g.BranchName = "HEAD detached at " .. sub
         end
     end
 end
