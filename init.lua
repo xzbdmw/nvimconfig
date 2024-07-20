@@ -11,6 +11,7 @@ _G.pre_gitsigns_qf_operation = ""
 vim.g.Base_commit = ""
 vim.g.diff_file_count = 0
 vim.g.Base_commit_msg = ""
+vim.g.vim_enter = true
 
 vim.cmd("syntax off")
 
@@ -379,6 +380,10 @@ api.nvim_create_autocmd({ "User" }, {
                     utils.update_diff_file_count()
                     gs.change_base(vim.g.Base_commit, true)
                 end, 200)
+                vim.defer_fn(function()
+                    utils.update_diff_file_count()
+                    gs.change_base(vim.g.Base_commit, true)
+                end, 500)
             else
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
