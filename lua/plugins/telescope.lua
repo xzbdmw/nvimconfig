@@ -791,7 +791,7 @@ return {
                                 height = 0.95,
                                 preview_cutoff = 0,
                                 prompt_position = "top",
-                                preview_width = 0.65,
+                                preview_width = 0.6,
                             },
                         },
                         previewer = {
@@ -818,7 +818,7 @@ return {
                                 height = 0.95,
                                 preview_cutoff = 0,
                                 prompt_position = "top",
-                                preview_width = 0.65,
+                                preview_width = 0.6,
                             },
                         },
                         previewer = {
