@@ -55,6 +55,7 @@ return {
                 CommitHasDiffWinbar = { fg = "#636262", style = "underdotted" },
                 CommitHasDiffNCWinbar = { fg = "#636262", style = "italic,underdotted" },
                 TelescopeResultDiffStaged = { fg = "#558873" },
+                TelescopePromptCounter = { fg = "#7E7D7D" },
                 TelescopeResultDiffUnStaged = { fg = "#C15E7A" },
                 WinBarHunk = { fg = "#363A72" },
                 IncSearch = { fg = "none", bg = "#C9D2F5" },
