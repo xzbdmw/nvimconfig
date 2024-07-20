@@ -479,6 +479,75 @@ return {
                 vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))
             end
 
+            local focus_result = function(prompt_bufnr)
+                local maps = vim.api.nvim_buf_get_keymap(prompt_bufnr, "n")
+                local checkout_callback = nil
+                local p_callback = nil
+                for _, map in ipairs(maps) do
+                    ---@diagnostic disable-next-line: undefined-field
+                    if map.lhs == " " then
+                        checkout_callback = map.callback
+                    end
+                    ---@diagnostic disable-next-line: undefined-field
+                    if map.lhs == "p" then
+                        p_callback = map.callback
+                    end
+                end
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local prompt_win = picker.prompt_win
+                local results = picker.layout.results
+                local winid = results.winid
+                local bufnr = results.bufnr
+
+                local id = api.nvim_create_autocmd("CursorMoved", {
+                    callback = function()
+                        local selection_row = picker:get_selection_row()
+                        local cursor_row = vim.api.nvim_win_get_cursor(0)[1]
+                        if selection_row ~= cursor_row - 1 then
+                            picker:set_selection(cursor_row - 1)
+                        end
+                    end,
+                })
+
+                local closed = false
+                api.nvim_create_autocmd("User", {
+                    once = true,
+                    pattern = "TelescopeClose",
+                    callback = function()
+                        if not closed then
+                            api.nvim_del_autocmd(id)
+                        end
+                    end,
+                })
+
+                vim.keymap.set("n", "h", function()
+                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "<Tab>", function()
+                    focus_preview(prompt_bufnr)
+                    closed = true
+                    api.nvim_del_autocmd(id)
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "zz", function()
+                    vim.cmd("norm! zz")
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "<cr>", function()
+                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                    FeedKeys("<CR>", "m")
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "q", function()
+                    _G.hide_cursor(function() end)
+                    actions.close(prompt_bufnr)
+                end, { buffer = bufnr })
+                if checkout_callback ~= nil then
+                    vim.keymap.set("n", "<space>", checkout_callback, { nowait = true, buffer = bufnr })
+                end
+                if p_callback ~= nil then
+                    vim.keymap.set("n", "p", p_callback, { nowait = true, buffer = bufnr })
+                end
+                vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))
+            end
+
             -- yank preview
             local yank_preview_lines = function(prompt_bufnr)
                 local picker = action_state.get_current_picker(prompt_bufnr)
@@ -656,6 +725,7 @@ return {
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
                             end,
+                            ["l"] = focus_result,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 FeedKeys("<C-q>", "m")
