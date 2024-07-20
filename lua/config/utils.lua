@@ -816,7 +816,7 @@ end
 
 function M.set_git_winbar()
     local icons = { " ", " ", " " }
-    local signs = vim.g.gitsigns_status_dict
+    local signs = vim.b.gitsigns_status_dict
     local expr = vim.b.winbar_expr
     if expr == nil then
         return
@@ -824,30 +824,25 @@ function M.set_git_winbar()
     local head = vim.g.BranchName
     expr = expr .. "%= "
     if signs ~= nil and signs ~= "" then
-        if signs == nil then
-            return
-        end
-        if expr ~= nil and expr ~= "" then
-            local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
-            if hunks ~= nil and #hunks > 0 then
-                if #hunks > 1 then
-                    expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
-                else
-                    expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
-                end
+        local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+        if hunks ~= nil and #hunks > 0 then
+            if #hunks > 1 then
+                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+            else
+                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
             end
-            for index, icon in ipairs(icons) do
-                local name
-                if index == 1 then
-                    name = "removed"
-                elseif index == 2 then
-                    name = "added"
-                else
-                    name = "changed"
-                end
-                if tonumber(signs[name]) and signs[name] > 0 then
-                    expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
-                end
+        end
+        for index, icon in ipairs(icons) do
+            local name
+            if index == 1 then
+                name = "removed"
+            elseif index == 2 then
+                name = "added"
+            else
+                name = "changed"
+            end
+            if tonumber(signs[name]) and signs[name] > 0 then
+                expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
             end
         end
     end
