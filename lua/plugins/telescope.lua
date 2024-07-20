@@ -1,4 +1,5 @@
 local utils = require("config.utils")
+local keymap = vim.keymap.set
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -463,12 +464,12 @@ return {
                     winid = vim.fn.win_findbuf(bufnr)[1]
                 end
                 local cursor = api.nvim_win_get_cursor(winid)
-                vim.keymap.set("n", "<Tab>", function()
+                keymap("n", "<Tab>", function()
                     api.nvim_win_set_cursor(winid, cursor)
                     require("config.utils").update_preview_state(bufnr, winid)
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "<cr>", function()
+                keymap("n", "<cr>", function()
                     local filename = vim.b[bufnr].filepath
                     local row, col = unpack(api.nvim_win_get_cursor(winid))
                     actions.close(prompt_bufnr)
@@ -477,7 +478,7 @@ return {
                         string.format("lua EditLineFromLazygit('%s','%s','%s')", filename, tostring(row), tostring(col))
                     )
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "q", function()
+                keymap("n", "q", function()
                     _G.hide_cursor(function() end)
                     actions.close(prompt_bufnr)
                 end, { buffer = bufnr })
@@ -524,33 +525,38 @@ return {
                         end
                     end,
                 })
-
-                vim.keymap.set("n", "h", function()
-                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                keymap("n", "h", function()
+                    FeedKeys("<Tab><Tab>", "m")
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "<Tab>", function()
+
+                keymap("n", "<Tab>", function()
                     focus_preview(prompt_bufnr)
                     closed = true
                     api.nvim_del_autocmd(id)
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "zz", function()
+                keymap("n", "zz", function()
                     vim.cmd("norm! zz")
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "<cr>", function()
+                keymap("n", "<cr>", function()
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
                     FeedKeys("<CR>", "m")
                 end, { buffer = bufnr })
-                vim.keymap.set("n", "q", function()
+                keymap("n", "q", function()
                     _G.hide_cursor(function() end)
                     actions.close(prompt_bufnr)
                 end, { buffer = bufnr })
                 if checkout_callback ~= nil then
-                    vim.keymap.set("n", "<space>", checkout_callback, { nowait = true, buffer = bufnr })
+                    keymap("n", "<space>", checkout_callback, { nowait = true, buffer = bufnr })
                 end
                 if p_callback ~= nil then
-                    vim.keymap.set("n", "p", p_callback, { nowait = true, buffer = bufnr })
+                    keymap("n", "p", p_callback, { nowait = true, buffer = bufnr })
                 end
                 vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))
+            end
+
+            local center_results = function(prompt_bufnr)
+                focus_result(prompt_bufnr)
+                FeedKeys("zzh", "m")
             end
 
             -- yank preview
@@ -731,6 +737,7 @@ return {
                                 FeedKeys("j", "m")
                             end,
                             ["l"] = focus_result,
+                            ["zz"] = center_results,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 FeedKeys("<C-q>", "m")
