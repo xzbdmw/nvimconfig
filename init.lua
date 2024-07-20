@@ -369,6 +369,7 @@ api.nvim_create_autocmd({ "User" }, {
 api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
+        vim.g.vim_enter = true
         local ok, gs = pcall(require, "gitsigns")
         if ok then
             if vim.g.Base_commit ~= "" then
