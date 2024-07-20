@@ -128,14 +128,16 @@ return {
 
                 map("n", "<leader>sq", function()
                     _G.pre_gitsigns_qf_operation = "cur"
+                    if not utils.has_filetype("trouble") then
+                        api.nvim_create_autocmd("User", {
+                            pattern = "TroubleOpen",
+                            once = true,
+                            callback = vim.schedule_wrap(function()
+                                FeedKeys("n", "t")
+                            end),
+                        })
+                    end
                     vim.cmd("Gitsigns setqflist")
-                    api.nvim_create_autocmd("User", {
-                        pattern = "TroubleOpen",
-                        once = true,
-                        callback = vim.schedule_wrap(function()
-                            FeedKeys("n", "t")
-                        end),
-                    })
                 end)
 
                 map("n", "<leader>aq", function()
@@ -143,14 +145,16 @@ return {
                         vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
                     end
                     _G.pre_gitsigns_qf_operation = "all"
+                    if not utils.has_filetype("trouble") then
+                        api.nvim_create_autocmd("User", {
+                            once = true,
+                            pattern = "TroubleOpen",
+                            callback = vim.schedule_wrap(function()
+                                FeedKeys("n", "t")
+                            end),
+                        })
+                    end
                     gs.setqflist("all")
-                    api.nvim_create_autocmd("User", {
-                        once = true,
-                        pattern = "TroubleOpen",
-                        callback = vim.schedule_wrap(function()
-                            FeedKeys("n", "t")
-                        end),
-                    })
                 end)
 
                 map({ "o", "x" }, "ih", "<cmd>Gitsigns select_hunk<CR>")
