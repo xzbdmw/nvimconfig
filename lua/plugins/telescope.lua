@@ -415,7 +415,7 @@ return {
                     vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
                 end
                 pcall(function()
-                    require("gitsigns").change_base(commit, true)
+                    require("gitsigns").change_base(vim.g.Base_commit, true)
                     utils.update_diff_file_count()
                     utils.set_git_winbar()
                     vim.defer_fn(function()

@@ -156,7 +156,7 @@ return {
                     })
                 end)
 
-                map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+                map({ "o", "x" }, "ih", "<cmd>Gitsigns select_hunk<CR>")
             end,
             auto_attach = true,
             attach_to_untracked = true,
