@@ -35,6 +35,11 @@ return {
                 desc = "Commits",
             },
             {
+                "<leader><c-b>",
+                "<cmd>Telescope git_branches<cr>",
+                desc = "Commits",
+            },
+            {
                 "<leader>ss",
                 function()
                     local options = {
@@ -754,6 +759,20 @@ return {
                     },
                 },
                 pickers = {
+                    git_branches = {
+                        initial_mode = "normal",
+                        layout_strategy = "vertical",
+                        layout_config = {
+                            vertical = {
+                                prompt_position = "top",
+                                width = 0.55,
+                                height = 0.9,
+                                mirror = true,
+                                preview_cutoff = 0,
+                                preview_height = 0.5,
+                            },
+                        },
+                    },
                     git_status = {
                         initial_mode = "normal",
                         layout_config = {
