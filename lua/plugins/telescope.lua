@@ -373,15 +373,22 @@ return {
 
             local goto_next_hunk_cr = function(prompt_bufnr)
                 require("telescope.actions").select_default(prompt_bufnr)
+                local ok = false
                 local fn = function()
-                    require("gitsigns").nav_hunk("first", { target = "unstaged" })
-                    require("config.utils").adjust_view(0, 3)
+                    if ok then
+                        return
+                    end
+                    local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+                    if hunks ~= nil and #hunks > 0 then
+                        ok = true
+                        require("gitsigns").nav_hunk("first", { target = "unstaged", navigation_message = false })
+                        require("config.utils").adjust_view(0, 3)
+                    end
                 end
-                local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
-                if hunks == nil or #hunks == 0 then
-                    vim.defer_fn(fn, 200)
-                else
-                    fn()
+                fn()
+                local times = { 30, 60, 90, 120, 150, 180 }
+                for _, timeout in ipairs(times) do
+                    vim.defer_fn(fn, timeout)
                 end
             end
 
