@@ -638,7 +638,6 @@ function M.real_enter(callback, filter, who)
     end, 2000)
     local has_start = false
     local timout = function(opts)
-        local force = opts.force
         if not filter() then
             ---@diagnostic disable-next-line: need-check-nil
             if timer:is_active() then
@@ -647,7 +646,7 @@ function M.real_enter(callback, filter, who)
             end
             return
         end
-        if (not force) and has_start then
+        if has_start then
             return
         end
         ---@diagnostic disable-next-line: need-check-nil
@@ -656,15 +655,15 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            vim.notify(who .. "Timer haven't been closed in " .. opts.time .. "ms!", vim.log.levels.ERROR)
+            vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
             callback()
         end
     end
     vim.defer_fn(function()
-        timout({ force = false, time = 30 })
+        timout({ time = 100 })
     end, 30)
     vim.defer_fn(function()
-        timout({ force = true, time = 1000 })
+        timout({ time = 1000 })
     end, 1000)
     local col = vim.fn.screencol()
     local row = vim.fn.screenrow()
