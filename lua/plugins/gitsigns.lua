@@ -1,6 +1,9 @@
 return {
     "lewis6991/gitsigns.nvim",
     config = function()
+        local utils = require("config.utils")
+        local config = require("gitsigns.config").config
+        local Signs = require("gitsigns.signs")
         require("gitsigns").setup({
             signs = {
                 add = { text = "│" },
@@ -187,14 +190,14 @@ return {
         vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
         vim.keymap.set("n", "<leader>cb", function()
             vim.g.Base_commit = ""
-            local config = require("gitsigns.config").config
-            local Signs = require("gitsigns.signs")
-            Signs_staged = Signs.new(config.signs_staged, "staged")
             vim.g.Base_commit_msg = ""
-            require("config.utils").refresh_last_commit()
-            require("config.utils").update_diff_file_count()
-            require("config.utils").set_git_winbar()
             require("gitsigns").reset_base("", true)
+
+            Signs_staged = Signs.new(config.signs_staged, "staged")
+
+            utils.refresh_last_commit()
+            utils.update_diff_file_count()
+            utils.set_git_winbar()
         end)
     end,
 }
