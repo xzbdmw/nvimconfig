@@ -526,7 +526,9 @@ return {
                     end,
                 })
                 keymap("n", "h", function()
-                    FeedKeys("<Tab><Tab>", "m")
+                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                    closed = true
+                    api.nvim_del_autocmd(id)
                 end, { buffer = bufnr })
 
                 keymap("n", "<Tab>", function()
