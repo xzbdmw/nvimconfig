@@ -159,7 +159,7 @@ keymap("n", "<leader>uc", function()
     end
 end, opts)
 
-keymap("n", "<leader><c-c>", function()
+keymap("n", "<leader>co", function()
     if vim.g.Base_commit ~= "" then
         local result = vim.system({ "git", "checkout", vim.g.Base_commit }):wait()
         if result.code ~= 0 then

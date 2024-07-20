@@ -36,7 +36,7 @@ return {
                 desc = "Commits",
             },
             {
-                "<leader><c-b>",
+                "<leader>bc",
                 "<cmd>Telescope git_branches<cr>",
                 desc = "Commits",
             },
