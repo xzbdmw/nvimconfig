@@ -626,6 +626,7 @@ function M.has_filetype(filetype)
     return false
 end
 
+--- @param filter function if false we should realy return
 function M.real_enter(callback, filter, who)
     who = who or ""
     local timer = vim.loop.new_timer()

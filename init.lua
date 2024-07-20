@@ -496,9 +496,3 @@ vim.keymap.set({ "n", "i" }, "<D-i>", toggle_profile)
 --         end
 --     end,
 -- })
-
--- local origin = vim.lsp.util.jump_to_location
--- vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
---     ST = vim.uv.hrtime()
---     origin(location, offset_encoding, reuse_win)
--- end
