@@ -141,9 +141,6 @@ return {
                 end)
 
                 map("n", "<leader>aq", function()
-                    if vim.g.Base_commit ~= "" then
-                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
-                    end
                     _G.pre_gitsigns_qf_operation = "all"
                     if not utils.has_filetype("trouble") then
                         api.nvim_create_autocmd("User", {
