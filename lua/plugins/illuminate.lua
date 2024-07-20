@@ -15,6 +15,7 @@ return {
             "fugitive",
             "aerial",
             "toggleterm",
+            "TelescopeResults",
         },
         -- delay = 90,
         delay = 1,
