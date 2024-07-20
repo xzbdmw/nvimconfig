@@ -656,6 +656,7 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
+            vim.notify(who .. "Timer haven't been closed in " .. opts.time .. "ms!", vim.log.levels.ERROR)
             callback()
         end
     end
