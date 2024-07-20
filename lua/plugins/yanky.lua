@@ -38,15 +38,6 @@ return {
             mode = { "n", "x" },
             expr = true,
         },
-
-        -- text object
-        {
-            "[p",
-            function()
-                require("yanky.textobj").last_put()
-            end,
-            mode = { "x", "o" },
-        },
     },
     lazy = false,
     opts = {
