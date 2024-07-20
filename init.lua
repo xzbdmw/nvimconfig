@@ -360,6 +360,7 @@ vim.cmd([[set viewoptions-=curdir]])
 api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPre",
     callback = function()
+        vim.g.vim_enter = true
         local tabcount = #vim.api.nvim_list_tabpages()
         if tabcount > 1 then
             vim.cmd("tabclose! " .. 2)
@@ -370,7 +371,6 @@ api.nvim_create_autocmd({ "User" }, {
 api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
     callback = function()
-        vim.g.vim_enter = true
         local ok, gs = pcall(require, "gitsigns")
         if ok then
             if vim.g.Base_commit ~= "" then
