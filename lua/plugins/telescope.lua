@@ -775,6 +775,10 @@ return {
                                 ["<Tab>"] = focus_preview,
                                 ["<c-o>"] = actions.git_staging_toggle,
                                 ["<cr>"] = goto_next_hunk_cr,
+                                ["c"] = function()
+                                    vim.o.eventignore = "BufWinLeave"
+                                    vim.cmd(string.format("Git commit"))
+                                end,
                             },
                             i = {
                                 ["<Tab>"] = focus_preview,
