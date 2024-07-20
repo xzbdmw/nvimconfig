@@ -214,6 +214,7 @@ return {
                         vim.defer_fn(function()
                             _G.CON = nil
                         end, 10)
+                        f.expand = true
                         if utils.if_multicursor() then
                             cmp.select_cur_item()
                             vim.schedule(cmp.close)
