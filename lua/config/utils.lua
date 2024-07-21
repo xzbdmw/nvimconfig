@@ -805,6 +805,9 @@ function M.checkout(commit, success_fn)
         end
         vim.cmd("checktime")
         vim.notify(result.stdout, vim.log.levels.INFO)
+        M.refresh_last_commit()
+        M.update_diff_file_count()
+        M.set_git_winbar()
     end
 end
 
