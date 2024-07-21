@@ -473,6 +473,28 @@ return {
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
             end
 
+            local function gitsign_diff_with_pre(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                local commit = selection.value
+
+                local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
+                if result.code == 0 then
+                    utils.checkout(prompt_bufnr)
+                    actions.close(prompt_bufnr)
+                    local splits = vim.split(result.stdout, "\n")
+                    vim.g.Base_commit = splits[1]:sub(1, 7)
+                    Signs_staged = nil
+                    vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
+                end
+                require("gitsigns").change_base(vim.g.Base_commit, true)
+                utils.update_diff_file_count()
+                utils.set_git_winbar()
+                vim.defer_fn(function()
+                    vim.cmd("Gitsigns attach")
+                end, 100)
+                vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
+            end
+
             local focus_preview = function(prompt_bufnr)
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local prompt_win = picker.prompt_win
@@ -859,6 +881,9 @@ return {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
+                                ["c"] = function(prompt_bufnr)
+                                    gitsign_diff_with_pre(prompt_bufnr)
+                                end,
                             },
                             i = {
                                 ["<CR>"] = gitsign_change_base,
@@ -886,6 +911,9 @@ return {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
+                                ["c"] = function(prompt_bufnr)
+                                    gitsign_diff_with_pre(prompt_bufnr)
+                                end,
                             },
                             i = {
                                 ["<CR>"] = gitsign_change_base,
