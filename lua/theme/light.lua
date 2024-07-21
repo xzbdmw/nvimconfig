@@ -7,44 +7,42 @@ local ns = api.nvim_create_namespace("MiniDiffOverlay")
 local keymap = vim.keymap.set
 
 keymap("n", "n", function()
+    if vim.v.hlsearch ~= 0 then
+        local mode = _G.searchmode
+        if mode == "/" then
+            vim.cmd("normal! nzz")
+        else
+            vim.cmd("normal! Nzz")
+        end
+        return
+    end
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_next_keeped_reference(true)
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_next({ skip_groups = true, jump = true })
     else
-        local n = vim.v.hlsearch
-        if n == 0 then
-            require("illuminate").goto_next_reference(true)
-        else
-            local mode = _G.searchmode
-            if mode == "/" then
-                vim.cmd("normal! nzz")
-            else
-                vim.cmd("normal! Nzz")
-            end
-        end
+        require("illuminate").goto_next_reference(true)
     end
 end)
 
 keymap("n", "N", function()
+    if vim.v.hlsearch ~= 0 then
+        local mode = _G.searchmode
+        if mode ~= "/" then
+            vim.cmd("normal! nzz")
+        else
+            vim.cmd("normal! Nzz")
+        end
+        return
+    end
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_prev_keeped_reference(true)
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_prev({ skip_groups = true, jump = true })
     else
-        local n = vim.v.hlsearch
-        if n == 0 then
-            require("illuminate").goto_prev_reference(true)
-        else
-            local mode = _G.searchmode
-            if mode ~= "/" then
-                vim.cmd("normal! nzz")
-            else
-                vim.cmd("normal! Nzz")
-            end
-        end
+        require("illuminate").goto_prev_reference(true)
     end
 end)
 
