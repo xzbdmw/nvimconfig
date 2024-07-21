@@ -332,6 +332,8 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 
+keymap("n", "<leader>l", "f(a", { remap = true })
+
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><left>", function()
