@@ -30,7 +30,7 @@ return {
                 function()
                     local actions = require("telescope.actions")
                     local options = {
-                        attach_mappings = utils.checkout,
+                        attach_mappings = utils.telescope_checkout,
                     }
                     require("telescope.builtin").git_commits(options)
                 end,
@@ -90,7 +90,7 @@ return {
                 "<leader>rr",
                 function()
                     local options = {
-                        attach_mappings = utils.checkout,
+                        attach_mappings = utils.telescope_checkout,
                     }
                     local from, to = vim.fn.line("."), vim.fn.line("v")
                     options.from = from
@@ -103,7 +103,7 @@ return {
                 "<leader>cl",
                 function()
                     local options = {
-                        attach_mappings = utils.checkout,
+                        attach_mappings = utils.telescope_checkout,
                     }
                     require("telescope.builtin").git_bcommits_range(options)
                 end,

@@ -794,11 +794,15 @@ function M.update_diff_file_count()
     end
 end
 
-function M.checkout(_, map)
+function M.checkout(prompt_bufnr)
+    local actions = require("telescope.actions")
+    actions.git_checkout(prompt_bufnr)
+    FeedKeys("<leader>cb", "m")
+end
+
+function M.telescope_checkout(_, map)
     map({ "n" }, "<space>", function(prompt_bufnr)
-        local actions = require("telescope.actions")
-        actions.git_checkout(prompt_bufnr)
-        FeedKeys("<leader>cb", "m")
+        M.checkout(prompt_bufnr)
     end, { nowait = true, desc = "desc for which key" })
     return true
 end
