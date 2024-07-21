@@ -1,4 +1,7 @@
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
 local utils = require("config.utils")
+local builtin = require("telescope.builtin")
 local keymap = vim.keymap.set
 return {
     {
@@ -28,11 +31,13 @@ return {
             {
                 "<leader>sc",
                 function()
-                    local actions = require("telescope.actions")
                     local options = {
-                        attach_mappings = utils.telescope_checkout,
+                        attach_mappings = function(_, map)
+                            utils.map_checkout("<space>", map)
+                            return true
+                        end,
                     }
-                    require("telescope.builtin").git_commits(options)
+                    builtin.git_commits(options)
                 end,
                 desc = "Commits",
             },
@@ -43,16 +48,12 @@ return {
                         attach_mappings = function(_, map)
                             local maps = { "<space>", "<CR>" }
                             for _, m in ipairs(maps) do
-                                map({ "n" }, m, function(prompt_bufnr)
-                                    local actions = require("telescope.actions")
-                                    actions.git_checkout(prompt_bufnr)
-                                    FeedKeys("<leader>cb", "m")
-                                end, { nowait = true, desc = "desc for which key" })
+                                utils.map_checkout(m, map)
                             end
                             return true
                         end,
                     }
-                    require("telescope.builtin").git_branches(options)
+                    builtin.git_branches(options)
                 end,
                 desc = "Commits",
             },
@@ -62,7 +63,7 @@ return {
                     local options = {
                         attach_mappings = function(_, map)
                             map({ "n" }, "<space>", function(prompt_bufnr)
-                                require("telescope.actions").git_staging_toggle(prompt_bufnr)
+                                actions.git_staging_toggle(prompt_bufnr)
                             end, { nowait = true, desc = "Git stage file" })
                             return true
                         end,
@@ -70,9 +71,21 @@ return {
                     if vim.g.Base_commit ~= "" then
                         options.commit = vim.g.Base_commit
                     end
-                    require("telescope.builtin").git_status(options)
+                    builtin.git_status(options)
                 end,
                 desc = "Commits",
+            },
+            {
+                "<leader>cl",
+                function()
+                    local options = {
+                        attach_mappings = function(_, map)
+                            utils.map_checkout("<space>", map)
+                            return true
+                        end,
+                    }
+                    builtin.git_bcommits_range(options)
+                end,
             },
             {
                 "<leader>sS",
@@ -90,23 +103,17 @@ return {
                 "<leader>rr",
                 function()
                     local options = {
-                        attach_mappings = utils.telescope_checkout,
+                        attach_mappings = function(_, map)
+                            utils.map_checkout("<space>", map)
+                            return true
+                        end,
                     }
                     local from, to = vim.fn.line("."), vim.fn.line("v")
                     options.from = from
                     options.to = to
-                    require("telescope.builtin").git_bcommits_range(options)
+                    builtin.git_bcommits_range(options)
                 end,
                 mode = { "x" },
-            },
-            {
-                "<leader>cl",
-                function()
-                    local options = {
-                        attach_mappings = utils.telescope_checkout,
-                    }
-                    require("telescope.builtin").git_bcommits_range(options)
-                end,
             },
             {
                 "<C-p>",
@@ -245,8 +252,8 @@ return {
                         previewer = false,
                         attach_mappings = function(_, map)
                             map({ "i", "n" }, "<Cr>", function(prompt_bufnr)
-                                require("telescope.actions").select_default(prompt_bufnr)
-                                require("config.utils").adjust_view(0, 4)
+                                actions.select_default(prompt_bufnr)
+                                utils.adjust_view(0, 4)
                             end, { desc = "desc for which key" })
                             return true
                         end,
@@ -357,9 +364,6 @@ return {
             },
         },
         config = function()
-            local actions = require("telescope.actions")
-            local action_state = require("telescope.actions.state")
-
             local yank_selected_entry = function(prompt_bufnr)
                 local entry_display = require("telescope.pickers.entry_display")
                 local picker = action_state.get_current_picker(prompt_bufnr)
@@ -388,7 +392,7 @@ return {
             })
 
             local goto_next_hunk_cr = function(prompt_bufnr)
-                require("telescope.actions").select_default(prompt_bufnr)
+                actions.select_default(prompt_bufnr)
                 local ok = false
                 local fn = function()
                     if ok then
@@ -431,13 +435,16 @@ return {
                 end,
             })
 
-            local function gitsign_change_base_pre(prompt_bufnr)
+            local function gitsign_change_base_pre(prompt_bufnr, checkout)
                 local selection = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
                 local commit = selection.value
 
                 local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
                 if result.code == 0 then
+                    if checkout ~= nil then
+                        checkout()
+                    end
+                    actions.close(prompt_bufnr)
                     local splits = vim.split(result.stdout, "\n")
                     vim.g.Base_commit = splits[1]:sub(1, 7)
                     Signs_staged = nil
@@ -471,28 +478,6 @@ return {
                     vim.cmd("Gitsigns attach")
                 end, 100)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
-            end
-
-            local function gitsign_diff_with_pre(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
-                local commit = selection.value
-
-                local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
-                if result.code == 0 then
-                    utils.checkout(prompt_bufnr)
-                    actions.close(prompt_bufnr)
-                    local splits = vim.split(result.stdout, "\n")
-                    vim.g.Base_commit = splits[1]:sub(1, 7)
-                    Signs_staged = nil
-                    vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
-                end
-                require("gitsigns").change_base(vim.g.Base_commit, true)
-                utils.update_diff_file_count()
-                utils.set_git_winbar()
-                vim.defer_fn(function()
-                    vim.cmd("Gitsigns attach")
-                end, 100)
-                vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
             end
 
             local focus_preview = function(prompt_bufnr)
@@ -882,7 +867,9 @@ return {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
                                 ["c"] = function(prompt_bufnr)
-                                    gitsign_diff_with_pre(prompt_bufnr)
+                                    gitsign_change_base_pre(prompt_bufnr, function()
+                                        utils.checkout(action_state.get_selected_entry().value)
+                                    end)
                                 end,
                             },
                             i = {
@@ -915,7 +902,9 @@ return {
                                     FeedKeys("l/", "m")
                                 end,
                                 ["c"] = function(prompt_bufnr)
-                                    gitsign_diff_with_pre(prompt_bufnr)
+                                    gitsign_change_base_pre(prompt_bufnr, function()
+                                        utils.checkout(action_state.get_selected_entry().value)
+                                    end)
                                 end,
                             },
                             i = {

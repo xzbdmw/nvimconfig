@@ -161,15 +161,9 @@ end, opts)
 
 keymap("n", "<leader>xc", function()
     if vim.g.Base_commit ~= "" then
-        local result = vim.system({ "git", "checkout", vim.g.Base_commit }):wait()
-        if result.code ~= 0 then
-            vim.notify(result.stderr, vim.log.levels.WARN)
-        end
-        if result.code == 0 then
-            vim.cmd("checktime")
+        utils.checkout(vim.g.Base_commit, function()
             FeedKeys("<leader>cb", "m")
-            vim.notify(result.stdout, vim.log.levels.INFO)
-        end
+        end)
     end
 end, opts)
 

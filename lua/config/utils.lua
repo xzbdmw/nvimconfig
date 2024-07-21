@@ -794,17 +794,30 @@ function M.update_diff_file_count()
     end
 end
 
-function M.checkout(prompt_bufnr)
-    local actions = require("telescope.actions")
-    actions.git_checkout(prompt_bufnr)
-    FeedKeys("<leader>cb", "m")
+function M.checkout(commit, success_fn)
+    local result = vim.system({ "git", "checkout", commit }):wait()
+    if result.code ~= 0 then
+        vim.notify(result.stderr, vim.log.levels.WARN)
+    end
+    if result.code == 0 then
+        if success_fn ~= nil then
+            success_fn()
+        end
+        vim.cmd("checktime")
+        vim.notify(result.stdout, vim.log.levels.INFO)
+    end
 end
 
-function M.telescope_checkout(_, map)
-    map({ "n" }, "<space>", function(prompt_bufnr)
-        M.checkout(prompt_bufnr)
+function M.map_checkout(key, map)
+    local action_state = require("telescope.actions.state")
+    local actions = require("telescope.actions")
+    map({ "n" }, key, function(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        M.checkout(selection.value, function()
+            actions.close(prompt_bufnr)
+            FeedKeys("<leader>cb", "m")
+        end)
     end, { nowait = true, desc = "desc for which key" })
-    return true
 end
 
 function M.set_git_winbar()
