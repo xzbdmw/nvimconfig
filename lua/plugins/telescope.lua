@@ -37,10 +37,20 @@ return {
                 desc = "Commits",
             },
             {
-                "<leader>bc",
+                "<leader>cB",
                 function()
                     local options = {
-                        attach_mappings = utils.checkout,
+                        attach_mappings = function(_, map)
+                            local maps = { "<space>", "<CR>" }
+                            for _, m in ipairs(maps) do
+                                map({ "n" }, m, function(prompt_bufnr)
+                                    local actions = require("telescope.actions")
+                                    actions.git_checkout(prompt_bufnr)
+                                    FeedKeys("<leader>cb", "m")
+                                end, { nowait = true, desc = "desc for which key" })
+                            end
+                            return true
+                        end,
                     }
                     require("telescope.builtin").git_branches(options)
                 end,
