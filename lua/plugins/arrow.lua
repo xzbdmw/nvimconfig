@@ -18,6 +18,24 @@ return {
             lines = 7,
             zindex = 20,
         },
+        custom_actions = {
+            open = function(target_file_name, current_file_name)
+                vim.api.nvim_create_autocmd("BufEnter", {
+                    once = true,
+                    callback = function()
+                        vim.api.nvim_create_autocmd("CursorMoved", {
+                            once = true,
+                            callback = function()
+                                if vim.fn.line(".") > vim.fn.winheight(0) / 2 then
+                                    vim.cmd("normal zz")
+                                end
+                            end,
+                        })
+                    end,
+                })
+                vim.cmd("e " .. target_file_name)
+            end, -- target_file_name = file selected to be open, current_file_name = filename from where this was called
+        },
         buffer_leader_key = "'",
         show_icons = true,
         leader_key = ";", -- Recommended to be a single key

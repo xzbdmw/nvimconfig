@@ -459,6 +459,7 @@ return {
                 actions.close(prompt_bufnr)
                 local commit = selection.value
                 vim.g.Base_commit = commit
+                ---@diagnostic disable-next-line: assign-type-mismatch
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
                 local sts = vim.split(selection.ordinal, " ")

@@ -109,6 +109,7 @@ return {
                 MasonNormal = { link = "MyNormalDocFloat" },
                 TroubleNormal = { link = "Normal" },
                 TroubleTextError = { fg = "#B4637A" },
+                GrugFarResultsMatch = { link = "Search" },
                 TroubleTextWarning = { fg = "#EA9D34" },
                 UfoFoldedBg = { bg = "#EBE8DB" },
                 ArrowIcon = { fg = "#1D6D8D" },
