@@ -443,14 +443,12 @@ return {
                     Signs_staged = nil
                     vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
                 end
-                pcall(function()
-                    require("gitsigns").change_base(vim.g.Base_commit, true)
-                    utils.update_diff_file_count()
-                    utils.set_git_winbar()
-                    vim.defer_fn(function()
-                        vim.cmd("Gitsigns attach")
-                    end, 100)
-                end)
+                require("gitsigns").change_base(vim.g.Base_commit, true)
+                utils.update_diff_file_count()
+                utils.set_git_winbar()
+                vim.defer_fn(function()
+                    vim.cmd("Gitsigns attach")
+                end, 100)
                 vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
             end
 
@@ -466,14 +464,12 @@ return {
                 for i = 2, #sts do
                     vim.g.Base_commit_msg = vim.g.Base_commit_msg .. sts[i] .. " "
                 end
-                pcall(function()
-                    require("gitsigns").change_base(commit, true)
-                    utils.update_diff_file_count()
-                    utils.set_git_winbar()
-                    vim.defer_fn(function()
-                        vim.cmd("Gitsigns attach")
-                    end, 100)
-                end)
+                require("gitsigns").change_base(commit, true)
+                utils.update_diff_file_count()
+                utils.set_git_winbar()
+                vim.defer_fn(function()
+                    vim.cmd("Gitsigns attach")
+                end, 100)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
             end
 
