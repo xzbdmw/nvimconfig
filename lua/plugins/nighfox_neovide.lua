@@ -311,6 +311,7 @@ return {
                 CurSearch = { link = "IncSearch" },
                 FlashCurrent = { link = "IncSearch" },
                 FlashLabel = { link = "LeapMatch" },
+                FlashLabelCursorline = { fg = "#aa3622", bg = "#F0ECDE", style = "italic" },
                 FLashPrompt = { fg = "#364E57", style = "italic,underline" },
                 NoiceCmdlineIconSearch = { fg = "#BEACC5" },
                 NoiceFormatLevelWarn = { fg = "#ac5402", bg = "#EEE8D5" },
