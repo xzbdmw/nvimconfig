@@ -37,7 +37,7 @@ return {
                 desc = "Commits",
             },
             {
-                "<leader>cB",
+                "<leader>xb",
                 function()
                     local options = {
                         attach_mappings = function(_, map)
@@ -549,6 +549,7 @@ return {
                         end
                     end,
                 })
+
                 keymap("n", "h", function()
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
                     closed = true
@@ -560,17 +561,20 @@ return {
                     closed = true
                     api.nvim_del_autocmd(id)
                 end, { buffer = bufnr })
+
                 keymap("n", "zz", function()
                     vim.cmd("norm! zz")
                 end, { buffer = bufnr })
+
                 keymap("n", "<cr>", function()
-                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
-                    FeedKeys("<CR>", "m")
+                    FeedKeys("h<CR>", "m")
                 end, { buffer = bufnr })
+
                 keymap("n", "q", function()
                     _G.hide_cursor(function() end)
                     actions.close(prompt_bufnr)
                 end, { buffer = bufnr })
+
                 if checkout_callback ~= nil then
                     keymap("n", "<space>", checkout_callback, { nowait = true, buffer = bufnr })
                 end
