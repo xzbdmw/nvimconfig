@@ -28,6 +28,7 @@ return {
             {
                 "<leader>sc",
                 function()
+                    local actions = require("telescope.actions")
                     local options = {
                         attach_mappings = utils.checkout,
                     }
@@ -37,7 +38,12 @@ return {
             },
             {
                 "<leader>bc",
-                "<cmd>Telescope git_branches<cr>",
+                function()
+                    local options = {
+                        attach_mappings = utils.checkout,
+                    }
+                    require("telescope.builtin").git_branches(options)
+                end,
                 desc = "Commits",
             },
             {
@@ -47,7 +53,7 @@ return {
                         attach_mappings = function(_, map)
                             map({ "n" }, "<space>", function(prompt_bufnr)
                                 require("telescope.actions").git_staging_toggle(prompt_bufnr)
-                            end, { nowait = true, desc = "desc for which key" })
+                            end, { nowait = true, desc = "Git stage file" })
                             return true
                         end,
                     }

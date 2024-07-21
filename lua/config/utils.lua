@@ -796,21 +796,9 @@ end
 
 function M.checkout(_, map)
     map({ "n" }, "<space>", function(prompt_bufnr)
-        local action_state = require("telescope.actions.state")
-        local selection = action_state.get_selected_entry()
-        require("telescope.actions").close(prompt_bufnr)
-        local commit = selection.value
-        local result = vim.system({ "git", "checkout", commit }):wait()
-        if result.code ~= 0 then
-            vim.notify(result.stderr, vim.log.levels.WARN)
-        end
-        if result.code == 0 then
-            require("gitsigns").detach_all()
-            vim.cmd("e!")
-            vim.cmd("BufDelOthers")
-            FeedKeys("<leader>cb", "m")
-            vim.notify(result.stdout, vim.log.levels.INFO)
-        end
+        local actions = require("telescope.actions")
+        actions.git_checkout(prompt_bufnr)
+        FeedKeys("<leader>cb", "m")
     end, { nowait = true, desc = "desc for which key" })
     return true
 end
