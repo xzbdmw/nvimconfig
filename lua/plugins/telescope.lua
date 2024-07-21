@@ -911,6 +911,9 @@ return {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
+                                ["/"] = function(prompt_bufnr)
+                                    FeedKeys("l/", "m")
+                                end,
                                 ["c"] = function(prompt_bufnr)
                                     gitsign_diff_with_pre(prompt_bufnr)
                                 end,
