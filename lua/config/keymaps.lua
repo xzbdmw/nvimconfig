@@ -314,6 +314,30 @@ end, { desc = "swicth window" })
 
 keymap("x", "<C-r>", '"', opts)
 
+keymap("i", "<D-v>", function()
+    local cur_line = api.nvim_get_current_line()
+    local _, first_char = cur_line:find("^%s*")
+    local row, col = unpack(api.nvim_win_get_cursor(0))
+    local s = api.nvim_buf_get_text(0, row - 1, 0, row - 1, col, {})[1]
+    local e = api.nvim_buf_get_text(0, row - 1, col, row - 1, #cur_line, {})[1]
+    local is_empty = first_char == col
+    local body = vim.fn.getreg('"')
+    local lines = vim.split(body, "\n", { plain = false, trimempty = true })
+    if #lines == 1 then
+        api.nvim_put({ vim.trim(body) }, "c", false, true)
+    else
+        local last_col = #lines[#lines]
+        if not is_empty then
+            lines[1] = s .. vim.trim(lines[1])
+        end
+        lines[#lines] = lines[#lines] .. e
+        vim.cmd('norm! "_dd')
+        api.nvim_win_set_cursor(0, { row == 1 and 1 or row - 1, 0 })
+        api.nvim_put(lines, "l", true, true)
+        api.nvim_win_set_cursor(0, { row + #lines - 1, last_col })
+    end
+end)
+
 keymap({ "n", "o" }, "0", "^", opts)
 
 keymap("n", "<D-a>", "ggVG", opts)
@@ -341,14 +365,6 @@ end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
-
-keymap({ "c", "i" }, "<d-v>", function()
-    local body = vim.fn.getreg('"')
-    local reformated_body = body:gsub("%s*\r?\n%s*", " "):gsub("^%s*", ""):gsub("%s*$", "")
-    vim.fn.setreg("l", reformated_body, vim.fn.getregtype("'"))
-    _G.no_animation(_G.CI)
-    return "<c-r>l"
-end, { expr = true })
 
 -- don't messy up indent
 keymap("i", "<C-r>", "<C-r><C-o>", opts)
