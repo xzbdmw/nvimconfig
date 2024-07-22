@@ -388,7 +388,14 @@ keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)
 
 -- Terminal mapping
--- keymap("t", "<c-f>", "<M-right>", opts)
+keymap("t", "<c-f>", function()
+    local filetype = vim.bo.filetype
+    if filetype == "lazyterm" then
+        return "<M-right>"
+    else
+        return "<c-f>"
+    end
+end, { expr = true })
 keymap("t", "<c-b>", "<M-left>", opts)
 keymap("t", "<D-v>", function()
     local next_char_code = 48
