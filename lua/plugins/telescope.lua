@@ -713,7 +713,7 @@ return {
                                 FeedKeys("z", "n")
                             end,
                             ["<Tab>"] = focus_preview,
-                            ["<c-f>"] = "to_fuzzy_refine",
+                            ["<c-g>"] = "to_fuzzy_refine",
                             ["("] = function()
                                 FeedKeys("\\(", "n")
                             end,
@@ -734,6 +734,12 @@ return {
                             end,
                             ["<C-u>"] = function()
                                 FeedKeys("<C-CR>", "t")
+                            end,
+                            ["<C-b>"] = function()
+                                FeedKeys("<s-left>", "t")
+                            end,
+                            ["<C-f>"] = function()
+                                FeedKeys("<s-right>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
                                 ST = vim.uv.hrtime()
@@ -759,7 +765,7 @@ return {
                         },
                         n = {
                             ["<Tab>"] = focus_preview,
-                            ["<C-f>"] = function(bufnr)
+                            ["<C-g>"] = function(bufnr)
                                 vim.cmd("startinsert")
                                 actions.to_fuzzy_refine(bufnr)
                             end,
