@@ -25,7 +25,15 @@ return {
         -- { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
 
         -- visual mode paste
-        { "p", "<Plug>(YankyPutBefore)", { desc = "Paste without copying replaced text" }, mode = { "x" } },
+        {
+            "p",
+            function()
+                require("yanky").put("p", true, function() end)
+                FeedKeys("c<d-v><esc>", "m")
+            end,
+            { desc = "Paste without copying replaced text" },
+            mode = { "x" },
+        },
         { "<D-c>", "<Plug>(YankyYank)", mode = { "n", "v", "i" } },
 
         -- force paste the same line
@@ -46,7 +54,7 @@ return {
             storage = "shada",
             storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
             sync_with_numbered_registers = true,
-            cancel_event = "update",
+            cancel_event = "move",
             ignore_registers = { "_" },
             update_register_on_cycle = false,
         },
