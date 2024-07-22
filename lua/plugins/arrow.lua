@@ -20,6 +20,10 @@ return {
         },
         custom_actions = {
             open = function(target_file_name, current_file_name)
+                local path = vim.fn.expand("%:~:.:h") .. "/" .. vim.fn.expand("%:t")
+                if path == target_file_name then
+                    return
+                end
                 vim.api.nvim_create_autocmd("BufEnter", {
                     once = true,
                     callback = function()
@@ -34,7 +38,7 @@ return {
                     end,
                 })
                 vim.cmd("e " .. target_file_name)
-            end, -- target_file_name = file selected to be open, current_file_name = filename from where this was called
+            end,
         },
         buffer_leader_key = "'",
         show_icons = true,
