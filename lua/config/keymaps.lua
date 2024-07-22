@@ -382,7 +382,8 @@ end, { expr = true })
 
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
--- keymap("c", "<c-f>", "<S-Right>", opts)
+keymap("c", "<c-f>", "<S-Right>", opts)
+keymap("c", "<c-'>", "<c-f>", opts)
 keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)
 
