@@ -131,6 +131,12 @@ return {
                 ["<C-e>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
+                    end
+                    fallback()
+                end),
+                ["<C-c>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
                     else
                         fallback()
                     end
