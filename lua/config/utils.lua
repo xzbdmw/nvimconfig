@@ -117,7 +117,7 @@ function M.noice_incsearch_at_start()
     local noice = require("noice.ui.cmdline")
     local win = noice.position.win
     local cursor = noice.position.cursor
-    return cursor == 3
+    return cursor
 end
 
 function M.get_non_float_win_count()
