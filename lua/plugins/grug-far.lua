@@ -1,6 +1,7 @@
 return {
     "MagicDuck/grug-far.nvim",
     version = false,
+    cmd = { "GrugFar" },
     config = function()
         require("grug-far").setup({
             -- debounce milliseconds for issuing search while user is typing
