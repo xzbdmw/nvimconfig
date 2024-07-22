@@ -466,7 +466,19 @@ return {
                     fallback()
                 end, { "i", "c" }),
                 ["<C-a>"] = cmp.mapping(function(fallback)
-                    fallback()
+                    local is_cmdline = vim.fn.getcmdline()
+                    if vim.startswith(is_cmdline, "IncRename") then
+                        if utils.noice_incsearch_at_start() then
+                            return
+                        end
+                        local length = #is_cmdline
+                        local shift = #is_cmdline - 10
+                        for i = 1, shift do
+                            FeedKeys("<left>", "n")
+                        end
+                    else
+                        fallback()
+                    end
                 end, { "i", "c" }),
             }),
             sources = cmp.config.sources({

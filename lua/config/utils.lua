@@ -113,6 +113,13 @@ function M.close_win()
     end
 end
 
+function M.noice_incsearch_at_start()
+    local noice = require("noice.ui.cmdline")
+    local win = noice.position.win
+    local cursor = noice.position.cursor
+    return cursor == 3
+end
+
 function M.get_non_float_win_count()
     local window_count = #api.nvim_list_wins()
     for _, win in pairs(api.nvim_list_wins()) do
