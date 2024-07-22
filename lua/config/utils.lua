@@ -130,7 +130,7 @@ local has_map = false
 local original_keymaps = {}
 
 function M.insert_paste()
-    vim.o.eventignore = "all"
+    vim.o.eventignore = "TextChangedI"
     _G.no_animation(_G.CI)
     local cur_line = api.nvim_get_current_line()
     local _, first_char = cur_line:find("^%s*")
@@ -145,7 +145,7 @@ function M.insert_paste()
     else
         local last_col = #lines[#lines]
         if not is_empty then
-            lines[1] = s .. vim.trim(lines[1])
+            lines[1] = s .. lines[1]
         end
         lines[#lines] = lines[#lines] .. e
         vim.cmd('norm! "_dd')
