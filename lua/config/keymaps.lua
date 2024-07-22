@@ -333,7 +333,11 @@ keymap("i", "<D-v>", function()
         lines[#lines] = lines[#lines] .. e
         vim.cmd('norm! "_dd')
         api.nvim_win_set_cursor(0, { row == 1 and 1 or row - 1, 0 })
-        api.nvim_put(lines, "l", true, true)
+        if row == 1 then
+            api.nvim_put(lines, "l", false, true)
+        else
+            api.nvim_put(lines, "l", true, true)
+        end
         api.nvim_win_set_cursor(0, { row + #lines - 1, last_col })
     end
 end)
