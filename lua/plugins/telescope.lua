@@ -725,7 +725,7 @@ return {
                                 FeedKeys("<C-q>", "m")
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
-                            ["<C-e>"] = function(bufnr)
+                            ["<C-c>"] = function(bufnr)
                                 _G.last = nil
                                 actions.close(bufnr)
                             end,
@@ -740,6 +740,12 @@ return {
                             end,
                             ["<C-f>"] = function()
                                 FeedKeys("<s-right>", "t")
+                            end,
+                            ["<C-a>"] = function()
+                                FeedKeys("<Home>", "t")
+                            end,
+                            ["<C-e>"] = function()
+                                FeedKeys("<END>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
                                 ST = vim.uv.hrtime()
@@ -764,6 +770,10 @@ return {
                             end,
                         },
                         n = {
+                            ["<C-c>"] = function(bufnr)
+                                _G.last = nil
+                                actions.close(bufnr)
+                            end,
                             ["<Tab>"] = focus_preview,
                             ["<C-g>"] = function(bufnr)
                                 vim.cmd("startinsert")
