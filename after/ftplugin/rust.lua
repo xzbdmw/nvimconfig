@@ -1,3 +1,4 @@
+local utils = require("config.utils")
 local bufnr = api.nvim_get_current_buf()
 local keymap = vim.keymap.set
 keymap({ "n", "v" }, "gl", function()
@@ -8,11 +9,20 @@ keymap({ "n", "v" }, "gl", function()
     end, 100)
 end, { silent = true, buffer = bufnr, desc = "lsp hover in rust" })
 
+keymap({ "v", "n" }, "<leader>vp", function()
+    local w = utils.get_cword()
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    local _, col = vim.api.nvim_get_current_line():find("^%s*")
+    ---@diagnostic disable-next-line: param-type-mismatch
+    local edits = string.rep(" ", col, "") .. string.format("dbg(&%s);", w)
+    vim.api.nvim_buf_set_lines(0, row, row, false, { edits })
+end)
+
 keymap("n", "<leader>cp", function()
     vim.cmd.RustLsp("explainError")
 end, { silent = true, buffer = bufnr, desc = "rust hover type info" })
-keymap("n", "<leader><C-e>", function()
-    vim.cmd.RustLsp("renderDiagnostic")
+keymap("n", "<C-e>", function()
+    vim.cmd("RustLsp renderDiagnostic cycle")
 end, { silent = true, buffer = bufnr, desc = "rust render diagnostics" })
 keymap({ "x" }, "<Tab>", function()
     vim.cmd.RustLsp({ "hover", "range" })
