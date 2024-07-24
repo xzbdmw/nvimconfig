@@ -209,14 +209,7 @@ return {
                 "<leader>sw",
                 function()
                     local filetype = vim.bo.filetype
-                    local mode = api.nvim_get_mode()
-                    local w
-                    if mode.mode == "v" or mode.mode == "V" then
-                        vim.cmd([[noautocmd sil norm! "vy]])
-                        w = vim.fn.getreg("v")
-                    else
-                        w = vim.fn.expand("<cword>")
-                    end
+                    local w = utils.get_cword()
                     require("custom.telescope-pikers").prettyGrepPicker("egrepify", w, filetype)
                 end,
                 mode = { "n", "v" },

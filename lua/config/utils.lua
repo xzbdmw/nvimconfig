@@ -9,6 +9,18 @@ local function get_normal_bg_color()
     return bg_color
 end
 
+function M.get_cword()
+    local mode = api.nvim_get_mode()
+    local w
+    if mode.mode == "v" or mode.mode == "V" then
+        vim.cmd([[noautocmd sil norm! "vy]])
+        w = vim.fn.getreg("v")
+    else
+        w = vim.fn.expand("<cword>")
+    end
+    return w
+end
+
 function M.load_appropriate_theme()
     local bg_color = get_normal_bg_color()
     if bg_color == "#24273a" then
@@ -911,7 +923,7 @@ function M.set_git_winbar()
             expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
             expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
         else
-            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             expr = expr .. "%#Comment#" .. " "
         end
     end
