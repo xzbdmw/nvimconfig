@@ -192,7 +192,7 @@ return {
                 LazyNormal = { link = "Normal" },
                 MyNormalFloat = { bg = "#FAF7E6" },
                 MyNormalDocFloat = { bg = "#f1efe1" },
-                FloatBorder = { bg = "#FAF7E6" },
+                FloatBorder = { bg = "#faf7e8" },
                 LspFloatWinBorder = { link = "FloatBorder" },
                 CursorLine = { bg = "#F0ECDE" },
                 FloatCursorLine = { bg = "#EBE8DB" },

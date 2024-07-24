@@ -122,9 +122,10 @@ vim.g.rustaceanvim = {
             replace_builtin_hover = true,
         },
         float_win_config = {
-            border = "rounded",
+            border = "solid",
             max_width = 140,
             max_height = 15,
+            width = 20,
             auto_focus = false,
             winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
         },
