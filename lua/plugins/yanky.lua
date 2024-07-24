@@ -20,11 +20,6 @@ return {
             expr = true,
         },
         { "P", "<Plug>(YankyPutBefore)" },
-
-        -- { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" } },
-        -- { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" } },
-
-        -- visual mode paste
         {
             "p",
             function()
@@ -40,7 +35,6 @@ return {
         {
             "<leader>P",
             function()
-                YANK = vim.uv.hrtime()
                 return "<Plug>(YankyPutAfterCharwiseJoined)"
             end,
             mode = { "n", "x" },
