@@ -566,6 +566,13 @@ return {
                     FeedKeys("h<CR>", "m")
                 end, { buffer = bufnr })
 
+                keymap("n", "K", function()
+                    actions.preview_scrolling_up(prompt_bufnr)
+                end, { buffer = bufnr })
+                keymap("n", "J", function()
+                    actions.preview_scrolling_down(prompt_bufnr)
+                end, { buffer = bufnr })
+
                 keymap("n", "q", function()
                     _G.hide_cursor(function() end)
                     actions.close(prompt_bufnr)
