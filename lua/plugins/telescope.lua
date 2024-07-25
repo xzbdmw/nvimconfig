@@ -402,7 +402,7 @@ return {
                     end
                 end
                 fn()
-                local times = { 30, 60, 90, 120, 150, 180 }
+                local times = { 30, 60, 90, 120, 150, 180, 210, 240, 300, 400, 500 }
                 for _, timeout in ipairs(times) do
                     vim.defer_fn(fn, timeout)
                 end
