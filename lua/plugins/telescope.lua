@@ -63,6 +63,9 @@ return {
                     local options = {
                         attach_mappings = function(_, map)
                             map({ "n" }, "<space>", function(prompt_bufnr)
+                                if utils.is_detached() then
+                                    return
+                                end
                                 actions.git_staging_toggle(prompt_bufnr)
                             end, { nowait = true, desc = "Git stage file" })
                             return true
@@ -848,12 +851,17 @@ return {
                         mappings = {
                             n = {
                                 ["<Tab>"] = focus_preview,
-                                ["<c-o>"] = actions.git_staging_toggle,
                                 ["<cr>"] = goto_next_hunk_cr,
                                 ["c"] = function()
+                                    if utils.is_detached() then
+                                        return
+                                    end
                                     Open_git_commit()
                                 end,
                                 ["a"] = function(prompt_bufnr)
+                                    if utils.is_detached() then
+                                        return
+                                    end
                                     local result = vim.system({ "git", "status", "--short" }):wait()
                                     local has_unstaged_file = false
                                     if result.code == 0 then
@@ -873,12 +881,18 @@ return {
                                     utils.refresh_telescope_git_status()
                                 end,
                                 ["d"] = function(prompt_bufnr)
+                                    if utils.is_detached() then
+                                        return
+                                    end
                                     local selection = action_state.get_selected_entry()
                                     vim.system({ "git", "reset", "--", selection.value }):wait()
                                     vim.system({ "git", "checkout", "--", selection.value }):wait()
                                     utils.refresh_telescope_git_status()
                                 end,
                                 ["D"] = function(prompt_bufnr)
+                                    if utils.is_detached() then
+                                        return
+                                    end
                                     vim.system({ "git", "reset", "--hard", "HEAD" }):wait()
                                     vim.system({ "git", "clean", "-", "fd" }):wait()
                                     utils.refresh_telescope_git_status()

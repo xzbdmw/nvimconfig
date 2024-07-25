@@ -93,6 +93,14 @@ function M.refresh_telescope_git_status()
     end
 end
 
+function M.is_detached()
+    if vim.g.Base_commit ~= "" then
+        vim.notify("Branch is detached", vim.log.levels.WARN)
+        return true
+    end
+    return false
+end
+
 function Open_git_commit()
     vim.system({ "git", "commit" }):wait()
     local previous_win = vim.api.nvim_get_current_win()
