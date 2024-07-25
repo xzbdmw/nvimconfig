@@ -1,6 +1,7 @@
 vim.g.root_spec = { "cwd" }
 vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
+vim.o.syntax = "manual"
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000

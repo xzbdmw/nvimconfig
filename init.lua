@@ -106,7 +106,7 @@ api.nvim_create_autocmd("FileType", {
     pattern = { "git" },
     callback = function()
         vim.b.miniindentscope_disable = true
-        vim.cmd([[syntax on]])
+        vim.cmd("setlocal syntax=ON")
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
     end,
 })
@@ -173,7 +173,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "undotree", "diff" },
     callback = function()
-        vim.cmd([[syntax on]])
+        vim.cmd("setlocal syntax=ON")
     end,
 })
 
