@@ -9,7 +9,21 @@ return {
             mode = { "n", "x" },
         },
 
-        { "<leader>p", "<Plug>(YankyPreviousEntry)" },
+        {
+            "<leader>p",
+            function()
+                local keymaps = vim.api.nvim_get_keymap("n")
+                for _, keymap in ipairs(keymaps) do
+                    ---@diagnostic disable-next-line: undefined-field
+                    if keymap.lhs == " na" then
+                        vim.keymap.del("n", " na")
+                        break
+                    end
+                end
+                return "<Plug>(YankyPreviousEntry)"
+            end,
+            expr = true,
+        },
         { "<leader>n", "<Plug>(YankyNextEntry)" },
         {
             "p",
