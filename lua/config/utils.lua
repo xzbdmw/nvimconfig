@@ -63,6 +63,36 @@ local function check_trouble()
     return ret
 end
 
+function M.refresh_telescope_git_status()
+    vim.o.eventignore = ""
+    local windows = vim.api.nvim_list_wins()
+    local prompt_bufnr = nil
+    for i, window in ipairs(windows) do
+        local b = vim.api.nvim_win_get_buf(window)
+        local ft = vim.bo[b].filetype
+        if ft == "TelescopePrompt" then
+            prompt_bufnr = b
+            break
+        end
+    end
+    if prompt_bufnr ~= nil then
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+        local picker = action_state.get_current_picker(prompt_bufnr)
+
+        -- temporarily register a callback which keeps selection on refresh
+        local selection = picker:get_selection_row()
+        local callbacks = { unpack(picker._completion_callbacks) } -- shallow copy
+        picker:register_completion_callback(function(self)
+            self:set_selection(selection)
+            self._completion_callbacks = callbacks
+        end)
+
+        -- refresh
+        picker:refresh(vim.g.git_finer(), { reset_prompt = false })
+    end
+end
+
 function Open_git_commit()
     vim.system({ "git", "commit" }):wait()
     local previous_win = vim.api.nvim_get_current_win()
@@ -107,35 +137,7 @@ function Open_git_commit()
         })
         local finish = function(data)
             _G.hide_cursor(function() end)
-            vim.schedule(function()
-                vim.o.eventignore = ""
-                local windows = vim.api.nvim_list_wins()
-                local prompt_bufnr = nil
-                for i, window in ipairs(windows) do
-                    local b = vim.api.nvim_win_get_buf(window)
-                    local ft = vim.bo[b].filetype
-                    if ft == "TelescopePrompt" then
-                        prompt_bufnr = b
-                        break
-                    end
-                end
-                if prompt_bufnr ~= nil then
-                    local actions = require("telescope.actions")
-                    local action_state = require("telescope.actions.state")
-                    local picker = action_state.get_current_picker(prompt_bufnr)
-
-                    -- temporarily register a callback which keeps selection on refresh
-                    local selection = picker:get_selection_row()
-                    local callbacks = { unpack(picker._completion_callbacks) } -- shallow copy
-                    picker:register_completion_callback(function(self)
-                        self:set_selection(selection)
-                        self._completion_callbacks = callbacks
-                    end)
-
-                    -- refresh
-                    picker:refresh(vim.g.git_finer(), { reset_prompt = false })
-                end
-            end)
+            vim.schedule(M.refresh_telescope_git_status)
         end
         vim.api.nvim_create_autocmd("WinClosed", {
             once = true,

@@ -853,6 +853,36 @@ return {
                                 ["c"] = function()
                                     Open_git_commit()
                                 end,
+                                ["a"] = function(prompt_bufnr)
+                                    local result = vim.system({ "git", "status", "--short" }):wait()
+                                    local has_unstaged_file = false
+                                    if result.code == 0 then
+                                        local results = vim.split(result.stdout, "\n", { trimempty = true })
+                                        for _, line in ipairs(results) do
+                                            if line:sub(1, 1) ~= "M" then
+                                                has_unstaged_file = true
+                                                break
+                                            end
+                                        end
+                                    end
+                                    if has_unstaged_file then
+                                        vim.system({ "git", "add", "-A" }):wait()
+                                    else
+                                        vim.system({ "git", "reset" }):wait()
+                                    end
+                                    utils.refresh_telescope_git_status()
+                                end,
+                                ["d"] = function(prompt_bufnr)
+                                    local selection = action_state.get_selected_entry()
+                                    vim.system({ "git", "reset", "--", selection.value }):wait()
+                                    vim.system({ "git", "checkout", "--", selection.value }):wait()
+                                    utils.refresh_telescope_git_status()
+                                end,
+                                ["D"] = function(prompt_bufnr)
+                                    vim.system({ "git", "reset", "--hard", "HEAD" }):wait()
+                                    vim.system({ "git", "clean", "-", "fd" }):wait()
+                                    utils.refresh_telescope_git_status()
+                                end,
                             },
                             i = {
                                 ["<Tab>"] = focus_preview,
