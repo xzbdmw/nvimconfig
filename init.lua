@@ -126,12 +126,16 @@ api.nvim_create_autocmd("TabEnter", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit" },
     callback = function()
+        local buf
         vim.api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
                 vim.cmd("norm! gg")
                 FeedKeys("a", "m")
-                vim.cmd("syntax on")
+                vim.cmd("setlocal syntax=ON")
+                vim.schedule(function()
+                    buf = vim.api.nvim_get_current_buf()
+                end)
             end,
         })
         vim.defer_fn(function()
@@ -146,8 +150,22 @@ api.nvim_create_autocmd("FileType", {
                     utils.update_diff_file_count()
                     utils.set_git_winbar()
                 end, 50)
-                return "<cmd>wq<CR><esc>"
-            end, { expr = true, buffer = true })
+
+                vim.cmd("w")
+                if vim.api.nvim_get_mode().mode == "i" then
+                    FeedKeys("<esc>", "n")
+                end
+                vim.cmd(string.format("bw! %d", buf))
+                local result = vim.system(
+                    { "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" },
+                    nil,
+                    function(result)
+                        if result.code == 0 then
+                            vim.notify(result.stdout, vim.log.levels.INFO)
+                        end
+                    end
+                )
+            end, { buffer = true })
         end, 100)
     end,
 })

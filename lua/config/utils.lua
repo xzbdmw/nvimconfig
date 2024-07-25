@@ -63,6 +63,93 @@ local function check_trouble()
     return ret
 end
 
+function Open_git_commit()
+    vim.system({ "git", "commit" }):wait()
+    local previous_win = vim.api.nvim_get_current_win()
+    local previous_buf = vim.api.nvim_win_get_buf(previous_win)
+    local file_path = vim.fn.getcwd() .. "/.git/COMMIT_EDITMSG"
+    local filetype = vim.bo[previous_buf].filetype
+    local buf = vim.api.nvim_create_buf(false, false)
+    vim.api.nvim_buf_call(buf, function()
+        vim.cmd("e " .. file_path)
+    end)
+    vim.keymap.set("n", "q", function()
+        vim.cmd(string.format("bw! %d", buf))
+    end, { buffer = buf })
+    local function modify_commit_message(bufnr)
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+        local new_lines = {}
+        table.insert(new_lines, "")
+        local start_collecting = false
+
+        for _, line in ipairs(lines) do
+            if line:match("^# Changes to be committed:") then
+                start_collecting = true
+            end
+            if start_collecting then
+                table.insert(new_lines, line)
+            end
+        end
+
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+    end
+    modify_commit_message(buf)
+    if filetype == "lazyterm" or filetype == "TelescopePrompt" or filetype == "TelescopeResults" then
+        local winid = vim.api.nvim_open_win(buf, true, {
+            style = "minimal",
+            row = 10,
+            col = 50,
+            width = 60,
+            height = 10,
+            relative = "editor",
+            border = "rounded",
+            zindex = 1002,
+        })
+        local finish = function(data)
+            _G.hide_cursor(function() end)
+            vim.schedule(function()
+                vim.o.eventignore = ""
+                local windows = vim.api.nvim_list_wins()
+                local prompt_bufnr = nil
+                for i, window in ipairs(windows) do
+                    local b = vim.api.nvim_win_get_buf(window)
+                    local ft = vim.bo[b].filetype
+                    if ft == "TelescopePrompt" then
+                        prompt_bufnr = b
+                        break
+                    end
+                end
+                if prompt_bufnr ~= nil then
+                    local actions = require("telescope.actions")
+                    local action_state = require("telescope.actions.state")
+                    local picker = action_state.get_current_picker(prompt_bufnr)
+
+                    -- temporarily register a callback which keeps selection on refresh
+                    local selection = picker:get_selection_row()
+                    local callbacks = { unpack(picker._completion_callbacks) } -- shallow copy
+                    picker:register_completion_callback(function(self)
+                        self:set_selection(selection)
+                        self._completion_callbacks = callbacks
+                    end)
+
+                    -- refresh
+                    picker:refresh(vim.g.git_finer(), { reset_prompt = false })
+                end
+            end)
+        end
+        vim.api.nvim_create_autocmd("WinClosed", {
+            once = true,
+            pattern = tostring(winid),
+            callback = finish,
+        })
+    else
+        vim.api.nvim_open_win(buf, true, {
+            height = 12,
+            split = "below",
+        })
+    end
+end
+
 function M.close_win()
     if M.has_filetype("gitcommit") then
         vim.cmd("close")

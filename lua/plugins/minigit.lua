@@ -3,6 +3,7 @@ return {
     version = false,
     main = "mini.git",
     event = "VeryLazy",
+    enabled = false,
     config = function()
         require("mini.git").setup( -- No need to copy this inside `setup()`. Will be used automatically.
             {

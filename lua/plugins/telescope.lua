@@ -851,8 +851,7 @@ return {
                                 ["<c-o>"] = actions.git_staging_toggle,
                                 ["<cr>"] = goto_next_hunk_cr,
                                 ["c"] = function()
-                                    vim.o.eventignore = "BufWinLeave"
-                                    vim.cmd(string.format("Git commit"))
+                                    Open_git_commit()
                                 end,
                             },
                             i = {
