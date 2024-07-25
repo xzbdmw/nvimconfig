@@ -104,8 +104,8 @@ return {
 
                 map("n", "<leader>sh", function()
                     if vim.g.Base_commit ~= "" then
-                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
-                        return
+                        vim.notify("Hunks are not in INDEX, change base...", vim.log.levels.WARN)
+                        FeedKeys("<leader>cb", "m")
                     end
                     vim.cmd("Gitsigns stage_hunk")
                     update_hunk_qflist()
