@@ -93,11 +93,12 @@ return {
                 end)
 
                 map("v", "<leader>sh", function()
+                    local s, e = vim.fn.line("."), vim.fn.line("v")
                     if vim.g.Base_commit ~= "" then
-                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
-                        return
+                        vim.notify("Hunks are not in INDEX, change base...", vim.log.levels.WARN)
+                        FeedKeys("<esc><leader>cb", "m")
                     end
-                    gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                    FeedKeys(string.format('ms<cmd>lua require("gitsigns").stage_hunk({%s,%s})<CR>`s', s, e), "n")
                     update_hunk_qflist()
                 end)
 
