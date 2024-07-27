@@ -12,6 +12,8 @@ vim.g.Base_commit = ""
 vim.g.diff_file_count = 0
 vim.g.Base_commit_msg = ""
 vim.g.vim_enter = true
+vim.g.stage_title = ""
+vim.g.last_staged_title_path = ""
 
 vim.cmd("syntax off")
 

@@ -1,6 +1,7 @@
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local utils = require("config.utils")
+local state = require("telescope.state")
 local builtin = require("telescope.builtin")
 local keymap = vim.keymap.set
 return {
@@ -388,6 +389,8 @@ return {
             })
 
             local goto_next_hunk_cr = function(prompt_bufnr)
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local title = picker.layout.picker.preview_title
                 actions.select_default(prompt_bufnr)
                 local ok = false
                 local fn = function()
@@ -395,9 +398,15 @@ return {
                         return
                     end
                     local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+                    local target
+                    if title == "Unstaged changes" then
+                        target = "unstaged"
+                    else
+                        target = "staged"
+                    end
                     if hunks ~= nil and #hunks > 0 then
                         ok = true
-                        require("gitsigns").nav_hunk("first", { target = "unstaged", navigation_message = false })
+                        require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
                         require("config.utils").adjust_view(0, 3)
                     end
                 end
@@ -409,7 +418,20 @@ return {
             end
 
             local status_delta = require("telescope.previewers").new_termopen_previewer({
-                get_command = function(entry)
+                title = "Grep Preview",
+                dyn_title = function(a, entry)
+                    if vim.g.stage_title ~= "" and vim.g.last_staged_title_path == entry.path then
+                        return vim.g.stage_title
+                    end
+                    local title
+                    if entry.status == "M " then
+                        title = "Staged changes"
+                    else
+                        title = "Unstaged changes"
+                    end
+                    return title
+                end,
+                get_command = function(entry, status)
                     local command
                     if vim.g.Base_commit ~= "" then
                         command = {
@@ -420,12 +442,22 @@ return {
                             entry.path,
                         }
                     else
-                        command = {
-                            "git",
-                            "diff",
-                            "--",
-                            entry.path,
-                        }
+                        if entry.status == "M " then
+                            command = {
+                                "git",
+                                "diff",
+                                "--cached",
+                                "--",
+                                entry.path,
+                            }
+                        else
+                            command = {
+                                "git",
+                                "diff",
+                                "--",
+                                entry.path,
+                            }
+                        end
                     end
                     return command
                 end,
@@ -613,6 +645,7 @@ return {
 
             require("telescope").setup({
                 defaults = {
+                    dynamic_preview_title = true,
                     disable_devicons = true,
                     winblend = 0,
                     initial_mode = "insert",
@@ -896,6 +929,36 @@ return {
                                     vim.system({ "git", "reset", "--hard", "HEAD" }):wait()
                                     vim.system({ "git", "clean", "-", "fd" }):wait()
                                     utils.refresh_telescope_git_status()
+                                end,
+                                ["<c-p>"] = function(prompt_bufnr)
+                                    local entry_display = require("telescope.pickers.entry_display")
+                                    local picker = action_state.get_current_picker(prompt_bufnr)
+                                    local preview_fn = getmetatable(picker._selection_entry).previewer[1].preview_fn
+                                    local previewer = picker.previewer
+                                    local title = picker.layout.picker.preview_title
+                                    local command
+                                    if title == "Unstaged changes" then
+                                        vim.g.stage_title = "Staged changes"
+                                        command = {
+                                            "git",
+                                            "diff",
+                                            "--cached",
+                                            "--",
+                                            picker._selection_entry.path,
+                                        }
+                                    else
+                                        vim.g.stage_title = "Unstaged changes"
+                                        command = {
+                                            "git",
+                                            "diff",
+                                            "--",
+                                            picker._selection_entry.path,
+                                        }
+                                    end
+                                    vim.g.last_staged_title_path = picker._selection_entry.path
+                                    local status = state.get_status(prompt_bufnr)
+                                    preview_fn(previewer, picker._selection_entry, status, command)
+                                    picker:refresh_previewer()
                                 end,
                             },
                             i = {
