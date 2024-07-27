@@ -424,10 +424,14 @@ return {
                         return vim.g.stage_title
                     end
                     local title
-                    if entry.status == "M " then
-                        title = "Staged changes"
+                    if vim.g.Base_commit ~= "" then
+                        title = "Diff with " .. vim.g.Base_commit_msg
                     else
-                        title = "Unstaged changes"
+                        if entry.status == "M " then
+                            title = "Staged changes"
+                        else
+                            title = "Unstaged changes"
+                        end
                     end
                     return title
                 end,
@@ -544,6 +548,7 @@ return {
                 local maps = vim.api.nvim_buf_get_keymap(prompt_bufnr, "n")
                 local checkout_callback = nil
                 local p_callback = nil
+                local c_callback = nil
                 for _, map in ipairs(maps) do
                     ---@diagnostic disable-next-line: undefined-field
                     if map.lhs == " " then
@@ -552,6 +557,10 @@ return {
                     ---@diagnostic disable-next-line: undefined-field
                     if map.lhs == "p" then
                         p_callback = map.callback
+                    end
+                    ---@diagnostic disable-next-line: undefined-field
+                    if map.lhs == "c" then
+                        c_callback = map.callback
                     end
                 end
                 local picker = action_state.get_current_picker(prompt_bufnr)
@@ -614,10 +623,24 @@ return {
                 end, { buffer = bufnr })
 
                 if checkout_callback ~= nil then
-                    keymap("n", "<space>", checkout_callback, { nowait = true, buffer = bufnr })
+                    keymap("n", "<space>", function()
+                        vim.cmd("nohlsearch")
+                        checkout_callback()
+                    end, { nowait = true, buffer = bufnr })
                 end
                 if p_callback ~= nil then
-                    keymap("n", "p", p_callback, { nowait = true, buffer = bufnr })
+                    vim.cmd("nohlsearch")
+                    keymap("n", "p", function()
+                        vim.cmd("nohlsearch")
+                        p_callback()
+                    end, { nowait = true, buffer = bufnr })
+                end
+                if c_callback ~= nil then
+                    vim.cmd("nohlsearch")
+                    keymap("n", "c", function()
+                        vim.cmd("nohlsearch")
+                        c_callback()
+                    end, { nowait = true, buffer = bufnr })
                 end
                 vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", winid))
             end
