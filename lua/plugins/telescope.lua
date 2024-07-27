@@ -931,6 +931,10 @@ return {
                                     utils.refresh_telescope_git_status()
                                 end,
                                 ["<c-p>"] = function(prompt_bufnr)
+                                    if vim.g.Base_commit ~= "" then
+                                        vim.notify("Detached in " .. vim.g.Base_commit_msg, vim.log.levels.WARN)
+                                        return
+                                    end
                                     local entry_display = require("telescope.pickers.entry_display")
                                     local picker = action_state.get_current_picker(prompt_bufnr)
                                     local preview_fn = getmetatable(picker._selection_entry).previewer[1].preview_fn
