@@ -84,6 +84,10 @@ return {
                         cmp.open_docs()
                     end
                 end),
+                ["<d-v>"] = cmp.mapping(function(fallback)
+                    fallback()
+                    vim.cmd([[redraw]])
+                end, { "i", "c", "s" }),
                 ["<esc>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
@@ -360,7 +364,7 @@ return {
                     c = function(fallback)
                         if cmp.visible() then
                             cmp.confirm({ select = true })
-                            FeedKeys("<space><bs>", "n")
+                            vim.cmd([[redraw]])
                         else
                             fallback()
                         end
@@ -396,15 +400,15 @@ return {
                 },
                 ["<C-d>"] = cmp.mapping(function(fallback)
                     fallback()
-                    vim.defer_fn(function()
-                        FeedKeys("<space><bs>", "n")
-                    end, 15)
+                    vim.cmd([[redraw]])
                 end, { "i", "c", "s" }),
                 ["<C-u>"] = cmp.mapping(function(fallback)
                     fallback()
-                    vim.defer_fn(function()
-                        FeedKeys("<space><bs>", "n")
-                    end, 15)
+                    vim.cmd([[redraw]])
+                end, { "i", "c", "s" }),
+                ["<d-v>"] = cmp.mapping(function(fallback)
+                    fallback()
+                    vim.cmd([[redraw]])
                 end, { "i", "c", "s" }),
             }),
             sources = cmp.config.sources({

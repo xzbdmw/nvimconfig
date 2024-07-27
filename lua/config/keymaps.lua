@@ -370,6 +370,7 @@ keymap("n", "<leader>k", "<C-i>", opts)
 
 -- Command line mapping
 keymap("c", "<C-d>", "<C-w>", opts)
+keymap("c", "<d-v>", '<c-r>"', opts)
 
 keymap("c", "<space>", function()
     local mode = vim.fn.getcmdtype()
