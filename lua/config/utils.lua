@@ -229,6 +229,22 @@ function M.noice_incsearch_at_start()
     return cursor
 end
 
+function M.fold_method_diff()
+    local tabnum = vim.fn.tabpagenr()
+    if tabnum ~= 1 then
+        return true
+    end
+    local win = vim.api.nvim_get_current_win()
+    if not vim.api.nvim_win_is_valid(win) then
+        return true
+    end
+    local fdm = vim.wo[win].foldmethod
+    if fdm == "diff" then
+        return true
+    end
+    return false
+end
+
 function M.get_non_float_win_count()
     local window_count = #api.nvim_list_wins()
     for _, win in pairs(api.nvim_list_wins()) do

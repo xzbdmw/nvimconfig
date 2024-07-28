@@ -892,8 +892,8 @@ return {
                         initial_mode = "normal",
                         layout_config = {
                             horizontal = {
-                                width = 0.8,
-                                height = 0.85,
+                                width = 0.9,
+                                height = 0.9,
                                 preview_cutoff = 0,
                                 prompt_position = "top",
                                 preview_width = 0.7,

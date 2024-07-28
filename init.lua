@@ -80,7 +80,9 @@ api.nvim_create_autocmd("User", {
 
 api.nvim_create_autocmd("QuitPre", {
     callback = function()
-        vim.cmd([[silent! mkview!]])
+        if not utils.fold_method_diff() then
+            vim.cmd([[silent! mkview!]])
+        end
     end,
 })
 
@@ -304,7 +306,10 @@ end, { desc = "load undotree" })
 
 api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
-        vim.cmd([[silent! mkview!]])
+        local tabnum = vim.fn.tabpagenr()
+        if tabnum == 1 then
+            vim.cmd([[silent! mkview!]])
+        end
         vim.defer_fn(function()
             utils.refresh_last_commit()
             utils.update_diff_file_count()
@@ -350,13 +355,18 @@ api.nvim_create_autocmd("BufEnter", {
 api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
-        vim.cmd([[silent! mkview!]])
+        if not utils.fold_method_diff() then
+            vim.cmd([[silent! mkview!]])
+        end
     end,
 })
 
 api.nvim_create_autocmd({ "BufWinEnter" }, {
     pattern = "*",
     callback = function()
+        if vim.wo.foldmethod == "diff" and vim.fn.tabpagenr() == 1 then
+            print("foldmethod diff")
+        end
         if vim.bo.filetype == "fzf" then
             return
         else
