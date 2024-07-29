@@ -6,7 +6,7 @@ return {
         require("grug-far").setup({
             -- debounce milliseconds for issuing search while user is typing
             -- prevents excessive searching
-            debounceMs = 10,
+            debounceMs = 100,
 
             -- minimum number of chars which will cause a search to happen
             -- prevents performance issues in larger dirs

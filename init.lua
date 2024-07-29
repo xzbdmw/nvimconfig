@@ -306,6 +306,7 @@ end, { desc = "load undotree" })
 
 api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
+        -- TODO: remove this later
         local tabnum = vim.fn.tabpagenr()
         if tabnum == 1 then
             vim.cmd([[silent! mkview!]])

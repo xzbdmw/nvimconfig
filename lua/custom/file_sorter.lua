@@ -90,7 +90,6 @@ local is_file_open = function(line)
     if not buffers then
         return false
     end
-    -- TODO: This may not be performant if there are many open buffers.
     -- We could implement a map / lookup table instead.
     for _, buffer in ipairs(buffers) do
         local buffer_name = buffer.info.name
@@ -133,7 +132,6 @@ local file_sorter = function(opts)
 
             -- CUSTOM CODE ADDED HERE 👇
             -- Double score if file is open.
-            -- TODO: Score boost could take into account sort order of buffers.
             -- Like which one was last used.
             if is_file_open(line) then
                 -- print(fzy_score)

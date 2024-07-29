@@ -67,7 +67,7 @@ function M.refresh_telescope_git_status()
     vim.o.eventignore = ""
     local windows = vim.api.nvim_list_wins()
     local prompt_bufnr = nil
-    for i, window in ipairs(windows) do
+    for _, window in ipairs(windows) do
         local b = vim.api.nvim_win_get_buf(window)
         local ft = vim.bo[b].filetype
         if ft == "TelescopePrompt" then
@@ -76,7 +76,6 @@ function M.refresh_telescope_git_status()
         end
     end
     if prompt_bufnr ~= nil then
-        local actions = require("telescope.actions")
         local action_state = require("telescope.actions.state")
         local picker = action_state.get_current_picker(prompt_bufnr)
 
@@ -143,7 +142,7 @@ function Open_git_commit()
             border = "rounded",
             zindex = 1002,
         })
-        local finish = function(data)
+        local finish = function()
             _G.hide_cursor(function() end)
             vim.schedule(M.refresh_telescope_git_status)
         end
@@ -161,8 +160,20 @@ function Open_git_commit()
 end
 
 function M.close_win()
+    if M.has_float() then
+        local winids = M.float_winids()
+        for _, winid in ipairs(winids) do
+            api.nvim_win_close(winid, true)
+        end
+        return
+    end
     if M.has_filetype("gitcommit") then
         vim.cmd("close")
+        return
+    end
+    if M.has_filetype("noice") then
+        local winid = M.filetype_windowid("noice")
+        api.nvim_win_close(winid, true)
         return
     end
     if M.has_filetype("toggleterm") then
@@ -224,7 +235,6 @@ end
 
 function M.noice_incsearch_at_start()
     local noice = require("noice.ui.cmdline")
-    local win = noice.position.win
     local cursor = noice.position.cursor
     return cursor
 end
@@ -401,6 +411,20 @@ function M.if_multicursor()
         return true
     end
     return false
+end
+
+function M.float_winids()
+    local winids = {}
+    for _, win in pairs(api.nvim_list_wins()) do
+        local ok, win_config = pcall(vim.api.nvim_win_get_config, win)
+        if ok then
+            local buf = api.nvim_win_get_buf(win)
+            if win_config.relative ~= "" and vim.bo[buf].filetype == "noice" then
+                winids[#winids + 1] = win
+            end
+        end
+    end
+    return winids
 end
 
 ---@diagnostic disable-next-line: lowercase-global
@@ -791,6 +815,30 @@ function M.has_filetype(filetype)
     return false
 end
 
+function M.has_float()
+    local windows = api.nvim_list_wins()
+    for _, win in ipairs(windows) do
+        local ok, winconfig = pcall(api.nvim_win_get_config, win)
+        if ok then
+            if winconfig.zindex ~= nil and winconfig.focusable then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function M.filetype_windowid(filetype)
+    local windows = api.nvim_list_wins()
+    for _, win in ipairs(windows) do
+        local buf = api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == filetype then
+            return win
+        end
+    end
+    return 0
+end
+
 --- @param filter function if false we should realy return
 function M.real_enter(callback, filter, who)
     who = who or ""
@@ -803,6 +851,7 @@ function M.real_enter(callback, filter, who)
         end
     end, 2000)
     local has_start = false
+    ---@diagnostic disable-next-line: unused-local
     local timout = function(opts)
         if not filter() then
             ---@diagnostic disable-next-line: need-check-nil
