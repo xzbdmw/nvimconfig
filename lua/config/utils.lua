@@ -160,21 +160,16 @@ function Open_git_commit()
 end
 
 function M.close_win()
-    if M.has_float() then
-        local winids = M.float_winids()
-        for _, winid in ipairs(winids) do
-            api.nvim_win_close(winid, true)
-        end
-        return
-    end
     if M.has_filetype("gitcommit") then
         vim.cmd("close")
         return
     end
-    if M.has_filetype("noice") then
+    if M.has_filetype("noice") then -- close :messages window
         local winid = M.filetype_windowid("noice")
-        api.nvim_win_close(winid, true)
-        return
+        if api.nvim_win_get_config(winid).zindex == nil then
+            api.nvim_win_close(winid, true)
+            return
+        end
     end
     if M.has_filetype("toggleterm") then
         FeedKeys("<f16>", "m")
@@ -411,20 +406,6 @@ function M.if_multicursor()
         return true
     end
     return false
-end
-
-function M.float_winids()
-    local winids = {}
-    for _, win in pairs(api.nvim_list_wins()) do
-        local ok, win_config = pcall(vim.api.nvim_win_get_config, win)
-        if ok then
-            local buf = api.nvim_win_get_buf(win)
-            if win_config.relative ~= "" and vim.bo[buf].filetype == "noice" then
-                winids[#winids + 1] = win
-            end
-        end
-    end
-    return winids
 end
 
 ---@diagnostic disable-next-line: lowercase-global
@@ -810,19 +791,6 @@ function M.has_filetype(filetype)
         local buf = api.nvim_win_get_buf(win)
         if vim.bo[buf].filetype == filetype then
             return true
-        end
-    end
-    return false
-end
-
-function M.has_float()
-    local windows = api.nvim_list_wins()
-    for _, win in ipairs(windows) do
-        local ok, winconfig = pcall(api.nvim_win_get_config, win)
-        if ok then
-            if winconfig.zindex ~= nil and winconfig.focusable then
-                return true
-            end
         end
     end
     return false

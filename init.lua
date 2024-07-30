@@ -308,7 +308,7 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
     callback = function()
         -- TODO: remove this later
         local tabnum = vim.fn.tabpagenr()
-        if tabnum == 1 then
+        if tabnum == 1 and not utils.fold_method_diff() then
             vim.cmd([[silent! mkview!]])
         end
         vim.defer_fn(function()
