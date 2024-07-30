@@ -781,7 +781,9 @@ return {
                             end,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                FeedKeys("<C-q>", "m")
+                                if not require("trouble").is_open("qflist") then
+                                    FeedKeys("<C-q>", "m")
+                                end
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<C-c>"] = function(bufnr)
@@ -848,7 +850,9 @@ return {
                             ["zz"] = center_results,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
-                                FeedKeys("<C-q>", "m")
+                                if not require("trouble").is_open("qflist") then
+                                    FeedKeys("<C-q>", "m")
+                                end
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
                             ["<esc>"] = function(bufnr)
