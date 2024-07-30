@@ -332,12 +332,13 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
 -- bootstrap lazy.nvim, LazyVim and your plugins
 api.nvim_create_autocmd("FileType", {
     pattern = "python",
-    callback = function(_)
+    callback = function()
         local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
         if venv ~= "" then
             require("venv-selector").retrieve_from_cache()
         end
     end,
+    once = true,
 })
 
 api.nvim_create_autocmd("BufWinEnter", {
