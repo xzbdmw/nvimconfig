@@ -181,7 +181,7 @@ keymap("n", "`", function()
     return "<cmd>e #<cr>"
 end, { expr = true })
 
--- various textobjs
+-- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "im", "<cmd>lua require('various-textobjs').chainMember('inner')<CR>")
 keymap({ "o", "x" }, "am", "<cmd>lua require('various-textobjs').chainMember('outer')<CR>")
