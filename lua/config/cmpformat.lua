@@ -406,9 +406,7 @@ function M.cpp_fmt(entry, vim_item)
     return kind
 end
 function M.go_fmt(entry, vim_item)
-    local kind = require("lspkind").cmp_format({
-        mode = "symbol_text",
-    })(entry, vim_item)
+    local kind = require("lspkind").cmp_format({})(entry, vim_item)
     local strings = vim.split(kind.kind, "%s", { trimempty = true })
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
     local completion_item = entry:get_completion_item()
@@ -425,13 +423,13 @@ function M.go_fmt(entry, vim_item)
             if last then
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
                 local space_hole = string.rep(" ", last)
-                kind.concat = "type T struct{" .. space_hole .. catstr .. " " .. detail .. "}"
+                kind.concat = "type T struct{" .. space_hole .. catstr .. ": " .. detail .. "}"
                 kind.offset = 14
-                kind.abbr = kind.abbr .. " " .. detail
+                kind.abbr = kind.abbr .. ": " .. detail
             else
-                kind.concat = "type T struct{" .. kind.abbr .. " " .. detail .. "}"
+                kind.concat = "type T struct{" .. kind.abbr .. ": " .. detail .. "}"
                 kind.offset = 14
-                kind.abbr = kind.abbr .. " " .. detail
+                kind.abbr = kind.abbr .. ": " .. detail
             end
         else
             kind.concat = "type T struct{" .. kind.abbr .. " " .. "}"
@@ -450,13 +448,13 @@ function M.go_fmt(entry, vim_item)
             if last then
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
                 local space_hole = string.rep(" ", last)
-                kind.concat = "var " .. space_hole .. catstr .. " " .. detail
+                kind.concat = "var " .. space_hole .. catstr .. ": " .. detail
                 kind.offset = 4
-                kind.abbr = kind.abbr .. " " .. detail
+                kind.abbr = kind.abbr .. ": " .. detail
             else
                 if detail then
-                    kind.concat = "var " .. kind.abbr .. " " .. detail
-                    kind.abbr = kind.abbr .. " " .. detail
+                    kind.concat = "var " .. kind.abbr .. ": " .. detail
+                    kind.abbr = kind.abbr .. ": " .. detail
                     kind.offset = 4
                 end
             end
@@ -468,10 +466,10 @@ function M.go_fmt(entry, vim_item)
             local space_hole = string.rep(" ", last)
             kind.concat = "type " .. space_hole .. catstr .. " struct{}"
             kind.offset = 5
-            kind.abbr = kind.abbr .. " struct{}"
+            kind.abbr = kind.abbr
         else
             kind.concat = "type " .. kind.abbr .. " struct{}"
-            kind.abbr = kind.abbr .. " struct{}"
+            kind.abbr = kind.abbr
             kind.offset = 5
         end
     elseif item_kind == 3 or item_kind == 2 then -- Function/Method
@@ -513,10 +511,10 @@ function M.go_fmt(entry, vim_item)
             local space_hole = string.rep(" ", last)
             kind.concat = "type " .. space_hole .. catstr .. " interface{}"
             kind.offset = 5
-            kind.abbr = kind.abbr .. " interface{}"
+            kind.abbr = kind.abbr
         else
             kind.concat = "type " .. kind.abbr .. " interface{}"
-            kind.abbr = kind.abbr .. " interface{}"
+            kind.abbr = kind.abbr
             kind.offset = 5
         end
     else
