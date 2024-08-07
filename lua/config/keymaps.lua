@@ -357,6 +357,10 @@ keymap("n", "e", function()
     return "ea"
 end, { expr = true })
 
+keymap("n", "E", function()
+    return "Ea"
+end, { expr = true })
+
 keymap("n", "<leader>j", function()
     vim.g.neovide_cursor_animation_length = 0.0
     vim.defer_fn(function()
