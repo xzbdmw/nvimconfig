@@ -27,6 +27,7 @@ vim.o.concealcursor = "nc"
 vim.opt.guicursor = "n-sm-ve:block,i-c-ci:ver16,r-cr-v-o:hor7"
 vim.opt.laststatus = 0
 vim.o.scrolloff = 6
+vim.o.gdefault = true
 vim.g.neovide_text_gamma = 1.4
 vim.opt.timeoutlen = 500
 vim.opt.swapfile = false
