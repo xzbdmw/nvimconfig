@@ -345,7 +345,8 @@ end, { expr = true })
 keymap({ "n", "v" }, "J", "4j", opts)
 keymap({ "n", "v" }, "K", "4k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
-
+keymap("i", "<c-b>", "<S-left>", opts)
+keymap("i", "<c-f>", "<S-right>", opts)
 -- don't messy up indent
 keymap("i", "<C-r>", "<C-r><C-o>", opts)
 
