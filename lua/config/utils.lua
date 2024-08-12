@@ -3,6 +3,9 @@ _G.FeedKeys = function(keymap, mode)
     api.nvim_feedkeys(api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
 end
 
+_G.set_cursor_animation = function(len)
+    vim.g.neovide_cursor_animation_length = len
+end
 local function get_normal_bg_color()
     local normal_hl = api.nvim_get_hl_by_name("Normal", true)
     local bg_color = string.format("#%06x", normal_hl.background)
@@ -519,7 +522,7 @@ end
 _G.no_delay = function(animation)
     TST = vim.uv.hrtime()
     vim.g.type_o = true
-    vim.g.neovide_cursor_animation_length = animation
+    _G.set_cursor_animation(animation)
     vim.schedule(function()
         vim.g.type_o = false
         local ok, async = pcall(require, "gitsigns.async")
@@ -550,7 +553,9 @@ _G.no_delay = function(animation)
         pcall(_G.update_indent, true)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
-        vim.g.neovide_cursor_animation_length = _G.CI
+        if vim.api.nvim_get_mode().mode == "i" then
+            _G.set_cursor_animation(_G.CI)
+        end
     end, 50)
 end
 
@@ -636,7 +641,7 @@ function M.set_glance_keymap()
             glance_close()
         end, { buffer = bufnr })
         vim.keymap.set("n", "<CR>", function()
-            vim.g.neovide_cursor_animation_length = 0.0
+            _G.set_cursor_animation(0.0)
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
             ---@diagnostic disable-next-line: undefined-global
@@ -1197,25 +1202,25 @@ end
 
 _G.no_animation = function(length)
     length = length or 0
-    vim.g.neovide_cursor_animation_length = 0
+    _G.set_cursor_animation(0.0)
     vim.defer_fn(function()
         if vim.api.nvim_get_mode().mode ~= "i" then
             return
         end
-        vim.g.neovide_cursor_animation_length = length
+        _G.set_cursor_animation(length)
     end, 100)
 end
 
 _G.Cursor = function(callback, length)
     length = length or 0
     return function(...)
-        vim.g.neovide_cursor_animation_length = length
+        _G.set_cursor_animation(length)
         callback(...)
         vim.defer_fn(function()
             if vim.api.nvim_get_mode().mode ~= "i" then
                 return
             end
-            vim.g.neovide_cursor_animation_length = _G.CI
+            _G.set_cursor_animation(_G.CI)
         end, 100)
     end
 end

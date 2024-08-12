@@ -177,9 +177,9 @@ return {
                 end,
                 -- called once *after* the fzf interface is closed
                 on_close = function()
-                    vim.g.neovide_cursor_animation_length = 0.0
+                    _G.set_cursor_animation(0.0)
                     vim.defer_fn(function()
-                        vim.g.neovide_cursor_animation_length = 0.06
+                        _G.set_cursor_animation(0.06)
                         pcall(vim.cmd, "EnableHL")
                     end, 100)
                 end,

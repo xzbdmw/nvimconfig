@@ -105,24 +105,24 @@ keymap("n", "O", function()
 end, { expr = true })
 
 keymap("n", "i", function()
-    vim.g.neovide_cursor_animation_length = 0
+    _G.set_cursor_animation(0.0)
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
+        _G.set_cursor_animation(_G.CI)
     end, 10)
     return "i"
 end, { expr = true })
 
 keymap("n", "a", function()
-    vim.g.neovide_cursor_animation_length = 0
+    _G.set_cursor_animation(0.0)
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
+        _G.set_cursor_animation(_G.CI)
     end, 10)
     return "a"
 end, { expr = true })
 
 keymap("n", "I", function()
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
+        _G.set_cursor_animation(_G.CI)
     end, 100)
     return "I"
 end, { expr = true })
@@ -133,7 +133,7 @@ end, opts)
 
 keymap("n", "A", function()
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
+        _G.set_cursor_animation(_G.CI)
     end, 100)
     return "A"
 end, { expr = true })
@@ -363,9 +363,9 @@ keymap("n", "E", function()
 end, { expr = true })
 
 keymap("n", "<leader>j", function()
-    vim.g.neovide_cursor_animation_length = 0.0
+    _G.set_cursor_animation(0)
     vim.defer_fn(function()
-        vim.g.neovide_cursor_animation_length = _G.CI
+        _G.set_cursor_animation(_G.CI)
     end, 100)
     return "f{a<CR>"
 end, { expr = true, remap = true })

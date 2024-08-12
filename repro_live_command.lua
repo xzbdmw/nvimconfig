@@ -173,12 +173,12 @@ local plugins = {
                     ["<CR>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             ST = vim.uv.hrtime()
-                            vim.g.neovide_cursor_animation_length = 0.02
+                            _G.set_cursor_animation(0.02)
                             vim.g.enter = true
                             vim.g.no_redraw = true
                             vim.defer_fn(function()
                                 vim.g.enter = false
-                                vim.g.neovide_cursor_animation_length = 0.06
+                                _G.set_cursor_animation(0.06)
                             end, 100)
                             -- Time(ST, "optionset")
                             cmp.confirm({ select = true })

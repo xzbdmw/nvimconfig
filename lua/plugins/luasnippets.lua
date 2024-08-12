@@ -231,6 +231,19 @@ return {
         })
         ls.add_snippets("lua", {
             s(
+                "can",
+                fmta(
+                    [[
+                    _G.set_cursor_animation(<finish>)
+                    ]],
+                    {
+                        ["finish"] = i(0, "0.0"),
+                    }
+                )
+            ),
+        })
+        ls.add_snippets("lua", {
+            s(
                 "cursor",
                 fmta(
                     [[

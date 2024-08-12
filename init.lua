@@ -253,7 +253,7 @@ api.nvim_create_autocmd("ModeChanged", {
     callback = function()
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
-            vim.g.neovide_cursor_animation_length = 0
+            _G.set_cursor_animation(0.0)
         end
     end,
 })
@@ -271,7 +271,7 @@ api.nvim_create_autocmd("CmdlineLeave", {
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
-            vim.g.neovide_cursor_animation_length = 0
+            _G.set_cursor_animation(0.0)
         end
     end,
 })

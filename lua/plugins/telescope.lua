@@ -814,7 +814,7 @@ return {
                                 vim.defer_fn(function()
                                     vim.g.gd = false
                                 end, 100)
-                                vim.g.neovide_cursor_animation_length = 0.0
+                                _G.set_cursor_animation(0.0)
                                 actions.select_default(bufnr)
                                 require("config.utils").adjust_view(0, 4)
                             end,
