@@ -54,6 +54,7 @@ vim.g.neovide_underline_stroke_scale = 1.5
 vim.g.neovide_flatten_floating_zindex = "20,21,22,23,30,35,31,32,51,52,1002,1003"
 vim.g.neovide_floating_z_height = 18
 vim.g.neovide_light_angle_degrees = 180
+vim.g.neovide_floating_blur = false
 vim.g.neovide_cursor_trail_size = 0
 vim.g.neovide_cursor_animate_in_insert_mode = true
 vim.g.neovide_cursor_animate_command_line = false
