@@ -399,10 +399,10 @@ return {
                     end
                     local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
                     local target
-                    if title == "Unstaged changes" then
-                        target = "unstaged"
-                    else
+                    if title == "Staged changes" then
                         target = "staged"
+                    else -- include history revision(start with Diff)
+                        target = "unstaged"
                     end
                     if hunks ~= nil and #hunks > 0 then
                         ok = true
