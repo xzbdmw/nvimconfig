@@ -222,8 +222,10 @@ keymap("n", "*", function()
     require("hlslens").start()
 end)
 
-keymap("n", "<leader><c-q>", function()
-    require("hlslens").exportLastSearchToQuickfix()
+keymap("n", "<leader>uq", function()
+    if vim.v.hlsearch ~= 0 then
+        require("hlslens").exportLastSearchToQuickfix()
+    end
     vim.cmd("Trouble qflist toggle focus=false")
 end, opts)
 

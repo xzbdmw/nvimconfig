@@ -396,7 +396,7 @@ function M.insert_mode_space()
                     local should_map = map.rhs ~= map.lhs
                     remove_extra_fields(map)
                     if should_map then
-                        vim.api.nvim_set_keymap("i", k, rhs, map)
+                        api.nvim_set_keymap("i", k, rhs, map)
                     end
                     break
                 end
