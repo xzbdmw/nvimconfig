@@ -169,6 +169,9 @@ return {
                         fallback()
                     end
                 end),
+                ["<f13>"] = cmp.mapping(function(fallback)
+                    vim.lsp.buf.signature_help()
+                end),
                 ["<left>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     fallback()

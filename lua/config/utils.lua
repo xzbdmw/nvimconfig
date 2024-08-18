@@ -284,6 +284,9 @@ function M.insert_paste()
     local is_empty = first_char == col
     local body = vim.fn.getreg('"')
     local lines = vim.split(body, "\n", { plain = false, trimempty = true })
+    if lines == nil then
+        return
+    end
     if #lines == 1 then
         api.nvim_put({ vim.trim(body) }, "c", false, true)
     else
