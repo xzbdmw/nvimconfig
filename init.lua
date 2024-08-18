@@ -107,7 +107,7 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("FileType", {
-    pattern = { "git" },
+    pattern = { "git", "markdown" },
     callback = function()
         vim.b.miniindentscope_disable = true
         vim.cmd("setlocal syntax=ON")

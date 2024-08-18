@@ -728,6 +728,59 @@ function EditLineFromLazygit(file_path, line, col)
     end
 end
 
+function M.signature_help(_, result, ctx, config)
+    local util = require("vim.lsp.util")
+    config = config or {}
+    config.focus_id = ctx.method
+    if api.nvim_get_current_buf() ~= ctx.bufnr then
+        -- Ignore result since buffer changed. This happens for slow language servers.
+        return
+    end
+    -- When use `autocmd CompleteDone <silent><buffer> lua vim.lsp.buf.signature_help()` to call signatureHelp handler
+    -- If the completion item doesn't have signatures It will make noise. Change to use `print` that can use `<silent>` to ignore
+    if not (result and result.signatures and result.signatures[1]) then
+        if config.silent ~= true then
+            print("No signature help available")
+        end
+        return
+    end
+    local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
+    local triggers = vim.tbl_get(client.server_capabilities, "signatureHelpProvider", "triggerCharacters")
+    local ft = vim.bo[ctx.bufnr].filetype
+    local lines, hl = util.convert_signature_help_to_markdown_lines(result, ft, triggers)
+    if not lines or vim.tbl_isempty(lines) then
+        if config.silent ~= true then
+            print("No signature help available")
+        end
+        return
+    end
+    config.max_height = 10
+    config.max_width = 50
+    local fbuf, fwin = util.open_floating_preview(lines, "markdown", config)
+    if vim.startswith(lines[1], "```") then
+        vim.api.nvim_create_autocmd("WinScrolled", {
+            buffer = fbuf,
+            callback = function()
+                local topline = vim.fn.getwininfo(fwin)[1].topline
+                if topline == 1 then
+                    vim.api.nvim_win_call(fwin, function()
+                        vim.fn.winrestview({ topline = 2 })
+                    end)
+                end
+            end,
+        })
+        vim.api.nvim_win_call(fwin, function()
+            vim.fn.winrestview({ topline = 2 })
+        end)
+    end
+    if hl then
+        -- Highlight the second line if the signature is wrapped in a Markdown code block.
+        local line = vim.startswith(lines[1], "```") and 1 or 0
+        api.nvim_buf_add_highlight(fbuf, -1, "LspSignatureActiveParameter", line, unpack(hl))
+    end
+    return fbuf, fwin
+end
+
 function M.adjust_view(buf, size, force)
     vim.cmd("norm! zz")
     local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline

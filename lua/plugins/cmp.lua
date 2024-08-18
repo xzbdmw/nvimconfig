@@ -170,6 +170,9 @@ return {
                     end
                 end),
                 ["<f13>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
                     vim.lsp.buf.signature_help()
                 end),
                 ["<left>"] = cmp.mapping(function(fallback)

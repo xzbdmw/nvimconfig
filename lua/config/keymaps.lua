@@ -245,6 +245,8 @@ keymap("n", "gs", function()
     require("config.utils").adjust_view(0, 4)
 end, opts)
 
+keymap({ "n", "v" }, "<f13>", vim.lsp.buf.signature_help, opts)
+
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
 
 keymap("n", "<leader>uu", function()
