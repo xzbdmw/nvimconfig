@@ -147,7 +147,11 @@ keymap("o", "c", function()
     _G.no_animation(_G.CI)
     return "c"
 end, { expr = true })
-
+keymap("n", "<c-a>", "A", { remap = true })
+keymap("i", "<c-a>", function()
+    _G.no_animation(_G.CI)
+    api.nvim_win_set_cursor(0, { api.nvim_win_get_cursor(0)[1], #api.nvim_get_current_line() })
+end, opts)
 local darker = false
 keymap("n", "<leader>uc", function()
     if darker then
