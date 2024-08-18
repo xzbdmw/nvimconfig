@@ -160,15 +160,11 @@ api.nvim_create_autocmd("FileType", {
                     FeedKeys("<esc>", "n")
                 end
                 vim.cmd(string.format("bw! %d", buf))
-                local result = vim.system(
-                    { "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" },
-                    nil,
-                    function(result)
-                        if result.code == 0 then
-                            vim.notify(result.stdout, vim.log.levels.INFO)
-                        end
+                vim.system({ "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" }, nil, function(result)
+                    if result.code == 0 then
+                        vim.notify(result.stdout, vim.log.levels.INFO)
                     end
-                )
+                end)
             end, { buffer = true })
         end, 100)
     end,
@@ -368,6 +364,7 @@ api.nvim_create_autocmd({ "BufWinEnter" }, {
     callback = function()
         if vim.wo.foldmethod == "diff" and vim.fn.tabpagenr() == 1 then
             print("foldmethod diff")
+            vim.wo.foldmethod = "manual"
         end
         if vim.bo.filetype == "fzf" then
             return

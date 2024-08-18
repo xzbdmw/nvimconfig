@@ -334,6 +334,7 @@ return {
                 ["@keyword.operator.lua"] = { link = "Keyword" },
                 ["@spell.python"] = { link = "Comment" },
                 ["@spell.markdown"] = { fg = "#000000" },
+                ["@markup.strong.markdown_inline"] = { link = "Title" },
                 ["@spell"] = { link = "Comment" },
                 ["@string.escape"] = { fg = "#395C2A", style = "italic" },
                 ["@lsp.type.namespace"] = { fg = "#152381" },
