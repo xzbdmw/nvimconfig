@@ -167,6 +167,10 @@ function M.close_win()
         vim.cmd("close")
         return
     end
+    if M.has_filetype("help") then
+        vim.api.nvim_win_close(M.filetype_windowid("help"), true)
+        return
+    end
     if M.has_filetype("noice") then -- close :messages window
         local winid = M.filetype_windowid("noice")
         if api.nvim_win_get_config(winid).zindex == nil then
@@ -979,6 +983,10 @@ function M.update_diff_file_count()
     else
         vim.g.diff_file_count = 0
     end
+end
+
+function M.info(msg, opts)
+    require("trouble.util").notify(msg, vim.tbl_extend("keep", { level = vim.log.levels.INFO }, opts or {}))
 end
 
 function M.checkout(commit, success_fn)
