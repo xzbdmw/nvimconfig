@@ -164,6 +164,12 @@ function Open_git_commit()
 end
 
 function M.close_win()
+    if M.has_namespace("gitsigns_preview_inline") then
+        api.nvim_exec_autocmds("User", {
+            pattern = "ESC",
+        })
+        return
+    end
     if M.has_filetype("gitcommit") then
         vim.cmd("close")
         return
@@ -411,7 +417,11 @@ function M.insert_mode_space()
 end
 
 function M.if_multicursor()
-    local ns = api.nvim_create_namespace("multicursors")
+    return M.has_namespace("multicursors")
+end
+
+function M.has_namespace(name_space)
+    local ns = api.nvim_create_namespace(name_space)
     local extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
     if extmark ~= nil and #extmark ~= 0 then
         return true
