@@ -134,11 +134,12 @@ function Open_git_commit()
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
     end
     modify_commit_message(buf)
+
     if filetype == "lazyterm" or filetype == "TelescopePrompt" or filetype == "TelescopeResults" then
         local winid = vim.api.nvim_open_win(buf, true, {
             style = "minimal",
             row = 10,
-            col = 50,
+            col = math.ceil((vim.o.columns - 60) / 2),
             width = 60,
             height = 10,
             relative = "editor",
