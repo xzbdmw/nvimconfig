@@ -125,11 +125,19 @@ return {
                     require("telescope").extensions["neovim-project"].history({
                         on_complete = {
                             function()
-                                require("config.utils").on_complete(
-                                    "╰────────────────────────────────────────────────────────────────────────╯",
-                                    "│                                                                        │",
-                                    19
-                                )
+                                if vim.o.lines == 31 then
+                                    require("config.utils").on_complete(
+                                        "╰────────────────────────────────────────────────────────╯",
+                                        "│                                                        │",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "╰────────────────────────────────────────────────────────────────────────╯",
+                                        "│                                                                        │",
+                                        19
+                                    )
+                                end
                             end,
                         },
                         layout_strategy = "horizontal",
@@ -151,12 +159,21 @@ return {
                     require("telescope").extensions["neovim-project"].discover({
                         layout_strategy = "horizontal",
                         on_complete = {
+
                             function()
-                                require("config.utils").on_complete(
-                                    "╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯",
-                                    "│                                                                                                                  │",
-                                    19
-                                )
+                                if vim.o.lines == 31 then
+                                    require("config.utils").on_complete(
+                                        "╰─────────────────────────────────────────────────────────────────────────────────────────╯",
+                                        "│                                                                                         │",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯",
+                                        "│                                                                                                                  │",
+                                        19
+                                    )
+                                end
                             end,
                         },
                         layout_config = {
@@ -236,11 +253,19 @@ return {
                     require("telescope").extensions.aerial.aerial({
                         on_complete = {
                             function()
-                                require("config.utils").on_complete(
-                                    "╰───────────────────────────────────────╯",
-                                    "│                                       │",
-                                    19
-                                )
+                                if vim.o.lines == 31 then
+                                    require("config.utils").on_complete(
+                                        "╰─────────────────────────────────────╯",
+                                        "│                                     │",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "╰───────────────────────────────────────╯",
+                                        "│                                       │",
+                                        19
+                                    )
+                                end
                             end,
                         },
                         -- prompt_title = "aerial",
@@ -257,7 +282,7 @@ return {
                         layout_config = {
                             horizontal = {
                                 height = 0.7, -- window height
-                                width = 0.25, -- window width
+                                width = vim.o.lines == 31 and 0.30 or 0.25, -- window width
                             },
                             mirror = false,
                         },
@@ -276,11 +301,19 @@ return {
                     require("telescope").extensions.smart_open.smart_open({
                         on_complete = {
                             function()
-                                require("config.utils").on_complete(
-                                    "╰──────────────────────────────────────────╯",
-                                    "│                                          │",
-                                    19
-                                )
+                                if vim.o.lines == 31 then
+                                    require("config.utils").on_complete(
+                                        "╰─────────────────────────────────────╯",
+                                        "│                                     │",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "╰──────────────────────────────────────────╯",
+                                        "│                                          │",
+                                        19
+                                    )
+                                end
                             end,
                         },
                         cwd_only = true,
@@ -296,7 +329,7 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = 0.27,
+                                width = vim.o.lines == 31 and 0.30 or 0.27,
                                 height = 0.7,
                             },
                             mirror = false,
