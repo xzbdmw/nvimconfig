@@ -28,6 +28,13 @@ M.CompletionItemKind = {
     TypeParameter = 25,
 }
 
+local function distance_to_right_edge()
+    local cursor_col = vim.fn.screencol()
+    local nvim_width = vim.o.columns
+    local distance = nvim_width - cursor_col
+    return distance
+end
+
 M.reverse_prioritize = function(entry1, entry2)
     if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
         return false
@@ -57,8 +64,8 @@ function M.copilot(kind, strings)
     kind.abbr = kind.abbr
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = nil
-    if string.len(kind.abbr) > 50 then
-        kind.abbr = kind.abbr:sub(1, 50)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
     return kind
 end
@@ -273,8 +280,8 @@ function M.rust_fmt(entry, vim_item)
     ::OUT::
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = nil
-    if string.len(kind.abbr) > 60 then
-        kind.abbr = kind.abbr:sub(1, 60)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
 
     return kind
@@ -304,8 +311,8 @@ function M.lua_fmt(entry, vim_item)
     kind.abbr = kind.abbr
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = nil
-    if string.len(kind.abbr) > 50 then
-        kind.abbr = kind.abbr:sub(1, 50)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
     return kind
 end
@@ -328,8 +335,8 @@ function M.c_fmt(entry, vim_item)
     kind.abbr = kind.abbr
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = nil
-    if string.len(kind.abbr) > 50 then
-        kind.abbr = kind.abbr:sub(1, 50)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
     return kind
 end
@@ -400,8 +407,8 @@ function M.cpp_fmt(entry, vim_item)
     end
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = nil
-    if string.len(kind.abbr) > 50 then
-        kind.abbr = kind.abbr:sub(1, 50)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
     return kind
 end
@@ -522,8 +529,8 @@ function M.go_fmt(entry, vim_item)
     end
     kind.kind = " " .. (strings[1] or "") .. " "
     kind.menu = ""
-    if string.len(kind.abbr) > 50 then
-        kind.abbr = kind.abbr:sub(1, 50)
+    if string.len(kind.abbr) > distance_to_right_edge() then
+        kind.abbr = kind.abbr:sub(1, distance_to_right_edge())
     end
     return kind
 end
