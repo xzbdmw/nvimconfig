@@ -9,6 +9,7 @@ vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
 vim.o.termsync = false
 vim.o.foldtext = ""
+vim.o.expandtab = false
 vim.o.foldmethod = "manual"
 vim.o.incsearch = true
 vim.opt.relativenumber = false

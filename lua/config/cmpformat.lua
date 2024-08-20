@@ -1,3 +1,4 @@
+local utils = require("config.utils")
 local M = {}
 M.expand = true
 M.CompletionItemKind = {
@@ -29,7 +30,7 @@ M.CompletionItemKind = {
 }
 
 local function distance_to_right_edge()
-    local cursor_col = vim.fn.screencol()
+    local cursor_col = utils.real_col()
     local nvim_width = vim.o.columns
     local distance = nvim_width - cursor_col
     return distance
