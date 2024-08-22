@@ -534,6 +534,10 @@ function M.insert_mode_tab()
     end
 end
 
+_G.set_winbar = function(winbar)
+    vim.wo.winbar = winbar
+end
+
 _G.no_delay = function(animation)
     TST = vim.uv.hrtime()
     vim.g.type_o = true
@@ -957,8 +961,10 @@ function M.set_glance_winbar()
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
         local function checkGlobalVarAndSetWinBar()
             if _G.glance_listnr ~= nil then
-                vim.wo.winbar = " %#Comment#"
-                    .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
+                _G.set_winbar(
+                    " %#Comment#"
+                        .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
+                )
             else
                 vim.defer_fn(checkGlobalVarAndSetWinBar, 1)
             end
@@ -981,30 +987,34 @@ function M.set_glance_winbar()
             icon = "󱘗"
         end
         if not vim.startswith(absolute_path, cwd) then
-            vim.wo.winbar = " "
-                .. "%#"
-                .. iconHighlight
-                .. "#"
-                .. icon
-                .. " %#GlanceWinbarFileName#"
-                .. filename
-                .. "%*"
-                .. " "
-                .. "%#LibPath#"
-                .. path
+            _G.set_winbar(
+                " "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. icon
+                    .. " %#GlanceWinbarFileName#"
+                    .. filename
+                    .. "%*"
+                    .. " "
+                    .. "%#LibPath#"
+                    .. path
+            )
         else
             -- 在当前工作目录下，使用默认颜色
-            vim.wo.winbar = " "
-                .. "%#"
-                .. iconHighlight
-                .. "#"
-                .. icon
-                .. " %#GlanceWinbarFileName#"
-                .. filename
-                .. "%*"
-                .. " "
-                .. "%#Comment#"
-                .. path
+            _G.set_winbar(
+                " "
+                    .. "%#"
+                    .. iconHighlight
+                    .. "#"
+                    .. icon
+                    .. " %#GlanceWinbarFileName#"
+                    .. filename
+                    .. "%*"
+                    .. " "
+                    .. "%#Comment#"
+                    .. path
+            )
         end
     end
 end
@@ -1083,54 +1093,35 @@ function M.map_checkout(key, map)
 end
 
 function M.set_diagnostic_winbar()
-    local expr = vim.b.winbar_expr
-    if expr == nil then
+    if vim.b.winbar_expr == nil then
         return
     end
     local counts = vim.diagnostic.count(0, { severity = { min = vim.diagnostic.severity.INFO } })
-    if #counts == 0 then
-        vim.b.diag_winbar = ""
+
+    local set = function(expr)
+        vim.b.diag_winbar = expr
         if vim.b.git_winbar_expr ~= nil then
-            vim.wo.winbar = vim.b.winbar_expr .. "%= " .. vim.b.git_winbar_expr
+            _G.set_winbar(vim.b.winbar_expr .. expr .. "%= " .. vim.b.git_winbar_expr)
         else
-            vim.wo.winbar = vim.b.winbar_expr
+            _G.set_winbar(vim.b.winbar_expr .. expr)
         end
+    end
+
+    if #counts == 0 then
+        set("")
         return
     end
+
     local num_errors = counts[vim.diagnostic.severity.ERROR] or 0
     local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
     local num_infos = counts[vim.diagnostic.severity.INFO] or 0
+
     if num_errors > 0 then
-        vim.b.diag_winbar = "%#Error#" .. " (" .. num_errors .. ")"
-        if vim.b.git_winbar_expr ~= nil then
-            vim.wo.winbar = vim.b.winbar_expr .. "%#Error#" .. " (" .. num_errors .. ")%= " .. vim.b.git_winbar_expr
-        else
-            vim.wo.winbar = vim.b.winbar_expr .. "%#Error#" .. " (" .. num_errors .. ")"
-        end
+        set("%#Error#" .. " (" .. num_errors .. ")")
     elseif num_warnings > 0 then
-        vim.b.diag_winbar = "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
-        if vim.b.git_winbar_expr ~= nil then
-            vim.wo.winbar = vim.b.winbar_expr
-                .. "%#DiagnosticWarn#"
-                .. " ("
-                .. num_warnings
-                .. ")%= "
-                .. vim.b.git_winbar_expr
-        else
-            vim.wo.winbar = vim.b.winbar_expr .. "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
-        end
+        set("%#DiagnosticWarn#" .. " (" .. num_warnings .. ")")
     elseif num_infos > 0 then
-        vim.b.diag_winbar = "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
-        if vim.b.git_winbar_expr ~= nil then
-            vim.wo.winbar = vim.b.winbar_expr
-                .. "%#DiagnosticInfo#"
-                .. " ("
-                .. num_infos
-                .. ")%= "
-                .. vim.b.git_winbar_expr
-        else
-            vim.wo.winbar = vim.b.winbar_expr .. "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
-        end
+        set("%#DiagnosticInfo#" .. " (" .. num_infos .. ")")
     end
 end
 
@@ -1187,9 +1178,9 @@ function M.set_git_winbar()
     end
     vim.b.git_winbar_expr = git_winbar_expr
     if vim.b.diag_winbar == nil then
-        vim.wo.winbar = vim.b.winbar_expr .. "%= " .. git_winbar_expr
+        _G.set_winbar(vim.b.winbar_expr .. "%= " .. git_winbar_expr)
     else
-        vim.wo.winbar = vim.b.winbar_expr .. vim.b.diag_winbar .. "%= " .. git_winbar_expr
+        _G.set_winbar(vim.b.winbar_expr .. vim.b.diag_winbar .. "%= " .. git_winbar_expr)
     end
 end
 
@@ -1262,9 +1253,9 @@ function M.set_winbar()
                 vim.b.winbar_expr = winbar_expr
             end
         elseif filename ~= "" then
-            vim.wo.winbar = "%#WinbarFileName#" .. filename .. "%*"
+            _G.set_winbar("%#WinbarFileName#" .. filename .. "%*")
         else
-            vim.wo.winbar = ""
+            _G.set_winbar("")
         end
     end)
 end
