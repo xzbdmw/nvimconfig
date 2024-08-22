@@ -1082,22 +1082,73 @@ function M.map_checkout(key, map)
     end, { nowait = true, desc = "desc for which key" })
 end
 
-function M.set_git_winbar()
-    local icons = { " ", " ", " " }
-    local signs = vim.b.gitsigns_status_dict
+function M.set_diagnostic_winbar()
     local expr = vim.b.winbar_expr
     if expr == nil then
         return
     end
+    local counts = vim.diagnostic.count(0, { severity = { min = vim.diagnostic.severity.INFO } })
+    if #counts == 0 then
+        vim.b.diag_winbar = ""
+        if vim.b.git_winbar_expr ~= nil then
+            vim.wo.winbar = vim.b.winbar_expr .. "%= " .. vim.b.git_winbar_expr
+        else
+            vim.wo.winbar = vim.b.winbar_expr
+        end
+        return
+    end
+    local num_errors = counts[vim.diagnostic.severity.ERROR] or 0
+    local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
+    local num_infos = counts[vim.diagnostic.severity.INFO] or 0
+    if num_errors > 0 then
+        vim.b.diag_winbar = "%#Error#" .. " (" .. num_errors .. ")"
+        if vim.b.git_winbar_expr ~= nil then
+            vim.wo.winbar = vim.b.winbar_expr .. "%#Error#" .. " (" .. num_errors .. ")%= " .. vim.b.git_winbar_expr
+        else
+            vim.wo.winbar = vim.b.winbar_expr .. "%#Error#" .. " (" .. num_errors .. ")"
+        end
+    elseif num_warnings > 0 then
+        vim.b.diag_winbar = "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
+        if vim.b.git_winbar_expr ~= nil then
+            vim.wo.winbar = vim.b.winbar_expr
+                .. "%#DiagnosticWarn#"
+                .. " ("
+                .. num_warnings
+                .. ")%= "
+                .. vim.b.git_winbar_expr
+        else
+            vim.wo.winbar = vim.b.winbar_expr .. "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
+        end
+    elseif num_infos > 0 then
+        vim.b.diag_winbar = "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
+        if vim.b.git_winbar_expr ~= nil then
+            vim.wo.winbar = vim.b.winbar_expr
+                .. "%#DiagnosticInfo#"
+                .. " ("
+                .. num_infos
+                .. ")%= "
+                .. vim.b.git_winbar_expr
+        else
+            vim.wo.winbar = vim.b.winbar_expr .. "%#DiagnosticWarn#" .. " (" .. num_warnings .. ")"
+        end
+    end
+end
+
+function M.set_git_winbar()
+    local icons = { " ", " ", " " }
+    local signs = vim.b.gitsigns_status_dict
+    if vim.b.winbar_expr == nil then
+        return
+    end
     local head = vim.g.BranchName
-    expr = expr .. "%= "
+    local git_winbar_expr = ""
     if signs ~= nil and signs ~= "" then
         local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
         if hunks ~= nil and #hunks > 0 then
             if #hunks > 1 then
-                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
             else
-                expr = expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
+                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
             end
         end
         for index, icon in ipairs(icons) do
@@ -1110,31 +1161,36 @@ function M.set_git_winbar()
                 name = "changed"
             end
             if tonumber(signs[name]) and signs[name] > 0 then
-                expr = expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
+                git_winbar_expr = git_winbar_expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
             end
         end
     end
     if head ~= nil then
-        expr = expr .. "%#BranchName#" .. "[" .. head .. "] "
+        git_winbar_expr = git_winbar_expr .. "%#BranchName#" .. "[" .. head .. "] "
     end
     if vim.g.Base_commit_msg ~= "" then
         if vim.g.diff_file_count ~= 0 then
-            expr = expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
         else
-            expr = expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            expr = expr .. "%#Comment#" .. " "
+            git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
         end
     else
         if vim.g.diff_file_count ~= 0 then
-            expr = expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            expr = expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
         else
-            expr = expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
-            expr = expr .. "%#Comment#" .. " "
+            git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
         end
     end
-    vim.wo.winbar = expr
+    vim.b.git_winbar_expr = git_winbar_expr
+    if vim.b.diag_winbar == nil then
+        vim.wo.winbar = vim.b.winbar_expr .. "%= " .. git_winbar_expr
+    else
+        vim.wo.winbar = vim.b.winbar_expr .. vim.b.diag_winbar .. "%= " .. git_winbar_expr
+    end
 end
 
 function M.set_winbar()

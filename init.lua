@@ -254,6 +254,13 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+api.nvim_create_autocmd("User", {
+    pattern = "DiagnosticUpdate",
+    callback = function()
+        utils.set_diagnostic_winbar()
+    end,
+})
+
 api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
         local is_enabled = require("noice.ui")._attached
@@ -342,6 +349,7 @@ api.nvim_create_autocmd("BufWinEnter", {
     callback = function()
         utils.set_winbar()
         utils.set_git_winbar()
+        utils.set_diagnostic_winbar()
     end,
 })
 
