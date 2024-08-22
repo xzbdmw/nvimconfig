@@ -258,6 +258,10 @@ api.nvim_create_autocmd("User", {
     pattern = "DiagnosticUpdate",
     callback = function()
         utils.set_diagnostic_winbar()
+        local time = { 100, 200, 300, 400 }
+        for _, t in ipairs(time) do
+            vim.defer_fn(utils.set_diagnostic_winbar, t)
+        end
     end,
 })
 
