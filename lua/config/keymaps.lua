@@ -475,7 +475,11 @@ end, opts)
 
 keymap("n", "<leader>d", function()
     ST = vim.uv.hrtime()
-    vim.cmd("Glance definitions")
+    if api.nvim_win_get_config(api.nvim_get_current_win()).zindex == 10 then
+        vim.lsp.buf.definition()
+    else
+        vim.cmd("Glance definitions")
+    end
 end)
 
 keymap("n", "gd", function()
