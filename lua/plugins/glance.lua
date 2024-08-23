@@ -17,7 +17,7 @@ return {
                 vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
             end)
             vim.keymap.set("n", "<CR>", function()
-                vim.cmd([[:lua require("nvim-treesitter.incremental_selection").init_selection()]])
+                require("nvim-treesitter.incremental_selection").init_selection()
             end)
             _G.reference = false
         end

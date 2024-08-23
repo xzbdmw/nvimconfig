@@ -638,6 +638,7 @@ function M.set_glance_keymap()
         end
 
         local function glance_close()
+            _G.hide_cursor(function() end)
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
             ---@diagnostic disable-next-line: undefined-global
@@ -971,52 +972,6 @@ function M.set_glance_winbar()
         end
         checkGlobalVarAndSetWinBar()
     end
-    if winconfig.relative ~= "" and winconfig.zindex == 10 then
-        local telescopeUtilities = require("telescope.utils")
-        local icon, iconHighlight = telescopeUtilities.get_devicons(vim.bo.filetype)
-        local path = vim.fn.expand("%:~:.:h")
-
-        local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
-        local filename = vim.fn.expand("%:t")
-        local cwd = vim.fn.getcwd()
-        if path == nil or filename == nil then
-            return
-        end
-        if filename:match("%.rs$") then
-            iconHighlight = "RustIcon"
-            icon = "󱘗"
-        end
-        if not vim.startswith(absolute_path, cwd) then
-            _G.set_winbar(
-                " "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. icon
-                    .. " %#GlanceWinbarFileName#"
-                    .. filename
-                    .. "%*"
-                    .. " "
-                    .. "%#LibPath#"
-                    .. path
-            )
-        else
-            -- 在当前工作目录下，使用默认颜色
-            _G.set_winbar(
-                " "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. icon
-                    .. " %#GlanceWinbarFileName#"
-                    .. filename
-                    .. "%*"
-                    .. " "
-                    .. "%#Comment#"
-                    .. path
-            )
-        end
-    end
 end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
@@ -1096,7 +1051,6 @@ function M.set_diagnostic_winbar()
     if vim.b.winbar_expr == nil then
         return
     end
-    local counts = vim.diagnostic.count(0, { severity = { min = vim.diagnostic.severity.INFO } })
 
     local set = function(expr)
         vim.b.diag_winbar = expr
@@ -1107,21 +1061,16 @@ function M.set_diagnostic_winbar()
         end
     end
 
-    if #counts == 0 then
-        set("")
-        return
-    end
-
+    local counts = vim.diagnostic.count(0, { severity = { min = vim.diagnostic.severity.WARN } })
     local num_errors = counts[vim.diagnostic.severity.ERROR] or 0
     local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
-    local num_infos = counts[vim.diagnostic.severity.INFO] or 0
 
     if num_errors > 0 then
         set("%#Error#" .. " (" .. num_errors .. ")")
     elseif num_warnings > 0 then
-        set("%#DiagnosticWarn#" .. " (" .. num_warnings .. ")")
-    elseif num_infos > 0 then
-        set("%#DiagnosticInfo#" .. " (" .. num_infos .. ")")
+        set("%#CmpGhostText#" .. " (" .. num_warnings .. ")")
+    else
+        set("")
     end
 end
 
@@ -1208,56 +1157,32 @@ function M.set_winbar()
         arrow = " (" .. arrow .. ")"
         iconHighlight = "ArrowIcon"
     end
-    pcall(function()
-        if path ~= "" and filename ~= "" then
-            if not vim.startswith(absolute_path, cwd) then
-                local winbar_expr = " "
-                    .. " "
-                    .. "%#LibPath#"
-                    .. path
-                    .. "%#Comment#"
-                    .. " => "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow_icon
-                    .. icon
-                    .. " %#WinbarFileName#"
-                    .. filename
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow
-                    .. "%*"
-                vim.wo[winid].winbar = winbar_expr
-                vim.b.winbar_expr = winbar_expr
-            else
-                local winbar_expr = " "
-                    .. "%#NvimTreeFolderName#"
-                    .. " "
-                    .. path
-                    .. " => "
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow_icon
-                    .. icon
-                    .. " %#WinbarFileName#"
-                    .. filename
-                    .. "%#"
-                    .. iconHighlight
-                    .. "#"
-                    .. arrow
-                    .. "%*"
-                vim.wo[winid].winbar = winbar_expr
-                vim.b.winbar_expr = winbar_expr
-            end
-        elseif filename ~= "" then
-            _G.set_winbar("%#WinbarFileName#" .. filename .. "%*")
-        else
-            _G.set_winbar("")
-        end
-    end)
+    local path_color = vim.startswith(absolute_path, cwd) and "%#NvimTreeFolderName#" or "%#LibPath#"
+    if path ~= "" and filename ~= "" then
+        local winbar_expr = " "
+            .. path_color
+            .. path
+            .. "%#Comment#"
+            .. " => "
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. arrow_icon
+            .. icon
+            .. " %#WinbarFileName#"
+            .. filename
+            .. "%#"
+            .. iconHighlight
+            .. "#"
+            .. arrow
+            .. "%*"
+        vim.wo[winid].winbar = winbar_expr
+        vim.b.winbar_expr = winbar_expr
+    elseif filename ~= "" then
+        _G.set_winbar("%#WinbarFileName#" .. filename .. "%*")
+    else
+        _G.set_winbar("")
+    end
 end
 
 _G.Time = function(start, msg)
