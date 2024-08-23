@@ -39,20 +39,21 @@ keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
 
-local has_diagnostic = false
+_G.has_diagnostic = false
 keymap("n", "<leader>ud", function()
+    local mode = require("trouble.api").last_mode
     if has_diagnostic then
         vim.diagnostic.config({ virtual_text = false })
-        has_diagnostic = false
+        _G.has_diagnostic = false
     else
         vim.diagnostic.config({
             virtual_text = {
                 prefix = "",
                 source = "if_many",
-                spacing = 4,
+                spacing = 0,
             },
         })
-        has_diagnostic = true
+        _G.has_diagnostic = true
     end
 end, opts)
 

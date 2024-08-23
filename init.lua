@@ -289,6 +289,34 @@ api.nvim_create_autocmd("BufEnter", {
     callback = utils.set_glance_keymap,
 })
 
+api.nvim_create_autocmd("User", {
+    pattern = "TroubleOpen",
+    callback = function(data)
+        local mode = data.data
+        if mode == "mydiags" then
+            _G.has_diagnostic = true
+            vim.diagnostic.config({
+                virtual_text = {
+                    prefix = "",
+                    source = "if_many",
+                    spacing = 0,
+                },
+            })
+        end
+    end,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "TroubleClose",
+    callback = function(data)
+        local mode = data.data
+        if mode == "mydiags" and not utils.has_filetype("trouble") then
+            _G.has_diagnostic = false
+            vim.diagnostic.config({ virtual_text = false })
+        end
+    end,
+})
+
 api.nvim_create_autocmd("WinResized", {
     pattern = "*",
     callback = function()
@@ -502,7 +530,8 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-vim.lsp.set_log_level("off")
+vim.lsp.set_log_level("debug")
+require("vim.lsp.log").set_format_func(vim.inspect)
 
 local should_profile = os.getenv("NVIM_PROFILE")
 if should_profile then
