@@ -298,7 +298,7 @@ return {
                 PmenuThumb = { bg = "#DBDFDF" },
                 DiagnosticVirtualTextError = { fg = "#B40329", bg = "none" },
                 DiagnosticVirtualTextWarn = { fg = "#ac5402", bg = "none" },
-                DiagnosticWarn = { fg = "#B46D1D" },
+                DiagnosticWarn = { fg = "#E6AD63" },
                 DiagnosticUnnecessary = { fg = "none", bg = "none" },
                 DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },
                 DiagnosticVirtualTextHint = { fg = "#215062", bg = "none" },
