@@ -224,6 +224,7 @@ end)
 
 keymap("n", "<leader>uq", function()
     if vim.v.hlsearch ~= 0 then
+        vim.cmd("nohlsearch")
         require("hlslens").exportLastSearchToQuickfix()
     end
     vim.cmd("Trouble qflist toggle focus=false")
