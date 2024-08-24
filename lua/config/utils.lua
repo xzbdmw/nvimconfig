@@ -1142,7 +1142,7 @@ function M.set_winbar()
     local icon, iconHighlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
     local winid = api.nvim_get_current_win()
     local winconfig = api.nvim_win_get_config(winid)
-    if winconfig.relative ~= "" then
+    if winconfig.relative ~= "" and winconfig.zindex ~= 10 then
         return
     end
     local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
