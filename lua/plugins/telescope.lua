@@ -452,7 +452,7 @@ return {
 
             local status_delta = require("telescope.previewers").new_termopen_previewer({
                 title = "Grep Preview",
-                dyn_title = function(a, entry)
+                dyn_title = function(_, entry)
                     if vim.g.stage_title ~= "" and vim.g.last_staged_title_path == entry.path then
                         return vim.g.stage_title
                     end
@@ -468,7 +468,7 @@ return {
                     end
                     return title
                 end,
-                get_command = function(entry, status)
+                get_command = function(entry, _)
                     local command
                     if vim.g.Base_commit ~= "" then
                         command = {
@@ -951,7 +951,7 @@ return {
                                     end
                                     Open_git_commit()
                                 end,
-                                ["a"] = function(prompt_bufnr)
+                                ["a"] = function()
                                     if utils.is_detached() then
                                         return
                                     end
@@ -973,7 +973,7 @@ return {
                                     end
                                     utils.refresh_telescope_git_status()
                                 end,
-                                ["d"] = function(prompt_bufnr)
+                                ["d"] = function()
                                     if utils.is_detached() then
                                         return
                                     end
@@ -982,7 +982,7 @@ return {
                                     vim.system({ "git", "checkout", "--", selection.value }):wait()
                                     utils.refresh_telescope_git_status()
                                 end,
-                                ["D"] = function(prompt_bufnr)
+                                ["D"] = function()
                                     if utils.is_detached() then
                                         return
                                     end
@@ -995,7 +995,6 @@ return {
                                         vim.notify("Detached in " .. vim.g.Base_commit_msg, vim.log.levels.WARN)
                                         return
                                     end
-                                    local entry_display = require("telescope.pickers.entry_display")
                                     local picker = action_state.get_current_picker(prompt_bufnr)
                                     local preview_fn = getmetatable(picker._selection_entry).previewer[1].preview_fn
                                     local previewer = picker.previewer
@@ -1052,7 +1051,7 @@ return {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
-                                ["/"] = function(prompt_bufnr)
+                                ["/"] = function()
                                     FeedKeys("l/", "m")
                                 end,
                                 ["c"] = function(prompt_bufnr)
@@ -1087,7 +1086,7 @@ return {
                             n = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
-                                ["/"] = function(prompt_bufnr)
+                                ["/"] = function()
                                     FeedKeys("l/", "m")
                                 end,
                                 ["c"] = function(prompt_bufnr)
@@ -1107,7 +1106,7 @@ return {
                     },
                     lsp_implementations = {
                         entry_maker = require("custom.make_entry").gen_from_quickfix({ trim_text = true }),
-                        initial_mode = "insert",
+                        initial_mode = "normal",
                         layout_strategy = "vertical",
                         trim_text = true,
                         reuse_win = true,

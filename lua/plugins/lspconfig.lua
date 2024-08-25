@@ -52,20 +52,11 @@ return {
             }
             keys[#keys + 1] = {
                 "gt",
-                function()
-                    vim.lsp.buf.type_definition()
-                end,
+                vim.lsp.buf.type_definition,
             }
             keys[#keys + 1] = {
                 "gh",
-                function()
-                    vim.lsp.buf.hover()
-
-                    -- vim.cmd("Lspsaga hover_doc")
-                    --[[ vim.defer_fn(function()
-                        vim.lsp.buf.hover()
-                    end, 100) ]]
-                end,
+                vim.lsp.buf.hover,
                 desc = "hover in lsp",
             }
         end,
@@ -84,11 +75,6 @@ return {
                     },
                 },
             },
-            -- add any global capabilities here
-            capabilities = {},
-            -- options for vim.lsp.buf.format
-            -- `bufnr` and `filter` is handled by the LazyVim formatter,
-            -- but can be also overridden when specified
             format = {
                 formatting_options = nil,
                 timeout_ms = nil,
@@ -99,74 +85,10 @@ return {
                     init_options = {
                         typescript = {
                             tsdk = "/Users/xzb/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib",
-
-                            -- /Users/xzb/.local/share/nvim/mason/packages/vetur-vls/node_modules/vls/node_modules/typescript/lib/lib.es5.d.ts
-                            -- Alternative location if installed as root:
-                            -- tsdk = '/usr/local/lib/node_modules/typescript/lib'
                         },
                     },
-                    -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
                 },
-                -- rust_analyzer = {
-                --     settings = {
-                --         -- ["rust-analyzer"] = {
-                --         --     checkOnSave = true,
-                --         --     check = {
-                --         --         enable = true,
-                --         --         command = "clippy",
-                --         --         features = "all",
-                --         --     },
-                --         --     trace = {
-                --         --         server = "verbose",
-                --         --     },
-                --         --     completion = {
-                --         --         callable = {
-                --         --             snippets = "add_parentheses",
-                --         --         },
-                --         --         fullFunctionSignatures = {
-                --         --             enable = true,
-                --         --         },
-                --         --         privateEditable = {
-                --         --             enable = true,
-                --         --         },
-                --         --     },
-                --         --     procMacro = {
-                --         --         ignored = {
-                --         --             tokio_macros = {
-                --         --                 "main",
-                --         --                 "test",
-                --         --             },
-                --         --             tracing_attributes = {
-                --         --                 "instrument",
-                --         --             },
-                --         --         },
-                --         --     },
-                --         --     inlayHints = {
-                --         --         parameterHints = false,
-                --         --         closureReturnTypeHints = "with_block",
-                --         --     },
-                --         -- },
-                --     },
-                -- },
-                -- clangd = {
-                --     init_options = { compilationDatabasePath = "./build" },
-                --     settings = {},
-                -- },
-                pylance = {
-                    -- settings = {
-                    --     python = {
-                    --         -- pythonPath = "/usr/bin/python3",
-                    --         analysis = {
-                    --             inlayHints = {
-                    --                 variableTypes = true,
-                    --                 functionReturnTypes = true,
-                    --                 callArgumentNames = true,
-                    --                 pytestParameters = true,
-                    --             },
-                    --         },
-                    --     },
-                    -- },
-                },
+                pylance = {},
                 lua_ls = {
                     settings = {
                         Lua = {
@@ -179,17 +101,9 @@ return {
                             workspace = {
                                 library = {
                                     "${3rd}/luv/library",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/stable",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/neodev.nvim/types/nightly",
                                     "/usr/local/share/nvim/runtime",
                                     "~/.config/nvim/lua",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/neoconf.nvim/types",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-cmp/lua/cmp/",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/nvim-treesitter/",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/telescope.nvim/lua/telescope/",
-                                    -- "/Users/xzb/.local/share/nvim/lazy/LuaSnip/lua/luasnip/",
                                 },
-                                -- library = api.nvim_get_runtime_file("", true),
                             },
                             hint = {
                                 enable = true,
@@ -250,64 +164,6 @@ return {
                     cmd = { "clangd", "--completion-style=detailed" },
                 },
             },
-            -- you can do any additional lsp server setup here
-            -- return true if you don't want this server to be setup with lspconfig
-            setup = {
-                -- Specify * to use this function as a fallback for any server
-                -- ["*"] = function(server, opts) end,
-            },
         },
-        --[[ config = function(_, opts)
-            local servers = opts.servers
-            local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-            local capabilities = vim.tbl_deep_extend(
-                "force",
-                {},
-                vim.lsp.protocol.make_client_capabilities(),
-                has_cmp and cmp_nvim_lsp.default_capabilities() or {},
-                opts.capabilities or {}
-            )
-
-            local function setup(server)
-                local server_opts = vim.tbl_deep_extend("force", {
-                    capabilities = vim.deepcopy(capabilities),
-                }, servers[server] or {})
-
-                if opts.setup[server] then
-                    if opts.setup[server](server, server_opts) then
-                        return
-                    end
-                elseif opts.setup["*"] then
-                    if opts.setup["*"](server, server_opts) then
-                        return
-                    end
-                end
-                require("lspconfig")[server].setup(server_opts)
-            end
-
-            -- get all the servers that are available through mason-lspconfig
-            local have_mason, mlsp = pcall(require, "mason-lspconfig")
-            local all_mslp_servers = {}
-            if have_mason then
-                all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-            end
-
-            local ensure_installed = {} ---@type string[]
-            for server, server_opts in pairs(servers) do
-                if server_opts then
-                    server_opts = server_opts == true and {} or server_opts
-                    -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-                    if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-                        setup(server)
-                    else
-                        ensure_installed[#ensure_installed + 1] = server
-                    end
-                end
-            end
-
-            if have_mason then
-                mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
-            end
-        end, ]]
     },
 }

@@ -169,7 +169,7 @@ return {
                         fallback()
                     end
                 end),
-                ["<f13>"] = cmp.mapping(function(fallback)
+                ["<f13>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -358,7 +358,7 @@ return {
                     end,
                 }),
                 ["<Tab>"] = cmp.mapping({
-                    c = function(fallback)
+                    c = function()
                         if cmp.visible() then
                             cmp.confirm({ select = true })
                             FeedKeys("<space><bs><CR>", "n")
@@ -452,7 +452,7 @@ return {
                     end,
                 },
                 ["<c-n>"] = {
-                    c = function(fallback)
+                    c = function()
                         if cmp.visible() then
                             cmp.close()
                         end
@@ -460,7 +460,7 @@ return {
                     end,
                 },
                 ["<c-p>"] = {
-                    c = function(fallback)
+                    c = function()
                         if cmp.visible() then
                             cmp.close()
                         end
@@ -487,7 +487,7 @@ return {
                     if vim.startswith(is_cmdline, "IncRename") then
                         local cursor = utils.noice_incsearch_at_start()
                         local shift = cursor - 3
-                        for i = 1, shift do
+                        for _ = 1, shift do
                             FeedKeys("<left>", "n")
                         end
                     else

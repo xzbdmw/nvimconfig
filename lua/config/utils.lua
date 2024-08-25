@@ -661,14 +661,13 @@ function M.set_glance_keymap()
             glance_close()
         end, { buffer = bufnr })
         vim.keymap.set("n", "<CR>", function()
+            _G.hide_cursor(function() end)
             _G.set_cursor_animation(0.0)
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
             ---@diagnostic disable-next-line: undefined-global
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
-            vim.defer_fn(function()
-                Open()
-            end, 5)
+            Open()
         end, { buffer = bufnr })
     end
 end
@@ -916,12 +915,12 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            -- vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
+            vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
             callback()
         end
     end
     vim.defer_fn(function()
-        timout({ time = 100 })
+        timout({ time = 30 })
     end, 30)
     vim.defer_fn(function()
         timout({ time = 1000 })
@@ -1148,15 +1147,6 @@ function M.set_winbar()
     local absolute_path = vim.fn.expand("%:p:h") -- 获取完整路径
     local path = vim.fn.expand("%:~:.:h")
     local cwd = vim.fn.getcwd()
-    local statusline = require("arrow.statusline")
-    local arrow = statusline.text_for_statusline() -- Same, but with an bow and arrow icon ;D
-    local arrow_icon = ""
-    if arrow ~= "" then
-        arrow_icon = "󰣉"
-        icon = ""
-        arrow = " (" .. arrow .. ")"
-        iconHighlight = "ArrowIcon"
-    end
     local path_color = vim.startswith(absolute_path, cwd) and "%#NvimTreeFolderName#" or "%#LibPath#"
     if path ~= "" and filename ~= "" then
         local winbar_expr = " "
@@ -1167,14 +1157,9 @@ function M.set_winbar()
             .. "%#"
             .. iconHighlight
             .. "#"
-            .. arrow_icon
             .. icon
             .. " %#WinbarFileName#"
             .. filename
-            .. "%#"
-            .. iconHighlight
-            .. "#"
-            .. arrow
             .. "%*"
         vim.wo[winid].winbar = winbar_expr
         vim.b.winbar_expr = winbar_expr

@@ -41,7 +41,6 @@ end, opts)
 
 _G.has_diagnostic = false
 keymap("n", "<leader>ud", function()
-    local mode = require("trouble.api").last_mode
     if has_diagnostic then
         vim.diagnostic.config({ virtual_text = false })
         _G.has_diagnostic = false
