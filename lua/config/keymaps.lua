@@ -310,7 +310,16 @@ keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
 
 keymap("i", "<space>", function()
-    utils.insert_mode_space()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        return "<space>"
+    else
+        utils.insert_mode_space()
+        return ""
+    end
+end, { expr = true })
+
+keymap("i", "s", function()
+    FeedKeys("s", "n")
 end, opts)
 
 keymap("i", "<Tab>", function()
