@@ -200,7 +200,9 @@ end)
 
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
-keymap("n", "Q", "qa", opts)
+keymap("n", "Q", "q", opts)
+keymap("n", "<leader>rr", "qa", opts)
+keymap("n", "<leader>pr", "@a", opts)
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap({ "n", "v" }, "<D-=>", function()
@@ -341,7 +343,11 @@ keymap({ "n", "o" }, "0", "^", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 
 keymap({ "n" }, "q", function()
-    utils.close_win()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        FeedKeys("q", "n")
+    else
+        utils.close_win()
+    end
 end)
 
 keymap("n", "<leader>l", "f(a", { remap = true })
