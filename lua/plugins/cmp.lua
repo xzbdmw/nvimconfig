@@ -208,18 +208,23 @@ return {
                 ["<right>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     if cmp.visible() then
-                        _G.CON = true
-                        vim.defer_fn(function()
-                            _G.CON = nil
-                        end, 10)
-                        f.expand = false
-                        cmp.confirm({ select = true })
-                        vim.defer_fn(function()
-                            ---@diagnostic disable-next-line: undefined-field
-                            pcall(_G.update_indent, true) -- hlchunk
-                            ---@diagnostic disable-next-line: undefined-field
-                            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
-                        end, 20)
+                        if utils.if_multicursor() then
+                            cmp.close()
+                            fallback()
+                        else
+                            _G.CON = true
+                            vim.defer_fn(function()
+                                _G.CON = nil
+                            end, 10)
+                            f.expand = false
+                            cmp.confirm({ select = true })
+                            vim.defer_fn(function()
+                                ---@diagnostic disable-next-line: undefined-field
+                                pcall(_G.update_indent, true) -- hlchunk
+                                ---@diagnostic disable-next-line: undefined-field
+                                pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                            end, 20)
+                        end
                     else
                         fallback()
                     end
