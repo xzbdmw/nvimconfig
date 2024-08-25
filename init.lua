@@ -254,8 +254,7 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
-api.nvim_create_autocmd("User", {
-    pattern = "DiagnosticUpdate",
+api.nvim_create_autocmd("DiagnosticChanged", {
     callback = function()
         utils.set_diagnostic_winbar()
         local time = { 100, 200, 300, 400 }
@@ -530,7 +529,7 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("off")
 require("vim.lsp.log").set_format_func(vim.inspect)
 
 local should_profile = os.getenv("NVIM_PROFILE")
