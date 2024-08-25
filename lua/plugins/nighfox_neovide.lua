@@ -299,6 +299,7 @@ return {
                 DiagnosticVirtualTextError = { fg = "#B40329", bg = "none" },
                 DiagnosticVirtualTextWarn = { fg = "#ac5402", bg = "none" },
                 DiagnosticWarn = { link = "DiagnosticVirtualTextWarn" },
+                DiagnosticUnderlineWarn = { sp = "#999797", style = "undercurl" },
                 DiagnosticSignWarn = { fg = "#999797" },
                 DiagnosticUnnecessary = { fg = "none", bg = "none" },
                 DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },

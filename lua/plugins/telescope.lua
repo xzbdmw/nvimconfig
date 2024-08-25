@@ -510,10 +510,19 @@ return {
                         checkout()
                     end
                     actions.close(prompt_bufnr)
+                    Signs_staged = nil
                     local splits = vim.split(result.stdout, "\n")
                     vim.g.Base_commit = splits[1]:sub(1, 7)
-                    Signs_staged = nil
-                    vim.g.Base_commit_msg = splits[2]:gsub("\n", "")
+                    local commit_msg = splits[2]:gsub("\n", "")
+                    if #commit_msg > 45 then
+                        local cut_pos = commit_msg:find(" ", 46)
+                        if cut_pos then
+                            commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
+                        else
+                            commit_msg = commit_msg:sub(1, 45) .. "…"
+                        end
+                    end
+                    vim.g.Base_commit_msg = commit_msg
                 end
                 require("gitsigns").change_base(vim.g.Base_commit, true)
                 utils.update_diff_file_count()
@@ -533,9 +542,17 @@ return {
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
                 local sts = vim.split(selection.ordinal, " ")
-                for i = 2, #sts do
-                    vim.g.Base_commit_msg = vim.g.Base_commit_msg .. sts[i] .. " "
+                table.remove(sts, 1)
+                local commit_msg = table.concat(sts, " ")
+                if #commit_msg > 45 then
+                    local cut_pos = commit_msg:find(" ", 46)
+                    if cut_pos then
+                        commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
+                    else
+                        commit_msg = commit_msg:sub(1, 45) .. "…"
+                    end
                 end
+                vim.g.Base_commit_msg = vim.g.Base_commit_msg .. commit_msg
                 require("gitsigns").change_base(commit, true)
                 utils.update_diff_file_count()
                 utils.set_git_winbar()
