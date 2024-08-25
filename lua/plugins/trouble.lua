@@ -45,7 +45,7 @@ return {
         restore = true, -- restores the last location in the list when opening
         follow = true, -- Follow the current item
         indent_guides = true, -- show indent guides
-        max_items = 200, -- limit number of items that can be displayed per section
+        max_items = 2000000, -- limit number of items that can be displayed per section
         multiline = true, -- render multi-line messages
         pinned = false, -- When pinned, the opened trouble window will be bound to the current buffer
         -- Window options for the preview window. Can be a split, floating window,
