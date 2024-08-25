@@ -102,14 +102,17 @@
   "default"
   "defer"
   "goto"
-  "interface"
   "range"
   "select"
-  "struct"
-  "type"
   "var"
   "fallthrough"
 ] @keyword
+
+[
+  "type"
+  "struct"
+  "interface"
+] @keyword.type
 
 "func" @keyword.function
 
@@ -235,7 +238,7 @@
 ; ((interpreted_string_literal) @spell
 ;   (#not-has-parent? @spell import_spec))
 
-((type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))@interface.declaration)
+(type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))
 ; ((identifier) @receiver (#eq? @receiver "self"))
 ; type: (qualified_type 
 ;     package: (package_identifier) @receiver (#eq? @receiver "self")
