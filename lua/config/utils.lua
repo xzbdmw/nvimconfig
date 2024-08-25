@@ -288,6 +288,30 @@ end
 local has_map = false
 local original_keymaps = {}
 
+function M.insert_C_R()
+    local row, col = unpack(api.nvim_win_get_cursor(0))
+    local ns = api.nvim_create_namespace("<c-r>paste")
+    api.nvim_buf_set_extmark(0, ns, row - 1, col, {
+        virt_text = {
+            { '"', "PasteHint" },
+        },
+        virt_text_pos = "inline",
+        strict = false,
+    })
+    local key_ns = api.nvim_create_namespace("on_key")
+    local count = 0
+    vim.on_key(function(key, typed)
+        count = count + 1
+        if count == 3 then
+            if key == "\27" then
+                vim.cmd("stopinsert")
+            end
+            api.nvim_buf_clear_namespace(0, ns, 0, -1)
+            vim.on_key(nil, key_ns)
+        end
+    end, key_ns)
+end
+
 function M.insert_paste()
     vim.o.eventignore = "TextChangedI"
     _G.no_animation(_G.CI)

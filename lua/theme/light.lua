@@ -47,7 +47,6 @@ keymap("n", "N", function()
 end)
 
 keymap({ "s", "n" }, "<esc>", function()
-    -- pcall(function()
     api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })

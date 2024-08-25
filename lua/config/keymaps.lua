@@ -372,7 +372,10 @@ keymap("n", "<C-b>", "<C-v>", opts)
 keymap("i", "<c-b>", "<S-left>", opts)
 keymap("i", "<c-f>", "<S-right>", opts)
 -- don't messy up indent
-keymap("i", "<C-r>", "<C-r><C-o>", opts)
+keymap("i", "<C-r>", function()
+    utils.insert_C_R()
+    return "<C-r><C-o>"
+end, { expr = true })
 
 keymap("n", "<D-z>", "u", opts)
 

@@ -247,6 +247,7 @@ return {
                 -- CmpItemAbbrMatch = { fg = "#152381", style = "bold" },
                 -- CmpItemAbbrMatchFuzzy = { fg = "#152381", style = "bold" },
                 CmpGhostText = { fg = "#7E7D7D" },
+                PasteHint = { fg = "#afb3c1", bg = "#faf7e8" },
                 -- CmpGhostText = { link = "@variable" },
                 TreesitterContext = { fg = "#AFB3C1", bg = "#FAF7E8" },
                 TreesitterContextBottom = { sp = "#E8E7E0", style = "underline" },
