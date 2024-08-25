@@ -1,10 +1,18 @@
 local M = {}
 _G.FeedKeys = function(keymap, mode)
-    api.nvim_feedkeys(api.nvim_replace_termcodes(keymap, true, false, true), mode, true)
+    api.nvim_feedkeys(api.nvim_replace_termcodes(keymap, true, false, true), mode, false)
 end
 
 _G.set_cursor_animation = function(len)
-    vim.g.neovide_cursor_animation_length = len
+    local mode = vim.api.nvim_get_mode().mode
+    if mode == "n" and len > 0 then
+        if not (vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "") then
+            print(debug.traceback())
+            vim.notify("Cursor animation >0 in normal", vim.log.levels.ERROR)
+        end
+    else
+        vim.g.neovide_cursor_animation_length = len
+    end
 end
 local function get_normal_bg_color()
     local normal_hl = api.nvim_get_hl_by_name("Normal", true)
