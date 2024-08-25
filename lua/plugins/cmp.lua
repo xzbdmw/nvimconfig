@@ -60,7 +60,7 @@ return {
                 fetching_timeout = 200,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
-                max_view_entries = 20,
+                max_view_entries = 100,
             },
             snippet = {
                 expand = function(args)
