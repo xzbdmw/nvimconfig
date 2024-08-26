@@ -14,6 +14,7 @@ vim.g.Base_commit_msg = ""
 vim.g.vim_enter = true
 vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
+vim.g.winbar_macro_beginstate = ""
 
 vim.cmd("syntax off")
 
@@ -88,12 +89,15 @@ api.nvim_create_autocmd("QuitPre", {
 
 api.nvim_create_autocmd("RecordingEnter", {
     callback = function()
+        utils.record_winbar_enter()
         api.nvim_set_hl(0, "Cursor", { bg = "#6327A6" })
     end,
 })
 
 api.nvim_create_autocmd("RecordingLeave", {
     callback = function()
+        _G.set_winbar(vim.g.winbar_macro_beginstate)
+        vim.on_key(nil, api.nvim_create_namespace("winbar_macro"))
         api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
     end,
 })

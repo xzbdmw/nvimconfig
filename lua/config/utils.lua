@@ -604,6 +604,66 @@ _G.no_delay = function(animation)
     end, 50)
 end
 
+function M.record_winbar_enter()
+    vim.g.winbar_macro_beginstate = vim.wo.winbar
+
+    local typed_sequnce = ""
+    local function winbar_macro(typed)
+        typed_sequnce = typed_sequnce .. typed
+        local winbar = vim.g.winbar_macro_beginstate
+        local index = string.find(winbar, [[%=]], nil, true)
+        local new_winbar
+        local name = " %#MacroWinabr# " .. "%#FlashPrompt#" .. typed_sequnce .. "%#Normal#" .. " "
+        if index == nil then
+            new_winbar = winbar .. name
+        else
+            new_winbar = winbar:sub(1, index - 1) .. name .. winbar:sub(index)
+        end
+        _G.set_winbar(new_winbar)
+    end
+
+    local function string_to_bytes(str)
+        local bytes = {}
+        for i = 1, #str do
+            table.insert(bytes, string.byte(str, i))
+        end
+        return bytes
+    end
+
+    local function translate_raw_key(typed)
+        local bytes = string_to_bytes(typed)
+        if bytes[1] == 128 and bytes[2] == 252 and bytes[3] == 4 then
+            typed = "^" .. string.char(bytes[4])
+        end
+        if bytes[1] == 128 and bytes[2] == 252 and bytes[3] == 128 then
+            typed = "<D-" .. string.char(bytes[4]) .. ">"
+        end
+        if bytes[1] == 128 and bytes[2] == 107 then
+            if bytes[3] == 108 then
+                typed = "<left>"
+            elseif bytes[3] == 114 then
+                typed = "<right>"
+            elseif bytes[3] == 117 then
+                typed = "<up>"
+            elseif bytes[3] == 100 then
+                typed = "<down>"
+            end
+        end
+        if bytes[1] == 27 then
+            typed = "<esc>"
+        end
+        return typed
+    end
+
+    winbar_macro("")
+    vim.on_key(function(key, typed)
+        typed = translate_raw_key(typed)
+        if api.nvim_buf_get_option(0, "buftype") ~= "prompt" then
+            winbar_macro(typed)
+        end
+    end, api.nvim_create_namespace("winbar_macro"))
+end
+
 function M.checkSplitAndSetLaststatus()
     local windows = api.nvim_list_wins()
     local is_split = false
@@ -1073,6 +1133,9 @@ function M.map_checkout(key, map)
 end
 
 function M.set_diagnostic_winbar()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" or vim.b.winbar_expr == nil then
+        return
+    end
     if vim.b.winbar_expr == nil then
         return
     end
@@ -1102,7 +1165,8 @@ end
 function M.set_git_winbar()
     local icons = { " ", " ", " " }
     local signs = vim.b.gitsigns_status_dict
-    if vim.b.winbar_expr == nil then
+
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" or vim.b.winbar_expr == nil then
         return
     end
     local head = vim.g.BranchName
