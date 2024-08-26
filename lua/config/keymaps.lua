@@ -200,9 +200,6 @@ end)
 
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
-keymap("n", "Q", "q", opts)
-keymap("n", "<leader>rr", "qa", opts)
-keymap("n", "<leader>pr", "@a", opts)
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap({ "n", "v" }, "<D-=>", function()
@@ -311,18 +308,24 @@ keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
 
-keymap("i", "<space>", function()
-    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
-        return "<space>"
+keymap("n", "gq", function()
+    if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
+        api.nvim_set_hl(0, "Cursor", { bg = "#6327A6" })
+        return "qa"
     else
-        utils.insert_mode_space()
-        return ""
+        api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
+        return "q"
     end
 end, { expr = true })
 
-keymap("i", "s", function()
-    FeedKeys("s", "n")
-end, opts)
+keymap("n", "-", "@a", opts)
+
+keymap("i", "<space>", function()
+    if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
+        utils.insert_mode_space()
+    end
+    return "<space>"
+end, { expr = true })
 
 keymap("i", "<Tab>", function()
     utils.insert_mode_tab()
@@ -344,13 +347,12 @@ keymap("n", "<D-a>", "ggVG", opts)
 
 keymap({ "n" }, "q", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
         FeedKeys("q", "n")
     else
         utils.close_win()
     end
 end)
-
-keymap("n", "<leader>l", "f(a", { remap = true })
 
 keymap("n", "<leader>vr", "<cmd>vsp<CR>")
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
