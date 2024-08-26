@@ -15,6 +15,7 @@ return {
         "hrsh7th/cmp-buffer",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
+        "amarakon/nvim-cmp-buffer-lines",
     },
     opts = function()
         local cmp = require("cmp")
@@ -427,6 +428,13 @@ return {
                 { name = "rg" },
             }, {
                 { name = "buffer" },
+            }, {
+                {
+                    name = "buffer-lines",
+                    option = {
+                        leading_whitespace = false,
+                    },
+                },
             }),
         })
         cmp.setup.cmdline(":", {

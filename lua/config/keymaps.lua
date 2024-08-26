@@ -67,6 +67,22 @@ keymap("i", "<c-g>", function()
         },
     })
 end)
+
+keymap("i", "<c-x><right>", function()
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "buffer-lines",
+                    option = {
+                        leading_whitespace = false,
+                    },
+                },
+            },
+        },
+    })
+end)
+
 keymap("i", "<D-g>", function()
     require("cmp").complete({
         config = {
@@ -137,21 +153,22 @@ keymap("n", "A", function()
     end, 100)
     return "A"
 end, { expr = true })
-
 keymap({ "x", "n" }, "c", function()
     _G.no_animation(_G.CI)
     return '"_c'
 end, { expr = true })
-
 keymap("o", "c", function()
     _G.no_animation(_G.CI)
     return "c"
 end, { expr = true })
-keymap("n", "<c-a>", "A", { remap = true })
+
 keymap("i", "<c-a>", function()
     _G.no_animation(_G.CI)
-    api.nvim_win_set_cursor(0, { api.nvim_win_get_cursor(0)[1], #api.nvim_get_current_line() })
-end, opts)
+    return "<c-a>"
+end, { expr = true })
+
+keymap("n", "<c-a>", "A", { remap = true })
+
 local darker = false
 keymap("n", "<leader>uc", function()
     if darker then
@@ -201,6 +218,15 @@ end)
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap({ "n", "x", "o" }, "L", "$", opts)
+
+keymap("c", "<space>", function()
+    local mode = vim.fn.getcmdtype()
+    if mode == "?" or mode == "/" then
+        return ".*"
+    else
+        return " "
+    end
+end, { expr = true })
 
 keymap({ "n", "v" }, "<D-=>", function()
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1
@@ -402,15 +428,6 @@ keymap("n", "<leader>k", "<C-i>", opts)
 -- Command line mapping
 keymap("c", "<C-d>", "<C-w>", opts)
 keymap("c", "<d-v>", '<c-r>"', opts)
-
-keymap("c", "<space>", function()
-    local mode = vim.fn.getcmdtype()
-    if mode == "?" or mode == "/" then
-        return ".*"
-    else
-        return " "
-    end
-end, { expr = true })
 
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
