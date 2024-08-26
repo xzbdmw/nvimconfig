@@ -6,10 +6,7 @@ end
 _G.set_cursor_animation = function(len)
     local mode = vim.api.nvim_get_mode().mode
     if mode == "n" and len > 0 then
-        if not (vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "") then
-            print(debug.traceback())
-            vim.notify("Cursor animation >0 in normal", vim.log.levels.ERROR)
-        end
+        return
     else
         vim.g.neovide_cursor_animation_length = len
     end
@@ -323,7 +320,7 @@ function M.insert_paste()
     local is_empty = first_char == col
     local body = vim.fn.getreg('"')
     local lines = vim.split(body, "\n", { plain = false, trimempty = true })
-    if lines == nil then
+    if lines == nil or lines[#lines] == nil then
         return
     end
     if #lines == 1 then
@@ -350,7 +347,6 @@ end
 
 function M.insert_mode_space()
     _G.no_animation()
-    FeedKeys("<Space>", "n")
     if has_map or api.nvim_buf_get_option(0, "buftype") == "prompt" then
         return
     end
@@ -604,9 +600,7 @@ _G.no_delay = function(animation)
         pcall(_G.update_indent, true)
         ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
-        if vim.api.nvim_get_mode().mode == "i" then
-            _G.set_cursor_animation(_G.CI)
-        end
+        _G.set_cursor_animation(_G.CI)
     end, 50)
 end
 
@@ -1327,9 +1321,6 @@ _G.no_animation = function(length)
     length = length or 0
     _G.set_cursor_animation(0.0)
     vim.defer_fn(function()
-        if vim.api.nvim_get_mode().mode ~= "i" then
-            return
-        end
         _G.set_cursor_animation(length)
     end, 100)
 end
@@ -1340,9 +1331,6 @@ _G.Cursor = function(callback, length)
         _G.set_cursor_animation(length)
         callback(...)
         vim.defer_fn(function()
-            if vim.api.nvim_get_mode().mode ~= "i" then
-                return
-            end
             _G.set_cursor_animation(_G.CI)
         end, 100)
     end
