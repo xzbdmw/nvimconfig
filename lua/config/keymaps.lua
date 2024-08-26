@@ -310,10 +310,8 @@ keymap("n", "<D-w>", "<cmd>close<CR>", opts)
 
 keymap("n", "gq", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
-        api.nvim_set_hl(0, "Cursor", { bg = "#6327A6" })
         return "qa"
     else
-        api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
         return "q"
     end
 end, { expr = true })
@@ -347,7 +345,6 @@ keymap("n", "<D-a>", "ggVG", opts)
 
 keymap({ "n" }, "q", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
-        api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
         FeedKeys("q", "n")
     else
         utils.close_win()

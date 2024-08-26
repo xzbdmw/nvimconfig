@@ -86,6 +86,18 @@ api.nvim_create_autocmd("QuitPre", {
     end,
 })
 
+api.nvim_create_autocmd("RecordingEnter", {
+    callback = function()
+        api.nvim_set_hl(0, "Cursor", { bg = "#6327A6" })
+    end,
+})
+
+api.nvim_create_autocmd("RecordingLeave", {
+    callback = function()
+        api.nvim_set_hl(0, "Cursor", { bg = "#000000" })
+    end,
+})
+
 api.nvim_create_autocmd("FileType", {
     pattern = { "gitsigns.blame" },
     callback = function()
