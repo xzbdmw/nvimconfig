@@ -39,7 +39,7 @@ keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
 
-_G.has_diagnostic = false
+_G.has_diagnostic = true
 keymap("n", "<leader>ud", function()
     if has_diagnostic then
         vim.diagnostic.config({ virtual_text = false })
@@ -56,7 +56,7 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
-keymap("i", "<c-g>", function()
+keymap("i", "<c-x><c-g>", function()
     require("cmp").complete({
         config = {
             sources = {
@@ -74,16 +74,13 @@ keymap("i", "<c-x><right>", function()
             sources = {
                 {
                     name = "buffer-lines",
-                    option = {
-                        leading_whitespace = false,
-                    },
                 },
             },
         },
     })
 end)
 
-keymap("i", "<D-g>", function()
+keymap("i", "<c-x><c-c>", function()
     require("cmp").complete({
         config = {
             sources = {
@@ -153,6 +150,7 @@ keymap("n", "A", function()
     end, 100)
     return "A"
 end, { expr = true })
+keymap("n", "C", '"_C', opts)
 keymap({ "x", "n" }, "c", function()
     _G.no_animation(_G.CI)
     return '"_c'
