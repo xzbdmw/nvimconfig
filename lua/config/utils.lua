@@ -972,6 +972,7 @@ end
 
 --- @param filter function if false we should realy return
 function M.real_enter(callback, filter, who)
+    local cur_buf = api.nvim_get_current_buf()
     who = who or ""
     local timer = vim.loop.new_timer()
     vim.defer_fn(function()
@@ -1001,7 +1002,9 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
+            if not vim.b[cur_buf].gitsigns_preview then
+                vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
+            end
             callback()
         end
     end
@@ -1132,6 +1135,17 @@ function M.map_checkout(key, map)
     end, { nowait = true, desc = "desc for which key" })
 end
 
+function M.refresh_diagnostic_winbar()
+    local expr = vim.b.diag_winbar
+    if api.nvim_get_mode().mode == "n" and expr ~= nil then
+        if vim.b.git_winbar_expr ~= nil then
+            _G.set_winbar(vim.b.winbar_expr .. expr .. "%= " .. vim.b.git_winbar_expr)
+        else
+            _G.set_winbar(vim.b.winbar_expr .. expr)
+        end
+    end
+end
+
 function M.set_diagnostic_winbar()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" or vim.b.winbar_expr == nil then
         return
@@ -1140,25 +1154,19 @@ function M.set_diagnostic_winbar()
         return
     end
 
-    local set = function(expr)
-        vim.b.diag_winbar = expr
-        if vim.b.git_winbar_expr ~= nil then
-            _G.set_winbar(vim.b.winbar_expr .. expr .. "%= " .. vim.b.git_winbar_expr)
-        else
-            _G.set_winbar(vim.b.winbar_expr .. expr)
-        end
-    end
-
     local counts = vim.diagnostic.count(0, { severity = { min = vim.diagnostic.severity.WARN } })
     local num_errors = counts[vim.diagnostic.severity.ERROR] or 0
     local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
 
     if num_errors > 0 then
-        set("%#Error#" .. " (" .. num_errors .. ")")
+        vim.b.diag_winbar = "%#diffRemoved#" .. " (" .. num_errors .. ")"
+        M.refresh_diagnostic_winbar()
     elseif num_warnings > 0 then
-        set("%#CmpGhostText#" .. " (" .. num_warnings .. ")")
+        vim.b.diag_winbar = "%#CmpGhostText#" .. " (" .. num_warnings .. ")"
+        M.refresh_diagnostic_winbar()
     else
-        set("")
+        vim.b.diag_winbar = ""
+        M.refresh_diagnostic_winbar()
     end
 end
 
@@ -1215,10 +1223,11 @@ function M.set_git_winbar()
         end
     end
     vim.b.git_winbar_expr = git_winbar_expr
+    local diagnostic_winbar = api.nvim_get_mode().mode == "n" and vim.b.diag_winbar or ""
     if vim.b.diag_winbar == nil then
         _G.set_winbar(vim.b.winbar_expr .. "%= " .. git_winbar_expr)
     else
-        _G.set_winbar(vim.b.winbar_expr .. vim.b.diag_winbar .. "%= " .. git_winbar_expr)
+        _G.set_winbar(vim.b.winbar_expr .. diagnostic_winbar .. "%= " .. git_winbar_expr)
     end
 end
 

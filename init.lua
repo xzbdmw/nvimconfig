@@ -267,6 +267,7 @@ api.nvim_create_autocmd("ModeChanged", {
         if len ~= 0 then
             _G.set_cursor_animation(0.0)
         end
+        utils.refresh_diagnostic_winbar()
     end,
 })
 
