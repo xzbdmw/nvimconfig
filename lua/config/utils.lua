@@ -1003,13 +1003,13 @@ function M.real_enter(callback, filter, who)
             -- haven't start
             has_start = true
             if not vim.b[cur_buf].gitsigns_preview then
-                vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.ERROR)
+                vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
             end
             callback()
         end
     end
     vim.defer_fn(function()
-        timout({ time = 30 })
+        timout({ time = 20 })
     end, 30)
     vim.defer_fn(function()
         timout({ time = 1000 })

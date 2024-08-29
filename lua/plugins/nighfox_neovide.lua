@@ -191,7 +191,7 @@ return {
                 barbecue_ellipsis = { link = "barbecue_dirname" },
                 NormalFloat = { link = "Normal" },
                 LazyNormal = { link = "Normal" },
-                MyNormalFloat = { bg = "#FAF7E6" },
+                MyNormalFloat = { link = "Normal" },
                 MyNormalDocFloat = { bg = "#f1efe1" },
                 FloatBorder = { bg = "#faf7e8" },
                 LspFloatWinBorder = { link = "FloatBorder" },
