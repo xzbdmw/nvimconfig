@@ -61,11 +61,9 @@ local function check_trouble()
     local ret = false
     if require("trouble").is_open("qflist") then
         vim.cmd("Trouble qflist toggle focus=false")
-        _G.pre_gitsigns_qf_operation = ""
         ret = true
     elseif require("trouble").is_open("mydiags") then
         vim.cmd("Trouble mydiags toggle filter.buf=0 focus=false")
-        _G.pre_gitsigns_qf_operation = ""
         ret = true
     end
     return ret
