@@ -8,7 +8,6 @@ _G.CI = 0.04
 _G.searchmode = "/"
 _G.lazygit_previous_win = nil
 _G.pre_gitsigns_qf_operation = ""
-_G.gitsigns_word_diff = false
 vim.g.Base_commit = ""
 vim.g.diff_file_count = 0
 vim.g.Base_commit_msg = ""
@@ -290,6 +289,7 @@ api.nvim_create_autocmd("ModeChanged", {
         api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
             end_row = e - 1,
             strict = false,
+            priority = 1,
             sign_text = " ",
         })
         _G.indent_update()
@@ -314,6 +314,7 @@ api.nvim_create_autocmd("CursorMoved", {
                     end_row = i,
                     strict = false,
                     sign_text = " ",
+                    priority = 1,
                 })
             end
             _G.indent_update()
@@ -509,6 +510,7 @@ api.nvim_create_autocmd({ "User" }, {
         local ok, gs = pcall(require, "gitsigns")
         if ok then
             if vim.g.Base_commit ~= "" then
+                Signs_staged = nil
                 gs.change_base(vim.g.Base_commit, true)
                 -- when nvim start at first time, gitsigns may choose index as base
                 vim.defer_fn(function()
