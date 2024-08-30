@@ -272,6 +272,55 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+api.nvim_create_autocmd("ModeChanged", {
+    pattern = "v:n",
+    callback = function()
+        api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("visual_range"), 0, -1)
+    end,
+})
+
+api.nvim_create_autocmd("ModeChanged", {
+    pattern = "n:v",
+    callback = function()
+        if api.nvim_get_mode().mode == "v" then
+            return
+        end
+        local s, e = vim.fn.line("."), vim.fn.line("v")
+        local ns = api.nvim_create_namespace("visual_range")
+        api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
+            end_row = e - 1,
+            strict = false,
+            sign_text = " ",
+        })
+        _G.indent_update()
+    end,
+})
+
+api.nvim_create_autocmd("CursorMoved", {
+    callback = function()
+        local mode = vim.api.nvim_get_mode().mode
+        if mode == "v" or mode == "V" then
+            local s, e = vim.fn.line("."), vim.fn.line("v")
+            local t
+            if s > e then
+                t = s
+                s = e
+                e = t
+            end
+            local ns = api.nvim_create_namespace("visual_range")
+            api.nvim_buf_clear_namespace(0, ns, 0, -1)
+            for i = s, e do
+                api.nvim_buf_set_extmark(0, ns, i - 1, 0, {
+                    end_row = i,
+                    strict = false,
+                    sign_text = " ",
+                })
+            end
+            _G.indent_update()
+        end
+    end,
+})
+
 api.nvim_create_autocmd("DiagnosticChanged", {
     callback = function()
         utils.set_diagnostic_winbar()
