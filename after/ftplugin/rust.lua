@@ -16,7 +16,7 @@ keymap({ "v", "n" }, "<leader>vp", function()
     ---@diagnostic disable-next-line: param-type-mismatch
     local edits = string.rep(" ", col, "") .. string.format("dbg(&%s);", w)
     vim.api.nvim_buf_set_lines(0, row, row, false, { edits })
-end)
+end, { buffer = bufnr })
 
 keymap("n", "<leader>cp", function()
     vim.cmd.RustLsp("explainError")
