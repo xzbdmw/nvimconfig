@@ -21,6 +21,8 @@ keymap("n", "n", function()
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_next({ skip_groups = true, jump = true })
+    elseif require("config.utils").has_namespace("gitsigns_signs_", "highlight") then
+        FeedKeys("]c", "m")
     else
         require("illuminate").goto_next_reference(true)
     end
@@ -41,6 +43,8 @@ keymap("n", "N", function()
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_prev({ skip_groups = true, jump = true })
+    elseif require("config.utils").has_namespace("gitsigns_signs_", "highlight") then
+        FeedKeys("[c", "m")
     else
         require("illuminate").goto_prev_reference(true)
     end
