@@ -201,6 +201,10 @@ function M.close_win()
         FeedKeys("<Tab>q<d-1><tab>", "m")
         return
     end
+    if M.has_namespace("gitsigns_signs_staged", "highlight") or M.has_namespace("gitsigns_signs_", "highlight") then
+        FeedKeys("<leader>si", "m")
+        return
+    end
     local nvimtree_present = false
     for _, win_id in ipairs(api.nvim_list_wins()) do
         local buf_id = api.nvim_win_get_buf(win_id)
@@ -448,9 +452,9 @@ function M.if_multicursor()
     return M.has_namespace("multicursors")
 end
 
-function M.has_namespace(name_space)
+function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
-    local extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
+    local extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, { type = type })
     return extmark ~= nil and #extmark ~= 0
 end
 
@@ -747,7 +751,7 @@ function M.set_glance_keymap()
             glance_close()
         end, { buffer = bufnr })
         vim.keymap.set("n", "<CR>", function()
-            _G.hide_cursor(function() end)
+            _G.hide_cursor(function() end, 10)
             _G.set_cursor_animation(0.0)
             ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())

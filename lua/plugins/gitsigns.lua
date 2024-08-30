@@ -31,20 +31,6 @@ return {
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
 
-                local update_hunk_qflist = function()
-                    if require("trouble").is_open("qflist") then
-                        if _G.pre_gitsigns_qf_operation == "all" then
-                            vim.defer_fn(function()
-                                gs.setqflist("all")
-                            end, 200)
-                        elseif _G.pre_gitsigns_qf_operation == "cur" then
-                            vim.defer_fn(function()
-                                vim.cmd("Gitsigns setqflist")
-                            end, 200)
-                        end
-                    end
-                end
-
                 local function map(mode, l, r, opts)
                     opts = opts or {}
                     opts.buffer = bufnr
@@ -74,22 +60,18 @@ return {
 
                 map("n", "<leader>rh", function()
                     gs.reset_hunk()
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>ub", function()
                     gs.reset_buffer_index()
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>rb", function()
                     gs.reset_buffer()
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>sb", function()
                     gs.stage_buffer()
-                    update_hunk_qflist()
                 end)
 
                 map("v", "<leader>sh", function()
@@ -99,7 +81,6 @@ return {
                         FeedKeys("<esc><leader>cb", "m")
                     end
                     FeedKeys(string.format('ms<cmd>lua require("gitsigns").stage_hunk({%s,%s})<CR>`s', s, e), "n")
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>sh", function()
@@ -108,12 +89,10 @@ return {
                         FeedKeys("<leader>cb", "m")
                     end
                     vim.cmd("Gitsigns stage_hunk")
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>uh", function()
                     vim.cmd("Gitsigns undo_stage_hunk")
-                    update_hunk_qflist()
                 end)
 
                 map("n", "<leader>bb", function()
@@ -125,6 +104,24 @@ return {
                         require("nvim-tree.api").tree.toggle({ focus = false })
                     end
                     vim.cmd("Gitsigns blame")
+                end)
+
+                _G.gitsigns_word_diff = false
+                map("n", "<leader>si", function()
+                    _G.gitsigns_word_diff = not _G.gitsigns_word_diff
+                    local namespaces = { "gitsigns_removed", "gitsigns", "gitsigns_signs_staged", "gitsigns_signs_" }
+                    for _, namespace in ipairs(namespaces) do
+                        api.nvim_buf_clear_namespace(0, api.nvim_create_namespace(namespace), 0, -1)
+                    end
+                    gs.toggle_word_diff()
+                    gs.toggle_deleted()
+                    gs.toggle_linehl()
+                    local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
+                    for _, time in ipairs(times) do
+                        vim.defer_fn(function()
+                            _G.indent_update()
+                        end, time)
+                    end
                 end)
 
                 map("n", "<leader>sq", function()

@@ -8,6 +8,7 @@ _G.CI = 0.04
 _G.searchmode = "/"
 _G.lazygit_previous_win = nil
 _G.pre_gitsigns_qf_operation = ""
+_G.gitsigns_word_diff = false
 vim.g.Base_commit = ""
 vim.g.diff_file_count = 0
 vim.g.Base_commit_msg = ""
@@ -513,7 +514,14 @@ api.nvim_create_autocmd("BufWinEnter", {
 
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsUpdate",
-    callback = utils.set_git_winbar,
+    callback = function()
+        utils.set_git_winbar()
+        if _G.pre_gitsigns_qf_operation == "cur" then
+            require("gitsigns").setqflist(0)
+        elseif _G.pre_gitsigns_qf_operation == "cur" then
+            require("gitsigns").setqflist("all")
+        end
+    end,
 })
 
 api.nvim_create_autocmd("User", {
@@ -546,7 +554,7 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-vim.lsp.set_log_level("off")
+vim.lsp.set_log_level("error")
 require("vim.lsp.log").set_format_func(vim.inspect)
 
 local should_profile = os.getenv("NVIM_PROFILE")
