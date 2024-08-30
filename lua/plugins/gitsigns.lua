@@ -106,9 +106,7 @@ return {
                     vim.cmd("Gitsigns blame")
                 end)
 
-                _G.gitsigns_word_diff = false
                 map("n", "<leader>si", function()
-                    _G.gitsigns_word_diff = not _G.gitsigns_word_diff
                     local namespaces = { "gitsigns_removed", "gitsigns", "gitsigns_signs_staged", "gitsigns_signs_" }
                     for _, namespace in ipairs(namespaces) do
                         api.nvim_buf_clear_namespace(0, api.nvim_create_namespace(namespace), 0, -1)
@@ -180,7 +178,15 @@ return {
             },
         })
         vim.keymap.set("n", "<leader><leader>b", "<cmd>Gitsigns toggle_current_line_blame<CR>")
-        vim.keymap.set("n", "<leader>sp", "<cmd>Gitsigns preview_hunk_inline<CR>")
+        vim.keymap.set("n", "<leader>sp", function()
+            vim.cmd("Gitsigns preview_hunk_inline")
+            local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
+            for _, time in ipairs(times) do
+                vim.defer_fn(function()
+                    _G.indent_update()
+                end, time)
+            end
+        end)
         vim.keymap.set("n", "<leader>cb", function()
             vim.g.Base_commit = ""
             vim.g.Base_commit_msg = ""
