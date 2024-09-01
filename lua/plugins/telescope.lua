@@ -3,6 +3,7 @@ local action_state = require("telescope.actions.state")
 local utils = require("config.utils")
 local state = require("telescope.state")
 local builtin = require("telescope.builtin")
+local cmp = require("cmp")
 local keymap = vim.keymap.set
 return {
     {
@@ -739,86 +740,32 @@ return {
                     },
                     mappings = {
                         i = {
-                            ["<D-a>"] = function()
-                                FeedKeys("a", "n")
-                            end,
-                            ["<D-b>"] = function()
-                                FeedKeys("b", "n")
-                            end,
-                            ["<D-c>"] = function()
-                                FeedKeys("c", "n")
-                            end,
-                            ["<D-d>"] = function()
-                                FeedKeys("d", "n")
-                            end,
-                            ["<D-e>"] = function()
-                                FeedKeys("e", "n")
-                            end,
-                            ["<D-f>"] = function()
-                                FeedKeys("f", "n")
-                            end,
-                            ["<D-g>"] = function()
-                                FeedKeys("g", "n")
-                            end,
-                            ["<f13>"] = function()
-                                FeedKeys("h", "n")
-                            end,
-                            ["<D-i>"] = function()
-                                FeedKeys("i", "n")
-                            end,
-                            ["<D-j>"] = function()
-                                FeedKeys("j", "n")
-                            end,
-                            ["<D-k>"] = function()
-                                FeedKeys("k", "n")
-                            end,
-                            ["<f12>"] = function()
-                                FeedKeys("l", "n")
-                            end,
-                            ["<D-m>"] = function()
-                                FeedKeys("m", "n")
-                            end,
-                            ["<D-n>"] = function()
-                                FeedKeys("n", "n")
-                            end,
-                            ["<D-o>"] = function()
-                                FeedKeys("o", "n")
-                            end,
-                            ["<D-p>"] = function()
-                                FeedKeys("p", "n")
-                            end,
-                            ["<f16>"] = function()
-                                FeedKeys("k", "n")
-                            end,
-                            ["<D-q>"] = function()
-                                FeedKeys("q", "n")
-                            end,
-                            ["<D-r>"] = function()
-                                FeedKeys("r", "n")
-                            end,
-                            ["<D-s>"] = function()
-                                FeedKeys("s", "n")
-                            end,
-                            ["<D-t>"] = function()
-                                FeedKeys("t", "n")
-                            end,
-                            ["<D-u>"] = function()
-                                FeedKeys("u", "n")
-                            end,
-                            ["<D-w>"] = function()
-                                FeedKeys("w", "n")
-                            end,
-                            ["<D-x>"] = function()
-                                FeedKeys("x", "n")
-                            end,
-                            ["<D-y>"] = function()
-                                FeedKeys("y", "n")
-                            end,
-                            ["<D-z>"] = function()
-                                FeedKeys("z", "n")
-                            end,
                             ["<Tab>"] = focus_preview,
                             ["<c-g>"] = "to_fuzzy_refine",
+                            ["<down>"] = function(prompt_bufnr)
+                                if cmp.visible() then
+                                    if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                                        _G.no_animation(_G.CI)
+                                        cmp.select_next_item()
+                                    else
+                                        cmp.select_prev_item()
+                                    end
+                                else
+                                    actions.move_selection_next(prompt_bufnr)
+                                end
+                            end,
+                            ["<up>"] = function(prompt_bufnr)
+                                if cmp.visible() then
+                                    if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                                        _G.no_animation(_G.CI)
+                                        cmp.select_prev_item()
+                                    else
+                                        cmp.select_next_item()
+                                    end
+                                else
+                                    actions.move_selection_previous(prompt_bufnr)
+                                end
+                            end,
                             ["("] = function()
                                 FeedKeys("\\(", "n")
                             end,
@@ -855,14 +802,19 @@ return {
                                 FeedKeys("<END>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
-                                ST = vim.uv.hrtime()
-                                vim.g.gd = true
-                                vim.defer_fn(function()
-                                    vim.g.gd = false
-                                end, 100)
-                                _G.set_cursor_animation(0.0)
-                                actions.select_default(bufnr)
-                                require("config.utils").adjust_view(0, 4)
+                                if cmp.visible() then
+                                    _G.no_animation(_G.CI)
+                                    cmp.confirm({ select = true })
+                                else
+                                    ST = vim.uv.hrtime()
+                                    vim.g.gd = true
+                                    vim.defer_fn(function()
+                                        vim.g.gd = false
+                                    end, 100)
+                                    _G.set_cursor_animation(0.0)
+                                    actions.select_default(bufnr)
+                                    require("config.utils").adjust_view(0, 4)
+                                end
                             end,
                             ["<esc>"] = function()
                                 api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
@@ -905,6 +857,10 @@ return {
                                 actions.close(bufnr)
                             end,
                             ["<CR>"] = function(bufnr)
+                                -- local cmp = require("cmp")
+                                -- if cmp.visible() then
+                                --
+                                -- end
                                 actions.select_default(bufnr)
                                 require("config.utils").adjust_view(0, 4)
                             end,
