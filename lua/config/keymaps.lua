@@ -56,7 +56,11 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
-keymap("i", "<c-x><c-o>", function()
+keymap("i", "<c-x><c-g>", function()
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
     require("cmp").complete({
         config = {
             sources = {
@@ -69,7 +73,11 @@ keymap("i", "<c-x><c-o>", function()
 end)
 
 keymap("i", "<c-x><right>", function()
-    require("cmp").complete({
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    cmp.complete({
         config = {
             sources = {
                 {
@@ -81,7 +89,11 @@ keymap("i", "<c-x><right>", function()
 end)
 
 keymap("i", "<c-x><c-c>", function()
-    require("cmp").complete({
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    cmp.complete({
         config = {
             sources = {
                 {
