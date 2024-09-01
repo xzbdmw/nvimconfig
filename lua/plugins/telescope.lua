@@ -892,7 +892,6 @@ return {
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
                             end,
-                            ["l"] = focus_result,
                             ["zz"] = center_results,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
@@ -1107,6 +1106,7 @@ return {
                                         utils.checkout(action_state.get_selected_entry().value)
                                     end)
                                 end,
+                                ["l"] = focus_result,
                             },
                             i = {
                                 ["<CR>"] = gitsign_change_base,
