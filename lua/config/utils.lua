@@ -1051,8 +1051,18 @@ function M.refresh_last_commit()
     local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
     if result.code == 0 then
         local splits = vim.split(result.stdout, "\n")
+        -- We use Last instead of Base here because Base_commit=="" has special meanings
         vim.g.Last_commit = splits[1]
-        vim.g.Last_commit_msg = splits[2]:gsub("\n", "")
+        local commit_msg = splits[2]:gsub("\n", "")
+        if #commit_msg > 45 then
+            local cut_pos = commit_msg:find(" ", 46)
+            if cut_pos then
+                commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
+            else
+                commit_msg = commit_msg:sub(1, 45) .. "…"
+            end
+        end
+        vim.g.Last_commit_msg = commit_msg
     end
     result = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait()
     if result.code == 0 then
