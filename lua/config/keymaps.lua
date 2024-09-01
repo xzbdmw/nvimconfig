@@ -7,6 +7,13 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
 
+keymap("n", "<leader>W", function()
+    local origin = vim.o.eventignore
+    vim.o.eventignore = "all"
+    vim.cmd("wall")
+    vim.o.eventignore = origin
+end, opts)
+
 keymap({ "n" }, "g;", function()
     return "g;zz"
 end, { expr = true, remap = true })
