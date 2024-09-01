@@ -79,6 +79,22 @@ keymap("i", "<c-x><c-g>", function()
     })
 end)
 
+keymap("i", "<c-x><c-y>", function()
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "cmp_yanky",
+                },
+            },
+        },
+    })
+end)
+
 keymap("i", "<c-x><right>", function()
     local cmp = require("cmp")
     if cmp.visible() then
@@ -169,6 +185,7 @@ keymap("n", "A", function()
     end, 100)
     return "A"
 end, { expr = true })
+
 keymap("n", "C", '"_C', opts)
 keymap({ "x", "n" }, "c", function()
     _G.no_animation(_G.CI)

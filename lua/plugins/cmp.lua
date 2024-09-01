@@ -16,6 +16,7 @@ return {
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
         "amarakon/nvim-cmp-buffer-lines",
+        "chrisgrieser/cmp_yanky",
     },
     opts = function()
         local cmp = require("cmp")
