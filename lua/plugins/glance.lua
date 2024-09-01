@@ -15,10 +15,10 @@ return {
             _G.glance_buffer = {}
             vim.keymap.set("v", "<CR>", function()
                 vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
-            end)
+            end, { buffer = true })
             vim.keymap.set("n", "<CR>", function()
                 require("nvim-treesitter.incremental_selection").init_selection()
-            end)
+            end, { buffer = true })
             _G.reference = false
         end
 
