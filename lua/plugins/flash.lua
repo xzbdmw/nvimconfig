@@ -130,7 +130,6 @@ return {
                 ---@field after boolean
                 ---@type fun(opts:Flash.Format): string[][]
                 format = function(opts)
-                    ---@diagnostic disable-next-line: undefined-field
                     return { { opts.match.label, opts.hl_group } }
                 end,
             },

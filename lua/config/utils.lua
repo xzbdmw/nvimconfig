@@ -42,7 +42,6 @@ function _G.hide_cursor(callback, timeout)
     local hl = api.nvim_get_hl_by_name("Cursor", true)
     hl.blend = 100
     timeout = timeout or 0
-    ---@diagnostic disable-next-line: undefined-field
     vim.opt.guicursor:append("a:Cursor/lCursor")
     pcall(api.nvim_set_hl, 0, "Cursor", hl)
 
@@ -51,7 +50,6 @@ function _G.hide_cursor(callback, timeout)
     local old_hl = hl
     old_hl.blend = 0
     vim.defer_fn(function()
-        ---@diagnostic disable-next-line: undefined-field
         vim.opt.guicursor:remove("a:Cursor/lCursor")
         pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
     end, timeout)
@@ -421,18 +419,14 @@ function M.insert_mode_space()
     vim.defer_fn(function()
         for _, m in ipairs(api.nvim_get_keymap("i")) do
             if m.desc == "dot" then
-                ---@diagnostic disable-next-line: undefined-field
                 vim.keymap.del("i", m.lhs)
             end
         end
 
         for _, map in pairs(original_keymaps) do
             for k in pairs(changed_keys) do
-                ---@diagnostic disable-next-line: undefined-field
                 if map.lhs == k then
-                    ---@diagnostic disable-next-line: undefined-field
                     local rhs = tostring(map.rhs)
-                    ---@diagnostic disable-next-line: undefined-field
                     local should_map = map.rhs ~= map.lhs
                     remove_extra_fields(map)
                     if should_map then
@@ -456,7 +450,6 @@ function M.has_namespace(name_space, type)
     return extmark ~= nil and #extmark ~= 0
 end
 
----@diagnostic disable-next-line: lowercase-global
 function M.normal_tab()
     local flag = false
     local window_count = M.get_non_float_win_count()
@@ -598,9 +591,7 @@ _G.no_delay = function(animation)
         end
     end)
     vim.defer_fn(function()
-        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.update_indent, true)
-        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.mini_indent_auto_draw)
         _G.set_cursor_animation(_G.CI)
     end, 50)
@@ -711,7 +702,6 @@ function M.update_preview_state(bufnr, winid)
     vim.defer_fn(function()
         pcall(function()
             require("treesitter-context").context_force_update(bufnr, winid)
-            ---@diagnostic disable-next-line: undefined-field
             pcall(_G.indent_update, winid)
         end)
     end, 5)
@@ -727,15 +717,11 @@ function M.set_glance_keymap()
 
         local function glance_close()
             _G.hide_cursor(function() end)
-            ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
-            ---@diagnostic disable-next-line: undefined-global
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
             Close_with_q()
             vim.defer_fn(function()
-                ---@diagnostic disable-next-line: undefined-field
                 pcall(_G.indent_update)
-                ---@diagnostic disable-next-line: undefined-field
                 pcall(_G.mini_indent_auto_draw)
             end, 100)
         end
@@ -751,9 +737,7 @@ function M.set_glance_keymap()
         vim.keymap.set("n", "<CR>", function()
             _G.hide_cursor(function() end, 10)
             _G.set_cursor_animation(0.0)
-            ---@diagnostic disable-next-line: undefined-global
             pcall(satellite_close, api.nvim_get_current_win())
-            ---@diagnostic disable-next-line: undefined-global
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
             Open()
         end, { buffer = bufnr })
@@ -927,7 +911,6 @@ _G.last = nil
 _G.first_time = false
 function M.on_complete(bo_line, bo_line_side, origin_height)
     vim.schedule(function()
-        ---@diagnostic disable-next-line: undefined-field
         local obj = _G.telescope_picker
         if not api.nvim_buf_is_valid(obj.results_bufnr) then
             return
@@ -985,7 +968,6 @@ function M.real_enter(callback, filter, who)
         end
     end, 2000)
     local has_start = false
-    ---@diagnostic disable-next-line: unused-local
     local timout = function(opts)
         if not filter() then
             ---@diagnostic disable-next-line: need-check-nil
@@ -1092,9 +1074,8 @@ function M.update_diff_file_count()
     end
 
     if result.code == 0 then
-        local diff_files = result.stdout
+        local diff_files = result.stdout or ""
         local file_count = 0
-        ---@diagnostic disable-next-line: param-type-mismatch
         for _ in string.gmatch(diff_files, "[^\n]+") do
             file_count = file_count + 1
         end

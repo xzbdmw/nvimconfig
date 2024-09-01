@@ -1689,7 +1689,6 @@ if err != nil {
             { "<bs>", desc = "Decrement selection", false },
         },
         -- -@type TSConfig
-        ---@diagnostic disable-next-line: missing-fields
         opts = {
             disable = function(_, bufnr) -- Disable in files with more than 5K
                 return vim.api.nvim_buf_line_count(bufnr) > 5000

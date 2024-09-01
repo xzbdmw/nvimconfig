@@ -221,10 +221,9 @@ local function gen_from_vimgrep(opts)
     end
 
     local display_string = "%s%s%s"
-
+    local cwd = (opts.cwd or vim.loop.cwd()) or ""
     mt_vimgrep_entry = {
-        ---@diagnostic disable-next-line: param-type-mismatch
-        cwd = vim.fn.expand(opts.cwd or vim.loop.cwd()),
+        cwd = vim.fn.expand(cwd),
 
         display = function(entry)
             local display_filename = utils.transform_path(opts, entry.filename)

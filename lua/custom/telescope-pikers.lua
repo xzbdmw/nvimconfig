@@ -191,7 +191,6 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             on_complete = {
                 function()
                     vim.schedule(function()
-                        ---@diagnostic disable-next-line: undefined-field
                         local obj = _G.telescope_picker
                         if not api.nvim_buf_is_valid(obj.results_bufnr) then
                             return

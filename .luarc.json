@@ -3,7 +3,9 @@
     "runtime.version": "LuaJIT",
     "diagnostics.disable": [
         "deprecated",
-        "undefined-field"
+        "undefined-field",
+        "undefined-global",
+        "need-check-nil"
     ],
     "diagnostics.globals": [
         "MiniFiles",

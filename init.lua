@@ -418,7 +418,6 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
             utils.update_diff_file_count()
             utils.set_git_winbar()
         end, 10)
-        ---@diagnostic disable-next-line: undefined-field
         pcall(_G.indent_update)
         for _, buf in ipairs(api.nvim_list_bufs()) do
             -- Don't save while there's any 'nofile' buffer open.
@@ -534,7 +533,6 @@ api.nvim_create_autocmd({ "User" }, {
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
             vim.cmd("NvimTreeRefresh")
-            ---@diagnostic disable-next-line: undefined-field
             pcall(_G.indent_update)
         end, 100)
     end,

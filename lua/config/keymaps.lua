@@ -56,7 +56,7 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
-keymap("i", "<c-x><c-g>", function()
+keymap("i", "<c-x><c-o>", function()
     require("cmp").complete({
         config = {
             sources = {

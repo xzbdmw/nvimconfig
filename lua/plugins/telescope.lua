@@ -538,7 +538,6 @@ return {
                 actions.close(prompt_bufnr)
                 local commit = selection.value
                 vim.g.Base_commit = commit
-                ---@diagnostic disable-next-line: assign-type-mismatch
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
                 local sts = vim.split(selection.ordinal, " ")
@@ -600,15 +599,12 @@ return {
                 local p_callback = nil
                 local c_callback = nil
                 for _, map in ipairs(maps) do
-                    ---@diagnostic disable-next-line: undefined-field
                     if map.lhs == " " then
                         checkout_callback = map.callback
                     end
-                    ---@diagnostic disable-next-line: undefined-field
                     if map.lhs == "p" then
                         p_callback = map.callback
                     end
-                    ---@diagnostic disable-next-line: undefined-field
                     if map.lhs == "c" then
                         c_callback = map.callback
                     end

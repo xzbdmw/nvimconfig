@@ -197,9 +197,7 @@ return {
                         f.expand = false
                         cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
                         vim.defer_fn(function()
-                            ---@diagnostic disable-next-line: undefined-field
                             pcall(_G.update_indent, true) -- hlchunk
-                            ---@diagnostic disable-next-line: undefined-field
                             pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                         end, 20)
                     else
@@ -220,9 +218,7 @@ return {
                             f.expand = false
                             cmp.confirm({ select = true })
                             vim.defer_fn(function()
-                                ---@diagnostic disable-next-line: undefined-field
                                 pcall(_G.update_indent, true) -- hlchunk
-                                ---@diagnostic disable-next-line: undefined-field
                                 pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                             end, 20)
                         end
@@ -249,9 +245,7 @@ return {
                         fallback()
                     end
                     vim.defer_fn(function()
-                        ---@diagnostic disable-next-line: undefined-field
                         pcall(_G.update_indent, true) -- hlchunk
-                        ---@diagnostic disable-next-line: undefined-field
                         pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                     end, 20)
                 end),

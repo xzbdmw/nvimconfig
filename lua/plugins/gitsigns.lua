@@ -106,7 +106,7 @@ return {
                     vim.cmd("Gitsigns blame")
                 end)
 
-                map("n", "<leader>si", function()
+                local function toggle_inline_diff()
                     local namespaces = { "gitsigns_removed", "gitsigns", "gitsigns_signs_staged", "gitsigns_signs_" }
                     for _, namespace in ipairs(namespaces) do
                         api.nvim_buf_clear_namespace(0, api.nvim_create_namespace(namespace), 0, -1)
@@ -120,8 +120,31 @@ return {
                             _G.indent_update()
                         end, time)
                     end
+                end
+
+                map("n", "<leader>sj", function()
+                    FeedKeys("]c", "m")
+                    api.nvim_create_autocmd("CursorMoved", {
+                        once = true,
+                        callback = function()
+                            toggle_inline_diff()
+                        end,
+                    })
                 end)
 
+                map("n", "<leader>si", function()
+                    toggle_inline_diff()
+                end)
+
+                map("n", "<leader>sk", function()
+                    FeedKeys("[c", "m")
+                    api.nvim_create_autocmd("CursorMoved", {
+                        once = true,
+                        callback = function()
+                            toggle_inline_diff()
+                        end,
+                    })
+                end)
                 map("n", "<leader>sq", function()
                     _G.pre_gitsigns_qf_operation = "cur"
                     if not utils.has_filetype("trouble") then
