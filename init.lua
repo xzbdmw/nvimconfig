@@ -584,6 +584,13 @@ api.nvim_create_autocmd("User", {
 })
 
 api.nvim_create_autocmd("User", {
+    pattern = "copilot_callback",
+    callback = function()
+        FeedKeys("<c-x><c-c>", "m")
+    end,
+})
+
+api.nvim_create_autocmd("User", {
     pattern = "MiniFilesActionDelete",
     callback = function(args)
         local from_path = args.data.from

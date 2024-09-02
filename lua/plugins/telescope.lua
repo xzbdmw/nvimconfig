@@ -740,6 +740,84 @@ return {
                     },
                     mappings = {
                         i = {
+                            ["<D-a>"] = function()
+                                FeedKeys("a", "n")
+                            end,
+                            ["<D-b>"] = function()
+                                FeedKeys("b", "n")
+                            end,
+                            ["<D-c>"] = function()
+                                FeedKeys("c", "n")
+                            end,
+                            ["<D-d>"] = function()
+                                FeedKeys("d", "n")
+                            end,
+                            ["<D-e>"] = function()
+                                FeedKeys("e", "n")
+                            end,
+                            ["<D-f>"] = function()
+                                FeedKeys("f", "n")
+                            end,
+                            ["<D-g>"] = function()
+                                FeedKeys("g", "n")
+                            end,
+                            ["<f13>"] = function()
+                                FeedKeys("h", "n")
+                            end,
+                            ["<D-i>"] = function()
+                                FeedKeys("i", "n")
+                            end,
+                            ["<D-j>"] = function()
+                                FeedKeys("j", "n")
+                            end,
+                            ["<D-k>"] = function()
+                                FeedKeys("k", "n")
+                            end,
+                            ["<f12>"] = function()
+                                FeedKeys("l", "n")
+                            end,
+                            ["<D-m>"] = function()
+                                FeedKeys("m", "n")
+                            end,
+                            ["<D-n>"] = function()
+                                FeedKeys("n", "n")
+                            end,
+                            ["<D-o>"] = function()
+                                FeedKeys("o", "n")
+                            end,
+                            ["<D-p>"] = function()
+                                FeedKeys("p", "n")
+                            end,
+                            ["<f16>"] = function()
+                                FeedKeys("k", "n")
+                            end,
+                            ["<D-q>"] = function()
+                                FeedKeys("q", "n")
+                            end,
+                            ["<D-r>"] = function()
+                                FeedKeys("r", "n")
+                            end,
+                            ["<D-s>"] = function()
+                                FeedKeys("s", "n")
+                            end,
+                            ["<D-t>"] = function()
+                                FeedKeys("t", "n")
+                            end,
+                            ["<D-u>"] = function()
+                                FeedKeys("u", "n")
+                            end,
+                            ["<D-w>"] = function()
+                                FeedKeys("w", "n")
+                            end,
+                            ["<D-x>"] = function()
+                                FeedKeys("x", "n")
+                            end,
+                            ["<D-y>"] = function()
+                                FeedKeys("y", "n")
+                            end,
+                            ["<D-z>"] = function()
+                                FeedKeys("z", "n")
+                            end,
                             ["<Tab>"] = focus_preview,
                             ["<c-g>"] = "to_fuzzy_refine",
                             ["<down>"] = function(prompt_bufnr)

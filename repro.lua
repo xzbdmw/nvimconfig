@@ -1999,7 +1999,7 @@ local function toggle_profile()
         prof.start("*")
     end
 end
-vim.keymap.set("", "<space>tp", toggle_profile)
+
 require("lazy").setup({
     root = root .. "/plugins",
     spec = {
