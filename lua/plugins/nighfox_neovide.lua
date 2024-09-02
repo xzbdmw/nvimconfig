@@ -271,7 +271,7 @@ return {
                 CmpItemKindClass = { fg = "#6c8ed4" },
                 CmpItemKindColor = { fg = "#2D5D22" },
                 CmpItemKindModule = { fg = "#d4bb6c" },
-                CmpItemKindOperator = { fg = "#A377BF" },
+                CmpItemKindOperator = { link = "CmpItemKindFile" },
                 CmpItemKindVariable = { fg = "#112386" },
                 CmpItemKindFile = { fg = "#7E8294" },
                 CmpItemKindUnit = { fg = "#D4A959" },

@@ -3,7 +3,6 @@ local action_state = require("telescope.actions.state")
 local utils = require("config.utils")
 local state = require("telescope.state")
 local builtin = require("telescope.builtin")
-local cmp = require("cmp")
 local keymap = vim.keymap.set
 return {
     {
@@ -821,6 +820,7 @@ return {
                             ["<Tab>"] = focus_preview,
                             ["<c-g>"] = "to_fuzzy_refine",
                             ["<down>"] = function(prompt_bufnr)
+                                local cmp = require("cmp")
                                 if cmp.visible() then
                                     if cmp.core.view.custom_entries_view:is_direction_top_down() then
                                         _G.no_animation(_G.CI)
@@ -833,6 +833,7 @@ return {
                                 end
                             end,
                             ["<up>"] = function(prompt_bufnr)
+                                local cmp = require("cmp")
                                 if cmp.visible() then
                                     if cmp.core.view.custom_entries_view:is_direction_top_down() then
                                         _G.no_animation(_G.CI)
@@ -880,6 +881,7 @@ return {
                                 FeedKeys("<END>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
+                                local cmp = require("cmp")
                                 if cmp.visible() then
                                     _G.no_animation(_G.CI)
                                     cmp.confirm({ select = true })
@@ -935,10 +937,6 @@ return {
                                 actions.close(bufnr)
                             end,
                             ["<CR>"] = function(bufnr)
-                                -- local cmp = require("cmp")
-                                -- if cmp.visible() then
-                                --
-                                -- end
                                 actions.select_default(bufnr)
                                 require("config.utils").adjust_view(0, 4)
                             end,

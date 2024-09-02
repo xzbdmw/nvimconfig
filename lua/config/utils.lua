@@ -145,7 +145,7 @@ function Open_git_commit()
             height = 10,
             relative = "editor",
             border = "rounded",
-            zindex = 1002,
+            zindex = 800,
         })
         local finish = function()
             _G.hide_cursor(function() end)

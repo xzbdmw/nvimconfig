@@ -95,6 +95,22 @@ keymap("i", "<c-x><c-y>", function()
     })
 end)
 
+keymap("i", "<c-x><c-p>", function()
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "dictionary",
+                },
+            },
+        },
+    })
+end)
+
 keymap("i", "<c-x><right>", function()
     local cmp = require("cmp")
     if cmp.visible() then

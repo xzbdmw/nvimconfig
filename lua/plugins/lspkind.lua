@@ -30,7 +30,7 @@ return {
                 Null = "  ",
                 Number = " 󰰔 ",
                 Object = " 󰲟 ",
-                Operator = "  ",
+                Operator = "  ",
                 Package = " 󰰚 ",
                 Property = " 󰲽 ",
                 Reference = " 󰰠 ",

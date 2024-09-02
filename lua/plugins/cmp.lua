@@ -5,6 +5,7 @@ return {
     version = false, -- last release is way too old
     event = { "InsertEnter", "CmdlineEnter", "User SearchBegin" },
     dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
+    -- enabled = false,
     -- lazy = false,
     -- dir = "~/Project/lua/oricmp/nvim-cmp/",
     dependencies = {
@@ -17,6 +18,7 @@ return {
         "hrsh7th/cmp-cmdline",
         "amarakon/nvim-cmp-buffer-lines",
         "chrisgrieser/cmp_yanky",
+        "uga-rosa/cmp-dictionary",
     },
     opts = function()
         local cmp = require("cmp")
@@ -25,7 +27,7 @@ return {
             enabled = function()
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
-                disabled = disabled or (vim.bo.filetype == "oil" or vim.bo.filetype == "gitcommit")
+                disabled = disabled or (vim.bo.filetype == "oil")
                 disabled = disabled or (vim.fn.reg_recording() ~= "")
                 disabled = disabled or (vim.fn.reg_executing() ~= "")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
@@ -278,6 +280,8 @@ return {
                 { name = "rg" },
             }, {
                 { name = "buffer" },
+            }, {
+                { name = "dictionary" },
             }),
             matching = {
                 disallow_fuzzy_matching = false,
@@ -337,6 +341,7 @@ return {
     end,
     config = function(_, opts)
         local cmp = require("cmp")
+
         cmp.setup.filetype({ "markdown" }, {
             completion = {
                 autocomplete = false,
@@ -509,5 +514,6 @@ return {
             }),
         })
         require("cmp").setup(opts)
+        require("cmp_dictionary").setup({})
     end,
 }
