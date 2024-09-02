@@ -226,6 +226,7 @@ return {
                 NvimTreeRootFolder = { fg = "#3B4D56", style = "" },
                 NvimTreeOpenedFileIcon = { fg = "#8094b4" },
                 GithubSign = { bg = "#F6F8FA" },
+                SpellCap = { style = "" },
                 gitcommitHeader = { link = "Title" },
                 gitcommitFirstLine = { fg = "#000000", style = "bold,italic" },
                 gitcommitSummary = { fg = "#000000", style = "bold,italic" },

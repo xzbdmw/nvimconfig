@@ -53,7 +53,8 @@ vim.g.neovide_padding_left = 0
 vim.g.neovide_cursor_animation_length = 0.00
 vim.g.neovide_floating_shadow = true
 vim.g.neovide_underline_stroke_scale = 1.5
-vim.g.neovide_flatten_floating_zindex = "20,21,22,23,30,35,31,32,51,52,1002,1003"
+-- 800 git_commit, 1002,1003 cmp
+vim.g.neovide_flatten_floating_zindex = "20,21,22,23,30,35,31,32,51,52,800,1002,1003"
 vim.g.neovide_floating_z_height = 5
 vim.g.neovide_light_angle_degrees = 30
 vim.g.neovide_floating_blur = false
