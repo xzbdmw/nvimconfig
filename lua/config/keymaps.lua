@@ -112,6 +112,7 @@ keymap("i", "<c-x><right>", function()
 end)
 
 keymap("i", "<c-x><c-c>", function()
+    vim.g.copilot_enable = true
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()

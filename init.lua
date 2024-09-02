@@ -15,6 +15,7 @@ vim.g.vim_enter = true
 vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
+vim.g.copilot_enable = false
 
 vim.cmd("syntax off")
 
@@ -587,6 +588,9 @@ api.nvim_create_autocmd("User", {
     pattern = "copilot_callback",
     callback = function()
         FeedKeys("<c-x><c-c>", "m")
+        vim.defer_fn(function()
+            vim.g.copilot_enable = false
+        end, 10)
     end,
 })
 
