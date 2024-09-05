@@ -112,6 +112,8 @@ function M.match_fn(description)
         or string.match(description, "^fn")
         or string.match(description, "^unsafe fn")
         or string.match(description, "^pub unsafe fn")
+        or string.match(description, "^pub async fn")
+        or string.match(description, "^async fn")
         or string.match(description, "^pub const unsafe fn")
         or string.match(description, "^const fn")
         or string.match(description, "^pub const fn")
@@ -126,6 +128,7 @@ function M.rust_fmt(entry, vim_item)
     local item_kind = entry:get_kind() --- @type lsp.CompletionItemKind | number
 
     local label_detail = completion_item.labelDetails
+    local is_aysnc
     if item_kind == 3 or item_kind == 2 then -- Function/Method
         --[[ labelDetails.
         function#function#if detail: {
@@ -137,6 +140,7 @@ function M.rust_fmt(entry, vim_item)
             detail = M.trim_detail(detail)
             local description = label_detail.description
             if description then
+                is_aysnc = string.find(description, "async", nil, true) ~= nil
                 if string.sub(description, #description, #description) == "," then
                     description = description:sub(1, #description - 1)
                 end
@@ -279,7 +283,11 @@ function M.rust_fmt(entry, vim_item)
         kind.concat = ""
     end
     ::OUT::
-    kind.kind = " " .. (strings[1] or "") .. " "
+    if is_aysnc then
+        kind.kind = " " .. ("" or "") .. " "
+    else
+        kind.kind = " " .. (strings[1] or "") .. " "
+    end
     kind.menu = nil
     if string.len(kind.abbr) > distance_to_right_edge() then
         kind.abbr = kind.abbr:sub(1, distance_to_right_edge())

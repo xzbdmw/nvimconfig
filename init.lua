@@ -163,7 +163,7 @@ api.nvim_create_autocmd("FileType", {
             end,
         })
         vim.defer_fn(function()
-            vim.keymap.set({ "n", "i" }, "<CR>", function()
+            vim.keymap.set({ "n" }, "<CR>", function()
                 vim.schedule(function()
                     if vim.bo.filetype == "lazyterm" then
                         FeedKeys("<C-v><c-l>", "n")

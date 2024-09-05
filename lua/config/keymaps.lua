@@ -95,7 +95,7 @@ keymap("i", "<c-x><c-y>", function()
     })
 end)
 
-keymap("i", "<c-x><c-p>", function()
+keymap("i", "<c-x><c-o>", function()
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()
