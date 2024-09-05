@@ -253,7 +253,7 @@ return {
             throttle = 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
             views = {
                 confirm = {
-                    zindex = 21,
+                    zindex = 1003,
                 },
                 cmdline_popup = {
                     zindex = 20,

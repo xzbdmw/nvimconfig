@@ -358,6 +358,7 @@ return {
                 ["@lsp.typemod.parameter.callable.rust"] = { fg = "#215062" },
                 ["@lsp.type.property"] = { fg = "#152381" },
                 ["@lsp.type.variable"] = { fg = "#000000" },
+                ["@lsp.type.interface"] = { link = "@trait.definition" },
                 ["@lsp.type.variable.go"] = {},
                 ["@keyword"] = { fg = "#0033b3" },
                 ["@variable.member"] = { fg = "#152381" },

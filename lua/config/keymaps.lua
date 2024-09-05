@@ -48,7 +48,7 @@ end, opts)
 
 _G.has_diagnostic = false
 keymap("n", "<leader>ud", function()
-    if has_diagnostic then
+    if _G.has_diagnostic then
         vim.diagnostic.config({ virtual_text = false })
         _G.has_diagnostic = false
     else

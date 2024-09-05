@@ -986,7 +986,8 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            if not vim.b[cur_buf].gitsigns_preview then
+            if vim.b[cur_buf].gitsigns_preview or vim.b[cur_buf].rust then
+            else
                 vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
             end
             callback()
