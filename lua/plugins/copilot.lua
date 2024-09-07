@@ -33,7 +33,7 @@ return {
             },
             filetypes = {
                 -- go = false,
-                rust = false,
+                rust = true,
                 yaml = false,
                 markdown = false,
                 help = false,

@@ -224,9 +224,13 @@ local darker = false
 keymap("n", "<leader>uc", function()
     if darker then
         api.nvim_set_hl(0, "@spell.go", { fg = "#717070" })
+        api.nvim_set_hl(0, "Comment", { fg = "#717070" })
+        api.nvim_set_hl(0, "@spell.rust", { fg = "#717070" })
         darker = false
     else
         api.nvim_set_hl(0, "@spell.go", { fg = "#364E57" })
+        api.nvim_set_hl(0, "@spell.rust", { fg = "#364E57" })
+        api.nvim_set_hl(0, "Comment", { fg = "#364E57" })
         darker = true
     end
 end, opts)
