@@ -71,27 +71,35 @@ return {
                 end)
 
                 map("n", "<leader>sb", function()
+                    if vim.g.Base_commit ~= "" then
+                        vim.notify("Hunks are not in INDEX ", vim.log.levels.WARN)
+                        return
+                    end
                     gs.stage_buffer()
                 end)
 
                 map("v", "<leader>sh", function()
-                    local s, e = vim.fn.line("."), vim.fn.line("v")
                     if vim.g.Base_commit ~= "" then
-                        vim.notify("Hunks are not in INDEX, change base...", vim.log.levels.WARN)
-                        FeedKeys("<esc><leader>cb", "m")
+                        vim.notify("Hunks are not in INDEX ", vim.log.levels.WARN)
+                        return
                     end
+                    local s, e = vim.fn.line("."), vim.fn.line("v")
                     FeedKeys(string.format('ms<cmd>lua require("gitsigns").stage_hunk({%s,%s})<CR>`s', s, e), "n")
                 end)
 
                 map("n", "<leader>sh", function()
                     if vim.g.Base_commit ~= "" then
-                        vim.notify("Hunks are not in INDEX, change base...", vim.log.levels.WARN)
-                        FeedKeys("<leader>cb", "m")
+                        vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
+                        return
                     end
                     vim.cmd("Gitsigns stage_hunk")
                 end)
 
                 map("n", "<leader>uh", function()
+                    if vim.g.Base_commit ~= "" then
+                        vim.notify("Hunks are not in INDEX ", vim.log.levels.WARN)
+                        return
+                    end
                     vim.cmd("Gitsigns undo_stage_hunk")
                 end)
 
