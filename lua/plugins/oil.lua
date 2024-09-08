@@ -84,6 +84,11 @@ return {
                 ["<C-h>"] = "actions.select_split",
                 ["<C-t>"] = "actions.select_tab",
                 ["<C-p>"] = "actions.preview",
+                ["Y"] = function()
+                    require("oil.actions").yank_entry.callback()
+                    local reg = vim.fn.getreg('"')
+                    vim.notify("Copied " .. reg .. "to clipboard!", vim.log.levels.INFO, { title = "Oil" })
+                end,
                 ["<C-c>"] = "actions.close",
                 -- ["q"] = "actions.close",
                 ["<C-l>"] = "actions.refresh",

@@ -351,7 +351,7 @@ return {
                 ["@spell"] = { link = "Comment" },
                 ["@string.escape"] = { fg = "#395C2A", style = "italic" },
                 ["@lsp.type.namespace"] = { fg = "#152381" },
-                ["@lsp.type.macro.cpp"] = { fg = "#1F542E", style = "bold" },
+                ["@lsp.type.macro.cpp"] = { fg = "#1F542E", style = "bold,italic" },
                 ["@lsp.typemod.keyword.documentation.lua"] = { link = "@comment" },
                 ["@lsp.type.keyword.lua"] = { link = "@comment" },
                 ["@keyword.luadoc"] = { link = "@comment" },
