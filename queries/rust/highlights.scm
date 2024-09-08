@@ -477,3 +477,6 @@ trait: (type_identifier)@trait.definition
             name:(_)@trait.definition)
         type_arguments:(_))
     type: (_))
+
+(field_pattern ; [326, 34] - [326, 41]
+    name: (shorthand_field_identifier)@variable.member) ; [326, 34] - [326, 41]
