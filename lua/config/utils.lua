@@ -1141,7 +1141,12 @@ function M.refresh_diagnostic_winbar()
 end
 
 function M.set_diagnostic_winbar()
-    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" or vim.b.winbar_expr == nil then
+    if
+        vim.fn.reg_recording() ~= ""
+        or vim.fn.reg_executing() ~= ""
+        or vim.b.winbar_expr == nil
+        or api.nvim_win_get_config(0).zindex == 10
+    then
         return
     end
     if vim.b.winbar_expr == nil then
@@ -1168,7 +1173,12 @@ function M.set_git_winbar()
     local icons = { " ", " ", " " }
     local signs = vim.b.gitsigns_status_dict
 
-    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" or vim.b.winbar_expr == nil then
+    if
+        vim.fn.reg_recording() ~= ""
+        or vim.fn.reg_executing() ~= ""
+        or vim.b.winbar_expr == nil
+        or api.nvim_win_get_config(0).zindex == 10
+    then
         return
     end
     local head = vim.g.BranchName
