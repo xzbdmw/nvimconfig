@@ -149,7 +149,9 @@ function Open_git_commit()
         })
         local finish = function()
             _G.hide_cursor(function() end)
-            vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+            if file_path == "lazyterm" then
+                vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+            end
             vim.schedule(M.refresh_telescope_git_status)
         end
         vim.api.nvim_create_autocmd("WinClosed", {
@@ -752,6 +754,7 @@ function EditFromLazygit(file_path)
     else
         vim.cmd("e " .. file_path)
     end
+    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function CloseFromLazygit()
@@ -812,6 +815,7 @@ function EditLineFromLazygit(file_path, line, col)
         end
         M.adjust_view(0, 4)
     end
+    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function M.signature_help(_, result, ctx, config)
