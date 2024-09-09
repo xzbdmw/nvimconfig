@@ -203,7 +203,7 @@ api.nvim_create_autocmd("TermOpen", {
         if vim.endswith(args.file, [[#1]]) then
             vim.keymap.set("t", "<esc>", function()
                 return [[<C-\><C-n>]]
-            end, { expr = true })
+            end, { buffer = 0, expr = true })
         end
         vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
     end,
@@ -215,6 +215,7 @@ api.nvim_create_autocmd("ModeChanged", {
         local new_mode = vim.v.event.new_mode
         if old_mode == "t" and new_mode == "nt" then
             vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+            _G.set_cursor_animation(0)
         end
         if old_mode == "nt" and new_mode == "t" then
             if vim.bo.filetype ~= "lazyterm" then

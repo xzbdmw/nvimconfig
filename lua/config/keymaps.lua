@@ -493,6 +493,7 @@ keymap("c", "<c-a>", "<Home>", opts)
 
 -- Terminal mapping
 keymap("t", "<c-f>", function()
+    _G.no_animation(_G.CI)
     local filetype = vim.bo.filetype
     if filetype == "lazyterm" then
         return "<M-right>"
@@ -500,7 +501,26 @@ keymap("t", "<c-f>", function()
         return "<c-f>"
     end
 end, { expr = true })
-keymap("t", "<c-b>", "<M-left>", opts)
+
+keymap("t", "<c-u>", function()
+    _G.no_animation(_G.CI)
+    return "<c-u>"
+end, { expr = true })
+
+keymap("t", "<BS>", function()
+    _G.no_animation(_G.CI)
+    return "<BS>"
+end, { expr = true })
+
+keymap("t", "<c-d>", function()
+    _G.no_animation(_G.CI)
+    return "<c-d>"
+end, { expr = true })
+
+keymap("t", "<c-b>", function()
+    _G.no_animation(_G.CI)
+    return "<M-left>"
+end, { expr = true })
 
 keymap("t", "<D-v>", function()
     local next_char_code = 48

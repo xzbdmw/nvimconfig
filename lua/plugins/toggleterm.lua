@@ -22,6 +22,7 @@ return {
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
                 vim.cmd(":startinsert")
+                _G.set_cursor_animation(_G.CI)
                 vim.cmd("redraw!")
                 vim.keymap.set("t", "q", "q", { buffer = true })
             end, -- function to run when the terminal opens
