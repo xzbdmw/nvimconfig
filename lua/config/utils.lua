@@ -5,7 +5,7 @@ end
 
 _G.set_cursor_animation = function(len)
     local mode = vim.api.nvim_get_mode().mode
-    if mode == "n" and len > 0 then
+    if (mode == "n" or mode == "nt") and len > 0 then
         return
     else
         vim.g.neovide_cursor_animation_length = len

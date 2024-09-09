@@ -501,11 +501,23 @@ keymap("t", "<c-f>", function()
     end
 end, { expr = true })
 keymap("t", "<c-b>", "<M-left>", opts)
+
 keymap("t", "<D-v>", function()
     local next_char_code = 48
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
 end, { expr = true })
+
+vim.keymap.set("t", "<c-r>", function()
+    local next_char_code = vim.fn.getchar()
+    local next_char = vim.fn.nr2char(next_char_code)
+    if next_char == "r" then
+        return "<c-r>"
+    else
+        return '<C-\\><C-N>"' .. next_char .. "pi"
+    end
+end, { expr = true })
+
 keymap("t", "<c-->", function()
     require("smart-splits").resize_left()
 end, opts)

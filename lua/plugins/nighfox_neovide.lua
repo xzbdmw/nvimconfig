@@ -96,7 +96,7 @@ return {
                 Title = { fg = "#268BD2", style = "bold" },
                 MultiCursorMain = { bg = "#C9D2F5" },
                 MultiCursor = { bg = "#C9D2F5" },
-                TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },
+                -- TermCursor = { bg = "#7E7D7D", fg = "#ffffff" },
                 GitConflictIncomingLabel = { link = "DiffText" },
                 GitConflictCurrent = { bg = "#E1E5E2" },
                 GitConflictIncoming = { bg = "#dbded5" },

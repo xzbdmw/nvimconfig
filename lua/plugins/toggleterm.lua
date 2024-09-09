@@ -27,6 +27,7 @@ return {
             end, -- function to run when the terminal opens
             on_close = function()
                 _G.no_animation()
+                vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
                 vim.cmd("set laststatus=0")
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout

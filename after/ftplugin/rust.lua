@@ -14,7 +14,7 @@ keymap({ "v", "n" }, "<leader>vp", function()
     local row = vim.api.nvim_win_get_cursor(0)[1]
     local _, col = vim.api.nvim_get_current_line():find("^%s*")
     ---@diagnostic disable-next-line: param-type-mismatch
-    local edits = string.rep(" ", col, "") .. string.format("dbg(&%s);", w)
+    local edits = string.rep(" ", col, "") .. string.format("dbg!(&%s);", w)
     vim.api.nvim_buf_set_lines(0, row, row, false, { edits })
 end, { buffer = bufnr })
 

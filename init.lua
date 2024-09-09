@@ -197,22 +197,30 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
-api.nvim_create_autocmd({ "TermEnter", "BufEnter" }, {
-    callback = function()
-        if vim.opt.buftype:get() == "terminal" then
-            vim.cmd(":startinsert")
-        end
-    end,
-})
-
 api.nvim_create_autocmd("TermOpen", {
     callback = function(args)
         local opts = { buffer = 0 }
         if vim.endswith(args.file, [[#1]]) then
-            vim.keymap.set("t", "<Tab>", [[<C-\><C-n><Tab>]], { remap = true, buffer = 0 })
-            vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+            vim.keymap.set("t", "<esc>", function()
+                return [[<C-\><C-n>]]
+            end, { expr = true })
         end
         vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
+    end,
+})
+
+api.nvim_create_autocmd("ModeChanged", {
+    callback = function(args)
+        local old_mode = vim.v.event.old_mode
+        local new_mode = vim.v.event.new_mode
+        if old_mode == "t" and new_mode == "nt" then
+            vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+        end
+        if old_mode == "nt" and new_mode == "t" then
+            if vim.bo.filetype ~= "lazyterm" then
+                vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+            end
+        end
     end,
 })
 
@@ -616,6 +624,7 @@ api.nvim_create_autocmd("User", {
         end)
     end,
 })
+vim.api.nvim_set_hl(0, "TermCursor", {})
 
 vim.lsp.set_log_level("error")
 require("vim.lsp.log").set_format_func(vim.inspect)
