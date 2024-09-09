@@ -203,7 +203,12 @@ api.nvim_create_autocmd("TermOpen", {
         local opts = { buffer = 0 }
         if vim.endswith(args.file, [[#1]]) then
             vim.keymap.set("t", "<esc>", function()
-                return [[<C-\><C-n>]]
+                local line = vim.api.nvim_get_current_line()
+                if vim.startswith(line, "│") then
+                    return "<c-c>"
+                else
+                    return [[<C-\><C-n>]]
+                end
             end, { buffer = 0, expr = true })
         end
         vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
