@@ -502,6 +502,11 @@ keymap("t", "<c-f>", function()
     end
 end, { expr = true })
 
+keymap("t", "<right>", function()
+    _G.no_animation(_G.CI)
+    return "<right>"
+end, { expr = true })
+
 keymap("t", "<c-u>", function()
     _G.no_animation(_G.CI)
     return "<c-u>"

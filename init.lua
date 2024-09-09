@@ -154,6 +154,7 @@ api.nvim_create_autocmd("FileType", {
         vim.api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
+                vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
                 vim.cmd("norm! gg")
                 FeedKeys("a", "m")
                 vim.cmd("setlocal syntax=ON")

@@ -149,6 +149,7 @@ function Open_git_commit()
         })
         local finish = function()
             _G.hide_cursor(function() end)
+            vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             vim.schedule(M.refresh_telescope_git_status)
         end
         vim.api.nvim_create_autocmd("WinClosed", {
@@ -766,6 +767,7 @@ function CloseFromLazygit()
         M.update_diff_file_count()
         M.set_git_winbar()
     end, 10)
+    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function M.set_cr(bufnr, winid)
