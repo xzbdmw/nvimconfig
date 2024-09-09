@@ -1,4 +1,5 @@
 local utils = require("config.utils")
+local types = require("cmp.types")
 local M = {}
 M.expand = true
 M.CompletionItemKind = {
@@ -44,21 +45,79 @@ M.reverse_prioritize = function(entry1, entry2)
     end
 end
 
+local CompletionItemKind = {
+    Text = 1,
+    Method = 2,
+    Function = 3,
+    Constructor = 4,
+    Field = 5,
+    Variable = 6,
+    Class = 7,
+    Interface = 8,
+    Module = 9,
+    Property = 10,
+    Unit = 11,
+    Value = 12,
+    Enum = 13,
+    Keyword = 14,
+    Snippet = 15,
+    Color = 16,
+    File = 17,
+    Reference = 18,
+    Folder = 19,
+    EnumMember = 20,
+    Constant = 21,
+    Struct = 22,
+    Event = 23,
+    Operator = 24,
+    TypeParameter = 25,
+}
+
+local generic_logic = function()
+    -- Snippet lower
+    if kind1 == types.lsp.CompletionItemKind.Snippet then
+        return false
+    end
+    if kind2 == types.lsp.CompletionItemKind.Snippet then
+        return true
+    end
+    -- Field higher than function/method
+    if (kind1 == 2 or kind1 == 3) and kind2 == 5 then
+        return false
+    elseif (kind2 == 2 or kind2 == 3) and kind1 == 5 then
+        return true
+    end
+    -- Variable the highest
+    if kind1 ~= 6 and kind2 == 6 then
+        return false
+    elseif kind2 ~= 6 and kind1 == 6 then
+        return true
+    end
+end
+
 M.put_down_snippet = function(entry1, entry2)
-    local types = require("cmp.types")
     local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
     local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
     kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
     kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
-    if kind1 ~= kind2 then
-        if kind1 == types.lsp.CompletionItemKind.Snippet or kind1 == 9 then
+    if vim.bo.filetype == "go" then
+        -- Put down moudle
+        if kind1 == 9 then
             return false
         end
-        if kind2 == types.lsp.CompletionItemKind.Snippet or kind2 == 9 then
+        if kind2 == 9 then
+            return true
+        end
+    elseif vim.bo.filetype == "rust" then
+        local word1 = entry1:get_word()
+        local word2 = entry2:get_word()
+        if (kind1 == 14 and kind2 == 14) and (word1 == "if let" and (word2 == "if  {" or word2 == "if")) then
+            return false
+        elseif (kind2 == 14 and kind1 == 14) and (word2 == "if let" and (word1 == "if  {" or word1 == "if")) then
             return true
         end
     end
-    return nil
+    return generic_logic()
 end
 
 function M.copilot(kind, strings)
@@ -79,24 +138,6 @@ function M.findLast(haystack, needle)
         return i - 1
     end
 end
---[[ local function trim_detail(detail)
-    if detail then
-        detail = vim.trim(detail)
-        if vim.startswith(detail, "(use") then
-            detail = string.sub(detail, 6, #detail)
-        end
-        local last = findLast(detail, "%:")
-        if last then
-            local last_item = detail:sub(last + 1, #detail - 1)
-            detail = detail:sub(1, last - 2)
-            detail = last_item .. " " .. detail
-            detail = "(" .. detail .. ")"
-        else
-            detail = "(" .. detail
-        end
-    end
-    return detail
-end ]]
 function M.trim_detail(detail)
     if detail then
         detail = vim.trim(detail)
