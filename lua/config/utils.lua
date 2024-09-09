@@ -748,13 +748,13 @@ function M.set_glance_keymap()
 end
 
 function EditFromLazygit(file_path)
+    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
     local path = vim.fn.expand("%:p")
     if path == file_path then
         return
     else
         vim.cmd("e " .. file_path)
     end
-    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function CloseFromLazygit()
@@ -797,6 +797,7 @@ function M.set_cr(bufnr, winid)
 end
 
 function EditLineFromLazygit(file_path, line, col)
+    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
     local path = vim.fn.expand("%:p")
     if path == file_path then
         if col == nil then
@@ -805,7 +806,6 @@ function EditLineFromLazygit(file_path, line, col)
             api.nvim_win_set_cursor(0, { tonumber(line), tonumber(col) })
         end
         M.adjust_view(0, 4)
-        return
     else
         vim.cmd("e " .. file_path)
         if col == nil then
@@ -815,7 +815,6 @@ function EditLineFromLazygit(file_path, line, col)
         end
         M.adjust_view(0, 4)
     end
-    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function M.signature_help(_, result, ctx, config)
