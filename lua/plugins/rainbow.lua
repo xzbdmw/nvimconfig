@@ -2,9 +2,18 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     keys = {
         {
-            "<leader>uB",
+            "<leader>ur",
             function()
-                require("rainbow-delimiters").toggle(0)
+                if vim.b.ranbow_attached then
+                    require("rainbow-delimiters").disable(0)
+                    vim.b.ranbow_attached = false
+                else
+                    vim.b.ranbow_attached = true
+                    require("rainbow-delimiters").enable(0)
+                    vim.api.nvim_exec_autocmds("User", {
+                        pattern = "AttachRainBow",
+                    })
+                end
             end,
         },
     },

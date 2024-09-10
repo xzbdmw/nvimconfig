@@ -2,7 +2,7 @@ return {
     "utilyre/sentiment.nvim",
     version = "*",
     event = "VeryLazy", -- keep for lazy loading
-    -- enabled = false,
+    enabled = false,
     opts = {
         -- config
     },
@@ -28,8 +28,8 @@ return {
             ---@type table<string, boolean>
             included_modes = {
                 n = true,
-                v = false,
-                -- i = true,
+                v = true,
+                i = true,
             },
 
             ---How much (in milliseconds) should the cursor stay still to calculate and

@@ -397,10 +397,6 @@ keymap("n", "<leader>cd", function()
     end
 end, opts)
 
-keymap("n", "<leader>ur", function()
-    vim.o.relativenumber = not vim.o.relativenumber
-end, opts)
-
 keymap("n", "za", function()
     local is_comment = vim.fn.foldclosed(vim.fn.line("."))
     if is_comment ~= -1 then
