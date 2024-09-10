@@ -68,7 +68,6 @@ local function check_trouble()
 end
 
 function M.refresh_telescope_git_status()
-    vim.o.eventignore = ""
     local windows = vim.api.nvim_list_wins()
     local prompt_bufnr = nil
     for _, window in ipairs(windows) do
