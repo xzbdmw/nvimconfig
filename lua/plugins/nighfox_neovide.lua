@@ -82,7 +82,7 @@ return {
                 GitSignsDeleteInline = { bg = "#A1BDC4" },
                 GitSignsDeleteVirtLnInLine = { bg = "#EABAB8" },
                 Directory = { link = "Comment" },
-                MatchParen = { fg = "#000000", style = "italic,bold" },
+                MatchParen = { bg = "#E1E5DB", fg = "", style = "" },
                 SatelliteBar = { bg = "#faf7e8" },
                 SatelliteCursor = { bg = "#C8D0D0", fg = "#C8D0D0" },
                 SatelliteSearch = { link = "SatelliteQuickfix" },
