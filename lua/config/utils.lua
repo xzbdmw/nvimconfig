@@ -149,7 +149,7 @@ function Open_git_commit()
         })
         local finish = function()
             _G.hide_cursor(function() end)
-            if file_path == "lazyterm" then
+            if filetype == "lazyterm" then
                 vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             end
             vim.schedule(M.refresh_telescope_git_status)
@@ -748,7 +748,6 @@ function M.set_glance_keymap()
 end
 
 function EditFromLazygit(file_path)
-    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
     local path = vim.fn.expand("%:p")
     if path == file_path then
         return
@@ -770,7 +769,6 @@ function CloseFromLazygit()
         M.update_diff_file_count()
         M.set_git_winbar()
     end, 10)
-    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 end
 
 function M.set_cr(bufnr, winid)
@@ -797,7 +795,6 @@ function M.set_cr(bufnr, winid)
 end
 
 function EditLineFromLazygit(file_path, line, col)
-    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
     local path = vim.fn.expand("%:p")
     if path == file_path then
         if col == nil then

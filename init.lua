@@ -219,11 +219,11 @@ api.nvim_create_autocmd("ModeChanged", {
     callback = function(args)
         local old_mode = vim.v.event.old_mode
         local new_mode = vim.v.event.new_mode
-        if old_mode == "t" and new_mode == "nt" then
+        if old_mode == "t" then
             vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             _G.set_cursor_animation(0)
         end
-        if old_mode == "nt" and new_mode == "t" then
+        if new_mode == "t" then
             if vim.bo.filetype ~= "lazyterm" then
                 vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             end
