@@ -40,15 +40,19 @@ return {
         end, keymap_ops)
 
         keymap("x", "[", function()
-            FeedKeys("ma[", "t")
+            FeedKeys("ma[<left>%", "t")
         end, keymap_ops)
 
         keymap("x", "{", function()
-            FeedKeys("ma{", "t")
+            FeedKeys("ma{<left>%", "t")
         end, keymap_ops)
 
         keymap("x", "(", function()
-            FeedKeys("ma(", "t")
+            FeedKeys("ma(<left>%", "t")
+        end, keymap_ops)
+
+        keymap("x", "`", function()
+            FeedKeys("ma`", "t")
         end, keymap_ops)
 
         vim.defer_fn(function()
