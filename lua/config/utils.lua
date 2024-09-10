@@ -449,7 +449,13 @@ end
 
 function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
-    local extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, { type = type })
+    local buf = api.nvim_get_current_buf()
+    local extmark
+    if type then
+        extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, { type = type })
+    else
+        extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, {})
+    end
     return extmark ~= nil and #extmark ~= 0
 end
 

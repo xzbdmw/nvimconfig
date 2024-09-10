@@ -122,12 +122,6 @@ return {
                     gs.toggle_word_diff()
                     gs.toggle_deleted()
                     gs.toggle_linehl()
-                    local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
-                    for _, time in ipairs(times) do
-                        vim.defer_fn(function()
-                            _G.indent_update()
-                        end, time)
-                    end
                 end
 
                 map("n", "<leader>sj", function()
