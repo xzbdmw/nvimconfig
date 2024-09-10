@@ -56,7 +56,7 @@ keymap("n", "<leader>ud", function()
             virtual_text = {
                 prefix = "",
                 source = "if_many",
-                spacing = 0,
+                spacing = 2,
             },
         })
         _G.has_diagnostic = true
