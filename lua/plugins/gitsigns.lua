@@ -128,9 +128,7 @@ return {
                     FeedKeys("]c", "m")
                     api.nvim_create_autocmd("CursorMoved", {
                         once = true,
-                        callback = function()
-                            toggle_inline_diff()
-                        end,
+                        callback = toggle_inline_diff,
                     })
                 end)
 
@@ -142,9 +140,7 @@ return {
                     FeedKeys("[c", "m")
                     api.nvim_create_autocmd("CursorMoved", {
                         once = true,
-                        callback = function()
-                            toggle_inline_diff()
-                        end,
+                        callback = toggle_inline_diff,
                     })
                 end)
                 map("n", "<leader>sq", function()
@@ -171,6 +167,14 @@ return {
                                 FeedKeys("n", "t")
                             end),
                         })
+                    end
+                    if
+                        not (
+                            utils.has_namespace("gitsigns_signs_staged", "highlight")
+                            or utils.has_namespace("gitsigns_signs_", "highlight")
+                        )
+                    then
+                        toggle_inline_diff()
                     end
                     gs.setqflist("all")
                 end)
