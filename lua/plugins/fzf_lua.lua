@@ -6,97 +6,97 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
     keys = {
+        {
+            "<leader>sG",
+            function()
+                local opts = {
+                    rg_opts = "--column  --line-number --no-heading --color=always --smart-case --max-columns=4096",
+                    winopts = { width = 0.8, height = 0.9 },
+                    files = { path_shorten = true },
+                }
+                -- if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+                if false then
+                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+                end
+                require("fzf-lua").live_grep_native(opts)
+            end,
+        },
         -- {
-        --     "<leader>sg",
+        --     "<leader>sa",
+        --     function()
+        --         local s = vim.fn.getreg("0")
+        --         require("fzf-lua").grep({
+        --             search = s,
+        --             rg_opts = "--column  -F --line-number --no-heading --color=always --smart-case --max-columns=4096",
+        --             winopts = { width = 0.8, height = 0.9 },
+        --             files = { path_shorten = true },
+        --         })
+        --     end,
+        -- },
+        -- {
+        --     "<leader>sr",
+        --     function()
+        --         require("fzf-lua").live_grep_resume({})
+        --     end,
+        -- },
+        -- {
+        --     "<leader>sw",
         --     function()
         --         local opts = {
-        --             rg_opts = "--column  --line-number --no-heading --color=always --smart-case --max-columns=4096",
+        --             rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
         --             winopts = { width = 0.8, height = 0.9 },
         --             files = { path_shorten = true },
         --         }
-        --         -- if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
-        --         if false then
+        --         if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
         --             opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
         --         end
-        --         require("fzf-lua").live_grep_native(opts)
+        --         require("fzf-lua").grep_cword(opts)
         --     end,
         -- },
-        {
-            "<leader>sa",
-            function()
-                local s = vim.fn.getreg("0")
-                require("fzf-lua").grep({
-                    search = s,
-                    rg_opts = "--column  -F --line-number --no-heading --color=always --smart-case --max-columns=4096",
-                    winopts = { width = 0.8, height = 0.9 },
-                    files = { path_shorten = true },
-                })
-            end,
-        },
-        {
-            "<leader>sr",
-            function()
-                require("fzf-lua").live_grep_resume({})
-            end,
-        },
-        {
-            "<leader>sw",
-            function()
-                local opts = {
-                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
-                    winopts = { width = 0.8, height = 0.9 },
-                    files = { path_shorten = true },
-                }
-                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
-                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
-                end
-                require("fzf-lua").grep_cword(opts)
-            end,
-        },
-        {
-            "<leader>sW",
-            function()
-                local opts = {
-                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
-                    winopts = { width = 0.8, height = 0.9 },
-                    files = { path_shorten = true },
-                }
-                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
-                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
-                end
-                require("fzf-lua").grep_cWORD(opts)
-            end,
-        },
-        {
-            "<leader>sw",
-            function()
-                local opts = {
-                    rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
-                    winopts = { width = 0.8, height = 0.9 },
-                    files = { path_shorten = true },
-                }
-                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
-                    opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
-                end
-                require("fzf-lua").grep_visual(opts)
-            end,
-            mode = { "v" },
-        },
         -- {
-        --     "<C-d>",
+        --     "<leader>sW",
         --     function()
-        --         vim.cmd("normal! m'")
-        --         require("fzf-lua").lsp_document_symbols()
+        --         local opts = {
+        --             rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
+        --             winopts = { width = 0.8, height = 0.9 },
+        --             files = { path_shorten = true },
+        --         }
+        --         if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+        --             opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+        --         end
+        --         require("fzf-lua").grep_cWORD(opts)
         --     end,
-        --     desc = "Goto Symbol",
         -- },
-        {
-            "<leader>fz",
-            function()
-                vim.cmd("FzfLua files")
-            end,
-            desc = "searh files in cwd",
-        },
+        -- {
+        --     "<leader>sw",
+        --     function()
+        --         local opts = {
+        --             rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096",
+        --             winopts = { width = 0.8, height = 0.9 },
+        --             files = { path_shorten = true },
+        --         }
+        --         if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" then
+        --             opts.rg_opts = opts.rg_opts .. " --type " .. vim.bo.filetype
+        --         end
+        --         require("fzf-lua").grep_visual(opts)
+        --     end,
+        --     mode = { "v" },
+        -- },
+        -- -- {
+        -- --     "<C-d>",
+        -- --     function()
+        -- --         vim.cmd("normal! m'")
+        -- --         require("fzf-lua").lsp_document_symbols()
+        -- --     end,
+        -- --     desc = "Goto Symbol",
+        -- -- },
+        -- {
+        --     "<leader>fz",
+        --     function()
+        --         vim.cmd("FzfLua files")
+        --     end,
+        --     desc = "searh files in cwd",
+        -- },
     },
     config = function()
         local actions = require("fzf-lua.actions")
@@ -166,7 +166,9 @@ return {
                     },
                 },
                 on_create = function()
+                    -- require("config.utils").change_guicursor("vertical")
                     pcall(vim.cmd, "DisableHL")
+                    vim.g.fzf = true
                     vim.b.miniindentscope_disable = true
                     -- called once upon creation of the fzf main window
                     -- can be used to add custom fzf-lua mappings, e.g:

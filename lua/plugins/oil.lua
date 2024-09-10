@@ -87,6 +87,7 @@ return {
                 ["Y"] = function()
                     require("oil.actions").yank_entry.callback()
                     local reg = vim.fn.getreg('"')
+                    vim.fn.setreg("+", reg)
                     vim.notify("Copied " .. reg .. "to clipboard!", vim.log.levels.INFO, { title = "Oil" })
                 end,
                 ["<C-c>"] = "actions.close",

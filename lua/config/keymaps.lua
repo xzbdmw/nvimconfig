@@ -235,6 +235,8 @@ keymap("n", "<left>", function()
 end, opts)
 
 keymap("o", "f", "t", opts)
+keymap("x", "f", "t", opts)
+keymap("x", "F", "T", opts)
 keymap("o", "F", "T", opts)
 
 keymap("n", "A", function()
