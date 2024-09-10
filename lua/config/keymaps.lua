@@ -196,6 +196,47 @@ keymap("n", "<leader><leader>g", function()
     vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
 end, opts)
 
+keymap("n", "<right>", function()
+    local line = api.nvim_get_current_line()
+    local chars = { "[", "(", "{", '"', "]", ")", "}" }
+    local cursor_col = api.nvim_win_get_cursor(0)[2]
+    local target = nil
+    for i = cursor_col + 2, #line do
+        local char = string.sub(line, i, i)
+        if vim.tbl_contains(chars, char) then
+            target = char
+            break
+        end
+    end
+    if target ~= nil then
+        FeedKeys("f" .. target, "n")
+    else
+        FeedKeys("L", "m")
+    end
+end, opts)
+
+keymap("n", "<left>", function()
+    local line = api.nvim_get_current_line()
+    local cursor_col = api.nvim_win_get_cursor(0)[2]
+    local chars = { "[", "(", "{", '"', "]", ")", "}" }
+    local target = nil
+    for i = cursor_col, 1, -1 do
+        local char = string.sub(line, i, i)
+        if vim.tbl_contains(chars, char) then
+            target = char
+            break
+        end
+    end
+    if target ~= nil then
+        FeedKeys("F" .. target, "n")
+    else
+        FeedKeys("0", "m")
+    end
+end, opts)
+
+keymap("o", "f", "t", opts)
+keymap("o", "F", "T", opts)
+
 keymap("n", "A", function()
     vim.defer_fn(function()
         _G.set_cursor_animation(_G.CI)
