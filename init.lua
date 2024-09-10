@@ -154,7 +154,7 @@ api.nvim_create_autocmd("FileType", {
         vim.api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
-                vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+                utils.change_guicursor("block")
                 vim.cmd("norm! gg")
                 FeedKeys("a", "m")
                 vim.cmd("setlocal syntax=ON")
@@ -220,12 +220,12 @@ api.nvim_create_autocmd("ModeChanged", {
         local old_mode = vim.v.event.old_mode
         local new_mode = vim.v.event.new_mode
         if old_mode == "t" then
-            vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+            utils.change_guicursor("block")
             _G.set_cursor_animation(0)
         end
         if new_mode == "t" then
             if vim.bo.filetype ~= "lazyterm" then
-                vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+                utils.change_guicursor("vertical")
             end
         end
     end,
@@ -631,7 +631,12 @@ api.nvim_create_autocmd("User", {
         end)
     end,
 })
-vim.api.nvim_set_hl(0, "TermCursor", {})
+
+if vim.g.neovide then
+    vim.api.nvim_set_hl(0, "TermCursor", {})
+else
+    vim.api.nvim_set_hl(0, "TermCursor", { bg = "#3636DB" })
+end
 
 vim.lsp.set_log_level("error")
 require("vim.lsp.log").set_format_func(vim.inspect)

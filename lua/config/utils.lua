@@ -150,7 +150,7 @@ function Open_git_commit()
         local finish = function()
             _G.hide_cursor(function() end)
             if filetype == "lazyterm" then
-                vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+                M.change_guicursor("vertical")
             end
             vim.schedule(M.refresh_telescope_git_status)
         end
@@ -447,6 +447,17 @@ function M.if_multicursor()
     return M.has_namespace("multicursors")
 end
 
+function M.change_guicursor(type)
+    if not vim.g.neovide then
+        return
+    end
+    if type == "vertical" then
+        vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+    else
+        vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+    end
+end
+
 function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
     local buf = api.nvim_get_current_buf()
@@ -480,8 +491,8 @@ function M.normal_tab()
                     -- change flag to indicate that we have change current_win, so no need to cycle
                     flag = true
                     api.nvim_set_current_win(win)
+                    return
                 end
-                break
             end
         end
     end
