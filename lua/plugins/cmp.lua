@@ -394,12 +394,18 @@ return {
                 },
                 ["<c-n>"] = {
                     c = function()
-                        FeedKeys("<C-g>", "n")
+                        if cmp.visible() then
+                            cmp.close()
+                        end
+                        FeedKeys("<c-n>", "n")
                     end,
                 },
                 ["<c-p>"] = {
                     c = function()
-                        FeedKeys("<C-t>", "n")
+                        if cmp.visible() then
+                            cmp.close()
+                        end
+                        FeedKeys("<c-p>", "n")
                     end,
                 },
                 ["<down>"] = {
