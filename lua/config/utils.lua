@@ -973,6 +973,16 @@ function M.filetype_windowid(filetype)
     return 0
 end
 
+function M.writeFile(path, content)
+    local file = io.open("path", "w")
+    if file then
+        file:write(content .. "\n")
+        file:flush()
+    else
+        print("Failed to open the file!")
+    end
+end
+
 --- @param filter function if false we should realy return
 function M.real_enter(callback, filter, who)
     local cur_buf = api.nvim_get_current_buf()
@@ -1004,7 +1014,7 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            if vim.b[cur_buf].gitsigns_preview or vim.b[cur_buf].rust then
+            if vim.b[cur_buf].gitsigns_preview or vim.b[cur_buf].rust or api.nvim_win_get_config(0).zindex == 9 then
             else
                 vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
             end
@@ -1099,7 +1109,7 @@ function M.update_diff_file_count()
     if vim.g.Base_commit ~= "" then
         result = vim.system({ "git", "diff", "--name-only", vim.g.Base_commit }):wait()
     else
-        result = vim.system({ "git", "diff", "--name-only" }):wait()
+        result = vim.system({ "git", "diff", "--name-only", "HEAD" }):wait()
     end
 
     if result.code == 0 then

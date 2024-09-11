@@ -434,7 +434,7 @@ return {
                     if ok then
                         return
                     end
-                    local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
+                    local hunks = require("gitsigns.actions").get_nav_hunks(api.nvim_get_current_buf(), "all", true)
                     local target
                     if title == "Staged changes" then
                         target = "staged"
@@ -448,7 +448,7 @@ return {
                     end
                 end
                 fn()
-                local times = { 30, 60, 90, 120, 150, 180, 210, 240, 300, 400, 500 }
+                local times = { 30, 60, 90, 120, 150, 180, 210, 240, 300, 400, 500, 2000 }
                 for _, timeout in ipairs(times) do
                     vim.defer_fn(fn, timeout)
                 end
