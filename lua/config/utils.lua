@@ -1015,7 +1015,12 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            if vim.b[cur_buf].gitsigns_preview or vim.b[cur_buf].rust or api.nvim_win_get_config(0).zindex == 9 then
+            if
+                vim.b[cur_buf].gitsigns_preview
+                or vim.b[cur_buf].rust
+                or api.nvim_win_get_config(0).zindex == 9
+                or M.has_filetype("undotree")
+            then
             else
                 vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
             end
