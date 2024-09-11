@@ -146,6 +146,7 @@ function Open_git_commit()
             border = "rounded",
             zindex = 800,
         })
+        vim.wo.signcolumn = "no"
         local finish = function()
             _G.hide_cursor(function() end)
             if filetype == "lazyterm" then
