@@ -303,7 +303,6 @@ return {
                 PmenuThumb = { bg = "#DBDFDF" },
                 DiagnosticVirtualTextError = { fg = "#E7636B", bg = "#FBE8D9" },
                 DiagnosticVirtualTextWarn = { fg = "#FF9112", bg = "#FEECD2" },
-                DiagnosticWarn = { link = "DiagnosticVirtualTextWarn" },
                 DiagnosticUnderlineWarn = { sp = "#999797", style = "undercurl" },
                 DiagnosticSignWarn = { fg = "#999797" },
                 DiagnosticUnnecessary = { fg = "none", bg = "none" },

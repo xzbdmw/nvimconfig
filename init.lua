@@ -300,7 +300,7 @@ api.nvim_create_autocmd("ModeChanged", {
 api.nvim_create_autocmd("ModeChanged", {
     pattern = "n:v",
     callback = function()
-        if api.nvim_get_mode().mode == "v" then
+        if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
             return
         end
         local s, e = vim.fn.line("."), vim.fn.line("v")
@@ -318,6 +318,9 @@ api.nvim_create_autocmd("ModeChanged", {
 api.nvim_create_autocmd("CursorMoved", {
     callback = function()
         local mode = vim.api.nvim_get_mode().mode
+        if vim.wo.signcolumn ~= "yes" then
+            return
+        end
         if mode == "v" or mode == "V" then
             local s, e = vim.fn.line("."), vim.fn.line("v")
             local t
