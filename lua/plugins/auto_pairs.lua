@@ -28,12 +28,7 @@ return {
 
         npairs.add_rules({
             Rule("<", ">", "rust"):with_pair(function(opts)
-                local line = opts.line
-                local cur_pos = opts.col
-                if line:sub(cur_pos - 1, cur_pos) == "<>" then
-                    return false
-                end
-                return true
+                return false
             end),
         })
     end,
