@@ -245,6 +245,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
+        vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
     end,
 })
 
