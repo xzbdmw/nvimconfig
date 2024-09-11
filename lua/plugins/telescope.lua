@@ -61,6 +61,10 @@ return {
             {
                 "<leader>ss",
                 function()
+                    if vim.g.diff_file_count == 0 then
+                        vim.notify("", vim.log.levels.INFO, { title = "No Changes" })
+                        return
+                    end
                     local options = {
                         attach_mappings = function(_, map)
                             map({ "n" }, "<space>", function(prompt_bufnr)
