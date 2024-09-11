@@ -32,7 +32,7 @@ return {
                         { " " },
                         { mode, "HlSearchLensCountFail" },
                         { cmd, "HlSearchLensNearFail" },
-                        { " [0/0]", "HlSearchLensCountFail" },
+                        { " [0 of 0]", "HlSearchLensCountFail" },
                     }
                     render.clear(true, 0, true)
                     render.setVirt(0, cur_row - 1, 0, chunks, true)
@@ -44,7 +44,7 @@ return {
                     return
                 end
                 local cnt = #posList
-                local count = (" [%d/%d]"):format(idx, cnt)
+                local count = (" [%d of %d]"):format(idx, cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
                     cmd = vim.trim(vim.fn.getreg("/")) -- because use cmp tab to select does not update search pattern
