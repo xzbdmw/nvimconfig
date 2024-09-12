@@ -73,7 +73,7 @@ local CompletionItemKind = {
     TypeParameter = 25,
 }
 
-local generic_logic = function()
+local function go_sort(kind1, kind2, entry1, entry2)
     -- Snippet lower
     if kind1 == types.lsp.CompletionItemKind.Snippet then
         return false
@@ -93,6 +93,55 @@ local generic_logic = function()
     elseif kind2 ~= 6 and kind1 == 6 then
         return true
     end
+    -- Put down moudle
+    if kind1 == 9 then
+        return false
+    end
+    if kind2 == 9 then
+        return true
+    end
+    return nil
+end
+
+local function rust_sort(kind1, kind2, entry1, entry2)
+    -- Snippet lower
+    if kind1 == types.lsp.CompletionItemKind.Snippet then
+        return false
+    end
+    if kind2 == types.lsp.CompletionItemKind.Snippet then
+        return true
+    end
+    -- Field higher than function/method
+    if (kind1 == 2 or kind1 == 3) and kind2 == 5 then
+        return false
+    elseif (kind2 == 2 or kind2 == 3) and kind1 == 5 then
+        return true
+    end
+    -- Variable the highest
+    if kind1 ~= 6 and kind2 == 6 then
+        return false
+    elseif kind2 ~= 6 and kind1 == 6 then
+        return true
+    end
+    local word1 = entry1:get_word()
+    local word2 = entry2:get_word()
+    -- Make if higher than if-let
+    if (kind1 == 14 and kind2 == 14) and (word1 == "if let" and (word2 == "if  {" or word2 == "if")) then
+        return false
+    elseif (kind2 == 14 and kind1 == 14) and (word2 == "if let" and (word1 == "if  {" or word1 == "if")) then
+        return true
+    end
+    return nil
+end
+
+local function lua_sort(kind1, kind2, entry1, entry2)
+    -- Variable the highest
+    if kind1 ~= 6 and kind2 == 6 then
+        return false
+    elseif kind2 ~= 6 and kind1 == 6 then
+        return true
+    end
+    return nil
 end
 
 M.put_down_snippet = function(entry1, entry2)
@@ -101,23 +150,13 @@ M.put_down_snippet = function(entry1, entry2)
     kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
     kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
     if vim.bo.filetype == "go" then
-        -- Put down moudle
-        if kind1 == 9 then
-            return false
-        end
-        if kind2 == 9 then
-            return true
-        end
+        return go_sort(kind1, kind2, entry1, entry2)
     elseif vim.bo.filetype == "rust" then
-        local word1 = entry1:get_word()
-        local word2 = entry2:get_word()
-        if (kind1 == 14 and kind2 == 14) and (word1 == "if let" and (word2 == "if  {" or word2 == "if")) then
-            return false
-        elseif (kind2 == 14 and kind1 == 14) and (word2 == "if let" and (word1 == "if  {" or word1 == "if")) then
-            return true
-        end
+        return rust_sort(kind1, kind2, entry1, entry2)
+    elseif vim.bo.filetype == "lua" then
+        return lua_sort(kind1, kind2, entry1, entry2)
     end
-    return generic_logic()
+    return nil
 end
 
 function M.copilot(kind, strings)
