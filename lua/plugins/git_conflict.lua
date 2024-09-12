@@ -4,16 +4,11 @@ return {
     lazy = false,
     keys = {
         {
-            "<leader>cq",
+            "<leader><leader>c",
             function()
-                vim.fn.setqflist({}, "r")
-                api.nvim_exec_autocmds("User", {
-                    pattern = "SatelliteRedresh",
-                })
-                return "<cmd>GitConflictListQf<CR>"
+                require("git-conflict").start_conflict_detect(api.nvim_get_current_buf())
             end,
             desc = "GitConflictListQf",
-            expr = true,
         },
     },
     config = function()
