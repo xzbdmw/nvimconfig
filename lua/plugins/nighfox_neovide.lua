@@ -232,6 +232,7 @@ return {
                 gitcommitSummary = { fg = "#000000", style = "bold,italic" },
                 gitcommitSelectedFile = { fg = "#364E57" },
                 gitcommitDiscardedFile = { fg = "#364E57" },
+                hlchunk = { fg = "#DCDCD4" },
                 gitcommitSelectedType = { link = "Comment" },
                 gitcommitDiscardedType = { link = "Comment" },
                 ArrowBookmarkSign = { fg = "#3B7CF3" },
