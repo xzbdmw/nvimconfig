@@ -78,7 +78,9 @@ api.nvim_create_autocmd("User", {
 api.nvim_create_autocmd("User", {
     pattern = { "ArrowUpdate" },
     callback = function()
-        vim.cmd("NvimTreeRefresh")
+        vim.defer_fn(function()
+            vim.cmd("NvimTreeRefresh")
+        end, 10)
     end,
 })
 
