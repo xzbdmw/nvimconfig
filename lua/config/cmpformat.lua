@@ -554,6 +554,10 @@ function M.go_fmt(entry, vim_item)
         if last then
             if detail then
                 detail = detail:sub(5, #detail)
+                local first_pos = string.find(detail, ")", nil, true)
+                if first_pos ~= #detail then
+                    detail = string.sub(detail, 1, first_pos) .. ":" .. string.sub(detail, first_pos + 1)
+                end
                 kind.abbr = kind.abbr .. detail
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
                 local space_hole = string.rep(" ", last)
@@ -565,13 +569,17 @@ function M.go_fmt(entry, vim_item)
             end
         else
             if detail then
+                -- (fset *token.FileSet, start token.Pos, end token.Pos, src []byte, file *ast.File, _ *types.Package, _ *types.Info) (*token.FileSet, *analysis.SuggestedFix, error)"
                 detail = detail:sub(5, #detail)
+                local first_pos = string.find(detail, ")", nil, true)
+                if first_pos ~= #detail then
+                    detail = string.sub(detail, 1, first_pos) .. ":" .. string.sub(detail, first_pos + 1)
+                end
                 kind.abbr = kind.abbr .. detail
                 kind.concat = "func " .. kind.abbr .. "{}"
                 kind.offset = 5
             else
                 kind.concat = "func " .. kind.abbr .. "(){}"
-                kind.abbr = kind.abbr
                 kind.offset = 5
             end
         end
