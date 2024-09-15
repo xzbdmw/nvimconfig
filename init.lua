@@ -121,7 +121,12 @@ api.nvim_create_autocmd("FileType", {
         api.nvim_create_autocmd("BufEnter", {
             once = true,
             callback = function()
-                vim.keymap.set("n", "K", "3k", { buffer = true })
+                vim.schedule(function()
+                    if vim.bo.filetype == "noice" then
+                        vim.keymap.set("n", "K", "3k", { buffer = true })
+                        vim.wo.signcolumn = "no"
+                    end
+                end)
             end,
         })
     end,
