@@ -188,27 +188,27 @@ return {
             )
         end
 
-        ls.add_snippets("go", {
-            s(
-                "efi",
-                fmta(
-                    [[
-                   <val>, err := <f>
-                   if err != nil {
-	                   return <result>
-                   }
-                   <finish>
-                   ]],
-                    {
-                        val = i(1, "v"),
-                        f = i(2),
-                        result = d(3, go_return_values, { 2 }),
-                        finish = i(0),
-                    }
-                )
-            ),
-            s("ie", fmta("if err != nil {\n\treturn <err>\n}", { err = i(1, "err") })),
-        })
+        -- ls.add_snippets("go", {
+        --     s(
+        --         "efi",
+        --         fmta(
+        --             [[
+        --            <val>, err := <f>
+        --            if err != nil {
+        --             return <result>
+        --            }
+        --            <finish>
+        --            ]],
+        --             {
+        --                 val = i(1, "v"),
+        --                 f = i(2),
+        --                 result = d(3, go_return_values, { 2 }),
+        --                 finish = i(0),
+        --             }
+        --         )
+        --     ),
+        --     s("ie", fmta("if err != nil {\n\treturn <err>\n}", { err = i(1, "err") })),
+        -- })
         ls.add_snippets("lua", {
             s(
                 "block",
