@@ -337,6 +337,7 @@ return {
                 LibPath = { fg = "#2D5D22" },
                 ["@string.regexp.lua"] = { link = "@string.escape" },
                 ["@lsp.type.macro.lua"] = { link = "@variable" },
+                ["@go.error.go"] = { link = "@interface.name" },
                 ["@spell.xml"] = { link = "@none" },
                 ["@receiver"] = { fg = "#000000", style = "italic" },
                 ["@string.documentation.python"] = { link = "Comment" },
