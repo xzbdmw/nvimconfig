@@ -40,15 +40,24 @@ return {
         end, keymap_ops)
 
         keymap("x", "[", function()
-            FeedKeys("ma[<left>%", "t")
+            FeedKeys("ma[<left>", "t")
+            vim.schedule(function()
+                FeedKeys("%", "m")
+            end)
         end, keymap_ops)
 
         keymap("x", "{", function()
-            FeedKeys("ma{<left>%", "t")
+            FeedKeys("ma{<left>", "t")
+            vim.schedule(function()
+                FeedKeys("%", "m")
+            end)
         end, keymap_ops)
 
         keymap("x", "(", function()
-            FeedKeys("ma(<left>%", "t")
+            FeedKeys("ma(<left>", "t")
+            vim.schedule(function()
+                FeedKeys("%", "m")
+            end)
         end, keymap_ops)
 
         keymap("x", "`", function()
@@ -63,7 +72,7 @@ return {
 
         keymap("o", "of", function()
             FeedKeys("<esc>m6", "n")
-            FeedKeys("mdf", "m")
+            FeedKeys("daf", "m")
             FeedKeys("`6", "n")
         end)
     end,
