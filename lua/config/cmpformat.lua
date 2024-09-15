@@ -525,11 +525,23 @@ function M.go_fmt(entry, vim_item)
             if last then
                 local catstr = kind.abbr:sub(last + 1, #kind.abbr)
                 local space_hole = string.rep(" ", last)
-                kind.concat = "var " .. space_hole .. catstr .. ": " .. detail
-                kind.offset = 4
-                kind.abbr = kind.abbr .. ": " .. detail
+                if vim.startswith(detail, "var (") then
+                    local double_quoted_content = [[ "]] .. string.match(detail, '"(.-)"') .. [["]]
+                    kind.concat = space_hole .. catstr .. double_quoted_content
+                    kind.abbr = kind.abbr .. double_quoted_content
+                    kind.offset = 0
+                else
+                    kind.concat = "var " .. space_hole .. catstr .. ": " .. detail
+                    kind.offset = 4
+                    kind.abbr = kind.abbr .. ": " .. detail
+                end
             else
-                if detail then
+                if vim.startswith(detail, "var (") then
+                    local double_quoted_content = [[ "]] .. string.match(detail, '"(.-)"') .. [["]]
+                    kind.concat = kind.abbr .. double_quoted_content
+                    kind.abbr = kind.abbr .. double_quoted_content
+                    kind.offset = 0
+                else
                     kind.concat = "var " .. kind.abbr .. ": " .. detail
                     kind.abbr = kind.abbr .. ": " .. detail
                     kind.offset = 4
