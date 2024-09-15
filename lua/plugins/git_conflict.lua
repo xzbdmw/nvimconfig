@@ -4,7 +4,7 @@ return {
     lazy = false,
     keys = {
         {
-            "<leader><leader>c",
+            "<leader>uC",
             function()
                 require("git-conflict").start_conflict_detect(api.nvim_get_current_buf())
             end,

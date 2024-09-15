@@ -250,6 +250,7 @@ return {
                 -- CmpItemAbbrMatch = { fg = "#152381", style = "bold" },
                 -- CmpItemAbbrMatchFuzzy = { fg = "#152381", style = "bold" },
                 CmpGhostText = { fg = "#7E7D7D" },
+                CmpGhostTextItalic = { fg = "#A4A3A3", style = "italic" },
                 PasteHint = { fg = "#afb3c1", bg = "#faf7e8" },
                 Cursor = { fg = "#FBF7E6", bg = "#000000" },
                 MacroWinabr = { fg = "#D23F3F" },
