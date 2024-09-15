@@ -111,6 +111,14 @@ keymap("i", "<c-x><c-o>", function()
     })
 end)
 
+keymap("o", "h", function()
+    return utils.operator_mode_lh("before")
+end, { expr = true })
+
+keymap("o", "l", function()
+    return utils.operator_mode_lh("after")
+end, { expr = true })
+
 keymap("i", "<c-x><right>", function()
     local cmp = require("cmp")
     if cmp.visible() then
