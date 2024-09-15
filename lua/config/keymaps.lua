@@ -524,6 +524,7 @@ end, { expr = true, remap = true })
 
 keymap("n", "<M-w>", "<c-w>", opts)
 keymap("n", "<leader>k", "<C-i>", opts)
+keymap("n", "<d-w>", "<c-w>", opts)
 keymap("n", "mm", "%", opts)
 
 -- Command line mapping
