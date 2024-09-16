@@ -22,10 +22,77 @@ local function my_on_attach(bufnr)
     keymap("n", "P", function()
         api.node.open.preview()
     end, opts("preview file"))
-    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
+    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>", opts("focus nvimtree"))
+    local function toggle_arrow_filter()
+        local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
+        local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
+        local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
+        if is_buffer_filter_activated then
+            api.tree.toggle_no_buffer_filter()
+        end
+        if is_git_filter_activated then
+            api.tree.toggle_git_clean_filter()
+        end
+        if not is_arrow_filter_activated then
+            api.tree.expand_all()
+        end
+        api.tree.toggle_no_arrow_filter()
+    end
+    keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
+    keymap("n", "<leader>A", toggle_arrow_filter)
+    local function toggle_buffer_filter()
+        local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
+        local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
+        local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
+        if is_arrow_filter_activated then
+            api.tree.toggle_no_arrow_filter()
+        end
+        if is_git_filter_activated then
+            api.tree.toggle_git_clean_filter()
+        end
+        if not is_buffer_filter_activated then
+            api.tree.expand_all()
+        end
+        api.tree.toggle_no_buffer_filter()
+    end
+    keymap("n", "B", toggle_buffer_filter, opts("toggle arrow filter"))
+    keymap("n", "<leader>B", toggle_buffer_filter)
+    local function toggle_status_filter()
+        local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
+        local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
+        local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
+        if is_arrow_filter_activated then
+            api.tree.toggle_no_arrow_filter()
+        end
+        if is_buffer_filter_activated then
+            api.tree.toggle_no_buffer_filter()
+        end
+        if not is_git_filter_activated then
+            api.tree.expand_all()
+        end
+        api.tree.toggle_git_clean_filter()
+    end
+    keymap("n", "S", toggle_status_filter, opts("toggle arrow filter"))
+    keymap("n", "<leader>S", toggle_status_filter)
+    local function toggle_all_filter()
+        local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
+        local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
+        local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
+        if is_buffer_filter_activated then
+            api.tree.toggle_no_buffer_filter()
+        end
+        if is_git_filter_activated then
+            api.tree.toggle_git_clean_filter()
+        end
+        if is_arrow_filter_activated then
+            api.tree.toggle_no_arrow_filter()
+        end
+    end
+    keymap("n", "F", toggle_all_filter, opts("toggle arrow filter"))
+    keymap("n", "<leader>F", toggle_all_filter)
     keymap({ "n", "i" }, "<D-n>", function()
         api.fs.create()
-    end, { desc = "create new file" })
+    end, opts("create new file"))
 end
 return {
     -- "nvim-tree/nvim-tree.lua",
@@ -44,11 +111,16 @@ return {
         local width = vim.api.nvim_get_option("columns")
         require("nvim-tree").setup({
             git = {
-                enable = false,
+                enable = true,
+                show_on_dirs = false,
+                show_on_open_dirs = false,
+                disable_for_dirs = {},
+                timeout = 400,
+                cygwin_support = false,
             },
             filesystem_watchers = {
-                enable = false,
-                debounce_delay = 0,
+                enable = true,
+                debounce_delay = 50,
                 ignore_dirs = {},
             },
             actions = {
@@ -65,9 +137,10 @@ return {
                         -- style = "minimal",
                     },
                 },
-                -- change_dir = {
-                --     global = true,
-                -- },
+                expand_all = {
+                    max_folder_discovery = 50,
+                    exclude = {},
+                },
             },
             disable_netrw = true,
             sync_root_with_cwd = true,
@@ -92,7 +165,7 @@ return {
                 git_clean = false,
                 no_buffer = false,
                 no_bookmark = false,
-                custom = { "go.sum", ".vscode", ".idea", ".DS_Store", "root/*" },
+                custom = { [[\.git]], "go.sum", [[\.vscode]], [[\.idea]], [[\.DS_Store]], "root/*" },
                 exclude = {},
             },
             on_attach = my_on_attach,
@@ -102,11 +175,13 @@ return {
                 preserve_window_proportions = true,
             },
             renderer = {
+                highlight_git = "none",
                 highlight_bookmarks = "all",
                 highlight_opened_files = "name",
                 special_files = {},
                 group_empty = true,
                 icons = {
+                    git_placement = "after",
                     bookmarks_placement = "after",
                     web_devicons = {
                         file = { color = true, enable = true },
@@ -115,8 +190,8 @@ return {
                         },
                     },
                     show = {
-                        git = false,
-                        modified = true,
+                        git = true,
+                        modified = false,
                         bookmarks = true,
                     },
                     glyphs = {
@@ -133,6 +208,15 @@ return {
                             empty_open = "",
                             symlink = "",
                             symlink_open = "",
+                        },
+                        git = {
+                            unstaged = "M",
+                            staged = "M",
+                            unmerged = "",
+                            renamed = "➜",
+                            untracked = "★",
+                            deleted = "",
+                            ignored = "◌",
                         },
                     },
                 },

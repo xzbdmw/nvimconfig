@@ -993,6 +993,9 @@ return {
                             n = {
                                 ["<Tab>"] = focus_preview,
                                 ["<cr>"] = goto_next_hunk_cr,
+                                ["S"] = function()
+                                    FeedKeys("<leader>S", "m")
+                                end,
                                 ["c"] = function()
                                     if utils.is_detached() then
                                         return
