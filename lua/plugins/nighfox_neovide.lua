@@ -243,6 +243,8 @@ return {
                 NvimTreeOpenedFile = { fg = "#000000" },
                 NvimTreeOpenedHL = { fg = "#000000" },
                 NvimTreeOpenedFolderName = { fg = "#3B4D56" },
+                NvimTreeGitDirtyIcon = { link = "TelescopeResultDiffUnStaged" },
+                NvimTreeGitStagedIcon = { fg = "#438A72" },
                 CmpItemAbbr = { fg = "#000000" },
                 CmpItemAbbrMatch = { fg = "none", style = "bold" },
                 CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },
