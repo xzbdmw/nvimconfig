@@ -235,6 +235,7 @@ keymap("i", "<c-a>", function()
 end, { expr = true })
 
 keymap("n", "<c-a>", "A", { remap = true })
+keymap("n", "<leader>", "", opts)
 
 local darker = false
 keymap("n", "<leader>uc", function()

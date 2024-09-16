@@ -115,20 +115,14 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
-api.nvim_create_autocmd("FileType", {
-    pattern = { "noice" },
+api.nvim_create_autocmd("BufEnter", {
     callback = function()
-        api.nvim_create_autocmd("BufEnter", {
-            once = true,
-            callback = function()
-                vim.schedule(function()
-                    if vim.bo.filetype == "noice" then
-                        vim.keymap.set("n", "K", "3k", { buffer = true })
-                        vim.wo.signcolumn = "no"
-                    end
-                end)
-            end,
-        })
+        vim.schedule(function()
+            if vim.bo.filetype == "noice" then
+                vim.keymap.set("n", "K", "3k", { buffer = true })
+                vim.wo.signcolumn = "no"
+            end
+        end)
     end,
 })
 
