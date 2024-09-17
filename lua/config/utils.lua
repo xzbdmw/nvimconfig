@@ -1135,9 +1135,9 @@ function M.update_diff_file_count()
         for _ in string.gmatch(diff_files, "[^\n]+") do
             file_count = file_count + 1
         end
-        vim.g.diff_file_count = file_count
+        vim.g.Diff_file_count = file_count
     else
-        vim.g.diff_file_count = 0
+        vim.g.Diff_file_count = 0
     end
 end
 
@@ -1256,17 +1256,17 @@ function M.set_git_winbar()
         git_winbar_expr = git_winbar_expr .. "%#BranchName#" .. "[" .. head .. "] "
     end
     if vim.g.Base_commit_msg ~= "" then
-        if vim.g.diff_file_count ~= 0 then
+        if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.Diff_file_count .. ") "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
         end
     else
-        if vim.g.diff_file_count ~= 0 then
+        if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.Diff_file_count .. ") "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
