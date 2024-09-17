@@ -557,7 +557,7 @@ api.nvim_create_autocmd({ "User" }, {
             -- because arrow does not update when changing sessions
             vim.cmd("NvimTreeRefresh")
             pcall(_G.indent_update)
-        end, 100)
+        end, 500)
     end,
 })
 
@@ -599,6 +599,9 @@ api.nvim_create_autocmd("User", {
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsChanged",
     callback = function()
+        vim.defer_fn(function()
+            vim.cmd("NvimTreeRefresh")
+        end, 50)
         vim.defer_fn(function()
             utils.update_diff_file_count()
             utils.set_git_winbar()
