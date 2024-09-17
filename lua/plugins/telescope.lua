@@ -541,6 +541,11 @@ return {
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 local commit = selection.value
+                if commit ~= vim.g.Base_commit then
+                    vim.defer_fn(function()
+                        vim.cmd("NvimTreeRefresh")
+                    end, 100)
+                end
                 vim.g.Base_commit = commit
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
