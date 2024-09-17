@@ -544,6 +544,9 @@ return {
                 if commit ~= vim.g.Base_commit then
                     vim.defer_fn(function()
                         vim.cmd("NvimTreeRefresh")
+                        if require("nvim-tree.explorer.filters").config.filter_git_clean then
+                            require("nvim-tree.api").tree.expand_all()
+                        end
                     end, 100)
                 end
                 vim.g.Base_commit = commit

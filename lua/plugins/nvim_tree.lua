@@ -22,7 +22,7 @@ local function my_on_attach(bufnr)
     keymap("n", "P", function()
         api.node.open.preview()
     end, opts("preview file"))
-    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>", opts("focus nvimtree"))
+    keymap("n", "<C-f>", "<cmd>NvimTreeFocus<CR>")
     local function toggle_arrow_filter()
         local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
         local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
@@ -37,6 +37,7 @@ local function my_on_attach(bufnr)
             api.tree.expand_all()
         end
         api.tree.toggle_no_arrow_filter()
+        require("nvim-tree.actions").tree.find_file.fn()
     end
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>A", toggle_arrow_filter)
@@ -54,6 +55,7 @@ local function my_on_attach(bufnr)
             api.tree.expand_all()
         end
         api.tree.toggle_no_buffer_filter()
+        require("nvim-tree.actions").tree.find_file.fn()
     end
     keymap("n", "B", toggle_buffer_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>B", toggle_buffer_filter)
@@ -71,6 +73,7 @@ local function my_on_attach(bufnr)
             api.tree.expand_all()
         end
         api.tree.toggle_git_clean_filter()
+        require("nvim-tree.actions").tree.find_file.fn()
     end
     keymap("n", "S", toggle_status_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>S", toggle_status_filter)
@@ -87,12 +90,13 @@ local function my_on_attach(bufnr)
         if is_arrow_filter_activated then
             api.tree.toggle_no_arrow_filter()
         end
+        require("nvim-tree.actions").tree.find_file.fn()
     end
     keymap("n", "F", toggle_all_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>F", toggle_all_filter)
     keymap({ "n", "i" }, "<D-n>", function()
         api.fs.create()
-    end, opts("create new file"))
+    end, { desc = "create new file" })
 end
 return {
     -- "nvim-tree/nvim-tree.lua",
@@ -115,7 +119,7 @@ return {
                 show_on_dirs = false,
                 show_on_open_dirs = false,
                 disable_for_dirs = {},
-                timeout = 400,
+                timeout = 1000,
                 cygwin_support = false,
             },
             filesystem_watchers = {
@@ -165,7 +169,7 @@ return {
                 git_clean = false,
                 no_buffer = false,
                 no_bookmark = false,
-                custom = { [[\.git]], "go.sum", [[\.vscode]], [[\.idea]], [[\.DS_Store]], "root/*" },
+                custom = { [[\.git]], "go.sum", [[\.vscode]], [[\.idea]], [[\.DS_Store]] },
                 exclude = {},
             },
             on_attach = my_on_attach,
