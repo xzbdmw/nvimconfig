@@ -785,7 +785,17 @@ function CloseFromLazygit()
         M.refresh_last_commit()
         M.update_diff_file_count()
         M.set_git_winbar()
+        M.refresh_nvim_tree_git()
     end, 10)
+end
+
+function M.refresh_nvim_tree_git()
+    vim.defer_fn(function()
+        require("nvim-tree.actions.reloaders").reload_explorer_with_git()
+        if require("nvim-tree.explorer.filters").config.filter_git_clean then
+            require("nvim-tree.api").tree.expand_all()
+        end
+    end, 100)
 end
 
 function M.set_cr(bufnr, winid)
@@ -1148,6 +1158,7 @@ function M.checkout(commit, success_fn)
         M.refresh_last_commit()
         M.update_diff_file_count()
         M.set_git_winbar()
+        M.refresh_nvim_tree_git()
     end
 end
 

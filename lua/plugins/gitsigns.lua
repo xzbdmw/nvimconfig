@@ -226,9 +226,7 @@ return {
             utils.refresh_last_commit()
             utils.update_diff_file_count()
             utils.set_git_winbar()
-            vim.defer_fn(function()
-                vim.cmd("NvimTreeRefresh")
-            end, 100)
+            utils.refresh_nvim_tree_git()
         end)
     end,
 }

@@ -170,7 +170,12 @@ keymap("n", "<leader>h", function()
 end, opts)
 
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
-keymap({ "n" }, "<leader>rr", "<cmd>NvimTreeRefresh<CR>", opts)
+keymap({ "n" }, "<leader>rr", function()
+    require("nvim-tree.actions.reloaders").reload_explorer_with_git()
+    if require("nvim-tree.explorer.filters").config.filter_git_clean then
+        require("nvim-tree.api").tree.expand_all()
+    end
+end, opts)
 keymap("n", "<C-m>", "%", opts)
 keymap("n", "g.", "`.", opts)
 keymap("n", "o", function()

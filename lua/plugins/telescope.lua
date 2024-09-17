@@ -516,6 +516,10 @@ return {
                     actions.close(prompt_bufnr)
                     Signs_staged = nil
                     local splits = vim.split(result.stdout, "\n")
+
+                    if splits[1]:sub(1, 7) ~= vim.g.Base_commit then
+                        utils.refresh_nvim_tree_git()
+                    end
                     vim.g.Base_commit = splits[1]:sub(1, 7)
                     local commit_msg = splits[2]:gsub("\n", "")
                     if #commit_msg > 45 then
@@ -542,12 +546,7 @@ return {
                 actions.close(prompt_bufnr)
                 local commit = selection.value
                 if commit ~= vim.g.Base_commit then
-                    vim.defer_fn(function()
-                        vim.cmd("NvimTreeRefresh")
-                        if require("nvim-tree.explorer.filters").config.filter_git_clean then
-                            require("nvim-tree.api").tree.expand_all()
-                        end
-                    end, 100)
+                    utils.refresh_nvim_tree_git()
                 end
                 vim.g.Base_commit = commit
                 Signs_staged = nil

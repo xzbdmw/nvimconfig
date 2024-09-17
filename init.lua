@@ -174,6 +174,7 @@ api.nvim_create_autocmd("FileType", {
                     utils.refresh_last_commit()
                     utils.update_diff_file_count()
                     utils.set_git_winbar()
+                    utils.refresh_nvim_tree_git()
                 end, 50)
 
                 vim.cmd("w")
@@ -440,6 +441,7 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
             utils.refresh_last_commit()
             utils.update_diff_file_count()
             utils.set_git_winbar()
+            utils.refresh_nvim_tree_git()
         end, 10)
         pcall(_G.indent_update)
         for _, buf in ipairs(api.nvim_list_bufs()) do
@@ -552,12 +554,13 @@ api.nvim_create_autocmd({ "User" }, {
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
+        FeedKeys("<leader>F", "m")
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
-            vim.cmd("NvimTreeRefresh")
+            require("nvim-tree.actions.reloaders").reload_explorer_with_git()
             pcall(_G.indent_update)
-        end, 500)
+        end, 300)
     end,
 })
 
@@ -600,7 +603,7 @@ api.nvim_create_autocmd("User", {
     pattern = "GitSignsChanged",
     callback = function()
         vim.defer_fn(function()
-            vim.cmd("NvimTreeRefresh")
+            utils.refresh_nvim_tree_git()
         end, 50)
         vim.defer_fn(function()
             utils.update_diff_file_count()
@@ -616,26 +619,6 @@ api.nvim_create_autocmd("User", {
         vim.defer_fn(function()
             vim.g.copilot_enable = false
         end, 10)
-    end,
-})
-
-api.nvim_create_autocmd("User", {
-    pattern = "MiniFilesActionDelete",
-    callback = function(args)
-        local from_path = args.data.from
-        local bufnr = vim.fn.bufnr(from_path)
-        pcall(function()
-            local win = vim.fn.win_findbuf(bufnr)[1]
-            api.nvim_win_call(win, function()
-                vim.cmd("BufDel")
-            end)
-        end)
-        pcall(function()
-            vim.defer_fn(function()
-                MiniFiles.close()
-            end, 5)
-            vim.cmd("NvimTreeRefresh")
-        end)
     end,
 })
 
