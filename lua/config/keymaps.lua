@@ -4,6 +4,11 @@ local utils = require("config.utils")
 local keymap = vim.keymap.set
 
 keymap({ "n", "i" }, "<D-s>", function()
+    WT = vim.uv.hrtime()
+    keymap({ "n" }, "<f16>", "k", opts)
+    vim.defer_fn(function()
+        keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
+    end, 100)
     vim.cmd("write")
 end, opts)
 
