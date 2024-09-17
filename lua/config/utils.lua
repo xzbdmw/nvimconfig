@@ -803,6 +803,7 @@ function M.set_cr(bufnr, winid)
     if winid ~= api.nvim_get_current_win() then
         return
     end
+
     if not api.nvim_buf_is_valid(bufnr) then
         return
     end

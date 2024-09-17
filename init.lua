@@ -18,6 +18,7 @@ vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
 vim.g.copilot_enable = false
+vim.g.begin_change_dir = false
 
 vim.cmd("syntax off")
 
@@ -555,12 +556,13 @@ api.nvim_create_autocmd({ "User" }, {
             end
         end
         FeedKeys("<leader>F", "m")
+        vim.g.begin_change_dir = false
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
             require("nvim-tree.actions.reloaders").reload_explorer_with_git()
             pcall(_G.indent_update)
-        end, 300)
+        end, 100)
     end,
 })
 
@@ -570,6 +572,7 @@ api.nvim_create_autocmd("User", {
         if args.data.err then
             return
         end
+
         for _, action in ipairs(args.data.actions) do
             if action.type == "delete" then
                 local _, path = require("oil.util").parse_url(action.url)
