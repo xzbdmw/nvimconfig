@@ -123,7 +123,7 @@ return {
                 cygwin_support = false,
             },
             filesystem_watchers = {
-                enable = true,
+                enable = false,
                 debounce_delay = 50,
                 ignore_dirs = {},
             },
