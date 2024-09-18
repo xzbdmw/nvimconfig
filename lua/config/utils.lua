@@ -793,8 +793,8 @@ function M.refresh_nvim_tree_git()
     vim.defer_fn(function()
         require("nvim-tree.actions.reloaders").reload_explorer_with_git()
         if require("nvim-tree.explorer.filters").config.filter_git_clean then
-            FeedKeys("<leader>S", "m")
-            FeedKeys("<leader>S", "m")
+            FeedKeys("S", "m")
+            FeedKeys("S", "m")
         end
     end, 100)
 end
