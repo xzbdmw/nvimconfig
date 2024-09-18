@@ -18,7 +18,6 @@ vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
 vim.g.copilot_enable = false
-vim.g.begin_change_dir = false
 
 vim.cmd("syntax off")
 
@@ -556,7 +555,6 @@ api.nvim_create_autocmd({ "User" }, {
             end
         end
         FeedKeys("<leader>F", "m")
-        vim.g.begin_change_dir = false
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions

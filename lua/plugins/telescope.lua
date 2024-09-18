@@ -517,8 +517,15 @@ return {
                     Signs_staged = nil
                     local splits = vim.split(result.stdout, "\n")
 
-                    if splits[1]:sub(1, 7) ~= vim.g.Base_commit then
-                        utils.refresh_nvim_tree_git()
+                    if not require("nvim-tree.explorer.filters").config.filter_git_clean then
+                        vim.api.nvim_create_autocmd("User", {
+                            once = true,
+                            pattern = "NvimTreeReloaded",
+                            callback = function()
+                                FeedKeys("<leader>S", "m")
+                                require("nvim-tree.actions").tree.find_file.fn()
+                            end,
+                        })
                     end
                     vim.g.Base_commit = splits[1]:sub(1, 7)
                     local commit_msg = splits[2]:gsub("\n", "")
@@ -545,8 +552,16 @@ return {
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 local commit = selection.value
-                if commit ~= vim.g.Base_commit then
-                    utils.refresh_nvim_tree_git()
+                utils.refresh_nvim_tree_git()
+                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
+                    vim.api.nvim_create_autocmd("User", {
+                        once = true,
+                        pattern = "NvimTreeReloaded",
+                        callback = function()
+                            FeedKeys("<leader>S", "m")
+                            require("nvim-tree.actions").tree.find_file.fn()
+                        end,
+                    })
                 end
                 vim.g.Base_commit = commit
                 Signs_staged = nil
