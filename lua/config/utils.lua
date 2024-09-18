@@ -794,7 +794,7 @@ function M.refresh_nvim_tree_git()
         require("nvim-tree.actions.reloaders").reload_explorer_with_git()
         if require("nvim-tree.explorer.filters").config.filter_git_clean then
             FeedKeys("S", "m")
-            FeedKeys("S", "m")
+            FeedKeys("S", "m") -- If no dirty file, the second S just reset filter_git_clean to flase
         end
     end, 100)
 end
