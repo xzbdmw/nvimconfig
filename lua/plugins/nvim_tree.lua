@@ -38,6 +38,7 @@ local function my_on_attach(bufnr)
         end
         api.tree.toggle_no_arrow_filter()
         vim.api.nvim_create_autocmd("User", {
+            once = true,
             pattern = "NvimTreeReloaded",
             callback = function()
                 require("nvim-tree.actions").tree.find_file.fn()
@@ -61,6 +62,7 @@ local function my_on_attach(bufnr)
         end
         api.tree.toggle_no_buffer_filter()
         vim.api.nvim_create_autocmd("User", {
+            once = true,
             pattern = "NvimTreeReloaded",
             callback = function()
                 require("nvim-tree.actions").tree.find_file.fn()
@@ -84,6 +86,7 @@ local function my_on_attach(bufnr)
         end
         api.tree.toggle_git_clean_filter()
         vim.api.nvim_create_autocmd("User", {
+            once = true,
             pattern = "NvimTreeReloaded",
             callback = function()
                 require("nvim-tree.actions").tree.find_file.fn()
@@ -107,6 +110,7 @@ local function my_on_attach(bufnr)
             api.tree.toggle_no_arrow_filter()
         end
         vim.api.nvim_create_autocmd("User", {
+            once = true,
             pattern = "NvimTreeReloaded",
             callback = function()
                 require("nvim-tree.actions").tree.find_file.fn()

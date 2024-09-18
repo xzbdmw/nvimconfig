@@ -566,6 +566,7 @@ return {
                 require("gitsigns").change_base(commit, true)
                 utils.update_diff_file_count()
                 utils.set_git_winbar()
+                utils.refresh_nvim_tree_git()
                 vim.defer_fn(function()
                     vim.cmd("Gitsigns attach")
                 end, 100)
