@@ -243,6 +243,7 @@ return {
                 NvimTreeOpenedFile = { fg = "#000000" },
                 NvimTreeOpenedHL = { fg = "#000000" },
                 NvimTreeOpenedFolderName = { fg = "#3B4D56" },
+                OilSize = { fg = "#215062", style = "bold" },
                 NvimTreeGitDirtyIcon = { link = "TelescopeResultDiffUnStaged" },
                 NvimTreeGitStagedIcon = { fg = "#438A72" },
                 CmpItemAbbr = { fg = "#000000" },
