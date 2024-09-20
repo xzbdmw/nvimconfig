@@ -791,11 +791,7 @@ end
 
 function M.refresh_nvim_tree_git()
     vim.defer_fn(function()
-        require("nvim-tree.actions.reloaders").reload_explorer_with_git()
-        if require("nvim-tree.explorer.filters").config.filter_git_clean then
-            FeedKeys("S", "m")
-            FeedKeys("S", "m") -- If no dirty file, the second S just reset filter_git_clean to flase
-        end
+        require("nvim-tree.actions.reloaders").reload_explorer()
     end, 100)
 end
 
@@ -1034,7 +1030,7 @@ function M.real_enter(callback, filter, who)
                 or M.has_filetype("undotree")
             then
             else
-                vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
+                -- vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
             end
             callback()
         end

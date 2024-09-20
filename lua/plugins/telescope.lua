@@ -517,16 +517,6 @@ return {
                     Signs_staged = nil
                     local splits = vim.split(result.stdout, "\n")
 
-                    if not require("nvim-tree.explorer.filters").config.filter_git_clean then
-                        vim.api.nvim_create_autocmd("User", {
-                            once = true,
-                            pattern = "NvimTreeReloaded",
-                            callback = function()
-                                FeedKeys("<leader>S", "m")
-                                require("nvim-tree.actions").tree.find_file.fn()
-                            end,
-                        })
-                    end
                     vim.g.Base_commit = splits[1]:sub(1, 7)
                     local commit_msg = splits[2]:gsub("\n", "")
                     if #commit_msg > 45 then
@@ -542,27 +532,22 @@ return {
                 require("gitsigns").change_base(vim.g.Base_commit, true)
                 utils.update_diff_file_count()
                 utils.set_git_winbar()
+                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
+                    FeedKeys("<leader>S", "m")
+                end
                 vim.defer_fn(function()
                     vim.cmd("Gitsigns attach")
                 end, 100)
                 vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
+                api.nvim_exec_autocmds("User", {
+                    pattern = "GitSignsUserUpdate",
+                })
             end
 
             local function gitsign_change_base(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 local commit = selection.value
-                utils.refresh_nvim_tree_git()
-                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
-                    vim.api.nvim_create_autocmd("User", {
-                        once = true,
-                        pattern = "NvimTreeReloaded",
-                        callback = function()
-                            FeedKeys("<leader>S", "m")
-                            require("nvim-tree.actions").tree.find_file.fn()
-                        end,
-                    })
-                end
                 vim.g.Base_commit = commit
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
@@ -582,10 +567,16 @@ return {
                 utils.update_diff_file_count()
                 utils.set_git_winbar()
                 utils.refresh_nvim_tree_git()
+                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
+                    FeedKeys("<leader>S", "m")
+                end
                 vim.defer_fn(function()
                     vim.cmd("Gitsigns attach")
                 end, 100)
                 vim.notify(selection.ordinal, vim.log.levels.INFO)
+                api.nvim_exec_autocmds("User", {
+                    pattern = "GitSignsUserUpdate",
+                })
             end
 
             local focus_preview = function(prompt_bufnr)
