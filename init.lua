@@ -570,17 +570,18 @@ api.nvim_create_autocmd("User", {
         if args.data.err then
             return
         end
-
-        for _, action in ipairs(args.data.actions) do
-            if action.type == "delete" then
-                local _, path = require("oil.util").parse_url(action.url)
-                local bufnr = vim.fn.bufnr(path)
-                if bufnr ~= -1 then
-                    vim.cmd("bw! " .. bufnr)
+        vim.defer_fn(function()
+            for _, action in ipairs(args.data.actions) do
+                if action.type == "delete" then
+                    local _, path = require("oil.util").parse_url(action.url)
+                    local bufnr = vim.fn.bufnr(path)
+                    if bufnr ~= -1 then
+                        vim.cmd("bw! " .. bufnr)
+                    end
                 end
+                vim.cmd("NvimTreeRefresh")
             end
-            vim.cmd("NvimTreeRefresh")
-        end
+        end, 100)
     end,
 })
 
