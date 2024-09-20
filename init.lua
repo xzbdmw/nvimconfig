@@ -127,7 +127,7 @@ api.nvim_create_autocmd("BufEnter", {
 })
 
 api.nvim_create_autocmd("FileType", {
-    pattern = { "git", "markdown" },
+    pattern = { "git" },
     callback = function()
         vim.b.miniindentscope_disable = true
         vim.cmd("setlocal syntax=ON")
