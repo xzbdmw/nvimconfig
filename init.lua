@@ -633,6 +633,18 @@ api.nvim_create_autocmd("User", {
         utils.set_git_winbar()
     end,
 })
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "NvimTreeToggled",
+    callback = function()
+        if require("nvim-tree.explorer.filters").config.filter_git_clean then
+            require("nvim-tree.api").tree.expand_all()
+        end
+        require("nvim-tree.actions").tree.find_file.fn()
+    end,
+})
+
+api.nvim_create_autocmd("User", {
     pattern = "GitSignsChanged",
     callback = function()
         vim.defer_fn(function()
