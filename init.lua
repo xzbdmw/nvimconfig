@@ -564,9 +564,6 @@ api.nvim_create_autocmd({ "User" }, {
             require("nvim-tree.actions.reloaders").reload_explorer()
             pcall(_G.indent_update)
         end, 100)
-        vim.defer_fn(function()
-            require("nvim-tree.actions.reloaders").reload_explorer()
-        end, 500)
     end,
 })
 
