@@ -185,6 +185,7 @@ api.nvim_create_autocmd("FileType", {
                 vim.system({ "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" }, nil, function(result)
                     if result.code == 0 then
                         vim.notify(result.stdout, vim.log.levels.INFO)
+                        require("nvim-tree.actions.reloaders").reload_explorer()
                     end
                 end)
             end, { buffer = true })
@@ -437,6 +438,9 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         if tabnum == 1 and not utils.fold_method_diff() then
             vim.cmd([[silent! mkview!]])
         end
+        api.nvim_exec_autocmds("User", {
+            pattern = "GitSignsUserUpdate",
+        })
         vim.defer_fn(function()
             utils.refresh_last_commit()
             utils.update_diff_file_count()
@@ -613,15 +617,19 @@ api.nvim_create_autocmd("User", {
     callback = function()
         if utils.has_filetype("trouble") then
             if _G.pre_gitsigns_qf_operation == "cur" then
-                require("gitsigns").setqflist(0)
                 vim.defer_fn(function()
                     require("gitsigns").setqflist(0)
                 end, 200)
+                vim.defer_fn(function()
+                    require("gitsigns").setqflist(0)
+                end, 500)
             elseif _G.pre_gitsigns_qf_operation == "all" then
-                require("gitsigns").setqflist("all")
                 vim.defer_fn(function()
                     require("gitsigns").setqflist("all")
                 end, 200)
+                vim.defer_fn(function()
+                    require("gitsigns").setqflist("all")
+                end, 500)
             end
         end
     end,
