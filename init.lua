@@ -554,13 +554,32 @@ api.nvim_create_autocmd({ "User" }, {
                 gs.reset_base(vim.g.Base_commit, true)
             end
         end
-        FeedKeys("<leader>F", "m")
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
-            require("nvim-tree.actions.reloaders").reload_explorer_with_git()
+            require("nvim-tree.actions.reloaders").reload_explorer()
             pcall(_G.indent_update)
         end, 100)
+        vim.defer_fn(function()
+            require("nvim-tree.actions.reloaders").reload_explorer()
+        end, 500)
+    end,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "LoadSessionPre",
+    callback = function()
+        FeedKeys("<leader>F", "m")
+        if
+            utils.has_namespace("gitsigns_signs_staged", "highlight")
+            or utils.has_namespace("gitsigns_signs_", "highlight")
+        then
+            local gs = package.loaded.gitsigns
+            gs.toggle_word_diff()
+            gs.toggle_deleted()
+            gs.toggle_linehl()
+            return
+        end
     end,
 })
 
