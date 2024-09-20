@@ -609,20 +609,30 @@ api.nvim_create_autocmd("BufWinEnter", {
 })
 
 api.nvim_create_autocmd("User", {
-    pattern = "GitSignsUpdate",
+    pattern = "GitSignsUserUpdate",
     callback = function()
-        utils.set_git_winbar()
         if utils.has_filetype("trouble") then
             if _G.pre_gitsigns_qf_operation == "cur" then
                 require("gitsigns").setqflist(0)
+                vim.defer_fn(function()
+                    require("gitsigns").setqflist(0)
+                end, 200)
             elseif _G.pre_gitsigns_qf_operation == "all" then
                 require("gitsigns").setqflist("all")
+                vim.defer_fn(function()
+                    require("gitsigns").setqflist("all")
+                end, 200)
             end
         end
     end,
 })
 
 api.nvim_create_autocmd("User", {
+    pattern = "GitSignsUpdate",
+    callback = function()
+        utils.set_git_winbar()
+    end,
+})
     pattern = "GitSignsChanged",
     callback = function()
         vim.defer_fn(function()

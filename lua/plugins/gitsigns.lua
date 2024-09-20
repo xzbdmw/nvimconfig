@@ -30,7 +30,11 @@ return {
             },
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
-
+                local function update_auto_commands()
+                    api.nvim_exec_autocmds("User", {
+                        pattern = "GitSignsUserUpdate",
+                    })
+                end
                 local function map(mode, l, r, opts)
                     opts = opts or {}
                     opts.buffer = bufnr
@@ -60,14 +64,17 @@ return {
 
                 map("n", "<leader>rh", function()
                     gs.reset_hunk()
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>ub", function()
                     gs.reset_buffer_index()
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>rb", function()
                     gs.reset_buffer()
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>sb", function()
@@ -76,6 +83,7 @@ return {
                         return
                     end
                     gs.stage_buffer()
+                    update_auto_commands()
                 end)
 
                 map("v", "<leader>sh", function()
@@ -85,6 +93,20 @@ return {
                     end
                     local s, e = vim.fn.line("."), vim.fn.line("v")
                     FeedKeys(string.format('ms<cmd>lua require("gitsigns").stage_hunk({%s,%s})<CR>`s', s, e), "n")
+                    api.nvim_create_autocmd("User", {
+                        pattern = "GitSignsUserUpdate",
+                        callback = function()
+                            utils.set_git_winbar()
+                            if utils.has_filetype("trouble") then
+                                if _G.pre_gitsigns_qf_operation == "cur" then
+                                    require("gitsigns").setqflist(0)
+                                elseif _G.pre_gitsigns_qf_operation == "all" then
+                                    require("gitsigns").setqflist("all")
+                                end
+                            end
+                        end,
+                    })
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>sh", function()
@@ -93,6 +115,7 @@ return {
                         return
                     end
                     vim.cmd("Gitsigns stage_hunk")
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>uh", function()
@@ -101,6 +124,7 @@ return {
                         return
                     end
                     vim.cmd("Gitsigns undo_stage_hunk")
+                    update_auto_commands()
                 end)
 
                 map("n", "<leader>bb", function()
@@ -177,7 +201,7 @@ return {
                             or utils.has_namespace("gitsigns_signs_", "highlight")
                         )
                     then
-                        toggle_inline_diff()
+                        -- toggle_inline_diff()
                     end
                     gs.setqflist("all")
                 end)
@@ -230,6 +254,9 @@ return {
             utils.update_diff_file_count()
             utils.set_git_winbar()
             utils.refresh_nvim_tree_git()
+            api.nvim_exec_autocmds("User", {
+                pattern = "GitSignsUserUpdate",
+            })
         end)
     end,
 }
