@@ -531,7 +531,6 @@ return {
                 end
                 require("gitsigns").change_base(vim.g.Base_commit, true)
                 utils.update_diff_file_count()
-                utils.set_git_winbar()
                 if not require("nvim-tree.explorer.filters").config.filter_git_clean then
                     FeedKeys("<leader>S", "m")
                 end
@@ -565,7 +564,6 @@ return {
                 vim.g.Base_commit_msg = vim.g.Base_commit_msg .. commit_msg
                 require("gitsigns").change_base(commit, true)
                 utils.update_diff_file_count()
-                utils.set_git_winbar()
                 utils.refresh_nvim_tree_git()
                 if not require("nvim-tree.explorer.filters").config.filter_git_clean then
                     FeedKeys("<leader>S", "m")

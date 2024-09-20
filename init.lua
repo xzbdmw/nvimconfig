@@ -173,7 +173,6 @@ api.nvim_create_autocmd("FileType", {
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
                     utils.update_diff_file_count()
-                    utils.set_git_winbar()
                     utils.refresh_nvim_tree_git()
                 end, 50)
 
@@ -552,7 +551,6 @@ api.nvim_create_autocmd({ "User" }, {
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
                     utils.update_diff_file_count()
-                    utils.set_git_winbar()
                 end, 200)
                 gs.reset_base(vim.g.Base_commit, true)
             end
@@ -560,7 +558,7 @@ api.nvim_create_autocmd({ "User" }, {
         require("nvim-tree.api").tree.toggle({ focus = false })
         vim.defer_fn(function()
             -- because arrow does not update when changing sessions
-            require("nvim-tree.actions.reloaders").reload_explorer()
+            utils.refresh_nvim_tree_git()
             pcall(_G.indent_update)
         end, 100)
     end,
@@ -633,9 +631,7 @@ api.nvim_create_autocmd("User", {
 
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsUpdate",
-    callback = function()
-        utils.set_git_winbar()
-    end,
+    callback = utils.set_git_winbar,
 })
 
 vim.api.nvim_create_autocmd("User", {
@@ -656,7 +652,6 @@ api.nvim_create_autocmd("User", {
         end, 50)
         vim.defer_fn(function()
             utils.update_diff_file_count()
-            utils.set_git_winbar()
         end, 300)
     end,
 })

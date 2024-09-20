@@ -93,19 +93,6 @@ return {
                     end
                     local s, e = vim.fn.line("."), vim.fn.line("v")
                     FeedKeys(string.format('ms<cmd>lua require("gitsigns").stage_hunk({%s,%s})<CR>`s', s, e), "n")
-                    api.nvim_create_autocmd("User", {
-                        pattern = "GitSignsUserUpdate",
-                        callback = function()
-                            utils.set_git_winbar()
-                            if utils.has_filetype("trouble") then
-                                if _G.pre_gitsigns_qf_operation == "cur" then
-                                    require("gitsigns").setqflist(0)
-                                elseif _G.pre_gitsigns_qf_operation == "all" then
-                                    require("gitsigns").setqflist("all")
-                                end
-                            end
-                        end,
-                    })
                     update_auto_commands()
                 end)
 
@@ -252,7 +239,6 @@ return {
 
             utils.refresh_last_commit()
             utils.update_diff_file_count()
-            utils.set_git_winbar()
             utils.refresh_nvim_tree_git()
             api.nvim_exec_autocmds("User", {
                 pattern = "GitSignsUserUpdate",
