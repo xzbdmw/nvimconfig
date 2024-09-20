@@ -184,14 +184,14 @@ return {
                 map("n", "<leader>aq", function()
                     _G.pre_gitsigns_qf_operation = "all"
                     if not utils.has_filetype("trouble") then
-                        if not require("nvim-tree.explorer.filters").config.filter_git_clean then
-                            FeedKeys("<leader>S", "m")
-                        end
                         api.nvim_create_autocmd("User", {
                             once = true,
                             pattern = "TroubleOpen",
                             callback = vim.schedule_wrap(function()
                                 FeedKeys("n", "t")
+                                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
+                                    FeedKeys("<leader>S", "m")
+                                end
                             end),
                         })
                     end
