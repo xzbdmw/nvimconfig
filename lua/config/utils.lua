@@ -790,9 +790,7 @@ function CloseFromLazygit()
 end
 
 function M.refresh_nvim_tree_git()
-    vim.defer_fn(function()
-        require("nvim-tree.actions.reloaders").reload_explorer()
-    end, 100)
+    require("nvim-tree.actions.reloaders").reload_explorer()
 end
 
 function M.set_cr(bufnr, winid)
