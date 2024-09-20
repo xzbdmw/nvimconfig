@@ -1091,50 +1091,59 @@ end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
 function M.refresh_last_commit()
-    local result = vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }):wait()
-    if result.code == 0 then
-        local splits = vim.split(result.stdout, "\n")
-        -- We use Last instead of Base here because Base_commit=="" has special meanings
-        vim.g.Last_commit = splits[1]
-        local commit_msg = splits[2]:gsub("\n", "")
-        if #commit_msg > 45 then
-            local cut_pos = commit_msg:find(" ", 46)
-            if cut_pos then
-                commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
-            else
-                commit_msg = commit_msg:sub(1, 45) .. "…"
+    vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }, nil, function(result)
+        vim.schedule_wrap(function()
+            if result.code == 0 then
+                local splits = vim.split(result.stdout, "\n")
+                -- We use Last instead of Base here because Base_commit=="" has special meanings
+                vim.g.Last_commit = splits[1]
+                local commit_msg = splits[2]:gsub("\n", "")
+                if #commit_msg > 45 then
+                    local cut_pos = commit_msg:find(" ", 46)
+                    if cut_pos then
+                        commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
+                    else
+                        commit_msg = commit_msg:sub(1, 45) .. "…"
+                    end
+                end
+                vim.g.Last_commit_msg = commit_msg
             end
-        end
-        vim.g.Last_commit_msg = commit_msg
-    end
-    result = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait()
-    if result.code == 0 then
-        vim.g.BranchName = vim.split(result.stdout, "\n")[1]
-        if vim.g.BranchName == "HEAD" then
-            local sub = vim.g.Last_commit:sub(1, 5)
-            vim.g.BranchName = "HEAD detached at " .. sub
-        end
-    end
+            M.set_git_winbar()
+        end)
+    end)
+    vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }, nil, function(result)
+        vim.schedule(function()
+            if result.code == 0 then
+                vim.g.BranchName = vim.split(result.stdout, "\n")[1]
+                if vim.g.BranchName == "HEAD" then
+                    local sub = vim.g.Last_commit:sub(1, 5)
+                    vim.g.BranchName = "HEAD detached at " .. sub
+                end
+            end
+            M.set_git_winbar()
+        end)
+    end)
 end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
 function M.update_diff_file_count()
-    local result
-    if vim.g.Base_commit ~= "" then
-        result = vim.system({ "git", "diff", "--name-only", vim.g.Base_commit }):wait()
-    else
-        result = vim.system({ "git", "diff", "--name-only", "HEAD" }):wait()
-    end
-
-    if result.code == 0 then
-        local diff_files = result.stdout or ""
-        local file_count = 0
-        for _ in string.gmatch(diff_files, "[^\n]+") do
-            file_count = file_count + 1
+    local function update(result)
+        if result.code == 0 then
+            local diff_files = result.stdout or ""
+            local file_count = 0
+            for _ in string.gmatch(diff_files, "[^\n]+") do
+                file_count = file_count + 1
+            end
+            vim.g.Diff_file_count = file_count
+        else
+            vim.g.Diff_file_count = 0
         end
-        vim.g.Diff_file_count = file_count
+        M.set_git_winbar()
+    end
+    if vim.g.Base_commit ~= "" then
+        vim.system({ "git", "diff", "--name-only", vim.g.Base_commit }, nil, vim.schedule_wrap(update))
     else
-        vim.g.Diff_file_count = 0
+        vim.system({ "git", "diff", "--name-only", "HEAD" }, nil, vim.schedule_wrap(update))
     end
 end
 

@@ -444,7 +444,6 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         vim.defer_fn(function()
             utils.refresh_last_commit()
             utils.update_diff_file_count()
-            utils.set_git_winbar()
             utils.refresh_nvim_tree_git()
         end, 10)
         pcall(_G.indent_update)
