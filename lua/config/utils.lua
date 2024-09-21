@@ -577,8 +577,12 @@ function M.insert_mode_tab()
     end
 end
 
-_G.set_winbar = function(winbar)
-    vim.wo.winbar = winbar
+local denied_filetype_winbar = { "undotree", "diff" }
+_G.set_winbar = function(winbar, winid)
+    if vim.tbl_contains(denied_filetype_winbar, vim.bo[vim.api.nvim_win_get_buf(winid or 0)].filetype) then
+        return
+    end
+    vim.wo[winid or 0].winbar = winbar
 end
 
 _G.no_delay = function(animation)

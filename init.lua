@@ -115,6 +115,14 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+api.nvim_create_autocmd("FileType", {
+    pattern = { "undotree", "diff" },
+    callback = function(args)
+        local win = vim.fn.win_findbuf(args.buf)[1]
+        vim.wo[win].winbar = ""
+    end,
+})
+
 api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.schedule(function()
