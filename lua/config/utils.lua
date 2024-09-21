@@ -608,11 +608,7 @@ _G.no_delay = function(animation)
         local indent = string.rep(" ", indent_number)
         local line = vim.trim(api.nvim_buf_get_lines(0, row - 1, row, false)[1])
         api.nvim_buf_set_lines(0, row - 1, row, false, { indent .. line })
-        success = pcall(api.nvim_win_set_cursor, 0, { row, indent_number })
-        if not success then
-            -- __AUTO_GENERATED_PRINT_VAR_START__
-            print([==[indent fail: ts indent_number: ]==], vim.inspect(indent_number)) -- __AUTO_GENERATED_PRINT_VAR_END__
-        end
+        pcall(api.nvim_win_set_cursor, 0, { row, indent_number })
     end)
     vim.defer_fn(function()
         pcall(_G.update_indent, true)
@@ -1092,8 +1088,10 @@ end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit
 function M.refresh_last_commit()
-    vim.system({ "git", "log", "-1", "--pretty=format:%H%n%B" }, nil, function(result)
-        vim.schedule_wrap(function()
+    vim.system(
+        { "git", "log", "-1", "--pretty=format:%H%n%B" },
+        nil,
+        vim.schedule_wrap(function(result)
             if result.code == 0 then
                 local splits = vim.split(result.stdout, "\n")
                 -- We use Last instead of Base here because Base_commit=="" has special meanings
@@ -1111,9 +1109,11 @@ function M.refresh_last_commit()
             end
             M.set_git_winbar()
         end)
-    end)
-    vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }, nil, function(result)
-        vim.schedule(function()
+    )
+    vim.system(
+        { "git", "rev-parse", "--abbrev-ref", "HEAD" },
+        nil,
+        vim.schedule_wrap(function(result)
             if result.code == 0 then
                 vim.g.BranchName = vim.split(result.stdout, "\n")[1]
                 if vim.g.BranchName == "HEAD" then
@@ -1123,7 +1123,7 @@ function M.refresh_last_commit()
             end
             M.set_git_winbar()
         end)
-    end)
+    )
 end
 
 -- Only fire on BufWritePost, SessionLoadPost, Git commit, CloseFromLazygit, GitSignsChanged
