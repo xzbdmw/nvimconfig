@@ -11,6 +11,7 @@ return {
         },
         filetypes_denylist = {
             "help",
+            "markdown",
             "Glance",
             "fugitive",
             "aerial",
