@@ -1210,10 +1210,10 @@ function M.set_diagnostic_winbar()
     local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
 
     if num_errors > 0 then
-        vim.b.diag_winbar = "%#diffRemoved#" .. " (" .. num_errors .. ")"
+        vim.b.diag_winbar = "%#diffRemoved#" .. "  " .. num_errors
         M.refresh_diagnostic_winbar()
     elseif num_warnings > 0 then
-        vim.b.diag_winbar = "%#CmpGhostText#" .. " (" .. num_warnings .. ")"
+        vim.b.diag_winbar = "%#CmpGhostText#" .. "  " .. num_warnings
         M.refresh_diagnostic_winbar()
     else
         vim.b.diag_winbar = ""
@@ -1272,7 +1272,7 @@ function M.set_git_winbar()
     else
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.Diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " [" .. vim.g.Diff_file_count .. "] "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
