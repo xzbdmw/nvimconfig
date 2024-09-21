@@ -350,6 +350,8 @@ return {
                 ["@spell.python"] = { link = "Comment" },
                 ["@spell.markdown"] = { fg = "#000000" },
                 ["@markup.raw"] = { fg = "#0033b3", style = "" },
+                ["@markup.link"] = { style = "underline" },
+                ["@markup.link.label.markdown_inline"] = { fg = "#215062", style = "underline" },
                 ["@comment.rust"] = { fg = "#7e7d7d", style = "" },
                 ["Comment"] = { fg = "#7e7d7d", style = "" },
                 ["@comment.documentation.rust"] = { link = "@comment.rust" },
