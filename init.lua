@@ -643,11 +643,8 @@ api.nvim_create_autocmd("User", {
 })
 
 vim.api.nvim_create_autocmd("User", {
-    pattern = "NvimTreeToggled",
+    pattern = { "NvimTreeToggled", "NvimTreeReloaded" },
     callback = function()
-        if require("nvim-tree.explorer.filters").config.filter_git_clean then
-            require("nvim-tree.api").tree.expand_all()
-        end
         require("nvim-tree.actions").tree.find_file.fn()
     end,
 })
