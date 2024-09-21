@@ -7,7 +7,7 @@ return {
         return {
             {
                 "<C-n>",
-                mode = { "i", "s", "v" },
+                mode = { "s", "v" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(1) then
@@ -20,8 +20,20 @@ return {
                 { silent = true },
             },
             {
+                "<C-n>",
+                mode = { "i" },
+                function()
+                    local luasnip = require("luasnip")
+                    if luasnip.jumpable(1) then
+                        _G.no_animation(_G.CI)
+                        luasnip.jump(1)
+                    end
+                end,
+                { silent = true },
+            },
+            {
                 "<C-p>",
-                mode = { "i", "s", "v" },
+                mode = { "s", "v" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(-1) then
