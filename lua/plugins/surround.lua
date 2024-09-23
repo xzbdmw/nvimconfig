@@ -63,10 +63,12 @@ return {
         keymap("x", "`", function()
             FeedKeys("ma`", "t")
         end, keymap_ops)
-
         vim.defer_fn(function()
             keymap("x", "<", function()
                 FeedKeys("ma<", "t")
+                vim.schedule(function()
+                    FeedKeys("f>", "m")
+                end)
             end, keymap_ops)
         end, 2000)
 
