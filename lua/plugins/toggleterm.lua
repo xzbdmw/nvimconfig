@@ -21,7 +21,7 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
-                vim.cmd(":startinsert")
+                -- vim.cmd(":startinsert")
                 _G.set_cursor_animation(_G.CI)
                 vim.cmd("redraw!")
                 vim.keymap.set("t", "q", "q", { buffer = true })
@@ -60,7 +60,7 @@ return {
             terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
             persist_size = true,
             persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
-            direction = "horizontal",
+            direction = "vertical",
             close_on_exit = true, -- close the terminal window when the process exits
             -- Change the default shell. Can be a string or a function returning a string
             shell = vim.o.shell,
