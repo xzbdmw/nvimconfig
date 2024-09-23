@@ -27,6 +27,11 @@ return {
         {
             "p",
             function()
+                vim.g.hlchunk_disable = true
+                vim.g.type_o = true
+                vim.schedule(function()
+                    vim.g.type_o = false
+                end)
                 YANK = vim.uv.hrtime()
                 return "<Plug>(YankyPutAfter)"
             end,
@@ -36,6 +41,10 @@ return {
         {
             "p",
             function()
+                vim.g.type_o = true
+                vim.schedule(function()
+                    vim.g.type_o = false
+                end)
                 require("yanky").put("p", true, function() end)
                 FeedKeys("c<d-v><esc>", "m")
             end,

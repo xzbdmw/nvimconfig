@@ -19,6 +19,7 @@ vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
 vim.g.copilot_enable = false
 vim.g.skip_noice = false
+vim.g.hlchunk_disable = false
 
 vim.cmd("syntax off")
 
