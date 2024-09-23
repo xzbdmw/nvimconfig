@@ -46,7 +46,7 @@ return {
         }
         local groups = {
             dawnfox = {
-                Visual = { bg = "#d0d8d8" },
+                Visual = { bg = "#D8E0E0" },
                 NormalNC = { link = "Normal" },
                 NoiceFormatProgressDone = { bg = "#D1D8D8" },
                 BranchName = { fg = "#3b4d56", style = "italic,bold" },
