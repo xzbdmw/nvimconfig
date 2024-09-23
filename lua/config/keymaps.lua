@@ -289,6 +289,7 @@ keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLi
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
+keymap("i", "<f12>", "<cmd>messages clear<CR>", opts)
 
 keymap({ "n" }, "<C-n>", function()
     vim.cmd("MCstart")
@@ -583,6 +584,11 @@ keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 keymap("n", "<C-f>", function()
     local winnid = require("config.utils").filetype_windowid("NvimTree")
     vim.api.nvim_set_current_win(winnid)
+end, opts)
+keymap("n", "<leader>cr", function()
+    local bufnr = api.nvim_get_current_buf()
+    local path = vim.api.nvim_buf_get_name(bufnr)
+    require("nvim-tree").change_root(path, bufnr)
 end, opts)
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
 

@@ -671,6 +671,45 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
+local hisel_id
+local hisel_ns = api.nvim_create_namespace("hisel")
+api.nvim_create_augroup("hisel", {})
+api.nvim_create_autocmd("ModeChanged", {
+    group = "hisel",
+    pattern = "*:[vV\x16]",
+    callback = function()
+        -- for viw
+        vim.on_key(function(key, typed)
+            local prev_text = utils.get_visual()
+            vim.defer_fn(function()
+                local new_text = utils.get_visual()
+                if new_text ~= prev_text then
+                    utils.do_highlight()
+                end
+            end, 10)
+        end, hisel_ns)
+        utils.do_highlight()
+        -- for cr
+        vim.defer_fn(function()
+            utils.do_highlight()
+        end, 10)
+        hisel_id = vim.api.nvim_create_autocmd("CursorMoved", { callback = utils.do_highlight })
+    end,
+})
+
+api.nvim_create_autocmd("ModeChanged", {
+    group = "hisel",
+    pattern = "[vV\x16]:*",
+    callback = function()
+        if hisel_id then
+            vim.api.nvim_del_autocmd(hisel_id)
+            vim.on_key(nil, hisel_ns)
+            hisel_id = nil
+        end
+        utils.clear()
+    end,
+})
+
 if vim.g.neovide then
     vim.api.nvim_set_hl(0, "TermCursor", {})
 else
