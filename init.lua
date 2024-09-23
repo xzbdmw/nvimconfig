@@ -303,14 +303,15 @@ api.nvim_create_autocmd("ModeChanged", {
 })
 
 api.nvim_create_autocmd("ModeChanged", {
-    pattern = "v:n",
+    pattern = "[vV\x16]:*",
     callback = function()
         api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("visual_range"), 0, -1)
+        _G.indent_update()
     end,
 })
 
 api.nvim_create_autocmd("ModeChanged", {
-    pattern = "n:v",
+    pattern = "n:V",
     callback = function()
         if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
             return
@@ -327,33 +328,13 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
+api.nvim_create_autocmd("User", {
+    pattern = "v_V",
+    callback = utils.update_visual_coloum,
+})
+
 api.nvim_create_autocmd("CursorMoved", {
-    callback = function()
-        local mode = vim.api.nvim_get_mode().mode
-        if vim.wo.signcolumn ~= "yes" then
-            return
-        end
-        if mode == "v" or mode == "V" then
-            local s, e = vim.fn.line("."), vim.fn.line("v")
-            local t
-            if s > e then
-                t = s
-                s = e
-                e = t
-            end
-            local ns = api.nvim_create_namespace("visual_range")
-            api.nvim_buf_clear_namespace(0, ns, 0, -1)
-            for i = s, e do
-                api.nvim_buf_set_extmark(0, ns, i - 1, 0, {
-                    end_row = i,
-                    strict = false,
-                    sign_text = " ",
-                    priority = 1,
-                })
-            end
-            _G.indent_update()
-        end
-    end,
+    callback = utils.update_visual_coloum,
 })
 
 api.nvim_create_autocmd("DiagnosticChanged", {

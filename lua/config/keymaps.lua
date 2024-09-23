@@ -435,6 +435,16 @@ keymap("i", "<Tab>", function()
     utils.insert_mode_tab()
 end, opts)
 
+keymap("x", "V", function()
+    vim.schedule(function()
+        api.nvim_exec_autocmds("User", {
+            pattern = "v_V",
+        })
+        _G.indent_update()
+    end)
+    return "V"
+end, { expr = true })
+
 keymap("n", "<Tab>", function()
     utils.normal_tab()
 end, { desc = "swicth window" })

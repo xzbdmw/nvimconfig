@@ -666,6 +666,36 @@ _G.no_delay = function(animation)
     end, 50)
 end
 
+function M.update_visual_coloum()
+    local mode = vim.api.nvim_get_mode().mode
+    if vim.wo.signcolumn ~= "yes" then
+        return
+    end
+    if mode == "v" or mode == "V" then
+        local s, e = vim.fn.line("."), vim.fn.line("v")
+        local text = vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."), { type = vim.fn.mode() })
+        local t
+        if s > e then
+            t = s
+            s = e
+            e = t
+        end
+        local ns = api.nvim_create_namespace("visual_range")
+        api.nvim_buf_clear_namespace(0, ns, 0, -1)
+        for i = s, e do
+            if vim.startswith(vim.fn.getline(i), text[i - s + 1]) then
+                api.nvim_buf_set_extmark(0, ns, i - 1, 0, {
+                    end_row = i,
+                    strict = false,
+                    sign_text = " ",
+                    priority = 1,
+                })
+            end
+        end
+        _G.indent_update()
+    end
+end
+
 function M.record_winbar_enter()
     vim.g.winbar_macro_beginstate = vim.wo.winbar
 
