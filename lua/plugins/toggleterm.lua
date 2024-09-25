@@ -25,8 +25,15 @@ return {
                 _G.set_cursor_animation(_G.CI)
                 vim.cmd("redraw!")
                 vim.keymap.set("t", "q", "q", { buffer = true })
-                vim.keymap.set("t", "K", "kkkk", { buffer = true })
-                vim.keymap.set("t", "J", "jjjj", { buffer = true })
+                vim.keymap.set("n", "K", "kkkk", { buffer = true })
+                vim.keymap.set("n", "J", "jjjj", { buffer = true })
+                vim.keymap.set("t", "<f12>", function()
+                    FeedKeys("<c-u>clear<cr>", "n")
+                    vim.bo.scrollback = 1
+                    vim.defer_fn(function()
+                        vim.bo.scrollback = 100000
+                    end, 100)
+                end, { buffer = true })
             end, -- function to run when the terminal opens
             on_close = function()
                 _G.no_animation()
