@@ -32,6 +32,7 @@ return {
                 disabled = disabled or (vim.fn.reg_executing() ~= "")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
                 disabled = disabled or api.nvim_buf_get_name(0) == "lsp:rename"
+                disabled = disabled or vim.b.rename
                 return not disabled
             end,
             preselect = cmp.PreselectMode.None,
