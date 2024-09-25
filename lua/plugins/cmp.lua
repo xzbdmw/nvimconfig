@@ -230,6 +230,30 @@ return {
                         fallback()
                     end
                 end),
+                ["<c-y>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        vim.g.cy = true
+                        _G.no_animation(_G.CI)
+                        _G.CON = true
+                        vim.defer_fn(function()
+                            _G.CON = nil
+                        end, 10)
+                        f.expand = true
+                        if utils.if_multicursor() then
+                            cmp.select_cur_item()
+                            vim.schedule(cmp.close)
+                        else
+                            cmp.confirm({ select = true })
+                        end
+                    else
+                        _G.no_delay(0.0)
+                        fallback()
+                    end
+                    vim.defer_fn(function()
+                        pcall(_G.update_indent, true) -- hlchunk
+                        pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                    end, 20)
+                end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
