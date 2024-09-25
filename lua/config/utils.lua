@@ -441,6 +441,17 @@ function M.insert_mode_space()
         end
         has_map = false
     end, 150)
+    vim.defer_fn(function()
+        local cmp = require("cmp")
+        vim.keymap.set("i", "<esc>", function()
+            if cmp.visible() then
+                vim.schedule(function()
+                    cmp.close()
+                end)
+            end
+            return "<esc>"
+        end, { expr = true })
+    end, 200)
 end
 
 function M.if_multicursor()
