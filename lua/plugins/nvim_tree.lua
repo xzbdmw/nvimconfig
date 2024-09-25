@@ -205,7 +205,7 @@ return {
                             staged = "M",
                             unmerged = "",
                             renamed = "➜",
-                            untracked = "★",
+                            untracked = " ",
                             deleted = "",
                             ignored = "◌",
                         },
