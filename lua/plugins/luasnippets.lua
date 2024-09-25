@@ -33,7 +33,7 @@ return {
             },
             {
                 "<C-p>",
-                mode = { "s", "v" },
+                mode = { "i", "s", "v" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(-1) then
