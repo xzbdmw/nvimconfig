@@ -93,10 +93,20 @@ return {
     lazy = false,
     -- enabled = false,
     keys = {
-        { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
-        { "<D-1>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
-        { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "n", "c" } },
-        { "<C-9>", "<cmd>NvimTreeToggle<CR>", mode = { "i", "t" } },
+        {
+            "<D-1>",
+            function()
+                require("nvim-tree.api").tree.toggle({ focus = false })
+            end,
+            mode = { "i", "n", "c" },
+        },
+        {
+            "<c-9>",
+            function()
+                require("nvim-tree.api").tree.toggle({ focus = false })
+            end,
+            mode = { "i", "n", "c" },
+        },
     },
     config = function()
         local width = vim.api.nvim_get_option("columns")
