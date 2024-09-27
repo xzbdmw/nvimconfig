@@ -560,10 +560,7 @@ api.nvim_create_autocmd("User", {
     pattern = "LoadSessionPre",
     callback = function()
         FeedKeys("<leader>F", "m")
-        if
-            utils.has_namespace("gitsigns_signs_staged", "highlight")
-            or utils.has_namespace("gitsigns_signs_", "highlight")
-        then
+        if require("gitsigns.config").config.word_diff then
             local gs = package.loaded.gitsigns
             gs.toggle_word_diff()
             gs.toggle_deleted()
