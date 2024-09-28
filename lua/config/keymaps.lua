@@ -413,6 +413,24 @@ keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
+keymap("n", "<D-w>l", "<c-w>L", opts)
+keymap("n", "<D-w>k", "<c-w>K", opts)
+keymap("n", "<D-w>j", "<c-w>J", opts)
+keymap("n", "<D-w>h", "<c-w>H", opts)
+
+keymap("n", "<D-2>", function()
+    local cur_win = api.nvim_get_current_win()
+    local wins = api.nvim_list_wins()
+    for _, win in ipairs(wins) do
+        if win == cur_win then
+            goto continue
+        end
+        if api.nvim_win_is_valid(win) and api.nvim_win_get_config(win).relative == "" then
+            api.nvim_win_close(win, true)
+        end
+        ::continue::
+    end
+end, opts)
 
 keymap("n", "gq", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
@@ -467,7 +485,23 @@ keymap({ "n" }, "q", function()
     end
 end)
 
-keymap("n", "<leader>vr", "<cmd>vsp<CR>")
+keymap("n", "<leader>vr", function()
+    if utils.has_filetype("NvimTree") then
+        return "<d-1><cmd>vsp<CR><c--><c--><c-->"
+    else
+        return "<cmd>vsp<CR><c--><c--><c-->"
+    end
+end, { expr = true, remap = true })
+
+keymap("n", "<leader><leader>n", function()
+    vim.wo.number = not vim.wo.number
+    if vim.wo.signcolumn == "no" then
+        vim.wo.signcolumn = "yes"
+    else
+        vim.wo.signcolumn = "no"
+    end
+end, opts)
+
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><left>", function()
     return "<C-w>H"
@@ -568,16 +602,6 @@ keymap("t", "<D-v>", function()
     local next_char_code = 48
     local next_char = vim.fn.nr2char(next_char_code)
     return '<C-\\><C-N>"' .. next_char .. "pi"
-end, { expr = true })
-
-vim.keymap.set("t", "<c-r>", function()
-    local next_char_code = vim.fn.getchar()
-    local next_char = vim.fn.nr2char(next_char_code)
-    if next_char == "r" then
-        return "<c-r>"
-    else
-        return '<C-\\><C-N>"' .. next_char .. "pi"
-    end
 end, { expr = true })
 
 keymap("t", "<c-->", function()
