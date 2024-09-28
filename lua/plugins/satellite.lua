@@ -4,7 +4,7 @@ return {
         require("satellite").setup({
             current_only = true,
             winblend = 0,
-            zindex = 20,
+            zindex = 22,
             excluded_filetypes = { "minifiles", "NvimTree" },
             width = 1,
             handlers = {
@@ -34,12 +34,13 @@ return {
                     -- - SatelliteDiagnosticHint (default links to DiagnosticHint)
                 },
                 gitsigns = {
-                    enable = false,
+                    enable = true,
                     signs = { -- can only be a single character (multibyte is okay)
                         add = "│",
                         change = "│",
                         delete = "-",
                     },
+                    overlap = false,
                     -- Highlights:
                     -- SatelliteGitSignsAdd (default links to GitSignsAdd)
                     -- SatelliteGitSignsChange (default links to GitSignsChange)
@@ -49,7 +50,7 @@ return {
                     enable = false,
                 },
                 quickfix = {
-                    enable = true,
+                    enable = false,
                     signs = { "≡" },
                     -- Highlights:
                     -- SatelliteQuickfix (default links to WarningMsg)
