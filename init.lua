@@ -630,6 +630,10 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
+api.nvim_create_autocmd("TermOpen", {
+    command = "setlocal nonu nornu signcolumn=no",
+})
+
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsChanged",
     callback = function()
