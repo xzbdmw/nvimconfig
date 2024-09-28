@@ -182,13 +182,8 @@ return {
                             end),
                         })
                     end
-                    if
-                        not (
-                            utils.has_namespace("gitsigns_signs_staged", "highlight")
-                            or utils.has_namespace("gitsigns_signs_", "highlight")
-                        )
-                    then
-                        -- toggle_inline_diff()
+                    if not require("gitsigns.config").config.word_diff then
+                        toggle_inline_diff()
                     end
                     gs.setqflist("all")
                 end)

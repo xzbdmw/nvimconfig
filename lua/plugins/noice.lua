@@ -294,7 +294,7 @@ return {
                             Search = "",
                         },
                     },
-                    zindex = 21,
+                    zindex = 23,
                     focusable = false,
                     timeout = 2000,
                 },
