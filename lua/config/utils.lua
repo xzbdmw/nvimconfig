@@ -590,9 +590,11 @@ end
 
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
-    if vim.tbl_contains(denied_filetype_winbar, vim.bo[vim.api.nvim_win_get_buf(winid or 0)].filetype) then
+    local buf = winid and api.nvim_win_get_buf(winid) or 0
+    if vim.bo[buf].buftype == "nofile" or vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
         return
     end
+    local win = vim.api.nvim_get_current_win()
     vim.wo[winid or 0].winbar = winbar
 end
 
@@ -845,7 +847,7 @@ function M.set_glance_keymap()
             glance_close()
         end, { buffer = bufnr })
         vim.keymap.set("n", "<CR>", function()
-            _G.hide_cursor(function() end, 20)
+            -- _G.hide_cursor(function() end, 20)
             _G.set_cursor_animation(0.0)
             pcall(satellite_close, api.nvim_get_current_win())
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
@@ -1412,7 +1414,7 @@ function M.set_winbar()
             .. " %#WinbarFileName#"
             .. filename
             .. "%*"
-        vim.wo[winid].winbar = winbar_expr
+        _G.set_winbar(winbar_expr, winid)
         vim.b.winbar_expr = winbar_expr
     elseif filename ~= "" then
         _G.set_winbar("%#WinbarFileName#" .. filename .. "%*")
