@@ -210,6 +210,11 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    command = "setlocal conceallevel=0",
+})
+
 api.nvim_create_autocmd("TermOpen", {
     callback = function(args)
         local opts = { buffer = 0 }
