@@ -1229,6 +1229,12 @@ function M.update_diff_file_count()
         else
             vim.g.Diff_file_count = 0
         end
+        if vim.g.Diff_file_count == 0 and require("gitsigns.config").config.word_diff then
+            local gs = package.loaded.gitsigns
+            gs.toggle_word_diff()
+            gs.toggle_deleted()
+            gs.toggle_linehl()
+        end
         M.set_git_winbar()
     end
     if vim.g.Base_commit ~= "" then
