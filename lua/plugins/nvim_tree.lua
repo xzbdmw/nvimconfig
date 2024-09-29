@@ -33,6 +33,7 @@ local function my_on_attach(bufnr)
             api.tree.toggle_git_clean_filter()
         end
         api.tree.toggle_no_arrow_filter()
+        require("nvim-tree.api").tree.expand_all()
     end
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>A", toggle_arrow_filter)
@@ -47,6 +48,7 @@ local function my_on_attach(bufnr)
             api.tree.toggle_git_clean_filter()
         end
         api.tree.toggle_no_buffer_filter()
+        require("nvim-tree.api").tree.expand_all()
     end
     keymap("n", "B", toggle_buffer_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>B", toggle_buffer_filter)
@@ -139,7 +141,7 @@ return {
                     },
                 },
                 expand_all = {
-                    max_folder_discovery = 50,
+                    max_folder_discovery = 1000,
                     exclude = {},
                 },
             },

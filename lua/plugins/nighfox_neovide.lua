@@ -236,7 +236,7 @@ return {
                 hlchunk = { fg = "#DCDCD4" },
                 gitcommitSelectedType = { link = "Comment" },
                 gitcommitDiscardedType = { link = "Comment" },
-                ArrowBookmarkSign = { link = "Comment" },
+                ArrowBookmarkSign = { link = "LineNr" },
                 -- NvimTreeCursorLine = { bg = "#EBE8DB", style = "italic,bold" },
                 NvimTreeFolderIcon = { fg = "#3B4D56" },
                 MiniFilesDirectory = { link = "NvimTreeFolderName" },
