@@ -116,7 +116,7 @@ return {
 
                 map("n", "<leader>bb", function()
                     if require("config.utils").has_filetype("gitsigns.blame") then
-                        FeedKeys("<Tab>q<d-1><tab>", "m")
+                        FeedKeys("<Tab>q<d-1>", "m")
                         return
                     end
                     if require("config.utils").has_filetype("NvimTree") then

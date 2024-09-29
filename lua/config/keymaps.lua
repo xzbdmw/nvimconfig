@@ -68,7 +68,7 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
-keymap("i", "<c-x><c-p>", function()
+keymap("i", "<c-x><c-o>", function()
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()
@@ -100,7 +100,7 @@ keymap("i", "<c-x><c-y>", function()
     })
 end)
 
-keymap("i", "<c-x><c-o>", function()
+keymap("i", "<c-x><c-p>", function()
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()
@@ -405,10 +405,6 @@ keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
--- keymap("n", "<D-w>l", "<c-w>L", opts)
--- keymap("n", "<D-w>k", "<c-w>K", opts)
--- keymap("n", "<D-w>j", "<c-w>J", opts)
--- keymap("n", "<D-w>h", "<c-w>H", opts)
 
 keymap("n", "<D-2>", function()
     local cur_win = api.nvim_get_current_win()

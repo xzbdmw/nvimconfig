@@ -1,6 +1,7 @@
 return {
     dir = "/Users/xzb/.local/share/nvim/lazy/copilot/",
     event = "InsertEnter",
+    enabled = false,
     config = function()
         require("copilot").setup({
             panel = {

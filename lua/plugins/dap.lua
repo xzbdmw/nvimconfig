@@ -1,30 +1,181 @@
 return {
     {
         "mfussenegger/nvim-dap",
+        lazy = true,
         keys = {
             {
-                "<leader>td",
+                "<leader>xb",
+                function()
+                    require("dap").toggle_breakpoint()
+                end,
+            },
+        },
+        config = function() end,
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        lazy = true,
+        dependencies = { {
+            "nvim-neotest/nvim-nio",
+        } },
+        keys = {
+            {
+                "<c-u>",
                 function()
                     require("dapui").toggle()
                 end,
             },
         },
-    },
-    {
-        "rcarriga/nvim-dap-ui",
         config = function()
-            require("dapui").setup()
+            require("dapui").setup({
+                controls = {
+                    element = "repl",
+                    enabled = true,
+                    icons = {
+                        disconnect = "",
+                        pause = "",
+                        play = "",
+                        run_last = "",
+                        step_back = "",
+                        step_into = "",
+                        step_out = "",
+                        step_over = "",
+                        terminate = "",
+                    },
+                },
+                element_mappings = {},
+                expand_lines = true,
+                floating = {
+                    border = "single",
+                    mappings = {
+                        close = { "q", "<Esc>" },
+                    },
+                },
+                force_buffers = true,
+                icons = {
+                    collapsed = "󱦰",
+                    current_frame = "󱦰",
+                    expanded = "󱞩",
+                },
+                layouts = {
+                    -- {
+                    --     elements = {
+                    --         {
+                    --             id = "scopes",
+                    --             size = 0.25,
+                    --         },
+                    --         {
+                    --             id = "breakpoints",
+                    --             size = 0.25,
+                    --         },
+                    --         {
+                    --             id = "stacks",
+                    --             size = 0.25,
+                    --         },
+                    --         {
+                    --             id = "watches",
+                    --             size = 0.25,
+                    --         },
+                    --     },
+                    --     position = "left",
+                    --     size = 40,
+                    -- },
+                    {
+                        elements = {
+                            {
+                                id = "repl",
+                                size = 0.21,
+                            },
+                            {
+                                id = "scopes",
+                                size = 0.4,
+                            },
+                            {
+                                id = "stacks",
+                                size = 0.39,
+                            },
+                        },
+                        position = "bottom",
+                        size = 10,
+                    },
+                },
+                mappings = {
+                    edit = "e",
+                    expand = { "<CR>" },
+                    open = { "o", "<2-LeftMouse>" },
+                    remove = "d",
+                    repl = "r",
+                    toggle = "t",
+                },
+                render = {
+                    indent = 0,
+                    max_value_lines = 100,
+                },
+            })
         end,
     },
-
     {
         "leoluz/nvim-dap-go",
         config = function()
-            require("dap-go").setup()
+            require("dap-go").setup({
+                -- Additional dap configurations can be added.
+                -- dap_configurations accepts a list of tables where each entry
+                -- represents a dap configuration. For more details do:
+                -- :help dap-configuration
+                dap_configurations = {
+                    {
+                        -- Must be "go" or it will be ignored by the plugin
+                        type = "go",
+                        name = "Attach remote",
+                        mode = "remote",
+                        request = "attach",
+                    },
+                },
+                -- delve configurations
+                delve = {
+                    -- the path to the executable dlv which will be used for debugging.
+                    -- by default, this is the "dlv" executable on your PATH.
+                    path = "/Users/xzb/go/bin/dlv",
+                    -- time to wait for delve to initialize the debug session.
+                    -- default to 20 seconds
+                    initialize_timeout_sec = 20,
+                    -- a string that defines the port to start delve debugger.
+                    -- default to string "${port}" which instructs nvim-dap
+                    -- to start the process in a random available port.
+                    -- if you set a port in your debug configuration, its value will be
+                    -- assigned dynamically.
+                    port = "${port}",
+                    -- additional args to pass to dlv
+                    args = {},
+                    -- the build flags that are passed to delve.
+                    -- defaults to empty string, but can be used to provide flags
+                    -- such as "-tags=unit" to make sure the test suite is
+                    -- compiled during debugging, for example.
+                    -- passing build flags using args is ineffective, as those are
+                    -- ignored by delve in dap mode.
+                    -- avaliable ui interactive function to prompt for arguments get_arguments
+                    build_flags = {},
+                    -- whether the dlv process to be created detached or not. there is
+                    -- an issue on Windows where this needs to be set to false
+                    -- otherwise the dlv server creation will fail.
+                    -- avaliable ui interactive function to prompt for build flags: get_build_flags
+                    detached = vim.fn.has("win32") == 0,
+                    -- the current working directory to run dlv from, if other than
+                    -- the current working directory.
+                    cwd = nil,
+                },
+                -- options related to running closest test
+                tests = {
+                    -- enables verbosity when running the test.
+                    verbose = false,
+                },
+            })
         end,
     },
     {
         "theHamsta/nvim-dap-virtual-text",
+        lazy = true,
+        event = "User ToggleDebug",
         config = function()
             require("nvim-dap-virtual-text").setup({
                 enabled = true, -- enable this plugin (the default)
@@ -45,7 +196,7 @@ return {
                     end
                 end,
                 -- position of virtual text, see `:h nvim_buf_set_extmark()`, default tries to inline the virtual text. Use 'eol' to set to end of line
-                virt_text_pos = vim.fn.has("nvim-0.10") == 1 and "inline" or "eol",
+                virt_text_pos = "eol",
 
                 -- experimental features:
                 all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.

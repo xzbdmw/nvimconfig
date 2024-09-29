@@ -4,7 +4,7 @@ return {
         require("satellite").setup({
             current_only = true,
             winblend = 0,
-            zindex = 22,
+            zindex = 800,
             excluded_filetypes = { "minifiles", "NvimTree" },
             width = 1,
             handlers = {
@@ -17,8 +17,9 @@ return {
                     -- - SatelliteCursor (default links to NonText
                 },
                 search = {
-                    enable = false,
+                    enable = true,
                     signs = { "=" },
+                    overlap = false,
                     -- Highlights:
                     -- - SatelliteSearch (default links to Search)
                     -- - SatelliteSearchCurrent (default links to SearchCurrent)

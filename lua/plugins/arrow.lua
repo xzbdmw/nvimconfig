@@ -11,7 +11,7 @@ return {
                 line_shift_down = 1,
             },
             satellite = {
-                enable = true,
+                enable = false,
                 overlap = true,
                 priority = 1000,
             },
