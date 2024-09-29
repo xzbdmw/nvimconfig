@@ -262,14 +262,6 @@ keymap("n", "<leader>uc", function()
     end
 end, opts)
 
-keymap("n", "<leader>xc", function()
-    if vim.g.Base_commit ~= "" then
-        utils.checkout(vim.g.Base_commit, function()
-            FeedKeys("<leader>cb", "m")
-        end)
-    end
-end, opts)
-
 keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<C-w>"
@@ -413,10 +405,10 @@ keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
-keymap("n", "<D-w>l", "<c-w>L", opts)
-keymap("n", "<D-w>k", "<c-w>K", opts)
-keymap("n", "<D-w>j", "<c-w>J", opts)
-keymap("n", "<D-w>h", "<c-w>H", opts)
+-- keymap("n", "<D-w>l", "<c-w>L", opts)
+-- keymap("n", "<D-w>k", "<c-w>K", opts)
+-- keymap("n", "<D-w>j", "<c-w>J", opts)
+-- keymap("n", "<D-w>h", "<c-w>H", opts)
 
 keymap("n", "<D-2>", function()
     local cur_win = api.nvim_get_current_win()
@@ -439,8 +431,6 @@ keymap("n", "gq", function()
         return "q"
     end
 end, { expr = true })
-
-keymap("n", "-", "@a", opts)
 
 keymap("i", "<space>", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
@@ -495,10 +485,12 @@ end, { expr = true, remap = true })
 
 keymap("n", "<leader><leader>n", function()
     vim.wo.number = not vim.wo.number
-    if vim.wo.signcolumn == "no" then
-        vim.wo.signcolumn = "yes"
-    else
-        vim.wo.signcolumn = "no"
+    if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
+        if vim.wo.signcolumn == "no" then
+            vim.wo.signcolumn = "yes"
+        else
+            vim.wo.signcolumn = "no"
+        end
     end
 end, opts)
 
