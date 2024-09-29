@@ -306,7 +306,7 @@ keymap({ "n", "x", "o" }, "L", "$", opts)
 keymap("c", "<space>", function()
     local mode = vim.fn.getcmdtype()
     if mode == "?" or mode == "/" then
-        return ".*"
+        return [[.\{-}]]
     else
         return " "
     end
