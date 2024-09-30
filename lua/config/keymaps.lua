@@ -250,9 +250,9 @@ keymap("n", "<leader>", "", opts)
 local darker = false
 keymap("n", "<leader>uc", function()
     if darker then
-        api.nvim_set_hl(0, "@spell.go", { fg = "#717070" })
-        api.nvim_set_hl(0, "Comment", { fg = "#717070" })
-        api.nvim_set_hl(0, "@spell.rust", { fg = "#717070" })
+        api.nvim_set_hl(0, "@spell.go", { fg = "#6d6b6b" })
+        api.nvim_set_hl(0, "Comment", { fg = "#6d6b6b" })
+        api.nvim_set_hl(0, "@spell.rust", { fg = "#6d6b6b" })
         darker = false
     else
         api.nvim_set_hl(0, "@spell.go", { fg = "#364E57" })
@@ -294,6 +294,19 @@ end)
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap({ "n", "x", "o" }, "L", "$", opts)
+
+keymap("c", "<d-s>", function()
+    local function escape_magic(s)
+        return (s:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?\\])", "%%%1"))
+    end
+    local original = vim.fn.getcmdline()
+    local filetype = vim.bo.filetype
+    local w = original:gsub(escape_magic(".\\{-}"), " ")
+    FeedKeys("<esc>", "m")
+    vim.schedule(function()
+        require("custom.telescope-pikers").prettyGrepPicker("egrepify", w, filetype)
+    end)
+end, opts)
 
 keymap("c", "<space>", function()
     local mode = vim.fn.getcmdtype()
