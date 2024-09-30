@@ -197,7 +197,7 @@ function M.close_win()
         return
     end
     if require("config.utils").has_filetype("gitsigns.blame") then
-        FeedKeys("<Tab>q<d-1><tab>", "m")
+        FeedKeys("<Tab>q<d-1>", "m")
         return
     end
     if M.has_namespace("gitsigns_signs_staged", "highlight") or M.has_namespace("gitsigns_signs_", "highlight") then
@@ -591,7 +591,7 @@ end
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
     local buf = winid and api.nvim_win_get_buf(winid) or 0
-    if vim.bo[buf].buftype == "nofile" or vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
+    if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
         return
     end
     local win = vim.api.nvim_get_current_win()

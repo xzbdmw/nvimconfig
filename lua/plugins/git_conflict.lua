@@ -1,7 +1,6 @@
 return {
     "akinsho/git-conflict.nvim",
     version = "*",
-    lazy = false,
     keys = {
         {
             "<leader>uC",

@@ -9,6 +9,7 @@ return {
         {
             "<leader>so",
             function()
+                _G.hide_cursor(function() end, 10)
                 return "<cmd>Oil<cr>"
             end,
             expr = true,

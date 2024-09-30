@@ -182,7 +182,7 @@ return {
                 highlight_bookmarks = "all",
                 highlight_opened_files = "name",
                 special_files = {},
-                group_empty = false,
+                group_empty = true,
                 icons = {
                     git_placement = "after",
                     bookmarks_placement = "after",

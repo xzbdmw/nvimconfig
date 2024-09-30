@@ -84,7 +84,7 @@ return {
                 desc = "Commits",
             },
             {
-                "<leader>cl",
+                "<leader>bl",
                 function()
                     local options = {
                         attach_mappings = function(_, map)
@@ -108,7 +108,7 @@ return {
                 end,
             },
             {
-                "<leader>rr",
+                "<leader>br",
                 function()
                     local options = {
                         attach_mappings = function(_, map)
