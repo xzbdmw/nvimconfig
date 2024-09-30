@@ -259,6 +259,13 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+api.nvim_create_autocmd("FileType", {
+    pattern = "oil",
+    callback = function()
+        _G.hide_cursor(function() end, 20)
+    end,
+})
+
 api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
