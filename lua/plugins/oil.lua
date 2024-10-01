@@ -2,10 +2,6 @@ return {
     "stevearc/oil.nvim",
     opts = {},
     keys = {
-        -- {
-        --     "<leader>os",
-        --     "<cmd>Oil oil-ssh://root@10.211.55.5/root<cr>",
-        -- },
         {
             "<leader>so",
             function()

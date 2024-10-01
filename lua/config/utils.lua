@@ -593,7 +593,7 @@ _G.set_winbar = function(winbar, winid)
     local buf = winid and api.nvim_win_get_buf(winid) or 0
     winid = winid or api.nvim_get_current_win()
     local winconfig = api.nvim_win_get_config(winid)
-    if winconfig.relative ~= "" and winconfig.zindex == 10 then -- disable in arrow marks
+    if winconfig.relative ~= "" and winconfig.zindex == 11 then -- disable in arrow marks
         return
     end
     if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
