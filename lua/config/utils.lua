@@ -591,11 +591,15 @@ end
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
     local buf = winid and api.nvim_win_get_buf(winid) or 0
+    winid = winid or api.nvim_get_current_win()
+    local winconfig = api.nvim_win_get_config(winid)
+    if winconfig.relative ~= "" and winconfig.zindex == 10 then -- disable in arrow marks
+        return
+    end
     if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
         return
     end
-    local win = vim.api.nvim_get_current_win()
-    vim.wo[winid or 0].winbar = winbar
+    vim.wo[winid].winbar = winbar
 end
 
 M.prev_match_win = nil
