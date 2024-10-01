@@ -360,7 +360,7 @@ return {
                 ["@markup.strong.markdown_inline"] = { link = "Title" },
                 ["@spell"] = { link = "Comment" },
                 ["@string.escape"] = { fg = "#395C2A", style = "italic" },
-                ["@lsp.type.namespace"] = { fg = "#6B4329" },
+                ["@lsp.type.namespace"] = { link = "@variable.member.go" },
                 ["@lsp.type.macro.cpp"] = { fg = "#1F542E", style = "bold,italic" },
                 ["@lsp.typemod.keyword.documentation.lua"] = { link = "@comment" },
                 ["@lsp.type.keyword.lua"] = { link = "@comment" },
