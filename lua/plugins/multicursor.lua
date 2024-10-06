@@ -15,6 +15,8 @@ return {
                 -- use extend motions in normal mode
                 ["w"] = { method = extend.w_method, opts = { desc = "next word start" } },
                 ["d"] = { method = normal.delete, opts = { nowait = true, desc = "next word start" } },
+                ["p"] = { method = normal.replace, opts = { nowait = true, desc = "next word start" } },
+                ["P"] = { method = normal.paste_after, opts = { nowait = true, desc = "next word start" } },
                 ["b"] = { method = extend.b_method, opts = { desc = "backward word" } },
                 ["l"] = { method = extend.l_method, opts = { desc = "right" } },
                 ["h"] = { method = extend.h_method, opts = { desc = "left" } },
