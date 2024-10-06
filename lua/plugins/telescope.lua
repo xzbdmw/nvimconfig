@@ -131,15 +131,15 @@ return {
                             function()
                                 if vim.o.lines == 31 then
                                     require("config.utils").on_complete(
-                                        "╰────────────────────────────────────────────────────────╯",
-                                        "│                                                        │",
+                                        "                                                          ",
+                                        "                                                          ",
                                         16
                                     )
                                 else
                                     require("config.utils").on_complete(
-                                        "╰────────────────────────────────────────────────────────────────────────╯",
-                                        "│                                                                        │",
-                                        19
+                                        "                                                                         ",
+                                        "                                                                         ",
+                                        18
                                     )
                                 end
                             end,
@@ -167,15 +167,15 @@ return {
                             function()
                                 if vim.o.lines == 31 then
                                     require("config.utils").on_complete(
-                                        "╰─────────────────────────────────────────────────────────────────────────────────────────╯",
-                                        "│                                                                                         │",
+                                        "                                                                                           ",
+                                        "                                                                                           ",
                                         16
                                     )
                                 else
                                     require("config.utils").on_complete(
-                                        "╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯",
-                                        "│                                                                                                                  │",
-                                        19
+                                        "                                                                                                                    ",
+                                        "                                                                                                                    ",
+                                        18
                                     )
                                 end
                             end,
@@ -259,15 +259,15 @@ return {
                             function()
                                 if vim.o.lines == 31 then
                                     require("config.utils").on_complete(
-                                        "╰─────────────────────────────────────╯",
-                                        "│                                     │",
+                                        "                                       ",
+                                        "                                       ",
                                         16
                                     )
                                 else
                                     require("config.utils").on_complete(
-                                        "╰───────────────────────────────────────╯",
-                                        "│                                       │",
-                                        19
+                                        "                                         ",
+                                        "                                         ",
+                                        18
                                     )
                                 end
                             end,
@@ -307,15 +307,15 @@ return {
                             function()
                                 if vim.o.lines == 31 then
                                     require("config.utils").on_complete(
-                                        "╰─────────────────────────────────────╯",
-                                        "│                                     │",
+                                        "                                       ",
+                                        "                                       ",
                                         16
                                     )
                                 else
                                     require("config.utils").on_complete(
-                                        "╰──────────────────────────────────────────╯",
-                                        "│                                          │",
-                                        19
+                                        "                                                     ",
+                                        "                                                     ",
+                                        18
                                     )
                                 end
                             end,
@@ -333,31 +333,7 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = vim.o.lines == 31 and 0.30 or 0.27,
-                                height = 0.7,
-                            },
-                            mirror = false,
-                        },
-                    })
-                end,
-            },
-            {
-                "<leader>e",
-                function()
-                    require("telescope").extensions.smart_open.smart_open({
-                        cwd_only = true,
-                        show_scores = false,
-                        ignore_patterns = { "*.git/*", "*/tmp/*" },
-                        match_algorithm = "fzf",
-                        disable_devicons = false,
-                        open_buffer_indicators = { previous = "󰎂 ", others = "󱇽 " },
-                        prompt_title = "Smart Open",
-                        initial_mode = "insert",
-                        layout_strategy = "horizontal",
-                        previewer = false,
-                        layout_config = {
-                            horizontal = {
-                                width = 0.35,
+                                width = vim.o.lines == 31 and 0.30 or 0.32,
                                 height = 0.7,
                             },
                             mirror = false,
@@ -519,12 +495,12 @@ return {
 
                     vim.g.Base_commit = splits[1]:sub(1, 7)
                     local commit_msg = splits[2]:gsub("\n", "")
-                    if #commit_msg > 45 then
-                        local cut_pos = commit_msg:find(" ", 46)
+                    if #commit_msg > 30 then
+                        local cut_pos = commit_msg:find(" ", 31)
                         if cut_pos then
                             commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
                         else
-                            commit_msg = commit_msg:sub(1, 45) .. "…"
+                            commit_msg = commit_msg:sub(1, 30) .. "…"
                         end
                     end
                     vim.g.Base_commit_msg = commit_msg
@@ -553,12 +529,12 @@ return {
                 local sts = vim.split(selection.ordinal, " ")
                 table.remove(sts, 1)
                 local commit_msg = table.concat(sts, " ")
-                if #commit_msg > 45 then
-                    local cut_pos = commit_msg:find(" ", 46)
+                if #commit_msg > 30 then
+                    local cut_pos = commit_msg:find(" ", 31)
                     if cut_pos then
                         commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
                     else
-                        commit_msg = commit_msg:sub(1, 45) .. "…"
+                        commit_msg = commit_msg:sub(1, 30) .. "…"
                     end
                 end
                 vim.g.Base_commit_msg = vim.g.Base_commit_msg .. commit_msg
@@ -732,14 +708,17 @@ return {
                 defaults = {
                     dynamic_preview_title = true,
                     disable_devicons = true,
+                    prompt_prefix = " ",
+                    entry_prefix = " ",
+                    selection_caret = " ",
                     winblend = 0,
                     initial_mode = "insert",
                     path_display = require("custom.path_display").filenameFirstWithoutParent,
                     file_sorter = require("custom.file_sorter").file_sorter,
                     sorting_strategy = "ascending",
                     layout_strategy = "horizontal",
-                    -- borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
-                    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+                    borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
+                    -- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
                     set_env = {
                         LESS = "",
                         DELTA_PAGER = "less",
