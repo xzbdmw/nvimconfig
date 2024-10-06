@@ -258,11 +258,24 @@ api.nvim_create_autocmd("FileType", {
         end, 100)
     end,
 })
-
 api.nvim_create_autocmd("FileType", {
     pattern = "oil",
     callback = function()
-        _G.hide_cursor(function() end, 20)
+        local hl = api.nvim_get_hl_by_name("Cursor", true)
+        hl.blend = 100
+        vim.opt.guicursor:append("a:Cursor/lCursor")
+        pcall(api.nvim_set_hl, 0, "Cursor", hl)
+
+        api.nvim_create_autocmd("User", {
+            once = true,
+            pattern = "OilCursor",
+            callback = function()
+                local old_hl = hl
+                old_hl.blend = 0
+                vim.opt.guicursor:remove("a:Cursor/lCursor")
+                pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
+            end,
+        })
     end,
 })
 
@@ -382,7 +395,10 @@ api.nvim_create_autocmd("CmdlineLeave", {
 _G.glance_buffer = {}
 api.nvim_create_autocmd("BufEnter", {
     pattern = "*",
-    callback = utils.set_glance_keymap,
+    callback = function()
+        utils.set_glance_keymap()
+        utils.set_glance_winbar()
+    end,
 })
 
 api.nvim_create_autocmd("User", {
@@ -461,7 +477,6 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
     end,
 })
 
----@diagnostic disable: undefined-global
 -- bootstrap lazy.nvim, LazyVim and your plugins
 api.nvim_create_autocmd("FileType", {
     pattern = "python",
@@ -481,11 +496,6 @@ api.nvim_create_autocmd("BufWinEnter", {
         utils.set_git_winbar()
         utils.set_diagnostic_winbar()
     end,
-})
-
-api.nvim_create_autocmd("BufEnter", {
-    pattern = "*",
-    callback = utils.set_glance_winbar,
 })
 
 api.nvim_create_autocmd({ "BufWinLeave" }, {
@@ -675,23 +685,30 @@ api.nvim_create_augroup("hisel", {})
 api.nvim_create_autocmd("ModeChanged", {
     group = "hisel",
     pattern = "*:[vV\x16]",
-    callback = function()
+    callback = function(args)
         -- for viw
         vim.on_key(function(key, typed)
             local prev_text = utils.get_visual()
             vim.defer_fn(function()
+                if api.nvim_get_current_buf() ~= args.buf then
+                    return
+                end
                 local new_text = utils.get_visual()
                 if new_text ~= prev_text then
-                    utils.do_highlight()
+                    utils.do_highlight(args.buf)
                 end
             end, 10)
         end, hisel_ns)
-        utils.do_highlight()
+        utils.do_highlight(args.buf)
         -- for cr
         vim.defer_fn(function()
-            utils.do_highlight()
+            utils.do_highlight(args.buf)
         end, 10)
-        hisel_id = vim.api.nvim_create_autocmd("CursorMoved", { callback = utils.do_highlight })
+        hisel_id = vim.api.nvim_create_autocmd("CursorMoved", {
+            callback = function()
+                utils.do_highlight(args.buf)
+            end,
+        })
     end,
 })
 
