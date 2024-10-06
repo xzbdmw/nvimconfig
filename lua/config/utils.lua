@@ -624,7 +624,10 @@ function M.clear()
     M.prev_match_win = nil
 end
 
-function M.do_highlight()
+function M.do_highlight(buf)
+    if api.nvim_get_current_buf() ~= buf then
+        return
+    end
     M.clear()
     local text = M.get_visual()
     if not text or vim.trim(text) == "" or #text < 2 then
@@ -851,7 +854,7 @@ function M.set_glance_keymap()
             glance_close()
         end, { buffer = bufnr })
         vim.keymap.set("n", "<CR>", function()
-            -- _G.hide_cursor(function() end, 20)
+            _G.hide_cursor(function() end, 20)
             _G.set_cursor_animation(0.0)
             pcall(satellite_close, api.nvim_get_current_win())
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
@@ -1036,6 +1039,11 @@ function M.on_complete(bo_line, bo_line_side, origin_height)
             return
         end
         local count = api.nvim_buf_line_count(obj.results_bufnr)
+        if count == 1 and vim.api.nvim_buf_get_lines(obj.results_bufnr, 0, -1, false)[1] == "" then
+            local line = vim.api.nvim_buf_get_lines(obj.prompt_bufnr, 0, -1, false)[1]
+            local new_line = line:gsub("'", " ")
+            api.nvim_buf_set_lines(obj.prompt_bufnr, 0, -1, false, { new_line })
+        end
         local top_win = api.nvim_win_get_config(obj.results_win)
         local buttom_buf = api.nvim_win_get_buf(obj.results_win + 1)
         local bottom_win = api.nvim_win_get_config(obj.results_win + 1)
@@ -1193,12 +1201,12 @@ function M.refresh_last_commit()
                 -- We use Last instead of Base here because Base_commit=="" has special meanings
                 vim.g.Last_commit = splits[1]
                 local commit_msg = splits[2]:gsub("\n", "")
-                if #commit_msg > 45 then
-                    local cut_pos = commit_msg:find(" ", 46)
+                if #commit_msg > 30 then
+                    local cut_pos = commit_msg:find(" ", 31)
                     if cut_pos then
                         commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
                     else
-                        commit_msg = commit_msg:sub(1, 45) .. "…"
+                        commit_msg = commit_msg:sub(1, 30) .. "…"
                     end
                 end
                 vim.g.Last_commit_msg = commit_msg
@@ -1341,22 +1349,9 @@ function M.set_git_winbar()
         local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
         if hunks ~= nil and #hunks > 0 then
             if #hunks > 1 then
-                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunks" .. "] "
+                git_winbar_expr = git_winbar_expr .. "%#@diff.delta#" .. " " .. #hunks .. " "
             else
-                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. "[" .. #hunks .. " hunk" .. "] "
-            end
-        end
-        for index, icon in ipairs(icons) do
-            local name
-            if index == 1 then
-                name = "removed"
-            elseif index == 2 then
-                name = "added"
-            else
-                name = "changed"
-            end
-            if tonumber(signs[name]) and signs[name] > 0 then
-                git_winbar_expr = git_winbar_expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
+                git_winbar_expr = git_winbar_expr .. "%#@diff.delta#" .. " " .. #hunks .. " "
             end
         end
     end
