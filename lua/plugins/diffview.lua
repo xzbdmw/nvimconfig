@@ -49,7 +49,6 @@ return {
                 },
             },
             file_panel = {
-
                 listing_style = "tree", -- One of 'list' or 'tree'
                 tree_options = { -- Only applies when listing_style is 'tree'
                     flatten_dirs = true, -- Flatten dirs that only contain one single dir
@@ -83,6 +82,12 @@ return {
                 },
             },
             hooks = {
+                diff_buf_win_enter = function(bufnr, winid, ctx)
+                    if ctx ~= nil and ctx.layout_name == "diff2_horizontal" then
+                        vim.wo[winid].signcolumn = "no"
+                        vim.wo[winid].statuscolumn = ""
+                    end
+                end,
                 view_opened = function(view)
                     if view.class:name() == "FileHistoryView" then
                         vim.cmd("wincmd k")
