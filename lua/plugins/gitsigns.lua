@@ -43,12 +43,12 @@ return {
 
                 -- Navigation
                 map("n", "]c", function()
-                    gs.nav_hunk("next", { target = "unstaged" })
+                    gs.nav_hunk("next", { target = "unstaged", navigation_message = false })
                     require("config.utils").adjust_view(0, 3)
                 end)
 
                 map("n", "[c", function()
-                    gs.nav_hunk("prev", { target = "unstaged" })
+                    gs.nav_hunk("prev", { target = "unstaged", navigation_message = false })
                     require("config.utils").adjust_view(0, 3)
                 end)
 

@@ -21,11 +21,12 @@ return {
                     AND = true, -- default
                     permutations = false, -- opt-in to imply AND & match all permutations of prompt tokens
                     lnum = true, -- default, not required
-                    lnum_hl = "ChangedCmpItemKindInterface", -- default, not required, links to `Constant`
+                    lnum_hl = "CmpGhostTextNonItalic", -- default, not required, links to `Constant`
                     col = false, -- default, not required
-                    col_hl = "ChangedCmpItemKindInterface", -- default, not required, links to `Constant`
+                    col_hl = "Comment", -- default, not required, links to `Constant`
                     title = false, -- default, not required, show filename as title rather than inline
-                    filename_hl = "ChangedCmpItemKindInterface", -- default, not required, links to `Title`
+                    filename_hl = "Comment", -- default, not required, links to `Title`
+                    reuslts_ts_hl = true,
                     -- suffix = long line, see screenshot
                     -- EXAMPLE ON HOW TO ADD PREFIX!
                     prefixes = {

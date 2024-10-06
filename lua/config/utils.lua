@@ -590,6 +590,10 @@ end
 
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
+    local tabpage = api.nvim_get_current_tabpage()
+    if tabpage ~= 1 then
+        return
+    end
     local buf = winid and api.nvim_win_get_buf(winid) or 0
     winid = winid or api.nvim_get_current_win()
     local winconfig = api.nvim_win_get_config(winid)
@@ -1426,13 +1430,13 @@ _G.Time = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
     if msg == "" then
-        vim.schedule(function()
-            print(vim.inspect(duration))
-        end)
+        -- vim.schedule(function()
+        print(vim.inspect(duration))
+        -- end)
     else
-        vim.schedule(function()
-            print(msg .. ":", vim.inspect(duration))
-        end)
+        -- vim.schedule(function()
+        print(msg .. ":", vim.inspect(duration))
+        -- end)
     end
 end
 

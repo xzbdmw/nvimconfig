@@ -542,6 +542,7 @@ api.nvim_create_autocmd({ "User" }, {
         if tabcount > 1 then
             vim.cmd("tabclose! " .. 2)
         end
+        pcall(api.nvim_del_augroup_by_name, "diffview_nvim")
     end,
 })
 
