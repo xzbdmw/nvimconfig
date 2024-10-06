@@ -33,7 +33,9 @@ local function my_on_attach(bufnr)
             api.tree.toggle_git_clean_filter()
         end
         api.tree.toggle_no_arrow_filter()
-        require("nvim-tree.api").tree.expand_all()
+        if not is_arrow_filter_activated then
+            require("nvim-tree.api").tree.expand_all()
+        end
     end
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>A", toggle_arrow_filter)
@@ -48,7 +50,9 @@ local function my_on_attach(bufnr)
             api.tree.toggle_git_clean_filter()
         end
         api.tree.toggle_no_buffer_filter()
-        require("nvim-tree.api").tree.expand_all()
+        if not is_buffer_filter_activated then
+            require("nvim-tree.api").tree.expand_all()
+        end
     end
     keymap("n", "B", toggle_buffer_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>B", toggle_buffer_filter)
