@@ -91,13 +91,15 @@ return {
                 view_opened = function(view)
                     if view.class:name() == "FileHistoryView" then
                         vim.cmd("wincmd k")
-                        vim.cmd("wincmd x")
-                        vim.cmd("wincmd j")
+                        vim.cmd("wincmd l")
+                        FeedKeys("<c-->", "m")
                     end
 
                     if view.class:name() == "DiffView" then
                         vim.cmd("wincmd l")
-                        vim.cmd("wincmd x")
+                        vim.cmd("wincmd l")
+                        vim.cmd("DiffviewToggleFiles")
+                        FeedKeys("<c-->", "m")
                     end
                 end,
             },
@@ -125,8 +127,7 @@ return {
                         "n",
                         "n",
                         function()
-                            local gs = package.loaded.gitsigns
-                            gs.next_hunk()
+                            FeedKeys("]c", "m")
                         end,
                         { desc = "next hunk" },
                     },
@@ -134,8 +135,7 @@ return {
                         "n",
                         "N",
                         function()
-                            local gs = package.loaded.gitsigns
-                            gs.prev_hunk()
+                            FeedKeys("[c", "m")
                         end,
                         { desc = "prev hunk" },
                     },
@@ -230,7 +230,20 @@ return {
                         "n",
                         "<D-1>",
                         function()
+                            local winbar = vim.wo.winbar
+                            local fname = vim.split(winbar, " ", { plain = true })[5]
+                            fname = vim.fs.basename(fname)
                             vim.cmd("DiffviewToggleFiles")
+                            local win = vim.api.nvim_get_current_win()
+                            local buf = vim.api.nvim_win_get_buf(win)
+                            local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+                            for i = 1, #lines do
+                                if string.find(lines[i], fname, nil, true) then
+                                    api.nvim_win_set_cursor(win, { i, 0 })
+                                    break
+                                end
+                            end
+                            vim.cmd("wincmd p")
                         end,
                         { desc = "Toggle the file panel" },
                     },
