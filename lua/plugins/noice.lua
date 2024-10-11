@@ -19,6 +19,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "Finding references" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "notify.warn", find = "is_enabled" },
                     opts = { skip = true },
                 },
