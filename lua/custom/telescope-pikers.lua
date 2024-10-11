@@ -250,6 +250,12 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             if filetype == "rust" then
                 filetype = "rs"
             end
+            if filetype == "python" then
+                filetype = "py"
+            end
+            if filetype == "txt" then
+                filetype = "text"
+            end
             if filetype ~= "" then
                 pickerAndOptions.options.default_text = "`" .. filetype .. " " .. reformated_body
             else
