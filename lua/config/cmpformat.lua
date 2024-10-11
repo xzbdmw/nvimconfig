@@ -94,12 +94,12 @@ local function go_sort(kind1, kind2, entry1, entry2)
         return true
     end
     -- Put down moudle
-    if kind1 == 9 then
-        return false
-    end
-    if kind2 == 9 then
-        return true
-    end
+    -- if kind1 == 9 then
+    --     return false
+    -- end
+    -- if kind2 == 9 then
+    --     return true
+    -- end
     return nil
 end
 
