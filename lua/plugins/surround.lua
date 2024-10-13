@@ -71,11 +71,5 @@ return {
                 end)
             end, keymap_ops)
         end, 2000)
-
-        keymap("o", "of", function()
-            FeedKeys("<esc>m6", "n")
-            FeedKeys("daf", "m")
-            FeedKeys("`6", "n")
-        end)
     end,
 }

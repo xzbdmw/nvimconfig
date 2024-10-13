@@ -31,8 +31,6 @@ return {
                     }
                     return { from = from, to = to }
                 end,
-                C = ai.gen_spec.function_call(),
-                c = ai.gen_spec.function_call({ name_pattern = "[%w_]" }),
             },
         }
     end,
