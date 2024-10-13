@@ -11,14 +11,14 @@ return {
                 api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
                 api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 api.nvim_buf_del_keymap(bufnr, "n", "q")
+                vim.keymap.set("v", "<CR>", function()
+                    require("nvim-treesitter.incremental_selection").node_incremental()
+                end, { buffer = bufnr })
+                vim.keymap.set("n", "<CR>", function()
+                    require("nvim-treesitter.incremental_selection").init_selection()
+                end, { buffer = bufnr })
             end
             _G.glance_buffer = {}
-            vim.keymap.set("v", "<CR>", function()
-                vim.cmd([[:'<,'>lua require("nvim-treesitter.incremental_selection").node_incremental()]])
-            end, { buffer = true })
-            vim.keymap.set("n", "<CR>", function()
-                require("nvim-treesitter.incremental_selection").init_selection()
-            end, { buffer = true })
             _G.reference = false
         end
 
