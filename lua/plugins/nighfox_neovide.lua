@@ -345,6 +345,8 @@ return {
                 ["@string.regexp.lua"] = { link = "@string.escape" },
                 ["@lsp.type.macro.lua"] = { link = "@variable" },
                 ["@go.error.go"] = { link = "@interface.name" },
+                ["@go.string.go"] = { link = "Keyword" },
+                ["@constant.go"] = { link = "@lsp.mod.const.go" },
                 ["@lsp.mod.const.go"] = { fg = "#000000", style = "underline" },
                 ["@spell.xml"] = { link = "@none" },
                 ["@receiver"] = { fg = "#000000", style = "italic" },
