@@ -145,6 +145,12 @@ return {
 
                 map("n", "<leader>si", function()
                     toggle_inline_diff()
+                    local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
+                    for _, time in ipairs(times) do
+                        vim.defer_fn(function()
+                            vim.cmd("redraw!")
+                        end, time)
+                    end
                 end)
 
                 map("n", "<leader>sk", function()
