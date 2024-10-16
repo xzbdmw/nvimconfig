@@ -127,7 +127,16 @@ return {
                         "n",
                         "n",
                         function()
-                            FeedKeys("]c", "m")
+                            if vim.v.hlsearch == 0 then
+                                FeedKeys("]c", "m")
+                            else
+                                local mode = _G.searchmode
+                                if mode == "/" then
+                                    vim.cmd("normal! nzz")
+                                else
+                                    vim.cmd("normal! Nzz")
+                                end
+                            end
                         end,
                         { desc = "next hunk" },
                     },
@@ -135,6 +144,17 @@ return {
                         "n",
                         "N",
                         function()
+                            if vim.v.hlsearch == 0 then
+                                FeedKeys("[c", "m")
+                            else
+                                local mode = _G.searchmode
+                                if mode ~= "/" then
+                                    vim.cmd("normal! nzz")
+                                else
+                                    vim.cmd("normal! Nzz")
+                                end
+                                return
+                            end
                             FeedKeys("[c", "m")
                         end,
                         { desc = "prev hunk" },
