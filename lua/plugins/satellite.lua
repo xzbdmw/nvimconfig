@@ -19,7 +19,7 @@ return {
                 search = {
                     enable = true,
                     signs = { "=" },
-                    overlap = false,
+                    overlap = true,
                     -- Highlights:
                     -- - SatelliteSearch (default links to Search)
                     -- - SatelliteSearchCurrent (default links to SearchCurrent)
