@@ -7,7 +7,7 @@ return {
             map = "<c-e>",
             chars = { "{", "[", "(", '"', "'", "<" },
             mirror_chars = { "}", "]", ")", '"', "'", ">" },
-            pattern = [=[[%'%"%>%]%)%s%}%,]]=],
+            pattern = [=[[%'%"%>%]%)%;%s%}%,]]=],
             end_key = "e",
             before_key = "h",
             after_key = "l",
