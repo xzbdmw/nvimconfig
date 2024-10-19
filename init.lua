@@ -119,6 +119,15 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("FileType", {
+    pattern = { "lazy" },
+    callback = function(args)
+        vim.defer_fn(function()
+            pcall(vim.api.nvim_buf_del_keymap, args.buf, "n", "U")
+        end, 500)
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
     pattern = { "undotree", "diff" },
     callback = function(args)
         local win = vim.fn.win_findbuf(args.buf)[1]

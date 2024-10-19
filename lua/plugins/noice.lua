@@ -19,6 +19,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "refused to load this directory" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { find = "Finding references" },
                     opts = { skip = true },
                 },
