@@ -1296,7 +1296,7 @@ end
 function M.refresh_diagnostic_winbar()
     local expr = vim.b.diag_winbar
     if api.nvim_get_mode().mode == "n" and expr ~= nil then
-        if vim.b.git_winbar_expr ~= nil then
+        if vim.b.git_winbar_expr ~= nil and vim.api.nvim_win_get_config(0).zindex ~= 10 then
             _G.set_winbar(vim.b.winbar_expr .. expr .. "%= " .. vim.b.git_winbar_expr)
         else
             _G.set_winbar(vim.b.winbar_expr .. expr)
