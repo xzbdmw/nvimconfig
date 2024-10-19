@@ -557,6 +557,9 @@ return {
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local prompt_win = picker.prompt_win
                 local previewer = picker.previewer
+                if previewer == nil then
+                    return
+                end
                 local winid = previewer.state.winid
                 local bufnr = previewer.state.bufnr
                 if previewer.state.winid == nil then
@@ -706,6 +709,9 @@ return {
 
             require("telescope").setup({
                 defaults = {
+                    preview = {
+                        highlight_limit = 0.08,
+                    },
                     dynamic_preview_title = true,
                     disable_devicons = true,
                     prompt_prefix = " ",
@@ -815,8 +821,8 @@ return {
                             ["<Tab>"] = focus_preview,
                             ["<c-g>"] = "to_fuzzy_refine",
                             ["<down>"] = function(prompt_bufnr)
-                                local cmp = require("cmp")
-                                if cmp.visible() then
+                                local ok, cmp = pcall(require, "cmp")
+                                if ok and cmp.visible() then
                                     if cmp.core.view.custom_entries_view:is_direction_top_down() then
                                         _G.no_animation(_G.CI)
                                         cmp.select_next_item()
@@ -828,8 +834,8 @@ return {
                                 end
                             end,
                             ["<up>"] = function(prompt_bufnr)
-                                local cmp = require("cmp")
-                                if cmp.visible() then
+                                local ok, cmp = pcall(require, "cmp")
+                                if ok and cmp.visible() then
                                     if cmp.core.view.custom_entries_view:is_direction_top_down() then
                                         _G.no_animation(_G.CI)
                                         cmp.select_prev_item()
@@ -876,8 +882,8 @@ return {
                                 FeedKeys("<END>", "t")
                             end,
                             ["<CR>"] = function(bufnr)
-                                local cmp = require("cmp")
-                                if cmp.visible() then
+                                local ok, cmp = pcall(require, "cmp")
+                                if ok and cmp.visible() then
                                     _G.no_animation(_G.CI)
                                     cmp.confirm({ select = true })
                                 else
