@@ -1,5 +1,11 @@
 local f = require("config.cmpformat")
 local utils = require("config.utils")
+local ignore = function()
+    vim.o.eventignore = "TextChangedI"
+    vim.defer_fn(function()
+        vim.o.eventignore = ""
+    end, 10)
+end
 return {
     -- "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -118,9 +124,11 @@ return {
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
+                            ignore()
                             cmp.select_next_item()
                             -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         else
+                            ignore()
                             cmp.select_prev_item()
                         end
                     else
@@ -131,8 +139,10 @@ return {
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
+                            ignore()
                             cmp.select_prev_item()
                         else
+                            ignore()
                             cmp.select_next_item()
                         end
                     else

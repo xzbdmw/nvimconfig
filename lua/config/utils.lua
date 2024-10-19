@@ -1304,6 +1304,24 @@ function M.refresh_diagnostic_winbar()
     end
 end
 
+--- @generic F: function
+--- @param f F
+--- @param ms? number
+--- @return F
+function M.throttle(f, ms)
+    ms = ms or 200
+    local timer = vim.loop.new_timer()
+    return function()
+        if timer:is_active() then
+            return
+        end
+        f()
+        timer:start(ms, 0, function()
+            timer:stop()
+        end)
+    end
+end
+
 function M.set_diagnostic_winbar()
     if
         vim.fn.reg_recording() ~= ""
