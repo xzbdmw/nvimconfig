@@ -44,7 +44,9 @@ return {
                     return
                 end
                 local cnt = #posList
-                local count = (" [%d of %d]"):format(idx, cnt)
+                local left = (" [%d"):format(idx)
+                local of = " of"
+                local right = (" %d]"):format(cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
                     cmd = vim.trim(vim.fn.getreg("/")) -- because use cmp tab to select does not update search pattern
@@ -55,7 +57,9 @@ return {
                     { " " },
                     { mode, "HlSearchLensCount" },
                     { cmd, "HlSearchLensNear" },
-                    { count, "HlSearchLensCount" },
+                    { left, "HlSearchLensCount" },
+                    { of, "HlSearchLensCountItalic" },
+                    { right, "HlSearchLensCount" },
                 }
                 vim.defer_fn(function()
                     require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)

@@ -904,6 +904,7 @@ return {
                             end,
                         },
                         n = {
+                            ["R"] = focus_result,
                             ["<C-c>"] = function(bufnr)
                                 _G.last = nil
                                 actions.close(bufnr)

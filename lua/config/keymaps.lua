@@ -234,6 +234,10 @@ keymap({ "x", "n" }, "c", function()
     _G.no_animation(_G.CI)
     return '"_c'
 end, { expr = true })
+keymap({ "v" }, "<d-v>", function()
+    FeedKeys("<bs>i", "n")
+    FeedKeys("<d-v>", "m")
+end, opts)
 keymap("o", "c", function()
     _G.no_animation(_G.CI)
     return "c"
