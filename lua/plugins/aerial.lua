@@ -123,7 +123,17 @@ return {
             --     "Struct",
             --     "Object",
             -- },
-            filter_kind = false,
+            filter_kind = {
+                "Class",
+                "Constructor",
+                "Enum",
+                "Function",
+                "Interface",
+                "Module",
+                "Method",
+                "Struct",
+                "Object",
+            },
 
             -- Determines line highlighting mode when multiple splits are visible.
             -- split_width   Each open window will have its cursor location marked in the
