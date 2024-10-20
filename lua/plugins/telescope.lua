@@ -163,7 +163,6 @@ return {
                     require("telescope").extensions["neovim-project"].discover({
                         layout_strategy = "horizontal",
                         on_complete = {
-
                             function()
                                 if vim.o.lines == 31 then
                                     require("config.utils").on_complete(
@@ -926,8 +925,12 @@ return {
                                 vim.cmd("startinsert")
                                 actions.to_fuzzy_refine(bufnr)
                             end,
-                            J = actions.preview_scrolling_down,
-                            K = actions.preview_scrolling_up,
+                            J = function(bufnr)
+                                require("telescope.actions.set").shift_selection(bufnr, 3)
+                            end,
+                            K = function(bufnr)
+                                require("telescope.actions.set").shift_selection(bufnr, -3)
+                            end,
                             ["s"] = function(bufnr)
                                 actions.toggle_selection(bufnr)
                                 FeedKeys("j", "m")
@@ -995,6 +998,8 @@ return {
                         },
                         mappings = {
                             n = {
+                                J = actions.preview_scrolling_down,
+                                K = actions.preview_scrolling_up,
                                 ["<Tab>"] = focus_preview,
                                 ["<cr>"] = goto_next_hunk_cr,
                                 ["S"] = function()
@@ -1139,6 +1144,8 @@ return {
                         },
                         mappings = {
                             n = {
+                                J = actions.preview_scrolling_down,
+                                K = actions.preview_scrolling_up,
                                 ["<CR>"] = gitsign_change_base,
                                 ["p"] = gitsign_change_base_pre,
                                 ["/"] = function()
