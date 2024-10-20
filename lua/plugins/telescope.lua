@@ -863,6 +863,9 @@ return {
                                 _G.last = nil
                                 actions.close(bufnr)
                             end,
+                            ["<C-cr>"] = function(bufnr)
+                                FeedKeys("<cr>", "t")
+                            end,
                             ["<C-d>"] = function()
                                 FeedKeys("<c-w>", "t")
                             end,
@@ -911,6 +914,9 @@ return {
                         },
                         n = {
                             ["R"] = focus_result,
+                            ["<C-cr>"] = function(bufnr)
+                                FeedKeys("<cr>", "t")
+                            end,
                             ["<C-c>"] = function(bufnr)
                                 _G.last = nil
                                 actions.close(bufnr)

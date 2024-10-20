@@ -376,6 +376,7 @@ return {
                 ["@lsp.typemod.method.unsafe.rust"] = { fg = "#215062", bg = "#F8E6D5" },
                 ["@lsp.typemod.parameter.callable.rust"] = { fg = "#215062" },
                 ["@lsp.type.property"] = { fg = "#152381" },
+                ["@printf.printf"] = { link = "@property.go" },
                 ["@lsp.type.variable"] = { fg = "#000000" },
                 ["@lsp.type.interface"] = { link = "@trait.definition" },
                 ["@lsp.type.variable.go"] = {},
