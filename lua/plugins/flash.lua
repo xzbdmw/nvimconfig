@@ -68,7 +68,7 @@ return {
             },
             jump = {
                 -- save location in the jumplist
-                jumplist = true,
+                jumplist = false,
                 -- jump position
                 pos = "start", ---@type "start" | "end" | "range"
                 -- add pattern to search history
