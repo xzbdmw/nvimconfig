@@ -313,9 +313,21 @@ return {
                 { name = "luasnip" },
                 { name = "path" },
             }, {
-                { name = "rg" },
-            }, {
-                { name = "buffer" },
+                {
+                    name = "buffer",
+                    option = {
+                        get_bufnrs = function()
+                            local bufs = {}
+                            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                                local buf = vim.api.nvim_win_get_buf(win)
+                                if vim.bo[buf].filetype ~= "NvimTree" then
+                                    bufs[buf] = true
+                                end
+                            end
+                            return vim.tbl_keys(bufs)
+                        end,
+                    },
+                },
             }, {
                 { name = "dictionary" },
             }),
@@ -369,7 +381,9 @@ return {
                     f.put_down_snippet,
                     compare.score,
                     compare.recently_used,
-                    compare.locality,
+                    function(...)
+                        return require("cmp_buffer"):compare_locality(...)
+                    end,
                     compare.offset,
                 },
             },
@@ -467,8 +481,6 @@ return {
                 end, { "i", "c", "s" }),
             }),
             sources = cmp.config.sources({
-                { name = "rg" },
-            }, {
                 { name = "buffer" },
             }, {
                 {
