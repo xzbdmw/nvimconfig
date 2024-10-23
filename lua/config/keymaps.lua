@@ -297,6 +297,8 @@ end)
 
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
+keymap("n", "gf", "gFzz", { remap = true })
+keymap("n", "gg", "ggzz", { remap = true })
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap("c", "<d-s>", function()
