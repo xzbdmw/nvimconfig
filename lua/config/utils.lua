@@ -1404,8 +1404,13 @@ function M.set_git_winbar()
     end
 end
 
-function M.set_winbar()
-    if vim.bo.filetype == "NvimTree" or vim.bo.filetype == "toggleterm" or vim.bo.filetype == "DiffviewFiles" then
+function M.set_winbar(buf)
+    if
+        buf ~= api.nvim_get_current_buf()
+        or vim.bo.filetype == "NvimTree"
+        or vim.bo.filetype == "toggleterm"
+        or vim.bo.filetype == "DiffviewFiles"
+    then
         return
     end
     local filename = vim.fn.expand("%:t")
