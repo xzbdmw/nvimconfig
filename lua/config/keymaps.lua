@@ -298,7 +298,15 @@ end)
 keymap("n", "D", "d$", opts)
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "gf", "gFzz", { remap = true })
-keymap("n", "gg", "ggzz", { remap = true })
+keymap("n", "gg", function()
+    vim.api.nvim_create_autocmd("CursorMoved", {
+        once = true,
+        callback = function()
+            vim.cmd("norm zz")
+        end,
+    })
+    return "gg"
+end, { expr = true })
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap("c", "<d-s>", function()
