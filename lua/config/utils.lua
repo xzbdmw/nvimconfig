@@ -1404,6 +1404,18 @@ function M.set_git_winbar()
     end
 end
 
+function M.visual_search(cmd)
+    local chunks = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { type = vim.fn.mode() })
+    local esc_chunks = vim.iter(chunks)
+        :map(function(v)
+            return vim.fn.escape(v, cmd == "/" and [[/\]] or [[?\]])
+        end)
+        :totable()
+    local esc_pat = table.concat(esc_chunks, [[\n]])
+    local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
+    return "\27" .. search_cmd .. "N"
+end
+
 function M.set_winbar(buf)
     if
         buf ~= api.nvim_get_current_buf()

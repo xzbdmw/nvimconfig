@@ -295,7 +295,17 @@ keymap({ "n" }, "<C-n>", function()
     FeedKeys("n", "m")
 end)
 
+keymap("x", "*", function()
+    return utils.visual_search("/")
+end, { desc = ":help v_star-default", expr = true, silent = true })
+keymap("x", "#", function()
+    return utils.visual_search("?")
+end, { desc = ":help v_star-default", expr = true, silent = true })
 keymap("n", "D", "d$", opts)
+keymap("n", "<d-f>", function()
+    return "/" .. string.gsub(vim.fn.getreg("+"), "\n", "") .. "<CR>"
+end, { expr = true })
+
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "gf", "gFzz", { remap = true })
 keymap("n", "gg", function()
@@ -682,7 +692,16 @@ end, opts)
 keymap("n", "zz", function()
     utils.adjust_view(0, 3)
 end, opts)
-
+keymap("n", "<M-Tab>", function()
+    vim.g.hide_prompt = true
+    vim.defer_fn(function()
+        vim.g.hide_prompt = false
+    end, 100)
+    require("custom.telescope-pikers").prettyBuffersPicker(true, "normal")
+    vim.schedule(function()
+        FeedKeys("<down>", "t")
+    end)
+end, opts)
 keymap("n", "<leader>d", function()
     ST = vim.uv.hrtime()
     if api.nvim_win_get_config(api.nvim_get_current_win()).zindex == 10 then

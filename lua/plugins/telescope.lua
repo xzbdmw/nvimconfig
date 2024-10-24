@@ -363,14 +363,6 @@ return {
                     })
                 end,
             },
-            {
-                "<D-f>",
-                function()
-                    vim.cmd("normal! m'")
-                    vim.cmd("Telescope current_buffer_fuzzy_find")
-                end,
-                mode = { "n", "i" },
-            },
         },
         config = function()
             local yank_selected_entry = function(prompt_bufnr)
@@ -1250,9 +1242,32 @@ return {
                     },
                     buffers = {
                         initial_mode = "normal",
+                        on_complete = {
+                            function()
+                                if vim.o.lines == 31 then
+                                    require("config.utils").on_complete(
+                                        "                                       ",
+                                        "                                       ",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "                                                     ",
+                                        "                                                     ",
+                                        18
+                                    )
+                                end
+                            end,
+                        },
                         mappings = {
                             n = {
                                 ["d"] = "delete_buffer",
+                                ["<M-Tab>"] = function(prompt_bufnr)
+                                    require("telescope.actions.set").shift_selection(prompt_bufnr, 1)
+                                end,
+                                ["<f19>"] = function(prompt_bufnr)
+                                    actions.select_default(prompt_bufnr)
+                                end,
                             },
                         },
                         show_all_buffers = false,
