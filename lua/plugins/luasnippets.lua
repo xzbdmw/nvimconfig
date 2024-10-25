@@ -358,6 +358,17 @@ return {
             s("ie", fmta("if err != nil {\n\treturn <err>\n}", { err = i(1, "err") })),
         })
         ls.add_snippets("go", {
+            postfix(".wrap", {
+                d(1, function(_, parent)
+                    return sn(
+                        1,
+                        fmta("<err>(" .. parent.snippet.env.POSTFIX_MATCH .. ")<finish>", {
+                            err = i(1, "type"),
+                            finish = i(0),
+                        })
+                    )
+                end),
+            }),
             postfix(".byte", {
                 f(function(_, parent)
                     return "[]byte(" .. parent.snippet.env.POSTFIX_MATCH .. ")"

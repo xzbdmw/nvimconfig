@@ -24,6 +24,14 @@ return {
                 expr = true,
             },
             {
+                "<D-f>",
+                function()
+                    vim.cmd("normal! m'")
+                    vim.cmd("Telescope current_buffer_fuzzy_find")
+                end,
+                mode = { "n", "i" },
+            },
+            {
                 "<leader>sh",
                 false,
             },

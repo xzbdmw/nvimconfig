@@ -285,6 +285,7 @@ keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLi
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
+keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>M", function()
     vim.g.skip_noice = not vim.g.skip_noice
 end, opts)
@@ -302,9 +303,6 @@ keymap("x", "#", function()
     return utils.visual_search("?")
 end, { desc = ":help v_star-default", expr = true, silent = true })
 keymap("n", "D", "d$", opts)
-keymap("n", "<d-f>", function()
-    return "/" .. string.gsub(vim.fn.getreg("+"), "\n", "") .. "<CR>"
-end, { expr = true })
 
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "gf", "gFzz", { remap = true })

@@ -545,12 +545,6 @@ function M.search(mode)
             vim.o.scrolloff = 999
         end,
     })
-    -- api.nvim_create_autocmd("CmdlineLeave", {
-    --     once = true,
-    --     callback = function()
-    --         require("treesitter-context").close_all()
-    --     end,
-    -- })
     vim.cmd("Noice disable")
     _G.parent_winid = vim.api.nvim_get_current_win()
     _G.parent_bufnr = vim.api.nvim_get_current_buf()
@@ -1413,6 +1407,7 @@ function M.visual_search(cmd)
         :totable()
     local esc_pat = table.concat(esc_chunks, [[\n]])
     local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
+    _G.searchmode = cmd
     return "\27" .. search_cmd .. "N"
 end
 
