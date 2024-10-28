@@ -567,6 +567,7 @@ return {
                 WinBarNC = { link = "WinBar" },
                 TreesitterContextLineNumber = { fg = "#B6B7B9", bg = "#FAFAFA" },
                 NvimTreeNormal = { bg = "#F0F0F0", fg = "#3B4D56" },
+                NvimTreeSymlink = { link = "NvimTreeNormal" },
                 NvimTreeCursorLine = { bg = "#E3E1E1" },
                 NvimTreeOpenedHL = { fg = "#000000" },
                 NvimTreeFolderName = { fg = "#3B4D56" },

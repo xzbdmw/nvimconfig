@@ -501,9 +501,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*",
     callback = function(args)
-        vim.schedule(function()
-            utils.set_winbar(args.buf)
-        end)
+        utils.set_winbar(args.buf)
         utils.set_git_winbar()
         utils.set_diagnostic_winbar()
     end,

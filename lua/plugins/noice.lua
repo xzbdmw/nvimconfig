@@ -19,6 +19,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "Invalid offset LineCol" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { find = "refused to load this directory" },
                     opts = { skip = true },
                 },

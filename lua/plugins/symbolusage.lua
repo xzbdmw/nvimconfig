@@ -1,5 +1,6 @@
 return {
     "Wansmer/symbol-usage.nvim",
+    enabled = false,
     keys = {
         {
             "<leader>cl",

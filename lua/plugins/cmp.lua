@@ -69,7 +69,7 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 0,
-                fetching_timeout = 200,
+                fetching_timeout = 20000,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
                 max_view_entries = 100,
