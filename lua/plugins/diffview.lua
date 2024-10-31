@@ -258,6 +258,9 @@ return {
                             local buf = vim.api.nvim_win_get_buf(win)
                             local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
                             for i = 1, #lines do
+                                if lines[i] == nil then
+                                    return
+                                end
                                 if string.find(lines[i], fname, nil, true) then
                                     api.nvim_win_set_cursor(win, { i, 0 })
                                     break

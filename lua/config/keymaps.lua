@@ -4,7 +4,6 @@ local utils = require("config.utils")
 local keymap = vim.keymap.set
 
 keymap({ "n", "i" }, "<D-s>", function()
-    WT = vim.uv.hrtime()
     keymap({ "n" }, "<f16>", "k", opts)
     vim.defer_fn(function()
         keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
@@ -17,6 +16,7 @@ keymap("n", "<leader>W", function()
     vim.o.eventignore = "all"
     vim.cmd("wall")
     vim.o.eventignore = origin
+    vim.cmd("write")
 end, opts)
 
 keymap({ "n" }, "g;", function()
@@ -30,6 +30,16 @@ end, { expr = true, remap = true })
 keymap({ "n" }, "g,", function()
     return "g,zz"
 end, { expr = true })
+
+keymap({ "n" }, "<c-;>", function()
+    FeedKeys("`M", "n")
+    FeedKeys("zz", "m")
+end, opts)
+
+keymap({ "n" }, "g<c-;>", function()
+    FeedKeys("`I", "n")
+    FeedKeys("zz", "m")
+end, opts)
 
 keymap({ "n" }, "/", function()
     utils.once(function()
