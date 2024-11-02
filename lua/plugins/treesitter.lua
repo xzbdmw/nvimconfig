@@ -42,6 +42,15 @@ return {
             },
         },
         textobjects = {
+            swap = {
+                enable = true,
+                swap_next = {
+                    ["<leader>an"] = "@parameter.inner",
+                },
+                swap_previous = {
+                    ["<leader>ap"] = "@parameter.inner",
+                },
+            },
             select = {
                 enable = true,
                 -- Automatically jump forward to textobj, similar to targets.vim
@@ -76,9 +85,9 @@ return {
             },
             move = {
                 goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-                goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+                goto_next_end = { ["]e"] = "@function.outer", ["]C"] = "@class.outer" },
                 goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-                goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+                goto_previous_end = { ["[e"] = "@function.outer", ["[C"] = "@class.outer" },
             },
         },
     },
