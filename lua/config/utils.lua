@@ -55,7 +55,7 @@ function _G.hide_cursor(callback, timeout)
     end, timeout)
 end
 
-local function check_trouble()
+function M.check_trouble()
     local ret = false
     if require("trouble").is_open("qflist") then
         vim.cmd("Trouble qflist toggle focus=false")
@@ -193,7 +193,7 @@ function M.close_win()
         FeedKeys("<f16>", "m")
         return
     end
-    if M.has_filetype("trouble") and check_trouble() then
+    if M.has_filetype("trouble") and M.check_trouble() then
         return
     end
     if require("config.utils").has_filetype("gitsigns.blame") then
@@ -880,6 +880,7 @@ function CloseFromLazygit()
         M.refresh_last_commit()
         M.update_diff_file_count()
         M.refresh_nvim_tree_git()
+        vim.cmd("checktime")
     end, 10)
 end
 

@@ -224,8 +224,8 @@ keymap("n", "<leader><leader>g", function()
     vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
 end, opts)
 
-keymap("n", "<right>", "]", { remap = true })
-keymap("n", "<left>", "[", { remap = true })
+keymap({ "n", "x" }, "<right>", "]", { remap = true })
+keymap({ "n", "x" }, "<left>", "[", { remap = true })
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
@@ -304,6 +304,10 @@ keymap("i", "<f12>", "<cmd>messages clear<CR>", opts)
 keymap({ "n" }, "<C-n>", function()
     vim.cmd("MCstart")
     FeedKeys("n", "m")
+end)
+
+keymap({ "x" }, "n", function()
+    vim.cmd("MCstart")
 end)
 
 keymap("x", "*", function()
@@ -452,17 +456,18 @@ keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
 
 keymap("n", "<D-2>", function()
-    local cur_win = api.nvim_get_current_win()
-    local wins = api.nvim_list_wins()
-    for _, win in ipairs(wins) do
-        if win == cur_win then
-            goto continue
-        end
-        if api.nvim_win_is_valid(win) and api.nvim_win_get_config(win).relative == "" then
-            api.nvim_win_close(win, true)
-        end
-        ::continue::
+    if utils.has_filetype("trouble") and utils.check_trouble() then
     end
+    if
+        utils.has_namespace("gitsigns_signs_staged", "highlight") or utils.has_namespace("gitsigns_signs_", "highlight")
+    then
+        FeedKeys("<leader>si", "m")
+    end
+    local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
+    if is_git_filter_activated then
+        FeedKeys("S", "m")
+    end
+    FeedKeys("zz", "m")
 end, opts)
 
 keymap("n", "gq", function()
