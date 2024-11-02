@@ -13,8 +13,6 @@ return {
                     if luasnip.jumpable(1) then
                         _G.no_animation(_G.CI)
                         luasnip.jump(1)
-                    else
-                        vim.cmd("MCstart")
                     end
                 end,
                 { silent = true },

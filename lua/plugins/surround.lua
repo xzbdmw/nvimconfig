@@ -39,7 +39,7 @@ return {
             FeedKeys('ma"', "t")
         end, keymap_ops)
 
-        keymap("x", "[", function()
+        keymap("x", "[[", function()
             FeedKeys("ma[h", "t")
             vim.schedule(function()
                 FeedKeys("%", "m")
