@@ -965,6 +965,9 @@ return {
                     },
                 },
                 pickers = {
+                    resume = {
+                        initial_mode = "normal",
+                    },
                     git_branches = {
                         initial_mode = "normal",
                         layout_strategy = "vertical",

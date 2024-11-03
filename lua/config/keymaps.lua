@@ -31,16 +31,6 @@ keymap({ "n" }, "g,", function()
     return "g,zz"
 end, { expr = true })
 
-keymap({ "n" }, "<c-;>", function()
-    FeedKeys("`M", "n")
-    FeedKeys("zz", "m")
-end, opts)
-
-keymap({ "n" }, "g<c-;>", function()
-    FeedKeys("`I", "n")
-    FeedKeys("zz", "m")
-end, opts)
-
 keymap({ "n" }, "/", function()
     utils.once(function()
         vim.api.nvim_exec_autocmds("User", {

@@ -821,7 +821,7 @@ function M.update_preview_state(bufnr, winid)
             require("treesitter-context").context_force_update(bufnr, winid)
             pcall(_G.indent_update, winid)
         end)
-    end, 5)
+    end, 20)
 end
 
 function M.set_glance_keymap()

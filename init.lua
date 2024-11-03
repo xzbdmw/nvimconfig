@@ -393,6 +393,7 @@ api.nvim_create_autocmd("CmdlineLeave", {
         end
         vim.defer_fn(function()
             vim.o.scrolloff = 6
+            FeedKeys("zz", "m")
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
