@@ -1347,7 +1347,7 @@ function M.set_diagnostic_winbar()
 end
 
 function M.set_git_winbar()
-    local icons = { " ", " ", " " }
+    local icons = { " ", " ", " " }
     local signs = vim.b.gitsigns_status_dict
 
     if
@@ -1363,10 +1363,19 @@ function M.set_git_winbar()
     if signs ~= nil and signs ~= "" then
         local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
         if hunks ~= nil and #hunks > 0 then
-            if #hunks > 1 then
-                git_winbar_expr = git_winbar_expr .. "%#@diff.delta#" .. " " .. #hunks .. " "
-            else
-                git_winbar_expr = git_winbar_expr .. "%#@diff.delta#" .. " " .. #hunks .. " "
+            if #hunks >= 1 then
+                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " " .. #hunks .. " "
+            end
+        end
+        for index, icon in ipairs(icons) do
+            local name
+            if index == 1 then
+                name = "added"
+            elseif index == 2 then
+                name = "removed"
+            end
+            if tonumber(signs[name]) and signs[name] > 0 then
+                git_winbar_expr = git_winbar_expr .. "%#" .. "Diff" .. name .. "#" .. icon .. signs[name] .. " "
             end
         end
     end
@@ -1376,7 +1385,7 @@ function M.set_git_winbar()
     if vim.g.Base_commit_msg ~= "" then
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " (" .. vim.g.Diff_file_count .. ") "
+            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " [" .. vim.g.Diff_file_count .. "] "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
