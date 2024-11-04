@@ -6,6 +6,52 @@ return {
         return {
             n_lines = 2000,
             custom_textobjects = {
+                [","] = function()
+                    local line = vim.api.nvim_get_current_line()
+                    local cursor_pos = vim.fn.col(".")
+                    local left_comma, right_comma = nil, nil
+                    local left_first_space, right_first_space = nil, nil
+
+                    for i = cursor_pos, 1, -1 do
+                        if i ~= cursor_pos and (line:sub(i, i) == " " or line:sub(i, i) == "\t") then
+                            if left_first_space == nil then
+                                left_first_space = i
+                            end
+                        end
+                        if line:sub(i, i) == "," then
+                            left_comma = i
+                            break
+                        end
+                    end
+                    for i = cursor_pos, #line do
+                        if i ~= cursor_pos and (line:sub(i, i) == " " or line:sub(i, i) == "\t") then
+                            right_first_space = i
+                            break
+                        end
+                        if line:sub(i, i) == "," then
+                            right_comma = i
+                            break
+                        end
+                    end
+                    if left_comma and right_comma then
+                        return {
+                            from = { line = vim.fn.line("."), col = left_comma + 1 },
+                            to = { line = vim.fn.line("."), col = right_comma - 1 },
+                        }
+                    elseif right_comma and not left_comma then
+                        return {
+                            from = { line = vim.fn.line("."), col = left_first_space and left_first_space + 1 or 0 },
+                            to = { line = vim.fn.line("."), col = right_comma },
+                        }
+                    elseif left_comma and not right_comma then
+                        return {
+                            from = { line = vim.fn.line("."), col = left_comma },
+                            to = { line = vim.fn.line("."), col = right_first_space or #line },
+                        }
+                    else
+                        return nil
+                    end
+                end,
                 o = ai.gen_spec.treesitter({
                     a = { "@block.outer", "@conditional.outer", "@loop.outer" },
                     i = { "@block.inner", "@conditional.inner", "@loop.inner" },

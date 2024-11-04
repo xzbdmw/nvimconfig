@@ -292,6 +292,24 @@ end, { expr = true })
 -- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
+keymap("n", "doi", function()
+    -- select outer indentation
+    require("various-textobjs").indentation("outer", "outer")
+
+    -- plugin only switches to visual mode when a textobj has been found
+    local indentationFound = vim.fn.mode():find("V")
+    if not indentationFound then
+        return
+    end
+    -- dedent indentation
+    vim.cmd.normal({ "<", bang = true })
+
+    -- delete surrounding lines
+    local endBorderLn = vim.api.nvim_buf_get_mark(0, ">")[1]
+    local startBorderLn = vim.api.nvim_buf_get_mark(0, "<")[1]
+    vim.cmd(tostring(endBorderLn) .. " delete") -- delete end first so line index is not shifted
+    vim.cmd(tostring(startBorderLn) .. " delete")
+end, { desc = "Delete Surrounding Indentation" })
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
