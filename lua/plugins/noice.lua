@@ -19,6 +19,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "InlayHint" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { find = "Invalid offset LineCol" },
                     opts = { skip = true },
                 },

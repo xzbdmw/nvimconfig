@@ -31,6 +31,15 @@ keymap({ "n" }, "g,", function()
     return "g,zz"
 end, { expr = true })
 
+keymap({ "n" }, "<leader>ul", function()
+    local level = vim.o.conceallevel
+    if level == 1 then
+        vim.o.conceallevel = 0
+    elseif level == 0 then
+        vim.o.conceallevel = 1
+    end
+end, opts)
+
 keymap({ "n" }, "/", function()
     utils.once(function()
         vim.api.nvim_exec_autocmds("User", {
@@ -310,15 +319,7 @@ keymap("n", "D", "d$", opts)
 
 keymap("n", "<C-i>", "<C-i>", opts)
 keymap("n", "gf", "gFzz", { remap = true })
-keymap("n", "gg", function()
-    vim.api.nvim_create_autocmd("CursorMoved", {
-        once = true,
-        callback = function()
-            vim.cmd("norm zz")
-        end,
-    })
-    return "gg"
-end, { expr = true })
+keymap("n", "gg", "ggz", { remap = true })
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap("c", "<d-s>", function()
@@ -418,13 +419,13 @@ keymap("n", "<leader>cd", function()
     end
 end, opts)
 
-keymap("n", "za", function()
+keymap("n", "<leader>z", function()
     local is_comment = vim.fn.foldclosed(vim.fn.line("."))
     if is_comment ~= -1 then
-        return "zo"
+        return "<leader><leader>zo"
     else
         FeedKeys("m6", "n")
-        FeedKeys("zfai", "m")
+        FeedKeys("<leader><leader>zfai", "m")
         FeedKeys("`6", "n")
     end
 end, { remap = true, expr = true })
@@ -519,7 +520,7 @@ keymap("n", "<leader>vr", function()
     end
 end, { expr = true, remap = true })
 
-keymap("n", "<leader><leader>n", function()
+keymap("n", "<leader>L", function()
     vim.wo.number = not vim.wo.number
     if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
         if vim.wo.signcolumn == "no" then
@@ -640,7 +641,7 @@ end, opts)
 keymap("t", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
 keymap("t", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
 
-keymap("x", "za", "zf", opts)
+keymap("x", "z", "zf", opts)
 keymap("n", "zu", "zfu", { remap = true })
 keymap({ "n", "i" }, "<f18>", "<C-i>", opts)
 
@@ -717,6 +718,16 @@ end)
 keymap("n", "gd", function()
     vim.lsp.buf.definition()
 end)
+
+keymap("n", "<leader><leader>zf", "zf", opts)
+keymap("n", "<leader><leader>zo", "zo", opts)
+keymap("n", "z", function()
+    utils.adjust_view(0, 3)
+end, opts)
+keymap("n", "<d-y>", function()
+    vim.cmd("normal " .. vim.api.nvim_replace_termcodes("z<CR>", true, false, true))
+end, opts)
+utils.delete_z()
 
 local del = vim.keymap.del
 del("n", "<leader>w-")

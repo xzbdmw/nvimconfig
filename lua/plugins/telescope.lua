@@ -708,7 +708,7 @@ return {
             require("telescope").setup({
                 defaults = {
                     preview = {
-                        highlight_limit = 0.08,
+                        highlight_limit = 0.8,
                     },
                     dynamic_preview_title = true,
                     disable_devicons = true,

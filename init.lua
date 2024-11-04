@@ -150,6 +150,7 @@ api.nvim_create_autocmd("FileType", {
     pattern = { "git" },
     callback = function()
         vim.b.miniindentscope_disable = true
+        vim.wo.signcolumn = "no"
         vim.cmd("setlocal syntax=ON")
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
     end,
@@ -393,7 +394,6 @@ api.nvim_create_autocmd("CmdlineLeave", {
         end
         vim.defer_fn(function()
             vim.o.scrolloff = 6
-            FeedKeys("zz", "m")
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then

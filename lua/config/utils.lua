@@ -824,6 +824,18 @@ function M.update_preview_state(bufnr, winid)
     end, 20)
 end
 
+function M.delete_z()
+    local modes = { "n", "x" }
+    for _, mode in ipairs(modes) do
+        local keymaps = vim.api.nvim_get_keymap(mode)
+        for _, map in ipairs(keymaps) do
+            if map.lhs:sub(1, 1) == "z" and string.len(map.lhs) > 1 then
+                vim.keymap.del(mode, map.lhs)
+            end
+        end
+    end
+end
+
 function M.set_glance_keymap()
     local winconfig = api.nvim_win_get_config(0)
     local bufnr = api.nvim_get_current_buf()
@@ -855,6 +867,7 @@ function M.set_glance_keymap()
             pcall(satellite_close, api.nvim_get_current_win())
             pcall(require("treesitter-context").close_stored_win, api.nvim_get_current_win())
             Open()
+            M.adjust_view(0, 4)
         end, { buffer = bufnr })
     end
 end
