@@ -419,7 +419,7 @@ return {
                     if hunks ~= nil and #hunks > 0 then
                         ok = true
                         require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
-                        require("config.utils").adjust_view(0, 3)
+                        require("config.utils").adjust_view(0, 4)
                     end
                 end
                 fn()

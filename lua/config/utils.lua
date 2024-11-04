@@ -1431,7 +1431,7 @@ function M.visual_search(cmd)
     local esc_pat = table.concat(esc_chunks, [[\n]])
     local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
     _G.searchmode = cmd
-    return "\27" .. search_cmd .. "N"
+    return "oh\27" .. search_cmd
 end
 
 function M.set_winbar(buf)

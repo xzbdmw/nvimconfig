@@ -31,6 +31,7 @@ vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor
 vim.opt.laststatus = 0
 vim.o.scrolloff = 6
 vim.o.gdefault = true
+vim.o.breakindent = true
 vim.g.neovide_text_gamma = 1.4
 vim.opt.timeoutlen = 500
 vim.opt.swapfile = false

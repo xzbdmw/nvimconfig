@@ -13,7 +13,7 @@ return {
                     local left_first_space, right_first_space = nil, nil
 
                     for i = cursor_pos, 1, -1 do
-                        if i ~= cursor_pos and (line:sub(i, i) == " " or line:sub(i, i) == "\t") then
+                        if i ~= cursor_pos and line:sub(i, i) ~= "," and line:sub(i, i):match("%W") then
                             if left_first_space == nil then
                                 left_first_space = i
                             end
@@ -24,7 +24,7 @@ return {
                         end
                     end
                     for i = cursor_pos, #line do
-                        if i ~= cursor_pos and (line:sub(i, i) == " " or line:sub(i, i) == "\t") then
+                        if i ~= cursor_pos and line:sub(i, i) ~= "," and line:sub(i, i):match("%W") then
                             right_first_space = i
                             break
                         end
@@ -35,10 +35,13 @@ return {
                     end
                     if left_comma and right_comma then
                         return {
-                            from = { line = vim.fn.line("."), col = left_comma + 1 },
+                            from = { line = vim.fn.line("."), col = left_comma },
                             to = { line = vim.fn.line("."), col = right_comma - 1 },
                         }
                     elseif right_comma and not left_comma then
+                        if right_comma <= #line and line:sub(right_comma + 1, right_comma + 1) == " " then
+                            right_comma = right_comma + 1
+                        end
                         return {
                             from = { line = vim.fn.line("."), col = left_first_space and left_first_space + 1 or 0 },
                             to = { line = vim.fn.line("."), col = right_comma },
@@ -46,7 +49,7 @@ return {
                     elseif left_comma and not right_comma then
                         return {
                             from = { line = vim.fn.line("."), col = left_comma },
-                            to = { line = vim.fn.line("."), col = right_first_space or #line },
+                            to = { line = vim.fn.line("."), col = right_first_space and right_first_space - 1 or #line },
                         }
                     else
                         return nil
