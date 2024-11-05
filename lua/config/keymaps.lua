@@ -77,6 +77,21 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
+keymap("i", "<c-x><c-o>", function()
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    require("cmp").complete({
+        config = {
+            sources = {
+                {
+                    name = "buffer",
+                },
+            },
+        },
+    })
+end)
 keymap("i", "<c-x><c-g>", function()
     local cmp = require("cmp")
     if cmp.visible() then
@@ -109,7 +124,7 @@ keymap("i", "<c-x><c-y>", function()
     })
 end)
 
-keymap("i", "<c-x><c-o>", function()
+keymap("i", "<c-x><c-d>", function()
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()
