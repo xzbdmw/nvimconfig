@@ -435,7 +435,7 @@ function M.cpp_fmt(entry, vim_item)
     end
     local label_detail = completion_item.labelDetails
     local document = completion_item.documentation
-    if document and vim.startswith(document.value, "From ") then
+    if document and document.value and vim.startswith(document.value, "From ") then
         document.value = string.sub(document.value, 6, #document.value)
         document.value = string.gsub(document.value, "`", "")
     end

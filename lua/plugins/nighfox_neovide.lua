@@ -381,6 +381,7 @@ return {
                 ["@lsp.type.interface"] = { link = "@trait.definition" },
                 ["@lsp.type.variable.go"] = {},
                 ["@keyword"] = { fg = "#0033b3" },
+                ["@keyword.operator.cpp"] = { link = "Keyword" },
                 ["@variable.member"] = { fg = "#152381" },
                 ["@variable.special"] = { fg = "#777A89", style = "italic" },
                 ["@punctuation.bracket.special"] = { link = "Comment" },

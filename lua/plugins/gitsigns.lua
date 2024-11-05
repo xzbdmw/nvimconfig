@@ -168,7 +168,7 @@ return {
                             once = true,
                             callback = vim.schedule_wrap(function()
                                 require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
-                                FeedKeys("zz", "m")
+                                FeedKeys("z", "m")
                             end),
                         })
                     end
@@ -183,7 +183,7 @@ return {
                             pattern = "TroubleOpen",
                             callback = vim.schedule_wrap(function()
                                 require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
-                                FeedKeys("zz", "m")
+                                FeedKeys("z", "m")
                                 if not require("nvim-tree.explorer.filters").config.filter_git_clean then
                                     FeedKeys("<leader>S", "m")
                                 end

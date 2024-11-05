@@ -711,6 +711,12 @@ keymap("n", "[q", function()
     vim.cmd("cprev")
 end, opts)
 
+keymap({ "n", "i" }, "<c-;>", function()
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    local line = vim.api.nvim_get_current_line()
+    vim.api.nvim_buf_set_text(0, row - 1, #line, row - 1, #line, { ";" })
+end, opts)
+
 keymap("n", "zz", function()
     utils.adjust_view(0, 4)
 end, opts)

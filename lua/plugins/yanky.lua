@@ -27,17 +27,28 @@ return {
         {
             "p",
             function()
+                _G.hide_cursor(function() end)
+                vim.g.type_o = true
+                vim.schedule(function()
+                    vim.g.type_o = false
+                end)
+                return "<Plug>(YankyPutIndentAfterLinewise)"
+            end,
+            expr = true,
+        },
+        {
+            "P",
+            function()
+                _G.hide_cursor(function() end)
                 vim.g.hlchunk_disable = true
                 vim.g.type_o = true
                 vim.schedule(function()
                     vim.g.type_o = false
                 end)
-                YANK = vim.uv.hrtime()
-                return "<Plug>(YankyPutAfter)"
+                return "<Plug>(YankyPutIndentBeforeLinewise)"
             end,
             expr = true,
         },
-        { "P", "<Plug>(YankyPutBefore)" },
         {
             "p",
             function()
