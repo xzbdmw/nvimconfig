@@ -386,6 +386,7 @@ api.nvim_create_autocmd("DiagnosticChanged", {
 
 api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
+        local type = vim.fn.getcmdtype()
         local is_enabled = require("noice.ui")._attached
         if not is_enabled then
             vim.schedule(function()
@@ -394,6 +395,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
         end
         vim.defer_fn(function()
             vim.o.scrolloff = 6
+            if type == "/" or type == "?" then
+                FeedKeys("z", "m")
+            end
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
