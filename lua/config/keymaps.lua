@@ -693,6 +693,16 @@ keymap("x", "<bs>", function()
     FeedKeys("holo", "t")
 end, opts)
 
+keymap("n", "u", function()
+    vim.g.hlchunk_disable = true
+    vim.g.type_o = true
+    vim.schedule(function()
+        vim.g.type_o = false
+        vim.g.hlchunk_disable = false
+    end)
+    return "u"
+end, { expr = true })
+
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(api.nvim_list_wins()) do
         local success, win_config = pcall(api.nvim_win_get_config, win)

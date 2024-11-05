@@ -19,6 +19,18 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "indented" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "yanked" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "lines" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "InlayHint" },
                     opts = { skip = true },
                 },

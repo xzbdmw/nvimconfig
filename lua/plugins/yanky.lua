@@ -19,11 +19,11 @@ return {
                         break
                     end
                 end
-                return "<Plug>(YankyPreviousEntry)"
+                return "<Plug>(YankyPreviousEntry)`[v`]=^"
             end,
             expr = true,
         },
-        { "<leader>n", "<Plug>(YankyNextEntry)" },
+        { "<leader>n", "<Plug>(YankyNextEntry)`[v`]=^" },
         {
             "p",
             function()
@@ -32,7 +32,7 @@ return {
                 vim.schedule(function()
                     vim.g.type_o = false
                 end)
-                return "<Plug>(YankyPutIndentAfterLinewise)"
+                return "<Plug>(YankyPutIndentAfterLinewise)`[v`]=^"
             end,
             expr = true,
         },
@@ -45,7 +45,7 @@ return {
                 vim.schedule(function()
                     vim.g.type_o = false
                 end)
-                return "<Plug>(YankyPutIndentBeforeLinewise)"
+                return "<Plug>(YankyPutIndentBeforeLinewise)`[v`]=^"
             end,
             expr = true,
         },
