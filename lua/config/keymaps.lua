@@ -407,6 +407,7 @@ end, opts)
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
+keymap("x", "w", "e", opts)
 
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
@@ -417,7 +418,7 @@ keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 
 keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
-    require("config.utils").adjust_view(0, 4)
+    require("config.utils").adjust_view(0, 3)
 end, opts)
 
 keymap({ "n", "v" }, "<f13>", vim.lsp.buf.signature_help, opts)
@@ -708,16 +709,6 @@ keymap("x", "<bs>", function()
     FeedKeys("holo", "t")
 end, opts)
 
-keymap("n", "u", function()
-    vim.g.hlchunk_disable = true
-    vim.g.type_o = true
-    vim.schedule(function()
-        vim.g.type_o = false
-        vim.g.hlchunk_disable = false
-    end)
-    return "u"
-end, { expr = true })
-
 keymap({ "s", "i", "n" }, "<C-7>", function()
     for _, win in pairs(api.nvim_list_wins()) do
         local success, win_config = pcall(api.nvim_win_get_config, win)
@@ -743,7 +734,7 @@ keymap({ "n", "i" }, "<c-;>", function()
 end, opts)
 
 keymap("n", "zz", function()
-    utils.adjust_view(0, 4)
+    utils.adjust_view(0, 3)
 end, opts)
 keymap("n", "<M-Tab>", function()
     vim.g.hide_prompt = true
@@ -771,7 +762,7 @@ end)
 keymap("n", "<leader><leader>zf", "zf", opts)
 keymap("n", "<leader><leader>zo", "zo", opts)
 keymap("n", "z", function()
-    utils.adjust_view(0, 4)
+    utils.adjust_view(0, 3)
 end, opts)
 utils.delete_z()
 

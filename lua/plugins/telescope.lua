@@ -1272,7 +1272,6 @@ return {
                         },
                         mappings = {
                             n = {
-                                ["d"] = "delete_buffer",
                                 ["<M-Tab>"] = function(prompt_bufnr)
                                     require("telescope.actions.set").shift_selection(prompt_bufnr, 1)
                                 end,

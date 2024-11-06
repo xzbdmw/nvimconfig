@@ -4,6 +4,7 @@ return {
     -- dir = "/Users/xzb/Project/lua/arrow.nvim/",
     -- dir = "/Users/xzb/Project/lua/fork/arrow.nvim/",
     -- event = "VeryLazy",
+    priority = 10000,
     opts = {
         per_buffer_config = {
             sort_automatically = false,

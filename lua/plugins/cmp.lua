@@ -338,7 +338,7 @@ return {
                 disallow_partial_fuzzy_matching = false,
                 disallow_partial_matching = false,
                 disallow_prefix_unmatching = false,
-                disallow_symbol_nonprefix_matching = true,
+                disallow_symbol_nonprefix_matching = false,
             },
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]

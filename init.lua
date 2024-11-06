@@ -395,13 +395,15 @@ api.nvim_create_autocmd("CmdlineLeave", {
         end
         vim.defer_fn(function()
             vim.o.scrolloff = 6
-            if type == "/" or type == "?" then
-                FeedKeys("z", "m")
-            end
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
             _G.set_cursor_animation(0.0)
+        end
+        if type == "/" or type == "?" then
+            vim.schedule(function()
+                FeedKeys("z", "m")
+            end)
         end
     end,
 })

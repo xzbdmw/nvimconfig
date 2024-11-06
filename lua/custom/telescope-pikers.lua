@@ -510,6 +510,12 @@ function telescopePickers.prettyBuffersPicker(previewer, initial)
             initial_mode = initial,
             bufnr_width = 0,
             layout_strategy = "horizontal",
+            attach_mappings = function(_, map)
+                map("n", "d", function(prompt_bufnr)
+                    require("telescope.actions").delete_buffer(prompt_bufnr)
+                end, { nowait = true })
+                return true
+            end,
             previewer = false,
             layout_config = {
                 horizontal = {
