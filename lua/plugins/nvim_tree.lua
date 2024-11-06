@@ -1,3 +1,4 @@
+local statusline = require("arrow.statusline")
 local function my_on_attach(bufnr)
     local api = require("nvim-tree.api")
     api.events.subscribe(api.events.Event.FileCreated, function(file)
@@ -115,8 +116,61 @@ return {
         },
     },
     config = function()
+        local function folders_or_files_first(a, b)
+            if not a.nodes and b.nodes then
+                return false
+            elseif a.nodes and not b.nodes then
+                return true
+            end
+        end
         local width = vim.api.nvim_get_option("columns")
         require("nvim-tree").setup({
+            sort = {
+                sorter = function(nodes)
+                    table.sort(nodes, function(a, b)
+                        if not (a and b) then
+                            return true
+                        end
+                        local early_return = folders_or_files_first(a, b)
+                        if early_return ~= nil then
+                            return early_return
+                        end
+                        if a.nodes and b.nodes then
+                            if a.fs_state.size == b.fs_state.size then
+                                return a.name < b.name
+                            end
+                            return a.fs_state.size > b.fs_state.size
+                        end
+                        local arrow_filenames = vim.g.arrow_filenames
+                        if arrow_filenames then
+                            local b_arrow_index = -1
+                            local a_arrow_index = -1
+                            for i, filename in ipairs(arrow_filenames) do
+                                if string.sub(a.absolute_path, -#filename) == filename then
+                                    a_arrow_index = statusline.text_for_statusline(_, i)
+                                end
+                                if string.sub(b.absolute_path, -#filename) == filename then
+                                    b_arrow_index = statusline.text_for_statusline(_, i)
+                                end
+                            end
+                            if a_arrow_index ~= -1 and b_arrow_index ~= -1 then
+                                if a_arrow_index == b_arrow_index then
+                                    return a.name < b.name
+                                end
+                                return a_arrow_index < b_arrow_index
+                            elseif a_arrow_index ~= -1 and b_arrow_index == -1 then
+                                return true
+                            elseif b_arrow_index ~= -1 and a_arrow_index == -1 then
+                                return false
+                            end
+                        end
+                        if a.fs_state.size == b.fs_state.size then
+                            return a.name < b.name
+                        end
+                        return a.fs_state.size > b.fs_state.size
+                    end)
+                end,
+            },
             git = {
                 enable = true,
                 show_on_dirs = false,
