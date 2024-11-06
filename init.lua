@@ -222,7 +222,28 @@ api.nvim_create_autocmd("FileType", {
 
 api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
-    command = "setlocal conceallevel=0",
+    callback = function()
+        vim.wo.signcolumn = "no"
+    end,
+})
+
+api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+        if vim.api.nvim_buf_is_valid(args.buf) and vim.bo[args.buf].filetype == "markdown" then
+            vim.wo.signcolumn = "no"
+            vim.api.nvim_create_autocmd("BufLeave", {
+                once = true,
+                buffer = args.buf,
+                callback = function()
+                    vim.schedule(function()
+                        if not utils.has_filetype("markdown") then
+                            vim.wo.signcolumn = "yes"
+                        end
+                    end)
+                end,
+            })
+        end
+    end,
 })
 
 api.nvim_create_autocmd("TermOpen", {

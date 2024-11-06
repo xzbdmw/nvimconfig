@@ -33,10 +33,10 @@ end, { expr = true })
 
 keymap({ "n" }, "<leader>ul", function()
     local level = vim.o.conceallevel
-    if level == 1 then
+    if level >= 1 then
         vim.o.conceallevel = 0
     elseif level == 0 then
-        vim.o.conceallevel = 1
+        vim.o.conceallevel = 3
     end
 end, opts)
 
@@ -351,7 +351,6 @@ end, { desc = ":help v_star-default", expr = true, silent = true })
 keymap("n", "D", "d$", opts)
 
 keymap("n", "<C-i>", "<C-i>", opts)
-keymap("n", "gf", "gFzz", { remap = true })
 keymap("n", "gg", "ggz", { remap = true })
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
@@ -409,6 +408,20 @@ keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("x", "w", "e", opts)
 
+keymap("n", "<d-y>", function()
+    local time = vim.uv.hrtime()
+    local res = vim.filetype.match({ filename = "init.lua", fast = true })
+    Time(time, "fast=true")
+    time = vim.uv.hrtime()
+    res = vim.filetype.match({ filename = "init.lua", fast = false })
+    Time(time, "fast=false")
+    time = vim.uv.hrtime()
+    local s = require("plenary.filetype").detect("init.lua")
+    Time(time, "plenary")
+end, opts)
+keymap("n", "gf", function()
+    utils.gF()
+end, opts)
 keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
 keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
 keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })

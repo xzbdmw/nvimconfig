@@ -897,6 +897,41 @@ function CloseFromLazygit()
     end, 10)
 end
 
+function M.gF()
+    local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+    if name ~= nil then
+        FeedKeys("gFz", "m")
+        return
+    end
+    -- Get the word under the cursor
+    local cword = vim.fn.expand("<cWORD>")
+
+    -- Find the start and end of the pattern that matches `\f+:\d+`
+    local st = vim.fn.match(cword, "\\v\\f+:\\d+")
+    local end_pos = vim.fn.matchend(cword, "\\v\\f+:\\d+")
+
+    -- If the pattern was found, extract it
+    if end_pos ~= -1 then
+        cword = string.sub(cword, st + 1, end_pos)
+    end
+
+    -- Split the cword by ':' to get the file and line parts
+    local bits = vim.split(cword, ":", { plain = true })
+
+    FeedKeys("<Tab>", "m")
+    vim.schedule(function()
+        local win = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_call(win, function()
+            vim.cmd("edit " .. bits[1])
+            -- If there's a line number, go to that line
+            if bits[2] then
+                vim.cmd(bits[2])
+            end
+        end)
+        FeedKeys("z", "m")
+    end)
+end
+
 function M.refresh_nvim_tree_git()
     require("nvim-tree.actions.reloaders").reload_explorer()
 end
