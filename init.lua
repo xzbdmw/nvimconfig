@@ -425,6 +425,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
             vim.schedule(function()
                 FeedKeys("z", "m")
             end)
+            vim.defer_fn(function()
+                FeedKeys("z", "m")
+            end, 10)
         end
     end,
 })

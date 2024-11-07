@@ -151,6 +151,7 @@ return {
                             analyses = {
                                 unusedparams = true,
                                 shadow = true,
+                                testinggoroutine = false,
                             },
                             staticcheck = false,
                         },
