@@ -919,7 +919,7 @@ function M.gF()
     local bits = vim.split(cword, ":", { plain = true })
 
     FeedKeys("<Tab>", "m")
-    vim.schedule(function()
+    vim.defer_fn(function()
         local win = vim.api.nvim_get_current_win()
         vim.api.nvim_win_call(win, function()
             vim.cmd("edit " .. bits[1])
@@ -929,7 +929,7 @@ function M.gF()
             end
         end)
         FeedKeys("z", "m")
-    end)
+    end, 10)
 end
 
 function M.refresh_nvim_tree_git()
@@ -1395,7 +1395,7 @@ function M.set_diagnostic_winbar()
 end
 
 function M.set_git_winbar()
-    local icons = { " ", " ", " " }
+    local icons = { "+", "-", "* " }
     local signs = vim.b.gitsigns_status_dict
 
     if
@@ -1412,7 +1412,7 @@ function M.set_git_winbar()
         local hunks = require("gitsigns").get_hunks(api.nvim_get_current_buf())
         if hunks ~= nil and #hunks > 0 then
             if #hunks >= 1 then
-                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " " .. #hunks .. " "
+                git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. "~" .. #hunks .. " "
             end
         end
         for index, icon in ipairs(icons) do
