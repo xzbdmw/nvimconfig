@@ -196,9 +196,6 @@ end, opts)
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
-    if require("nvim-tree.explorer.filters").config.filter_git_clean then
-        require("nvim-tree.api").tree.expand_all()
-    end
 end, opts)
 keymap("n", "<C-m>", "%", opts)
 keymap("n", "g.", "`.", opts)
@@ -308,6 +305,7 @@ end, { expr = true })
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 keymap("n", "doi", function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     -- select outer indentation
     require("various-textobjs").indentation("outer", "outer")
 
@@ -324,6 +322,7 @@ keymap("n", "doi", function()
     local startBorderLn = vim.api.nvim_buf_get_mark(0, "<")[1]
     vim.cmd(tostring(endBorderLn) .. " delete") -- delete end first so line index is not shifted
     vim.cmd(tostring(startBorderLn) .. " delete")
+    vim.api.nvim_win_set_cursor(0, { row - 1, col })
 end, { desc = "Delete Surrounding Indentation" })
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
@@ -331,7 +330,15 @@ keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>M", function()
     vim.g.skip_noice = not vim.g.skip_noice
 end, opts)
-keymap("i", "<f12>", "<cmd>messages clear<CR>", opts)
+keymap("n", "<f12>", function()
+    if vim.bo.filetype == "toggleterm" then
+        FeedKeys("a<c-u>clear<cr>", "n")
+        vim.bo.scrollback = 1
+        vim.defer_fn(function()
+            vim.bo.scrollback = 100000
+        end, 100)
+    end
+end, opts)
 
 keymap({ "n" }, "<C-n>", function()
     vim.cmd("MCstart")
