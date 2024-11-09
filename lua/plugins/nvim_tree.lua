@@ -35,7 +35,14 @@ local function my_on_attach(bufnr)
         end
         api.tree.toggle_no_arrow_filter()
         if not is_arrow_filter_activated then
-            require("nvim-tree.api").tree.expand_all()
+            vim.api.nvim_create_autocmd("User", {
+                once = true,
+                pattern = { "NvimTreeReloaded" },
+                callback = function()
+                    require("nvim-tree.api").tree.expand_all()
+                    require("nvim-tree.actions").tree.find_file.fn()
+                end,
+            })
         end
     end
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
@@ -52,12 +59,23 @@ local function my_on_attach(bufnr)
         end
         api.tree.toggle_no_buffer_filter()
         if not is_buffer_filter_activated then
-            require("nvim-tree.api").tree.expand_all()
+            vim.api.nvim_create_autocmd("User", {
+                once = true,
+                pattern = { "NvimTreeReloaded" },
+                callback = function()
+                    require("nvim-tree.api").tree.expand_all()
+                    require("nvim-tree.actions").tree.find_file.fn()
+                end,
+            })
         end
     end
     keymap("n", "B", toggle_buffer_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>B", toggle_buffer_filter)
     local function toggle_status_filter()
+        if vim.g.Diff_file_count == 0 then
+            vim.notify("", vim.log.levels.INFO, { title = "No Changed File" })
+            return
+        end
         local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
         local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
         local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
@@ -68,6 +86,16 @@ local function my_on_attach(bufnr)
             api.tree.toggle_no_buffer_filter()
         end
         api.tree.toggle_git_clean_filter()
+        if not is_git_filter_activated then
+            vim.api.nvim_create_autocmd("User", {
+                once = true,
+                pattern = { "NvimTreeReloaded" },
+                callback = function()
+                    require("nvim-tree.api").tree.expand_all()
+                    require("nvim-tree.actions").tree.find_file.fn()
+                end,
+            })
+        end
     end
     keymap("n", "S", toggle_status_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>S", toggle_status_filter)
@@ -245,7 +273,7 @@ return {
                     git_placement = "after",
                     bookmarks_placement = "after",
                     web_devicons = {
-                        file = { color = true, enable = true },
+                        file = { color = true, enable = false },
                         folder = {
                             color = false,
                         },
@@ -256,19 +284,19 @@ return {
                         bookmarks = true,
                     },
                     glyphs = {
-                        default = "",
+                        default = "",
                         bookmark = "B",
 
                         modified = "●",
                         folder = {
                             arrow_closed = "󱦰",
                             arrow_open = "󱞩",
-                            default = "",
-                            open = "",
-                            empty = "",
-                            empty_open = "",
-                            symlink = "",
-                            symlink_open = "",
+                            default = "",
+                            open = "",
+                            empty = "",
+                            empty_open = "",
+                            symlink = "",
+                            symlink_open = "",
                         },
                         git = {
                             unstaged = "M",
