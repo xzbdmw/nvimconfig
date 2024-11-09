@@ -19,11 +19,31 @@ return {
                         break
                     end
                 end
-                return "<Plug>(YankyPreviousEntry)`[v`]="
+                local cursor = vim.api.nvim_win_get_cursor(0)[1]
+                vim.schedule(function()
+                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
+                    if new_cursor ~= cursor then
+                        FeedKeys("0", "m")
+                    end
+                end)
+                return "<Plug>(YankyPreviousEntry)mt`[v`]=`t"
             end,
             expr = true,
         },
-        { "<leader>n", "<Plug>(YankyNextEntry)`[v`]=" },
+        {
+            "<leader>n",
+            function()
+                local cursor = vim.api.nvim_win_get_cursor(0)[1]
+                vim.schedule(function()
+                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
+                    if new_cursor ~= cursor then
+                        FeedKeys("0", "m")
+                    end
+                end)
+                return "<Plug>(YankyNextEntry)mt`[v`]=`t"
+            end,
+            expr = true,
+        },
         {
             "p",
             function()
@@ -32,7 +52,14 @@ return {
                 vim.schedule(function()
                     vim.g.type_o = false
                 end)
-                return "<Plug>(YankyPutAfter)`[v`]="
+                local cursor = vim.api.nvim_win_get_cursor(0)[1]
+                vim.schedule(function()
+                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
+                    if new_cursor ~= cursor then
+                        FeedKeys("0", "m")
+                    end
+                end)
+                return "<Plug>(YankyPutAfter)mt`[v`]=`t"
             end,
             expr = true,
         },
@@ -45,7 +72,14 @@ return {
                 vim.schedule(function()
                     vim.g.type_o = false
                 end)
-                return "<Plug>(YankyPutBefore)`[v`]="
+                local cursor = vim.api.nvim_win_get_cursor(0)[1]
+                vim.schedule(function()
+                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
+                    if new_cursor ~= cursor then
+                        FeedKeys("0", "m")
+                    end
+                end)
+                return "<Plug>(YankyPutBefore)mt`[v`]=`t"
             end,
             expr = true,
         },
@@ -57,7 +91,12 @@ return {
                     vim.g.type_o = false
                 end)
                 require("yanky").put("p", true, function() end)
-                FeedKeys("c<d-v><esc>", "m")
+                local mode = vim.api.nvim_get_mode().mode
+                if mode == "V" then
+                    FeedKeys("c<d-v><esc>==0", "m")
+                else
+                    FeedKeys("c<d-v><esc>", "m")
+                end
             end,
             { desc = "Paste without copying replaced text" },
             mode = { "x" },

@@ -479,55 +479,13 @@ return {
                 end,
             })
 
-            local function gitsign_change_base_pre(prompt_bufnr, checkout)
-                local selection = action_state.get_selected_entry()
-                local commit = selection.value
-
-                local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
-                if result.code == 0 then
-                    if checkout ~= nil then
-                        checkout()
-                    end
-                    actions.close(prompt_bufnr)
-                    Signs_staged = nil
-                    local splits = vim.split(result.stdout, "\n")
-
-                    vim.g.Base_commit = splits[1]:sub(1, 7)
-                    local commit_msg = splits[2]:gsub("\n", "")
-                    if #commit_msg > 30 then
-                        local cut_pos = commit_msg:find(" ", 31)
-                        if cut_pos then
-                            commit_msg = commit_msg:sub(1, cut_pos - 1) .. "…"
-                        else
-                            commit_msg = commit_msg:sub(1, 30) .. "…"
-                        end
-                    end
-                    vim.g.Base_commit_msg = commit_msg
-                end
-                require("gitsigns").change_base(vim.g.Base_commit, true)
-                utils.update_diff_file_count()
-                if not require("nvim-tree.explorer.filters").config.filter_git_clean then
-                    FeedKeys("<leader>S", "m")
-                end
-                vim.defer_fn(function()
-                    vim.cmd("Gitsigns attach")
-                end, 100)
-                vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
-                api.nvim_exec_autocmds("User", {
-                    pattern = "GitSignsUserUpdate",
-                })
-            end
-
-            local function gitsign_change_base(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                local commit = selection.value
+            local function change_base(commit, commit_msg, prompt_bufnr)
                 vim.g.Base_commit = commit
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
-                local sts = vim.split(selection.ordinal, " ")
+                local sts = vim.split(commit_msg, " ")
                 table.remove(sts, 1)
-                local commit_msg = table.concat(sts, " ")
+                commit_msg = table.concat(sts, " ")
                 if #commit_msg > 30 then
                     local cut_pos = commit_msg:find(" ", 31)
                     if cut_pos then
@@ -539,16 +497,50 @@ return {
                 vim.g.Base_commit_msg = vim.g.Base_commit_msg .. commit_msg
                 require("gitsigns").change_base(commit, true)
                 utils.update_diff_file_count()
+                utils.refresh_nvim_tree_git()
                 if not require("nvim-tree.explorer.filters").config.filter_git_clean then
-                    FeedKeys("<leader>S", "m")
+                    vim.api.nvim_create_autocmd("User", {
+                        once = true,
+                        pattern = { "NvimTreeReloaded" },
+                        callback = function()
+                            FeedKeys("<leader>S", "m")
+                        end,
+                    })
                 end
                 vim.defer_fn(function()
                     vim.cmd("Gitsigns attach")
                 end, 100)
-                vim.notify(selection.ordinal, vim.log.levels.INFO)
+                vim.notify(commit_msg, vim.log.levels.INFO)
                 api.nvim_exec_autocmds("User", {
                     pattern = "GitSignsUserUpdate",
                 })
+            end
+
+            local function gitsign_change_base_pre(prompt_bufnr, checkout)
+                local selection = action_state.get_selected_entry()
+                local commit = selection.value
+                local result = vim.system({ "git", "log", "-n 1", "--pretty=format:%H%n%B", commit .. "^" }):wait()
+                if result.code ~= 0 then
+                    return
+                end
+                if checkout ~= nil then
+                    checkout()
+                end
+                actions.close(prompt_bufnr)
+                local splits = vim.split(result.stdout, "\n")
+                commit = splits[1]:sub(1, 7)
+                local commit_msg = splits[2]:gsub("\n", "")
+                change_base(commit, commit_msg, prompt_bufnr)
+            end
+
+            local function gitsign_change_base(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                local commit = selection.value
+                local sts = vim.split(selection.ordinal, " ")
+                table.remove(sts, 1)
+                local commit_msg = table.concat(sts, " ")
+                change_base(selection.value, commit_msg, prompt_bufnr)
             end
 
             local focus_preview = function(prompt_bufnr)

@@ -693,7 +693,7 @@ api.nvim_create_autocmd("User", {
 })
 
 vim.api.nvim_create_autocmd("User", {
-    pattern = { "NvimTreeToggled", "NvimTreeReloaded" },
+    pattern = { "NvimTreeReloaded" },
     callback = function()
         require("nvim-tree.actions").tree.find_file.fn()
     end,
