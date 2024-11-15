@@ -1,6 +1,7 @@
 return {
     "kevinhwang91/nvim-hlslens",
     version = false,
+    -- enabled = false,
     config = function()
         local cmd = ""
         local mode = ""
@@ -61,9 +62,11 @@ return {
                     { of, "HlSearchLensCountItalic" },
                     { right, "HlSearchLensCount" },
                 }
-                vim.defer_fn(function()
-                    require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
-                end, 10)
+                if is_cmdline then
+                    vim.defer_fn(function()
+                        require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
+                    end, 10)
+                end
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
             end,
         })

@@ -455,6 +455,7 @@ return {
                             cmp.close()
                         end
                         FeedKeys("<c-p>", "n")
+                        vim.cmd("redraw!")
                     end,
                 },
                 ["<down>"] = {

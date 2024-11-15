@@ -7,7 +7,7 @@ return {
         return {
             {
                 "<C-n>",
-                mode = { "s", "v" },
+                mode = { "s" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(1) then
@@ -31,7 +31,7 @@ return {
             },
             {
                 "<C-p>",
-                mode = { "i", "s", "v" },
+                mode = { "i", "s" },
                 function()
                     local luasnip = require("luasnip")
                     if luasnip.jumpable(-1) then

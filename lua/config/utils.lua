@@ -626,6 +626,10 @@ function M.do_highlight(buf)
     if api.nvim_get_current_buf() ~= buf then
         return
     end
+    local count = vim.api.nvim_buf_line_count(buf)
+    if count > 10000 then
+        return
+    end
     M.clear()
     local text = M.get_visual()
     if not text or vim.trim(text) == "" or #text < 2 then
@@ -1433,7 +1437,7 @@ function M.set_git_winbar()
     if vim.g.Base_commit_msg ~= "" then
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " [" .. vim.g.Diff_file_count .. "] "
+            git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " = " .. vim.g.Diff_file_count .. " "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
@@ -1441,7 +1445,7 @@ function M.set_git_winbar()
     else
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#diffAdded#" .. " [" .. vim.g.Diff_file_count .. "] "
+            git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " = " .. vim.g.Diff_file_count .. " "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
@@ -1467,6 +1471,19 @@ function M.visual_search(cmd)
     local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
     _G.searchmode = cmd
     return "oh\27" .. search_cmd
+end
+
+function M.star_search(cmd, word)
+    local chunks = { word }
+    local esc_chunks = vim.iter(chunks)
+        :map(function(v)
+            return vim.fn.escape(v, cmd == "/" and [[/\]] or [[?\]])
+        end)
+        :totable()
+    local esc_pat = table.concat(esc_chunks, [[\n]])
+    local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
+    _G.searchmode = cmd
+    return "h" .. search_cmd
 end
 
 function M.set_winbar(buf)

@@ -304,8 +304,8 @@ return {
                             symlink_open = "",
                         },
                         git = {
-                            unstaged = "M",
-                            staged = "M",
+                            unstaged = "~",
+                            staged = "~",
                             unmerged = "",
                             renamed = "➜",
                             untracked = " ",

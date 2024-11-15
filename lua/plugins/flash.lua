@@ -26,7 +26,7 @@ return {
     config = function()
         require("flash").setup({
             -- labels = "abcdefghijklmnopqrstuvwxyz",
-            labels = "asdfghjklqwertyuiopzxcvbnm",
+            labels = "asdfjklqwertyuiopzxcvbnm",
             search = {
                 -- search/jump in all windows
                 multi_window = false,

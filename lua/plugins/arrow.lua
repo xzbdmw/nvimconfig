@@ -7,7 +7,7 @@ return {
     priority = 10000,
     opts = {
         per_buffer_config = {
-            sort_automatically = false,
+            sort_automatically = true,
             treesitter_context = {
                 line_shift_down = 1,
             },

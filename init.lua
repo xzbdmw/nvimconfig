@@ -220,32 +220,6 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
-api.nvim_create_autocmd("FileType", {
-    pattern = "markdown",
-    callback = function()
-        vim.wo.signcolumn = "no"
-    end,
-})
-
-api.nvim_create_autocmd("BufEnter", {
-    callback = function(args)
-        if vim.api.nvim_buf_is_valid(args.buf) and vim.bo[args.buf].filetype == "markdown" then
-            vim.wo.signcolumn = "no"
-            vim.api.nvim_create_autocmd("BufLeave", {
-                once = true,
-                buffer = args.buf,
-                callback = function()
-                    vim.schedule(function()
-                        if not utils.has_filetype("markdown") then
-                            vim.wo.signcolumn = "yes"
-                        end
-                    end)
-                end,
-            })
-        end
-    end,
-})
-
 api.nvim_create_autocmd("TermOpen", {
     callback = function(args)
         local opts = { buffer = 0 }
@@ -314,7 +288,6 @@ api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
-        vim.cmd("startinsert")
     end,
 })
 
@@ -420,14 +393,6 @@ api.nvim_create_autocmd("CmdlineLeave", {
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then
             _G.set_cursor_animation(0.0)
-        end
-        if type == "/" or type == "?" then
-            vim.schedule(function()
-                FeedKeys("z", "m")
-            end)
-            vim.defer_fn(function()
-                FeedKeys("z", "m")
-            end, 10)
         end
     end,
 })

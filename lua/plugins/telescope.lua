@@ -871,8 +871,9 @@ return {
                             ["<C-a>"] = function()
                                 FeedKeys("<Home>", "t")
                             end,
-                            ["<C-e>"] = function()
-                                FeedKeys("<END>", "t")
+                            ["<C-e>"] = function(bufnr)
+                                _G.last = nil
+                                actions.close(bufnr)
                             end,
                             ["<CR>"] = function(bufnr)
                                 local ok, cmp = pcall(require, "cmp")

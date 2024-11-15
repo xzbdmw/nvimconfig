@@ -304,7 +304,7 @@ end, { expr = true })
 -- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
-keymap("n", "doi", function()
+keymap("o", "ao", function()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     -- select outer indentation
     require("various-textobjs").indentation("outer", "outer")
@@ -345,8 +345,9 @@ keymap({ "n" }, "<C-n>", function()
     FeedKeys("n", "m")
 end)
 
-keymap({ "x" }, "n", function()
+keymap({ "x" }, "<c-n>", function()
     vim.cmd("MCstart")
+    FeedKeys("n", "m")
 end)
 
 keymap("x", "*", function()
@@ -399,7 +400,9 @@ keymap("n", "*", function()
     end, 100)
     vim.cmd("keepjumps normal! mi*`i")
     _G.star_search = vim.fn.getreg("/")
-    require("hlslens").start()
+    if vim.api.nvim_buf_line_count(0) < 10000 then
+        require("hlslens").start()
+    end
 end)
 
 keymap("n", "<leader>uq", function()
