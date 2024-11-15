@@ -324,6 +324,7 @@ return {
                 Search = { fg = "none", bg = "#C2D7DE" },
                 YankyPut = { fg = "none", bg = "#FCF0A1" },
                 YankyYanked = { fg = "none", bg = "#FCF0A1" },
+                Whitespace = { fg = "#868DB7" },
                 LeapBG = { fg = "none", bg = "#FCF0A1" },
                 CurSearch = { link = "IncSearch" },
                 FlashCurrent = { link = "IncSearch" },

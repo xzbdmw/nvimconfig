@@ -405,6 +405,18 @@ keymap("n", "*", function()
     end
 end)
 
+keymap("n", "<leader>ol", function()
+    local enabled = vim.o.list
+    if not enabled then
+        vim.o.list = true
+        vim.g.hlchunk_disable = true
+        _G.hlchunk_clear()
+    else
+        vim.o.list = false
+        vim.g.hlchunk_disable = false
+    end
+end, opts)
+
 keymap("n", "<leader>uq", function()
     if vim.v.hlsearch ~= 0 then
         vim.cmd("nohlsearch")
