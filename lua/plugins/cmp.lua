@@ -22,7 +22,6 @@ return {
         "hrsh7th/cmp-buffer",
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
-        "amarakon/nvim-cmp-buffer-lines",
         "chrisgrieser/cmp_yanky",
         "uga-rosa/cmp-dictionary",
     },
@@ -482,13 +481,6 @@ return {
             }),
             sources = cmp.config.sources({
                 { name = "buffer" },
-            }, {
-                {
-                    name = "buffer-lines",
-                    option = {
-                        leading_whitespace = false,
-                    },
-                },
             }),
         })
         cmp.setup.cmdline(":", {
