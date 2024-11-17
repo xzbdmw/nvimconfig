@@ -820,12 +820,15 @@ function M.setUndotreeWinSize()
 end
 
 function M.update_preview_state(bufnr, winid)
-    vim.defer_fn(function()
-        pcall(function()
-            require("treesitter-context").context_force_update(bufnr, winid)
-            pcall(_G.indent_update, winid)
-        end)
-    end, 20)
+    local times = { 10, 20, 50 }
+    for _, timeout in ipairs(times) do
+        vim.defer_fn(function()
+            pcall(function()
+                require("treesitter-context").context_force_update(bufnr, winid)
+                pcall(_G.indent_update, winid)
+            end)
+        end, timeout)
+    end
 end
 
 function M.delete_z()

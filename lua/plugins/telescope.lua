@@ -423,10 +423,16 @@ return {
                     end
                 end
                 fn()
-                local times = { 30, 60, 90, 120, 150, 180, 210, 240, 300, 400, 500, 2000 }
-                for _, timeout in ipairs(times) do
-                    vim.defer_fn(fn, timeout)
-                end
+                local id
+                id = api.nvim_create_autocmd("User", {
+                    pattern = "GitSignsUpdate",
+                    callback = function()
+                        if ok then
+                            api.nvim_del_autocmd(id)
+                        end
+                        fn()
+                    end,
+                })
             end
 
             local status_delta = require("telescope.previewers").new_termopen_previewer({
