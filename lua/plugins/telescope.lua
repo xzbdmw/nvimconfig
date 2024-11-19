@@ -661,21 +661,16 @@ return {
 
                 if checkout_callback ~= nil then
                     keymap("n", "<space>", function()
-                        vim.cmd("nohlsearch")
                         checkout_callback()
                     end, { nowait = true, buffer = bufnr })
                 end
                 if p_callback ~= nil then
-                    vim.cmd("nohlsearch")
                     keymap("n", "p", function()
-                        vim.cmd("nohlsearch")
                         p_callback()
                     end, { nowait = true, buffer = bufnr })
                 end
                 if c_callback ~= nil then
-                    vim.cmd("nohlsearch")
                     keymap("n", "c", function()
-                        vim.cmd("nohlsearch")
                         c_callback()
                     end, { nowait = true, buffer = bufnr })
                 end

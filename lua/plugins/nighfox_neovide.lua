@@ -128,6 +128,8 @@ return {
                 HlSearchLensNearFail = { fg = "#A93463", bg = "#F9E3E3", style = "italic,bold,undercurl" },
                 HlSearchLensCount = { fg = "#636262", bg = "#D5DAEA" },
                 HlSearchLensCountItalic = { fg = "#636262", bg = "#D5DAEA", style = "italic" },
+                HlSearchLensCountNoBg = { fg = "#636262" },
+                HlSearchLensCountItalicNoBg = { fg = "#636262", style = "italic" },
                 HlSearchLensCountFail = { fg = "#B85E7D", bg = "#F9E3E3" },
                 LeapBackdrop = { fg = "none" },
                 LeapMatch = { fg = "#AA3622", bg = "none", style = "italic" },

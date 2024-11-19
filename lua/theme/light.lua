@@ -88,6 +88,10 @@ keymap({ "s", "n" }, "<esc>", function()
             end
         end
     end
+    if success then
+        engin.clear_keeped_highlight()
+        go.clear_keeped_hl()
+    end
     if flag then
         FeedKeys("<esc>", "n")
         vim.cmd("noh")
@@ -97,12 +101,8 @@ keymap({ "s", "n" }, "<esc>", function()
             pattern = "ClearSatellite",
         })
     end
-    if success then
-        engin.clear_keeped_highlight()
-        go.clear_keeped_hl()
-    end
-    -- end)
 end)
+
 -- illuminate
 keymap("n", "H", function()
     local bufnr = api.nvim_get_current_buf()

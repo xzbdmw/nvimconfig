@@ -32,6 +32,7 @@ return {
             "/Users/xzb/.local/share/nvimlazy/lazy/LazyVim",
             -- "/Users/xzb/.local/share/nvim_rust/lazy/*",
             "~/Project/java/*",
+            "~/Project/Js/*",
             "~/Project/Typescript/*",
             "~/Project/Python/*",
             "~/.config/*",
