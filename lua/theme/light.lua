@@ -16,6 +16,8 @@ keymap("n", "n", function()
             vim.cmd("normal! N")
             vim.cmd("normal zz")
         end
+        local event = require("hlslens.lib.event")
+        event:emit("RegionChanged")
         return
     end
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
@@ -42,6 +44,8 @@ keymap("n", "N", function()
             vim.cmd("normal! N")
             vim.cmd("normal zz")
         end
+        local event = require("hlslens.lib.event")
+        event:emit("RegionChanged")
         return
     end
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
@@ -87,6 +91,11 @@ keymap({ "s", "n" }, "<esc>", function()
     if flag then
         FeedKeys("<esc>", "n")
         vim.cmd("noh")
+        vim.b.search_winbar = ""
+        require("config.utils").refresh_search_winbar()
+        vim.api.nvim_exec_autocmds("User", {
+            pattern = "ClearSatellite",
+        })
     end
     if success then
         engin.clear_keeped_highlight()
@@ -99,4 +108,9 @@ keymap("n", "H", function()
     local bufnr = api.nvim_get_current_buf()
     pcall(engin.keep_highlight, bufnr)
     vim.cmd("noh")
+    vim.b.search_winbar = ""
+    require("config.utils").refresh_search_winbar()
+    vim.api.nvim_exec_autocmds("User", {
+        pattern = "ClearSatellite",
+    })
 end)
