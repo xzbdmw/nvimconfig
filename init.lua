@@ -21,6 +21,7 @@ vim.g.copilot_enable = false
 vim.g.skip_noice = false
 vim.g.hlchunk_disable = false
 vim.g.cy = false
+vim.g.search_pos = nil
 
 vim.cmd("syntax off")
 
@@ -394,6 +395,21 @@ api.nvim_create_autocmd("CmdlineLeave", {
         if len ~= 0 then
             _G.set_cursor_animation(0.0)
         end
+    end,
+})
+
+-- CmdlineLeave -> satellite.refreshCurrentBuf -> collet pos -> SatelliteSearch -> Satellite render
+api.nvim_create_autocmd("User", {
+    pattern = "SatelliteSearch",
+    callback = function()
+        utils.refresh_satellite_search()
+    end,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "ClearSatellite",
+    callback = function()
+        utils.clear_satellite_search()
     end,
 })
 
