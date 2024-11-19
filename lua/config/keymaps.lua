@@ -400,9 +400,7 @@ keymap("n", "*", function()
     end, 100)
     vim.cmd("keepjumps normal! mi*`i")
     _G.star_search = vim.fn.getreg("/")
-    if vim.api.nvim_buf_line_count(0) < 10000 then
-        require("hlslens").start()
-    end
+    require("hlslens").start()
 end)
 
 keymap("n", "<leader>ol", function()
@@ -419,7 +417,6 @@ end, opts)
 
 keymap("n", "<leader>uq", function()
     if vim.v.hlsearch ~= 0 then
-        vim.cmd("nohlsearch")
         require("hlslens").exportLastSearchToQuickfix()
     end
     vim.cmd("Trouble qflist toggle focus=false")

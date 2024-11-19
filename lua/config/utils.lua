@@ -1343,13 +1343,58 @@ function M.map_checkout(key, map)
     end, { nowait = true, desc = "desc for which key" })
 end
 
-function M.refresh_diagnostic_winbar()
-    local expr = vim.b.diag_winbar
+function M.refresh_satellite_search()
+    local winid = vim.api.nvim_get_current_win()
+    local ok, bwinid = pcall(require("satellite.view").get_or_create_view, winid)
+    if ok then
+        for _, handler in ipairs(require("satellite.handlers").handlers) do
+            if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
+                if handler.name == "search" then
+                    handler:render(winid, bwinid)
+                end
+            end
+        end
+    end
+end
+
+function M.clear_satellite_search()
+    local winid = vim.api.nvim_get_current_win()
+    local ok, bwinid = pcall(require("satellite.view").get_or_create_view, winid)
+    if ok then
+        for _, handler in ipairs(require("satellite.handlers").handlers) do
+            if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
+                if handler.name == "search" then
+                    vim.g.search_pos = nil
+                    handler:render(winid, bwinid)
+                end
+            end
+        end
+    end
+end
+
+function M.refresh_search_winbar()
+    if vim.wo.winbar == "" then
+        return
+    end
+    local expr = vim.b.search_winbar
+    local diag_winbar = vim.b.diag_winbar or ""
     if api.nvim_get_mode().mode == "n" and expr ~= nil then
         if vim.b.git_winbar_expr ~= nil and vim.api.nvim_win_get_config(0).zindex ~= 10 then
-            _G.set_winbar(vim.b.winbar_expr .. expr .. "%= " .. vim.b.git_winbar_expr)
+            _G.set_winbar(vim.b.winbar_expr .. diag_winbar .. expr .. "%= " .. vim.b.git_winbar_expr)
         else
-            _G.set_winbar(vim.b.winbar_expr .. expr)
+            _G.set_winbar(vim.b.winbar_expr .. diag_winbar .. expr)
+        end
+    end
+end
+
+function M.refresh_diagnostic_winbar()
+    local expr = vim.b.diag_winbar
+    local search = vim.b.search_winbar or ""
+    if api.nvim_get_mode().mode == "n" and expr ~= nil then
+        if vim.b.git_winbar_expr ~= nil and vim.api.nvim_win_get_config(0).zindex ~= 10 then
+            _G.set_winbar(vim.b.winbar_expr .. expr .. search .. "%= " .. vim.b.git_winbar_expr)
+        else
+            _G.set_winbar(vim.b.winbar_expr .. expr .. search)
         end
     end
 end
@@ -1456,11 +1501,8 @@ function M.set_git_winbar()
     end
     vim.b.git_winbar_expr = git_winbar_expr
     local diagnostic_winbar = api.nvim_get_mode().mode == "n" and vim.b.diag_winbar or ""
-    if vim.b.diag_winbar == nil then
-        _G.set_winbar(vim.b.winbar_expr .. "%= " .. git_winbar_expr)
-    else
-        _G.set_winbar(vim.b.winbar_expr .. diagnostic_winbar .. "%= " .. git_winbar_expr)
-    end
+    local search_winbar = vim.b.search_winbar or ""
+    _G.set_winbar(vim.b.winbar_expr .. diagnostic_winbar .. search_winbar .. "%= " .. git_winbar_expr)
 end
 
 function M.visual_search(cmd)

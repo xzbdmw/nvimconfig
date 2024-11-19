@@ -21,10 +21,12 @@ return {
                     _G.star_search = nil
                 end
 
-                if cmd == nil or cmd == "" or cmd == " " then
-                    render.clear(true, 0, true)
-                    return
-                end
+                -- if (cmd == nil or cmd == "" or cmd == " ") and vim.g.search_pos ~= nil then
+                --     -- __AUTO_GENERATED_PRINT_VAR_START__
+                --     print([==[function#function#if vim.g.search_pos:]==], vim.inspect(vim.g.search_pos)) -- __AUTO_GENERATED_PRINT_VAR_END__
+                --     render.clear(true, 0, true)
+                --     return
+                -- end
 
                 local cur_row = unpack(api.nvim_win_get_cursor(0))
 
@@ -67,6 +69,16 @@ return {
                         require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
                     end, 10)
                 end
+                vim.b.search_winbar = "%#HlSearchLensCountNoBg#"
+                    .. left
+                    .. "%#HlSearchLensCountItalicNoBg#"
+                    .. of
+                    .. "%#HlSearchLensCountNoBg#"
+                    .. right
+                require("config.utils").refresh_search_winbar()
+                vim.defer_fn(function()
+                    require("config.utils").refresh_search_winbar()
+                end, 10)
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
             end,
         })
