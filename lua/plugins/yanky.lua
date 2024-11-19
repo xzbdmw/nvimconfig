@@ -26,6 +26,10 @@ return {
                         FeedKeys("0", "m")
                     end
                 end)
+                vim.o.eventignore = "CursorMoved"
+                vim.defer_fn(function()
+                    vim.o.eventignore = ""
+                end, 100)
                 return "<Plug>(YankyPreviousEntry)mt`[v`]=`t"
             end,
             expr = true,
@@ -40,6 +44,10 @@ return {
                         FeedKeys("0", "m")
                     end
                 end)
+                vim.o.eventignore = "CursorMoved"
+                vim.defer_fn(function()
+                    vim.o.eventignore = ""
+                end, 100)
                 return "<Plug>(YankyNextEntry)mt`[v`]=`t"
             end,
             expr = true,
@@ -59,6 +67,10 @@ return {
                         FeedKeys("0", "m")
                     end
                 end)
+                vim.o.eventignore = "CursorMoved"
+                vim.defer_fn(function()
+                    vim.o.eventignore = ""
+                end, 100)
                 return "<Plug>(YankyPutAfter)mt`[v`]=`t"
             end,
             expr = true,
@@ -79,6 +91,10 @@ return {
                         FeedKeys("0", "m")
                     end
                 end)
+                vim.o.eventignore = "CursorMoved"
+                vim.defer_fn(function()
+                    vim.o.eventignore = ""
+                end, 100)
                 return "<Plug>(YankyPutBefore)mt`[v`]=`t"
             end,
             expr = true,
