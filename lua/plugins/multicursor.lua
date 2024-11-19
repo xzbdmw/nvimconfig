@@ -22,6 +22,8 @@ return {
                 ["h"] = { method = extend.h_method, opts = { desc = "left" } },
                 ["o"] = { method = extend.o_method, opts = { desc = "change direction" } },
                 ["u"] = { method = extend.undo_history, opts = { desc = "undo history" } },
+                ["gu"] = { method = normal.lower_case, opts = { desc = "undo history" } },
+                ["gU"] = { method = normal.upper_case, opts = { desc = "undo history" } },
                 ["0"] = { method = extend.caret_method, opts = { desc = "line start" } },
                 ["L"] = { method = extend.dollar_method, opts = { desc = "line end" } },
                 ["A"] = { method = extend.A_method, opts = { desc = "line start" } },
