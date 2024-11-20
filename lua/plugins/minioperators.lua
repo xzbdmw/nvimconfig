@@ -43,7 +43,7 @@ return {
 
                 -- Sort text
                 sort = {
-                    prefix = "gs",
+                    prefix = "g1",
 
                     -- Function which does the sort
                     func = nil,

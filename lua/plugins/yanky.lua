@@ -19,13 +19,6 @@ return {
                         break
                     end
                 end
-                local cursor = vim.api.nvim_win_get_cursor(0)[1]
-                vim.schedule(function()
-                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
-                    if new_cursor ~= cursor then
-                        FeedKeys("0", "m")
-                    end
-                end)
                 vim.o.eventignore = "CursorMoved"
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
@@ -38,12 +31,6 @@ return {
             "<leader>n",
             function()
                 local cursor = vim.api.nvim_win_get_cursor(0)[1]
-                vim.schedule(function()
-                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
-                    if new_cursor ~= cursor then
-                        FeedKeys("0", "m")
-                    end
-                end)
                 vim.o.eventignore = "CursorMoved"
                 vim.defer_fn(function()
                     vim.o.eventignore = ""

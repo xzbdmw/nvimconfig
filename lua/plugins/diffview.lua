@@ -2,6 +2,7 @@ return {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
     config = function()
+        local orgin_status_col = vim.o.statuscolumn
         local actions = require("diffview.actions")
         require("diffview").setup({
             diff_binaries = false, -- Show diffs for binaries
@@ -86,6 +87,15 @@ return {
                     if ctx ~= nil and ctx.layout_name == "diff2_horizontal" then
                         vim.wo[winid].signcolumn = "no"
                         vim.wo[winid].statuscolumn = ""
+                        vim.api.nvim_create_autocmd("TabLeave", {
+                            once = true,
+                            callback = function()
+                                if vim.api.nvim_win_is_valid(winid) then
+                                    vim.wo[winid].signcolumn = "yes"
+                                    vim.wo[winid].statuscolumn = orgin_status_col
+                                end
+                            end,
+                        })
                     end
                 end,
                 view_opened = function(view)

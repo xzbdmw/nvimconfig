@@ -326,7 +326,10 @@ keymap("o", "ao", function()
 end, { desc = "Delete Surrounding Indentation" })
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
+keymap("n", "<leader>cn", "*grgn", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
+keymap("n", "<leader>an", "<Cmd>normal geiageina<CR>", opts)
+keymap("n", "<leader>ap", "<Cmd>normal geiageila<CR>", opts)
 keymap("n", "<leader>M", function()
     vim.g.skip_noice = not vim.g.skip_noice
 end, opts)
