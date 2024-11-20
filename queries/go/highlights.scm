@@ -9,7 +9,7 @@
 
 (field_identifier) @property
 
-(identifier) @variable
+((identifier) @variable (#set! "priority" 1050))
 
 (package_identifier) @module
 
@@ -26,7 +26,7 @@
 
 ; Function calls
 (call_expression
-  function: (identifier) @function.call)
+  function: (identifier) @function.call (#set! "priority" 1051))
 
 (call_expression
   function: (selector_expression
@@ -34,7 +34,7 @@
 
 ; Function definitions
 (function_declaration
-  name: (identifier) @function)
+  name: (identifier) @function(#set! "priority" 1051))
 
 (method_declaration
   name: (field_identifier) @function.method)
