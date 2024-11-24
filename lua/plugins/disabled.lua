@@ -81,7 +81,6 @@ return {
     { "folke/neoconf.nvim", enabled = false },
     -- { "barbecue", enabled = false },
     { "luukvbaal/nnn.nvim", enabled = false },
-    { "jinh0/eyeliner.nvim", enabled = false },
     { "nvim-telescope/telescope-file-browser.nvim", enabled = false },
     { "neanias/everforest-nvim", enabled = false },
     -- { "rktjmp/lush.nvim", enabled = false },

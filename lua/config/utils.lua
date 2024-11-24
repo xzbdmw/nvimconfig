@@ -11,6 +11,7 @@ _G.set_cursor_animation = function(len)
         vim.g.neovide_cursor_animation_length = len
     end
 end
+
 local function get_normal_bg_color()
     local normal_hl = api.nvim_get_hl_by_name("Normal", true)
     local bg_color = string.format("#%06x", normal_hl.background)
@@ -862,9 +863,6 @@ function M.set_glance_keymap()
         end
 
         _G.glance_buffer[bufnr] = true
-        vim.keymap.set("n", "<Esc>", function()
-            glance_close()
-        end, { buffer = bufnr })
 
         vim.keymap.set("n", "q", function()
             glance_close()
@@ -1228,17 +1226,16 @@ end
 function M.set_glance_winbar()
     local winconfig = api.nvim_win_get_config(0)
     if winconfig.relative ~= "" and winconfig.zindex == 9 then
-        local function checkGlobalVarAndSetWinBar()
-            if _G.glance_listnr ~= nil then
+        api.nvim_create_autocmd("User", {
+            once = true,
+            pattern = "GlanceListUpdate",
+            callback = function()
                 _G.set_winbar(
                     " %#Comment#"
                         .. string.format("%s (%d)", get_lsp_method_label(_G.glance_list_method), _G.glance_listnr)
                 )
-            else
-                vim.defer_fn(checkGlobalVarAndSetWinBar, 1)
-            end
-        end
-        checkGlobalVarAndSetWinBar()
+            end,
+        })
     end
 end
 
@@ -1373,7 +1370,7 @@ function M.clear_satellite_search()
 end
 
 function M.refresh_search_winbar()
-    if vim.wo.winbar == "" then
+    if vim.wo.winbar == "" or vim.b.winbar_expr == nil then
         return
     end
     local expr = vim.b.search_winbar
@@ -1485,7 +1482,7 @@ function M.set_git_winbar()
     if vim.g.Base_commit_msg ~= "" then
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " = " .. vim.g.Diff_file_count .. " "
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " = " .. vim.g.Diff_file_count .. " "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
@@ -1493,7 +1490,7 @@ function M.set_git_winbar()
     else
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#WinBarHunk#" .. " = " .. vim.g.Diff_file_count .. " "
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " = " .. vim.g.Diff_file_count .. " "
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "

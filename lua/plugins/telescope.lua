@@ -433,6 +433,9 @@ return {
                         fn()
                     end,
                 })
+                vim.defer_fn(function()
+                    pcall(api.nvim_del_autocmd, id)
+                end, 1000)
             end
 
             local status_delta = require("telescope.previewers").new_termopen_previewer({

@@ -28,8 +28,6 @@ vim.cmd("syntax off")
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 
-api.nvim_create_augroup("LeapIlluminate", {})
-
 -- sync system clipboard while yanking
 api.nvim_create_autocmd("TextYankPost", {
     callback = function()
@@ -58,25 +56,6 @@ api.nvim_create_autocmd({ "User" }, {
         vim.wo[winid].number = true
         utils.update_preview_state(api.nvim_win_get_buf(winid), winid)
     end,
-})
-
-_G.leapjump = false
-api.nvim_create_autocmd("User", {
-    pattern = { "LeapSelectPre", "LeapJumpRepeat" },
-    callback = function()
-        _G.leapjump = true
-        local buf = api.nvim_get_current_buf()
-        local win = api.nvim_get_current_win()
-        require("illuminate.engine").refresh_references(buf, win)
-    end,
-    group = "LeapIlluminate",
-})
-api.nvim_create_autocmd("User", {
-    pattern = { "LeapPatternPost" },
-    callback = function()
-        _G.leapfirst = true
-    end,
-    group = "LeapIlluminate",
 })
 
 api.nvim_create_autocmd("User", {
@@ -123,7 +102,7 @@ api.nvim_create_autocmd("FileType", {
     pattern = { "lazy" },
     callback = function(args)
         vim.defer_fn(function()
-            pcall(vim.api.nvim_buf_del_keymap, args.buf, "n", "U")
+            pcall(api.nvim_buf_del_keymap, args.buf, "n", "U")
         end, 500)
     end,
 })
@@ -173,7 +152,7 @@ api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit" },
     callback = function()
         local buf
-        vim.api.nvim_create_autocmd("CursorMoved", {
+        api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
                 utils.change_guicursor("block")
@@ -181,7 +160,7 @@ api.nvim_create_autocmd("FileType", {
                 FeedKeys("a", "m")
                 vim.cmd("setlocal syntax=ON")
                 vim.schedule(function()
-                    buf = vim.api.nvim_get_current_buf()
+                    buf = api.nvim_get_current_buf()
                 end)
             end,
         })
@@ -199,7 +178,7 @@ api.nvim_create_autocmd("FileType", {
                 end, 50)
 
                 vim.cmd("w")
-                if vim.api.nvim_get_mode().mode == "i" then
+                if api.nvim_get_mode().mode == "i" then
                     FeedKeys("<esc>", "n")
                 end
                 vim.cmd(string.format("bw! %d", buf))
@@ -226,7 +205,7 @@ api.nvim_create_autocmd("TermOpen", {
         local opts = { buffer = 0 }
         if vim.endswith(args.file, [[#1]]) then
             vim.keymap.set("t", "<esc>", function()
-                local line = vim.api.nvim_get_current_line()
+                local line = api.nvim_get_current_line()
                 if vim.startswith(line, "│") then
                     return "<c-c>"
                 else
@@ -564,7 +543,7 @@ api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPre",
     callback = function()
         vim.g.vim_enter = true
-        local tabcount = #vim.api.nvim_list_tabpages()
+        local tabcount = #api.nvim_list_tabpages()
         if tabcount > 1 then
             vim.cmd("tabclose! " .. 2)
         end
@@ -673,7 +652,7 @@ api.nvim_create_autocmd("User", {
     callback = utils.set_git_winbar,
 })
 
-vim.api.nvim_create_autocmd("User", {
+api.nvim_create_autocmd("User", {
     pattern = { "NvimTreeReloaded" },
     callback = function()
         require("nvim-tree.actions").tree.find_file.fn()
@@ -731,7 +710,7 @@ api.nvim_create_autocmd("ModeChanged", {
         vim.defer_fn(function()
             utils.do_highlight(args.buf)
         end, 10)
-        hisel_id = vim.api.nvim_create_autocmd("CursorMoved", {
+        hisel_id = api.nvim_create_autocmd("CursorMoved", {
             callback = function()
                 utils.do_highlight(args.buf)
             end,
@@ -744,7 +723,7 @@ api.nvim_create_autocmd("ModeChanged", {
     pattern = "[vV\x16]:*",
     callback = function()
         if hisel_id then
-            vim.api.nvim_del_autocmd(hisel_id)
+            api.nvim_del_autocmd(hisel_id)
             vim.on_key(nil, hisel_ns)
             hisel_id = nil
         end
@@ -753,9 +732,9 @@ api.nvim_create_autocmd("ModeChanged", {
 })
 
 if vim.g.neovide then
-    vim.api.nvim_set_hl(0, "TermCursor", {})
+    api.nvim_set_hl(0, "TermCursor", {})
 else
-    vim.api.nvim_set_hl(0, "TermCursor", { bg = "#3636DB" })
+    api.nvim_set_hl(0, "TermCursor", { bg = "#3636DB" })
 end
 
 vim.lsp.set_log_level("error")

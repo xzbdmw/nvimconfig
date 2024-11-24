@@ -19,6 +19,14 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "InlayHint" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { event = "msg_show", find = "generated file" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "indented" },
                     opts = { skip = true },
                 },
@@ -28,10 +36,6 @@ return {
                 },
                 {
                     filter = { event = "msg_show", find = "lines" },
-                    opts = { skip = true },
-                },
-                {
-                    filter = { event = "msg_show", find = "InlayHint" },
                     opts = { skip = true },
                 },
                 {

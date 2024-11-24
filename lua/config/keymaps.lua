@@ -1,6 +1,5 @@
 local opts = { noremap = true, silent = true }
 local utils = require("config.utils")
-
 local keymap = vim.keymap.set
 
 keymap({ "n", "i" }, "<D-s>", function()
@@ -235,8 +234,8 @@ keymap("n", "<leader><leader>g", function()
     vim.notify(vim.g.Base_commit_msg, vim.log.levels.INFO)
 end, opts)
 
-keymap({ "n", "x" }, "<right>", "]", { remap = true })
-keymap({ "n", "x" }, "<left>", "[", { remap = true })
+keymap({ "o", "n", "x" }, "<right>", "]", { remap = true })
+keymap({ "o", "n", "x" }, "<left>", "[", { remap = true })
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
@@ -326,7 +325,7 @@ keymap("o", "ao", function()
 end, { desc = "Delete Surrounding Indentation" })
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
-keymap("n", "<leader>cn", "*grgn", { remap = true })
+keymap("n", "<leader>rn", "*grgn", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>an", "<Cmd>normal geiageina<CR>", opts)
 keymap("n", "<leader>ap", "<Cmd>normal geiageila<CR>", opts)

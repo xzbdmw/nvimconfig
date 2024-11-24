@@ -9,29 +9,12 @@ return {
     },
     keys = {
         {
-            "<C-e>",
-            "<cmd>Lspsaga diagnostic_jump_next<CR>",
-            mode = { "n" },
-        },
-        {
             "<leader>ca",
             function()
                 vim.cmd("Lspsaga code_action")
             end,
             mode = { "n", "v" },
             desc = "Code Action",
-        },
-        {
-            "<C-cr>",
-            function()
-                local origin = vim.o.eventignore
-                vim.o.eventignore = "all"
-                vim.cmd([[:stopinsert]])
-                vim.cmd("Lspsaga code_action")
-                vim.o.eventignore = origin
-            end,
-            desc = "Code Action",
-            mode = { "n", "v" },
         },
     },
     config = function()

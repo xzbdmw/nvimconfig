@@ -9,7 +9,6 @@ return {
         local function clear_and_restore()
             for bufnr, _ in pairs(_G.glance_buffer) do
                 api.nvim_buf_del_keymap(bufnr, "n", "<CR>")
-                api.nvim_buf_del_keymap(bufnr, "n", "<esc>")
                 api.nvim_buf_del_keymap(bufnr, "n", "q")
                 vim.keymap.set("v", "<CR>", function()
                     require("nvim-treesitter.incremental_selection").node_incremental()
@@ -44,7 +43,7 @@ return {
 
         require("glance").setup({
             use_trouble_qf = true,
-            height = 18, -- Height of the window
+            height = 23, -- Height of the window
             zindex = 10,
             preview_win_opts = { -- Configure preview window options
                 cursorline = true,

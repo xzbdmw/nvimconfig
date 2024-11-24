@@ -7,7 +7,7 @@
 (type_spec
   name: (type_identifier) @type.definition)
 
-(field_identifier) @property
+((field_identifier) @property(#set! "priority" 1049) )
 
 ((identifier) @variable (#set! "priority" 1050))
 
@@ -30,17 +30,17 @@
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @function.method.call))
+    field: (field_identifier) @function.method.call (#set! "priority" 1051)))
 
 ; Function definitions
 (function_declaration
   name: (identifier) @function(#set! "priority" 1051))
 
 (method_declaration
-  name: (field_identifier) @function.method)
+  name: (field_identifier) @function.method(#set! "priority" 1053))
 
 (method_elem
-  name: (field_identifier) @function.method)
+  name: (field_identifier) @function.method(#set! "priority" 1053))
 
 ; Constructors
 ((call_expression
@@ -239,7 +239,7 @@
 ;   (#not-has-parent? @spell import_spec))
 
 (type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))
-((type_identifier)@go.error(#eq? @go.error "error"))
+((type_identifier)@go.error(#eq? @go.error "error")(#set! "priority" 1051))
 ((type_identifier)@go.string(#eq? @go.string "string"))
 ; ((identifier) @receiver (#eq? @receiver "self"))
 ; type: (qualified_type 
