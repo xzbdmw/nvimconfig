@@ -62,10 +62,14 @@ keymap("n", "N", function()
     end
 end)
 
-keymap({ "s", "n" }, "<esc>", function()
+keymap({ "n" }, "<esc>", function()
     api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })
+    local luasnip = require("luasnip")
+    if luasnip.jumpable(1) or luasnip.jumpable(-1) then
+        luasnip.unlink_current()
+    end
     local flag = true
     for _, win in pairs(api.nvim_list_wins()) do
         local success, win_config = pcall(api.nvim_win_get_config, win)
