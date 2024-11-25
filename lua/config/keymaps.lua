@@ -47,7 +47,7 @@ keymap({ "n" }, "/", function()
     end)
     utils.search("/")
 end, opts)
-
+keymap("o", "b", "vb", opts)
 keymap({ "n" }, "?", function()
     utils.search("?")
 end, opts)

@@ -5,7 +5,7 @@ return {
             "r",
             function()
                 vim.g.neovide_floating_z_height = 0
-                FeedKeys("o<esc><cmd>lua require('live-rename').rename({ insert = true })<CR>", "n")
+                FeedKeys("o<esc><cmd>lua require('live-rename').rename({ insert = false })<CR>", "n")
             end,
             mode = { "x" },
         },
