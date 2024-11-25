@@ -295,10 +295,14 @@ api.nvim_create_autocmd("FileType", {
     callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", function()
-            _G.no_animation()
-            _G.hide_cursor(function() end)
-            return "<cmd>close<cr>"
-        end, { expr = true, buffer = event.buf, silent = true })
+            if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+                FeedKeys("q", "n")
+            else
+                _G.no_animation()
+                _G.hide_cursor(function() end)
+                vim.cmd("close")
+            end
+        end, { buffer = event.buf, silent = true })
     end,
 })
 
