@@ -5,7 +5,6 @@ return {
             "<leader>un",
             function()
                 vim.cmd("Ut")
-                FeedKeys("<c-w>l", "n")
             end,
         },
     },
