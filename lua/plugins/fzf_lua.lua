@@ -1,7 +1,6 @@
 return {
     "ibhagwan/fzf-lua",
-    commit = "344b309421e5222a6199e4b46d01041089b6a2ae",
-    enabled = false,
+    commit = "9631145bd7b81e6bb4236f3806a370f054ced67d",
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
@@ -106,6 +105,7 @@ return {
             -- https://github.com/lotabout/skim
             -- can also be set to 'fzf-tmux'
             winopts = {
+                treesitter = true,
                 -- split         = "belowright new",-- open in a split instead?
                 -- "belowright new"  : split below
                 -- "aboveleft new"   : split above

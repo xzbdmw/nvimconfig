@@ -22,6 +22,7 @@ vim.g.skip_noice = false
 vim.g.hlchunk_disable = false
 vim.g.cy = false
 vim.g.search_pos = nil
+vim.g.diffview_fname = ""
 
 vim.cmd("syntax off")
 

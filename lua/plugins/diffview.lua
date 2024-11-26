@@ -264,6 +264,9 @@ return {
                             local fname = vim.split(winbar, " ", { plain = true })[5]
                             fname = vim.fs.basename(fname)
                             vim.cmd("DiffviewToggleFiles")
+                            if fname == nil then
+                                return
+                            end
                             local win = vim.api.nvim_get_current_win()
                             local buf = vim.api.nvim_win_get_buf(win)
                             local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)

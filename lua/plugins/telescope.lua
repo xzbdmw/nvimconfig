@@ -399,8 +399,18 @@ return {
                     }
                 end,
             })
-
+            local diffview_cr = function(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                vim.g.diffview_fname = vim.fs.basename(selection.path)
+                require("diffview.actions").select_fname()
+            end
             local goto_next_hunk_cr = function(prompt_bufnr)
+                local tabnum = vim.fn.tabpagenr()
+                -- Diffview
+                if tabnum ~= 1 then
+                    return diffview_cr(prompt_bufnr)
+                end
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local title = picker.layout.picker.preview_title
                 actions.select_default(prompt_bufnr)
