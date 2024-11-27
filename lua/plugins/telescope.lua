@@ -14,6 +14,7 @@ return {
         keys = {
             { "<leader><space>", false },
             { "<leader>so", false },
+            { "<leader>uC", false },
             { "<leader>sf", false },
             {
                 "<leader>sH",

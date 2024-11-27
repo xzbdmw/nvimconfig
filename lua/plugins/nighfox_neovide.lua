@@ -318,6 +318,7 @@ return {
                 DiagnosticVirtualTextError = { fg = "#E7636B", bg = "#FBE8D9" },
                 DiagnosticVirtualTextWarn = { fg = "#FF9112", bg = "#FEECD2" },
                 DiagnosticUnderlineWarn = { sp = "#999797", style = "undercurl" },
+                DiagnosticUnderlineErrorUnused = { sp = "#6F6D6C", style = "undercurl" },
                 DiagnosticSignWarn = { fg = "#999797" },
                 DiagnosticUnnecessary = { fg = "none", bg = "none" },
                 DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },

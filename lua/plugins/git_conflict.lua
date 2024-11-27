@@ -6,6 +6,13 @@ return {
             "<leader>uC",
             function()
                 require("git-conflict").start_conflict_detect(api.nvim_get_current_buf())
+                vim.api.nvim_create_autocmd("User", {
+                    once = true,
+                    pattern = "GitConflictDetected",
+                    callback = function()
+                        vim.cmd("redraw!")
+                    end,
+                })
             end,
             desc = "GitConflictListQf",
         },
