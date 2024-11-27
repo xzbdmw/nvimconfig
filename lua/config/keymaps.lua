@@ -325,7 +325,6 @@ keymap("o", "ao", function()
 end, { desc = "Delete Surrounding Indentation" })
 
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
-keymap("n", "<leader>rn", "*grgn", { remap = true })
 keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>an", "<Cmd>normal geiageina<CR>", opts)
