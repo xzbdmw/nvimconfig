@@ -18,7 +18,7 @@ return {
             highlight_grey = "Comment",
         },
         enable_moveright = true,
-        map_bs = true,
+        map_bs = false,
         map_cr = true,
     }, -- this is equalent to setup({}) function
     config = function(_, lazy_opts)

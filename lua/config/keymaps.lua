@@ -633,6 +633,40 @@ keymap("n", "<leader>j", function()
 end, { expr = true, remap = true })
 
 keymap("n", "<M-w>", "<c-w>", opts)
+keymap("i", "<BS>", function()
+    _G.no_animation(_G.CI)
+    local res = require("nvim-autopairs").bs()
+    if res ~= "" then
+        FeedKeys(res, "n")
+        return
+    end
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local front = line:sub(1, col)
+    local all_space = true
+
+    local comment = vim.split(vim.bo.commentstring, " ")[1]:sub(1, 1)
+    if comment == "" then
+        FeedKeys("<BS>", "n")
+        return
+    end
+
+    for i = 1, #front do
+        local c = front:sub(i, i)
+        if c ~= " " and c ~= "\t" and c ~= comment then
+            all_space = false
+            break
+        end
+    end
+    if all_space == true and col ~= 0 then
+        vim.api.nvim_set_current_line(line:sub(col + 1, #line))
+        vim.api.nvim_win_set_cursor(0, { row, 0 })
+        FeedKeys("<BS>", "n")
+        FeedKeys("<space>", "n")
+    else
+        FeedKeys("<BS>", "n")
+    end
+end, opts)
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap("n", "<d-w>", "<c-w>", opts)
 

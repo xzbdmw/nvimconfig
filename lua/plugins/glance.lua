@@ -99,12 +99,13 @@ return {
                 before_open = function(result, open, jumpfn, method)
                     if method == "definitions" then
                         vim.cmd("normal! m'")
-                        if #result > 1 then
-                            open(result)
-                            FeedKeys("<Tab>", "t")
-                        else
-                            jumpfn(result[1])
-                        end
+                        jumpfn(result[1])
+                        -- if #result > 1 then
+                        --     open(result)
+                        --     FeedKeys("<Tab>", "t")
+                        -- else
+                        --     jumpfn(result[1])
+                        -- end
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
                         open(result)
