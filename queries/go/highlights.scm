@@ -7,9 +7,9 @@
 (type_spec
   name: (type_identifier) @type.definition)
 
-((field_identifier) @property(#set! "priority" 1049) )
+((field_identifier) @property )
 
-((identifier) @variable (#set! "priority" 1050))
+((identifier) @variable )
 
 (package_identifier) @module
 
@@ -26,21 +26,21 @@
 
 ; Function calls
 (call_expression
-  function: (identifier) @function.call (#set! "priority" 1051))
+  function: (identifier) @function.call )
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @function.method.call (#set! "priority" 1051)))
+    field: (field_identifier) @function.method.call ))
 
 ; Function definitions
 (function_declaration
-  name: (identifier) @function(#set! "priority" 1051))
+  name: (identifier) @function)
 
 (method_declaration
-  name: (field_identifier) @function.method(#set! "priority" 1053))
+  name: (field_identifier) @function.method)
 
 (method_elem
-  name: (field_identifier) @function.method(#set! "priority" 1053))
+  name: (field_identifier) @function.method)
 
 ; Constructors
 ((call_expression

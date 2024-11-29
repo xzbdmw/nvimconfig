@@ -633,6 +633,7 @@ keymap("n", "<leader>j", function()
 end, { expr = true, remap = true })
 
 keymap("n", "<M-w>", "<c-w>", opts)
+keymap({ "n", "o" }, "^", "0", opts)
 keymap("i", "<BS>", function()
     _G.no_animation(_G.CI)
     local res = require("nvim-autopairs").bs()
