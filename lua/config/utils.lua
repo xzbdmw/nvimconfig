@@ -1773,7 +1773,23 @@ M.qf_populate = function(lines, opts)
 
     vim.cmd(commands)
 end
-
+function M.f_search()
+    vim.g.disable_arrow = true
+    local key_ns = vim.api.nvim_create_namespace("f_search")
+    local miss_count = 0
+    vim.on_key(function(key, typed)
+        if typed == ";" then
+            FeedKeys(";", "n")
+        elseif typed == "," then
+            FeedKeys(",", "n")
+        elseif miss_count == 3 or typed == "\27" then
+            vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
+            vim.g.disable_arrow = false
+        elseif typed ~= "" then
+            miss_count = miss_count + 1
+        end
+    end, key_ns)
+end
 _G.no_animation = function(length)
     length = length or 0
     _G.set_cursor_animation(0.0)
