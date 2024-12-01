@@ -9,6 +9,15 @@ return {
             "s",
             mode = { "n", "x", "o" },
             function()
+                local key_ns = vim.api.nvim_create_namespace("flash;")
+                vim.on_key(function(key, typed)
+                    if typed == ";" then
+                        require("config.utils").jump_to_next_match(false)
+                    elseif typed == "," then
+                        require("config.utils").jump_to_prev_match(false)
+                    end
+                end, key_ns)
+                vim.g.disable_arrow = true
                 vim.o.scrolloff = 0
                 vim.g.flash_winbar = vim.wo.winbar
                 vim.cmd([[normal! m']])
