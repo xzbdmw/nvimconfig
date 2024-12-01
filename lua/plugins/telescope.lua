@@ -406,6 +406,20 @@ return {
                 vim.g.diffview_fname = vim.fs.basename(selection.path)
                 require("diffview.actions").select_fname()
             end
+
+            local open_diff_view = function(prompt_bufnr)
+                local tabnum = vim.fn.tabpagenr()
+                if tabnum ~= 1 then
+                    return diffview_cr(prompt_bufnr)
+                end
+                local options = "--selected-file=" .. action_state.get_selected_entry().path
+                if vim.g.Base_commit == "" then
+                    vim.cmd("DiffviewOpen" .. options)
+                else
+                    vim.cmd("DiffviewOpen " .. vim.g.Base_commit .. options)
+                end
+            end
+
             local goto_next_hunk_cr = function(prompt_bufnr)
                 local tabnum = vim.fn.tabpagenr()
                 -- Diffview
@@ -1012,6 +1026,7 @@ return {
                                 K = actions.preview_scrolling_up,
                                 ["<Tab>"] = focus_preview,
                                 ["<cr>"] = goto_next_hunk_cr,
+                                ["o"] = open_diff_view,
                                 ["S"] = function()
                                     FeedKeys("<leader>S", "m")
                                 end,
@@ -1096,6 +1111,7 @@ return {
                             },
                             i = {
                                 ["<Tab>"] = focus_preview,
+                                ["<c-d>"] = open_diff_view,
                                 ["<c-o>"] = actions.git_staging_toggle,
                                 ["<cr>"] = goto_next_hunk_cr,
                             },

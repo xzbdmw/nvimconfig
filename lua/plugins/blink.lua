@@ -24,6 +24,10 @@ return {
                 keyword_range = "full",
             },
         },
+        menu = {
+            enabled = true,
+            max_height = 30,
+        },
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = "normal",

@@ -130,7 +130,6 @@ api.nvim_create_autocmd("BufEnter", {
 api.nvim_create_autocmd("FileType", {
     pattern = { "git" },
     callback = function()
-        vim.b.miniindentscope_disable = true
         vim.wo.signcolumn = "no"
         vim.cmd("setlocal syntax=ON")
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
@@ -142,7 +141,6 @@ api.nvim_create_autocmd("TabEnter", {
         local tabnum = vim.fn.tabpagenr()
         if tabnum ~= 1 then
             vim.g.neovide_underline_stroke_scale = 0
-            vim.b.miniindentscope_disable = true
         else
             vim.g.neovide_underline_stroke_scale = 1.5
         end
