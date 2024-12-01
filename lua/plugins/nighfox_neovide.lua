@@ -202,6 +202,8 @@ return {
                 CursorLine = { bg = "#F0ECDE" },
                 FloatCursorLine = { bg = "#EBE8DB" },
                 LualineCursorLine = { bg = "#EBE8DB" },
+                SubstituteRange = { bg = "#fcf0a1" },
+                SubstituteSubstituted = { link = "SubstituteRange" },
                 -- FzfLuaBorder = { fg = "#BDBFC9" },
                 FzfLuaHeaderText = { link = "TelescopeTitle" },
                 FzfLuaHeaderBind = { link = "TelescopeTitle" },

@@ -19,7 +19,7 @@ return {
 
                 -- Exchange text regions
                 exchange = {
-                    prefix = "ge",
+                    prefix = "g3",
 
                     -- Whether to reindent new text to match previous indent
                     reindent_linewise = true,
@@ -35,7 +35,7 @@ return {
 
                 -- Replace text with register
                 replace = {
-                    prefix = "gr",
+                    prefix = "g2",
 
                     -- Whether to reindent new text to match previous indent
                     reindent_linewise = true,

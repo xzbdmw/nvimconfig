@@ -70,6 +70,7 @@ keymap({ "n" }, "<esc>", function()
     if luasnip.jumpable(1) or luasnip.jumpable(-1) then
         luasnip.unlink_current()
     end
+    require("substitute.exchange").cancel()
     local flag = true
     for _, win in pairs(api.nvim_list_wins()) do
         local success, win_config = pcall(api.nvim_win_get_config, win)

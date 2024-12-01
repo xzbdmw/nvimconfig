@@ -1,7 +1,7 @@
 return {
     "ggandor/leap.nvim",
     -- commit = "3fc5e8344eac8a306baca09634fd613d1aa2c388",
-    enabled = true,
+    enabled = false,
     opts = {
         case_sensitive = false,
         equivalence_classes = { " \t\r\n" },
