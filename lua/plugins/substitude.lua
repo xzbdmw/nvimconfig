@@ -4,7 +4,7 @@ return {
         require("substitute").setup({
             on_substitute = nil,
             yank_substituted_text = false,
-            preserve_cursor_position = true,
+            preserve_cursor_position = false,
             modifiers = nil,
             highlight_substituted_text = {
                 enabled = true,
@@ -37,6 +37,7 @@ return {
                 end,
             })
         end)
+        vim.keymap.set("n", "grr", "gr_", { remap = true })
         vim.keymap.set("n", "ge", require("substitute.exchange").operator)
         vim.keymap.set("x", "ge", require("substitute.exchange").visual)
     end,

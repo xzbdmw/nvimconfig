@@ -32,13 +32,9 @@ return {
             enabled = function()
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
-                disabled = disabled or (vim.bo.filetype == "oil")
                 disabled = disabled or (vim.fn.reg_recording() ~= "")
                 disabled = disabled or (vim.fn.reg_executing() ~= "")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
-                disabled = disabled or api.nvim_buf_get_name(0) == "lsp:rename"
-                disabled = disabled or vim.b.rename
-                disabled = disabled or vim.bo.filetype == "vim"
                 return not disabled
             end,
             preselect = cmp.PreselectMode.None,

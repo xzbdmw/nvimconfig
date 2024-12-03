@@ -23,6 +23,7 @@ vim.g.hlchunk_disable = false
 vim.g.cy = false
 vim.g.search_pos = nil
 vim.g.diffview_fname = ""
+vim.g.restore_view = true
 
 vim.cmd("syntax off")
 
@@ -264,9 +265,10 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("CmdwinEnter", {
-    callback = function()
+    callback = function(arg)
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
+        vim.b[arg.buf].cmdwin = true
     end,
 })
 

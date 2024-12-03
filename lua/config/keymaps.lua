@@ -799,10 +799,20 @@ keymap("n", "f", function()
     utils.f_search()
     return "f"
 end, { expr = true })
+keymap({ "i", "n" }, "<c-'>", function()
+    vim.cmd("norm! m'")
+end, opts)
 keymap("n", "F", function()
     utils.f_search()
     return "F"
 end, { expr = true })
+keymap("n", ",", function()
+    if vim.g.disable_arrow then
+        return
+    else
+        FeedKeys(",", "n")
+    end
+end)
 keymap("n", "<M-Tab>", function()
     vim.g.hide_prompt = true
     vim.defer_fn(function()

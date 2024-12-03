@@ -183,15 +183,18 @@ return {
                             pattern = "TroubleOpen",
                             callback = vim.schedule_wrap(function()
                                 require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
+                                if not require("gitsigns.config").config.word_diff then
+                                    toggle_inline_diff()
+                                end
                                 FeedKeys("z", "m")
                                 if not require("nvim-tree.explorer.filters").config.filter_git_clean then
                                     FeedKeys("<leader>S", "m")
+                                else
+                                    require("nvim-tree.api").tree.expand_all()
+                                    require("nvim-tree.actions").tree.find_file.fn()
                                 end
                             end),
                         })
-                    end
-                    if not require("gitsigns.config").config.word_diff then
-                        toggle_inline_diff()
                     end
                     gs.setqflist("all")
                 end)
