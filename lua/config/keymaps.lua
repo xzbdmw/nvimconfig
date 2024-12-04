@@ -636,11 +636,13 @@ end, { expr = true, remap = true })
 keymap("n", "<M-w>", "<c-w>", opts)
 keymap({ "n", "o" }, "^", "0", opts)
 keymap("i", "<BS>", function()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        return "<BS>"
+    end
     _G.no_animation(_G.CI)
     local res = require("nvim-autopairs").bs()
     if res ~= "" then
-        FeedKeys(res, "n")
-        return
+        return res
     end
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
@@ -649,8 +651,7 @@ keymap("i", "<BS>", function()
 
     local comment = vim.split(vim.bo.commentstring, " ")[1]:sub(1, 1)
     if comment == "" then
-        FeedKeys("<BS>", "n")
-        return
+        return "<BS>"
     end
 
     for i = 1, #front do
@@ -661,14 +662,17 @@ keymap("i", "<BS>", function()
         end
     end
     if all_space == true and col ~= 0 then
-        vim.api.nvim_set_current_line(line:sub(col + 1, #line))
-        vim.api.nvim_win_set_cursor(0, { row, 0 })
-        FeedKeys("<BS>", "n")
-        FeedKeys("<space>", "n")
+        vim.schedule(function()
+            vim.api.nvim_set_current_line(line:sub(col + 1, #line))
+            vim.api.nvim_win_set_cursor(0, { row, 0 })
+            FeedKeys("<BS>", "n")
+            FeedKeys("<space>", "n")
+        end)
+        return ""
     else
-        FeedKeys("<BS>", "n")
+        return "<BS>"
     end
-end, opts)
+end, { expr = true })
 keymap("n", "<leader>k", "<C-i>", opts)
 keymap("n", "<d-w>", "<c-w>", opts)
 

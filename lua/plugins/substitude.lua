@@ -28,15 +28,7 @@ return {
             },
         })
         -- Lua
-        vim.keymap.set("n", "gr", function()
-            require("substitute").operator({
-                modifiers = function(state)
-                    if state.vmode == "line" then
-                        return { "reindent" }
-                    end
-                end,
-            })
-        end)
+        vim.keymap.set("n", "gr", require("substitute").operator)
         vim.keymap.set("n", "grr", "gr_", { remap = true })
         vim.keymap.set("n", "ge", require("substitute.exchange").operator)
         vim.keymap.set("x", "ge", require("substitute.exchange").visual)

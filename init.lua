@@ -218,7 +218,7 @@ api.nvim_create_autocmd("TermOpen", {
 })
 
 api.nvim_create_autocmd("ModeChanged", {
-    callback = function(args)
+    callback = function()
         local old_mode = vim.v.event.old_mode
         local new_mode = vim.v.event.new_mode
         if old_mode == "t" then
@@ -365,7 +365,6 @@ api.nvim_create_autocmd("DiagnosticChanged", {
 
 api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
-        local type = vim.fn.getcmdtype()
         local is_enabled = require("noice.ui")._attached
         if not is_enabled then
             vim.schedule(function()
@@ -698,7 +697,7 @@ api.nvim_create_autocmd("ModeChanged", {
     pattern = "*:[vV\x16]",
     callback = function(args)
         -- for viw
-        vim.on_key(function(key, typed)
+        vim.on_key(function(_, _)
             local prev_text = utils.get_visual()
             vim.defer_fn(function()
                 if api.nvim_get_current_buf() ~= args.buf then
