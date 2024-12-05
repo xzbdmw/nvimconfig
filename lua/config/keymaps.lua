@@ -563,13 +563,50 @@ keymap({ "n", "o" }, "0", "^", opts)
 keymap("n", "<D-a>", "ggVG", opts)
 
 keymap({ "n" }, "q", function()
-    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
-        FeedKeys("q", "n")
-    else
-        utils.close_win()
-    end
+    utils.close_win()
 end)
+keymap("n", "<d-y>", function()
+    local i = 0
+    local function check_duplicate_autocmds()
+        -- Get all autocmd groups
+        local autocmd_groups = vim.api.nvim_exec("autocmd", true)
+        local autocmd_lines = vim.split(autocmd_groups, "\n")
 
+        -- Table to track duplicates by filename and line number
+        local callback_registry = {}
+        local title
+        for _, line in ipairs(autocmd_lines) do
+            if line == nil then
+                goto continue
+            end
+            if line:sub(1, 1) ~= " " then
+                title = line
+            end
+            -- Extract the Lua callback part
+            local lua_callback = line:match("<Lua%s+%d+:%s+([^>]+)>")
+            if lua_callback then
+                -- Check for duplicates
+                if callback_registry[lua_callback .. "   " .. title] then
+                    if
+                        string.find(title, "Cmdline", nil, true) == nil
+                        and string.find(title, "Option", nil, true) == nil
+                        and string.find(title, "FileType", nil, true) == nil
+                        and string.find(title, "BufWipeout", nil, true) == nil
+                        and string.find(title, "NvimTree  User", nil, true) == nil
+                    then
+                        print("Duplicate callback found:", lua_callback .. "   " .. title)
+                    end
+                else
+                    callback_registry[lua_callback .. "   " .. title] = true
+                end
+            end
+            ::continue::
+        end
+    end
+
+    -- Example usage:
+    check_duplicate_autocmds()
+end, opts)
 keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
         return "<d-1><cmd>vsp<CR><c--><c--><c-->"

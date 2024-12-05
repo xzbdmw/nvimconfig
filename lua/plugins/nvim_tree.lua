@@ -274,6 +274,17 @@ return {
                 highlight_opened_files = "name",
                 special_files = {},
                 group_empty = true,
+                indent_markers = {
+                    enable = true,
+                    inline_arrows = false,
+                    icons = {
+                        corner = "│",
+                        edge = "│",
+                        item = "│",
+                        bottom = "│",
+                        none = " ",
+                    },
+                },
                 icons = {
                     git_placement = "after",
                     bookmarks_placement = "after",

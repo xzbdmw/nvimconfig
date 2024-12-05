@@ -63,6 +63,10 @@ keymap("n", "N", function()
 end)
 
 keymap({ "n" }, "<esc>", function()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        FeedKeys("q", "n")
+        return
+    end
     api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })

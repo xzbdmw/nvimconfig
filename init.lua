@@ -274,6 +274,19 @@ api.nvim_create_autocmd("CmdwinEnter", {
 
 api.nvim_create_autocmd("FileType", {
     pattern = {
+        "help",
+    },
+    callback = function(event)
+        vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(event.buf) then
+                vim.keymap.set("n", "<CR>", "K", { buffer = event.buf })
+            end
+        end, 100)
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
+    pattern = {
         "saga_codeaction",
         "txt",
         "PlenaryTestPopup",
