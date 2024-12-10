@@ -62,6 +62,52 @@ keymap("n", "N", function()
     end
 end)
 
+keymap("n", "]h", function()
+    if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
+        require("illuminate.goto").goto_next_keeped_reference(true)
+        vim.cmd("normal zz")
+    end
+end)
+
+keymap("n", "[h", function()
+    if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
+        require("illuminate.goto").goto_prev_keeped_reference(true)
+        vim.cmd("normal zz")
+    end
+end)
+
+keymap("n", "]q", function()
+    if utils.has_filetype("trouble") then
+        require("trouble").main_next({ skip_groups = true, jump = true })
+    end
+end)
+
+keymap("n", "[q", function()
+    if utils.has_filetype("trouble") then
+        require("trouble").main_prev({ skip_groups = true, jump = true })
+    end
+end)
+
+keymap("n", "]r", function()
+    require("illuminate").goto_next_reference(true)
+    vim.cmd("normal zz")
+end)
+
+keymap("n", "[r", function()
+    require("illuminate").goto_prev_reference(true)
+    vim.cmd("normal zz")
+end)
+
+keymap("n", "]s", function()
+    vim.cmd("normal! n")
+    vim.cmd("normal zz")
+end)
+
+keymap("n", "[s", function()
+    vim.cmd("normal! N")
+    vim.cmd("normal zz")
+end)
+
 keymap({ "n" }, "<esc>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         FeedKeys("q", "n")

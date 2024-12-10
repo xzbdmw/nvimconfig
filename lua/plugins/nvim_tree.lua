@@ -50,6 +50,14 @@ local function my_on_attach(bufnr)
             })
         end
     end
+    keymap("n", "]]", function()
+        require("nvim-tree.api").node.navigate.git.next()
+        require("nvim-tree.api").node.open.edit()
+    end)
+    keymap("n", "[[", function()
+        require("nvim-tree.api").node.navigate.git.prev()
+        require("nvim-tree.api").node.open.edit()
+    end)
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>A", toggle_arrow_filter)
     local function toggle_buffer_filter()
@@ -281,8 +289,8 @@ return {
                         corner = "│",
                         edge = "│",
                         item = "│",
-                        bottom = "│",
-                        none = " ",
+                        bottom = "",
+                        none = "│",
                     },
                 },
                 icons = {
