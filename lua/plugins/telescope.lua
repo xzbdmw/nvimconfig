@@ -540,6 +540,14 @@ return {
                             FeedKeys("<leader>S", "m")
                         end,
                     })
+                else
+                    vim.api.nvim_create_autocmd("User", {
+                        once = true,
+                        pattern = { "NvimTreeReloaded" },
+                        callback = function()
+                            require("nvim-tree.api").tree.expand_all()
+                        end,
+                    })
                 end
                 vim.defer_fn(function()
                     vim.cmd("Gitsigns attach")
