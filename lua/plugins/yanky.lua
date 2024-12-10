@@ -23,7 +23,7 @@ return {
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
                 end, 100)
-                return "<Plug>(YankyPreviousEntry)mt`[v`]=`t"
+                return "<Plug>(YankyPreviousEntry)"
             end,
             expr = true,
         },
@@ -35,7 +35,7 @@ return {
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
                 end, 100)
-                return "<Plug>(YankyNextEntry)mt`[v`]=`t"
+                return "<Plug>(YankyNextEntry)"
             end,
             expr = true,
         },
@@ -58,7 +58,7 @@ return {
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
                 end, 100)
-                return "<Plug>(YankyPutAfter)mt`[v`]=`t"
+                return "<Plug>(YankyPutAfter)"
             end,
             expr = true,
         },
@@ -82,7 +82,7 @@ return {
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
                 end, 100)
-                return "<Plug>(YankyPutBefore)mt`[v`]=`t"
+                return "<Plug>(YankyPutBefore)"
             end,
             expr = true,
         },
