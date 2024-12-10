@@ -1038,6 +1038,49 @@ function M.signature_help(_, result, ctx, config)
     return fbuf, fwin
 end
 
+function M.check_dup_autocmds()
+    local function check_duplicate_autocmds()
+        -- Get all autocmd groups
+        local autocmd_groups = vim.api.nvim_exec("autocmd", true)
+        -- local autocmd_lines = vim.split(autocmd_groups, "\n")
+        local autocmd_lines = vim.split(autocmd_groups, "\n")
+
+        -- Table to track duplicates by filename and line number
+        local callback_registry = {}
+        local title
+        for _, line in ipairs(autocmd_lines) do
+            if line == nil then
+                goto continue
+            end
+            if line:sub(1, 1) ~= " " then
+                title = line
+            end
+            -- Extract the Lua callback part
+            local lua_callback = line:match("<Lua%s+%d+:%s+([^>]+)>")
+            if lua_callback then
+                -- Check for duplicates
+                if callback_registry[lua_callback .. "   " .. title] then
+                    if
+                        string.find(title, "Cmdline", nil, true) == nil
+                        and string.find(title, "Option", nil, true) == nil
+                        and string.find(title, "FileType", nil, true) == nil
+                        and string.find(title, "BufWipeout", nil, true) == nil
+                        and string.find(title, "NvimTree  User", nil, true) == nil
+                    then
+                        print("Duplicate callback found:", lua_callback .. "   " .. title)
+                    end
+                else
+                    callback_registry[lua_callback .. "   " .. title] = true
+                end
+            end
+            ::continue::
+        end
+    end
+
+    -- Example usage:
+    check_duplicate_autocmds()
+end
+
 function M.adjust_view(buf, size, force)
     vim.cmd("norm! zz")
     local topline = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].topline

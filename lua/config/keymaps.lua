@@ -291,7 +291,7 @@ keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<esc>cb"
 end, { expr = true, remap = true })
-
+keymap("i", "<c-[>", "<BS>", { remap = true })
 keymap("n", "`", function()
     vim.g.gd = true
     vim.defer_fn(function()
@@ -565,47 +565,18 @@ keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n" }, "q", function()
     utils.close_win()
 end)
-keymap("n", "<d-y>", function()
-    local i = 0
-    local function check_duplicate_autocmds()
-        -- Get all autocmd groups
-        local autocmd_groups = vim.api.nvim_exec("autocmd", true)
-        local autocmd_lines = vim.split(autocmd_groups, "\n")
-
-        -- Table to track duplicates by filename and line number
-        local callback_registry = {}
-        local title
-        for _, line in ipairs(autocmd_lines) do
-            if line == nil then
-                goto continue
-            end
-            if line:sub(1, 1) ~= " " then
-                title = line
-            end
-            -- Extract the Lua callback part
-            local lua_callback = line:match("<Lua%s+%d+:%s+([^>]+)>")
-            if lua_callback then
-                -- Check for duplicates
-                if callback_registry[lua_callback .. "   " .. title] then
-                    if
-                        string.find(title, "Cmdline", nil, true) == nil
-                        and string.find(title, "Option", nil, true) == nil
-                        and string.find(title, "FileType", nil, true) == nil
-                        and string.find(title, "BufWipeout", nil, true) == nil
-                        and string.find(title, "NvimTree  User", nil, true) == nil
-                    then
-                        print("Duplicate callback found:", lua_callback .. "   " .. title)
-                    end
-                else
-                    callback_registry[lua_callback .. "   " .. title] = true
-                end
-            end
-            ::continue::
-        end
-    end
-
-    -- Example usage:
-    check_duplicate_autocmds()
+keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/]], opts)
+keymap("n", "<leader>rW", [[:%s/<C-r><C-a>/]], opts)
+keymap("n", "<leader>al", "f)i, ", opts)
+keymap("n", "<leader>ah", "F(a, <left><left>", opts)
+keymap("n", "yc", function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    FeedKeys("yygcc", "m")
+    FeedKeys("p", "n")
+    FeedKeys(
+        "<cmd>lua " .. string.format("vim.api.nvim_win_set_cursor(%s, { %d, %d })", 0, row + 1, col) .. "<CR>",
+        "n"
+    )
 end, opts)
 keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
@@ -614,7 +585,16 @@ keymap("n", "<leader>vr", function()
         return "<cmd>vsp<CR><c--><c--><c-->"
     end
 end, { expr = true, remap = true })
-
+keymap("n", ",", function()
+    if vim.g.disable_arrow then
+        return ""
+    end
+    return "]"
+end, { remap = true, expr = true })
+keymap("n", ",,", "]]", { remap = true })
+keymap("n", "<", function()
+    return "["
+end, { remap = true, expr = true })
 keymap("n", "<leader>L", function()
     vim.wo.number = not vim.wo.number
     if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
@@ -820,13 +800,6 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
     end
 end, opts)
 
-keymap("n", "]q", function()
-    vim.cmd("cnext")
-end, opts)
-keymap("n", "[q", function()
-    vim.cmd("cprev")
-end, opts)
-
 keymap({ "n", "i" }, "<c-;>", function()
     local row = vim.api.nvim_win_get_cursor(0)[1]
     local line = vim.api.nvim_get_current_line()
@@ -847,13 +820,6 @@ keymap("n", "F", function()
     utils.f_search()
     return "F"
 end, { expr = true })
-keymap("n", ",", function()
-    if vim.g.disable_arrow then
-        return
-    else
-        FeedKeys(",", "n")
-    end
-end)
 keymap("n", "<M-Tab>", function()
     vim.g.hide_prompt = true
     vim.defer_fn(function()
