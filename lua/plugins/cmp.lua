@@ -32,8 +32,6 @@ return {
             enabled = function()
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
-                disabled = disabled or (vim.fn.reg_recording() ~= "")
-                disabled = disabled or (vim.fn.reg_executing() ~= "")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
                 return not disabled
             end,

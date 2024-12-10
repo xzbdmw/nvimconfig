@@ -52,16 +52,6 @@ return {
                     require("config.utils").adjust_view(0, 3)
                 end)
 
-                map("n", "]s", function()
-                    gs.nav_hunk("next", { target = "staged" })
-                    require("config.utils").adjust_view(0, 3)
-                end)
-
-                map("n", "[s", function()
-                    gs.nav_hunk("prev", { target = "staged" })
-                    require("config.utils").adjust_view(0, 3)
-                end)
-
                 map("n", "<leader>rh", function()
                     gs.reset_hunk()
                     update_auto_commands()

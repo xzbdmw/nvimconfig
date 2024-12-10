@@ -197,7 +197,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
                         end
                         local count = api.nvim_buf_line_count(obj.results_bufnr)
                         if count == 1 then
-                            require("treesitter-context").close_all()
+                            pcall(require("treesitter-context").close_all)
                         end
                     end)
                 end,

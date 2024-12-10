@@ -66,7 +66,11 @@ return {
                 }
                 if is_cmdline then
                     vim.defer_fn(function()
-                        require("treesitter-context").context_hlslens_force_update(_G.parent_bufnr, _G.parent_winid)
+                        pcall(
+                            require("treesitter-context").context_hlslens_force_update,
+                            _G.parent_bufnr,
+                            _G.parent_winid
+                        )
                     end, 10)
                 end
                 vim.b.search_winbar = "%#HlSearchLensCountNoBg#"
