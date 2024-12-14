@@ -169,6 +169,10 @@ function Open_git_commit()
 end
 
 function M.close_win()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        FeedKeys("q", "n")
+        return
+    end
     if M.has_namespace("gitsigns_preview_inline") then
         api.nvim_exec_autocmds("User", {
             pattern = "ESC",
@@ -585,20 +589,22 @@ end
 
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
-    local tabpage = api.nvim_get_current_tabpage()
-    if tabpage ~= 1 then
-        return
-    end
-    local buf = winid and api.nvim_win_get_buf(winid) or 0
-    winid = winid or api.nvim_get_current_win()
-    local winconfig = api.nvim_win_get_config(winid)
-    if winconfig.relative ~= "" and winconfig.zindex == 11 then -- disable in arrow marks
-        return
-    end
-    if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
-        return
-    end
-    vim.wo[winid].winbar = winbar
+    pcall(function(...)
+        local tabpage = api.nvim_get_current_tabpage()
+        if tabpage ~= 1 then
+            return
+        end
+        local buf = winid and api.nvim_win_get_buf(winid) or 0
+        winid = winid or api.nvim_get_current_win()
+        local winconfig = api.nvim_win_get_config(winid)
+        if winconfig.relative ~= "" and winconfig.zindex == 11 then -- disable in arrow marks
+            return
+        end
+        if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
+            return
+        end
+        vim.wo[winid].winbar = winbar
+    end)
 end
 
 M.prev_match_win = nil
@@ -1127,25 +1133,28 @@ _G.last = nil
 _G.first_time = false
 function M.on_complete(bo_line, bo_line_side, origin_height)
     vim.schedule(function()
-        local obj = _G.telescope_picker
-        if not api.nvim_buf_is_valid(obj.results_bufnr) then
+        local action_state = require("telescope.actions.state")
+        local prompt_bufnr = require("telescope.state").get_existing_prompt_bufnrs()[1]
+
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        if not api.nvim_buf_is_valid(picker.results_bufnr) then
             return
         end
-        local count = api.nvim_buf_line_count(obj.results_bufnr)
-        if count == 1 and vim.api.nvim_buf_get_lines(obj.results_bufnr, 0, -1, false)[1] == "" then
-            local line = vim.api.nvim_buf_get_lines(obj.prompt_bufnr, 0, -1, false)[1]
+        local count = api.nvim_buf_line_count(picker.results_bufnr)
+        if count == 1 and vim.api.nvim_buf_get_lines(picker.results_bufnr, 0, -1, false)[1] == "" then
+            local line = vim.api.nvim_buf_get_lines(picker.prompt_bufnr, 0, -1, false)[1]
             local new_line = line:gsub("'", " ")
-            api.nvim_buf_set_lines(obj.prompt_bufnr, 0, -1, false, { new_line })
+            api.nvim_buf_set_lines(picker.prompt_bufnr, 0, -1, false, { new_line })
         end
-        local top_win = api.nvim_win_get_config(obj.results_win)
-        local buttom_buf = api.nvim_win_get_buf(obj.results_win + 1)
-        local bottom_win = api.nvim_win_get_config(obj.results_win + 1)
+        local top_win = api.nvim_win_get_config(picker.results_win)
+        local buttom_buf = api.nvim_win_get_buf(picker.results_win + 1)
+        local bottom_win = api.nvim_win_get_config(picker.results_win + 1)
         top_win.height = math.max(count, 1)
         top_win.height = math.min(top_win.height, origin_height)
         bottom_win.height = math.max(count + 2, 3)
         bottom_win.height = math.min(bottom_win.height, origin_height + 2)
-        api.nvim_win_set_config(obj.results_win + 1, bottom_win)
-        api.nvim_win_set_config(obj.results_win, top_win)
+        api.nvim_win_set_config(picker.results_win + 1, bottom_win)
+        api.nvim_win_set_config(picker.results_win, top_win)
         if _G.last ~= nil then
             api.nvim_buf_set_lines(buttom_buf, _G.last, _G.last + 1, false, { bo_line_side })
         end

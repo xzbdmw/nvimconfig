@@ -189,18 +189,18 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
         picker = search,
         options = {
             on_complete = {
-                function()
-                    vim.schedule(function()
-                        local obj = _G.telescope_picker
-                        if not api.nvim_buf_is_valid(obj.results_bufnr) then
-                            return
-                        end
-                        local count = api.nvim_buf_line_count(obj.results_bufnr)
-                        if count == 1 then
-                            pcall(require("treesitter-context").close_all)
-                        end
-                    end)
-                end,
+                vim.schedule_wrap(function()
+                    local action_state = require("telescope.actions.state")
+                    local prompt_bufnr = require("telescope.state").get_existing_prompt_bufnrs()[1]
+                    local picker = action_state.get_current_picker(prompt_bufnr)
+                    if not api.nvim_buf_is_valid(picker.results_bufnr) then
+                        return
+                    end
+                    local count = api.nvim_buf_line_count(picker.results_bufnr)
+                    if count == 1 then
+                        pcall(require("treesitter-context").close_all)
+                    end
+                end),
             },
             layout_strategy = "vertical",
             layout_config = {
