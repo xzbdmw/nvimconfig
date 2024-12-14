@@ -6,6 +6,7 @@ return {
     -- event = "VeryLazy",
     priority = 10000,
     opts = {
+        separate_by_branch = false,
         per_buffer_config = {
             sort_automatically = true,
             treesitter_context = {

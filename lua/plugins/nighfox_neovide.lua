@@ -265,6 +265,7 @@ return {
                 -- CmpItemAbbrMatchFuzzy = { fg = "#152381", style = "bold" },
                 CmpGhostText = { fg = "#7E7D7D" },
                 CmpGhostTextItalic = { fg = "#A4A3A3", style = "italic" },
+                NvimTreeLineCount = { fg = "#A4A3A3" },
                 CmpGhostTextNonItalic = { fg = "#A4A3A3" },
                 PasteHint = { fg = "#afb3c1", bg = "#faf7e8" },
                 Cursor = { fg = "#FBF7E6", bg = "#000000" },

@@ -90,10 +90,11 @@ return {
                         vim.api.nvim_create_autocmd("TabLeave", {
                             once = true,
                             callback = function()
-                                if vim.api.nvim_win_is_valid(winid) then
+                                vim.schedule(function()
+                                    winid = vim.api.nvim_get_current_win()
                                     vim.wo[winid].signcolumn = "yes"
                                     vim.wo[winid].statuscolumn = orgin_status_col
-                                end
+                                end)
                             end,
                         })
                     end

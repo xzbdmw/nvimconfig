@@ -718,22 +718,6 @@ return {
                 FeedKeys("zzh", "m")
             end
 
-            -- yank preview
-            local yank_preview_lines = function(prompt_bufnr)
-                local picker = action_state.get_current_picker(prompt_bufnr)
-                local previewer = picker.previewer
-                local winid = previewer.state.winid
-                local bufnr = previewer.state.bufnr
-                local line_start = vim.fn.line("w0", winid)
-                local line_end = vim.fn.line("w$", winid)
-
-                local lines = api.nvim_buf_get_lines(bufnr, line_start, line_end, false)
-
-                local text = table.concat(lines, "\n")
-                actions.close(prompt_bufnr)
-                vim.fn.setreg('"', text)
-            end
-
             require("telescope").setup({
                 defaults = {
                     preview = {

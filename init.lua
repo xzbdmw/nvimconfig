@@ -24,6 +24,7 @@ vim.g.cy = false
 vim.g.search_pos = nil
 vim.g.diffview_fname = ""
 vim.g.restore_view = true
+vim.g.show_nvim_tree_size = false
 
 vim.cmd("syntax off")
 
@@ -564,6 +565,7 @@ api.nvim_create_autocmd({ "User" }, {
         if tabcount > 1 then
             vim.cmd("tabclose! " .. 2)
         end
+        vim.g.show_nvim_tree_size = false
         pcall(api.nvim_del_augroup_by_name, "diffview_nvim")
     end,
 })
@@ -594,11 +596,6 @@ api.nvim_create_autocmd({ "User" }, {
             end
         end
         require("nvim-tree.api").tree.toggle({ focus = false })
-        vim.defer_fn(function()
-            -- because arrow does not update when changing sessions
-            utils.refresh_nvim_tree_git()
-            pcall(_G.indent_update)
-        end, 100)
     end,
 })
 

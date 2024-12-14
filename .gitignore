@@ -14,3 +14,4 @@ repro_egrepify.lua
 repro_live_command.lua
 repro_slow_open.lua
 repro_ts.lua
+.count/

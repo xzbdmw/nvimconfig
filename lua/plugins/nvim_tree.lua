@@ -177,6 +177,12 @@ return {
                             return early_return
                         end
                         if a.nodes and b.nodes then
+                            if a.size and b.size then
+                                if a.size == b.size then
+                                    return a.name < b.name
+                                end
+                                return a.size > b.size
+                            end
                             if a.fs_state.size == b.fs_state.size then
                                 return a.name < b.name
                             end
@@ -204,6 +210,12 @@ return {
                             elseif b_arrow_index ~= -1 and a_arrow_index == -1 then
                                 return false
                             end
+                        end
+                        if a.size and b.size then
+                            if a.size == b.size then
+                                return a.name < b.name
+                            end
+                            return a.size > b.size
                         end
                         if a.fs_state.size == b.fs_state.size then
                             return a.name < b.name
@@ -335,5 +347,9 @@ return {
                 },
             },
         })
+        vim.keymap.set("n", "<leader>us", function()
+            vim.g.show_nvim_tree_size = not vim.g.show_nvim_tree_size
+            vim.cmd("NvimTreeRefresh")
+        end)
     end,
 }

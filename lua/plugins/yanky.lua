@@ -46,6 +46,7 @@ return {
                 vim.g.type_o = true
                 vim.schedule(function()
                     vim.g.type_o = false
+                    require("mini.indentscope").h.auto_draw()
                 end)
                 local cursor = vim.api.nvim_win_get_cursor(0)[1]
                 vim.schedule(function()
@@ -70,6 +71,7 @@ return {
                 vim.g.type_o = true
                 vim.schedule(function()
                     vim.g.type_o = false
+                    require("mini.indentscope").h.auto_draw()
                 end)
                 local cursor = vim.api.nvim_win_get_cursor(0)[1]
                 vim.schedule(function()
@@ -87,11 +89,19 @@ return {
             expr = true,
         },
         {
+            "P",
+            function()
+                require("yanky.textobj").last_put()
+            end,
+            mode = { "x", "o" },
+        },
+        {
             "p",
             function()
                 vim.g.type_o = true
                 vim.schedule(function()
                     vim.g.type_o = false
+                    require("mini.indentscope").h.auto_draw()
                 end)
                 require("yanky").put("p", true, function() end)
                 local mode = vim.api.nvim_get_mode().mode
