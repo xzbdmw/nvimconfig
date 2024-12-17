@@ -1,7 +1,7 @@
 return {
     "gbprod/yanky.nvim",
     -- commit = "0dc8e0f262246ce4a891f0adf61336b3afe7c579",
-    -- enabled = false,
+    lazy = false,
     keys = {
         {
             "y",
@@ -89,7 +89,7 @@ return {
             expr = true,
         },
         {
-            "P",
+            "<c-p>",
             function()
                 require("yanky.textobj").last_put()
             end,
@@ -106,9 +106,9 @@ return {
                 require("yanky").put("p", true, function() end)
                 local mode = vim.api.nvim_get_mode().mode
                 if mode == "V" then
-                    FeedKeys("c<d-v><esc>==0", "m")
+                    FeedKeys("c<d-v><cmd>stopinsert<CR>==0", "m")
                 else
-                    FeedKeys("c<d-v><esc>", "m")
+                    FeedKeys("c<d-v><cmd>stopinsert<cr>", "m")
                 end
             end,
             { desc = "Paste without copying replaced text" },
@@ -126,7 +126,6 @@ return {
             expr = true,
         },
     },
-    lazy = false,
     opts = {
         ring = {
             history_length = 10,

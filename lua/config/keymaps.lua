@@ -48,7 +48,7 @@ keymap({ "n" }, "/", function()
     utils.search("/")
 end, opts)
 keymap({ "o" }, "b", "v<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
-keymap({ "n", "v" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
+keymap({ "n", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 keymap({ "n" }, "?", function()
     utils.search("?")
 end, opts)
@@ -291,7 +291,6 @@ keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<esc>cb"
 end, { expr = true, remap = true })
-keymap("i", "<c-[>", "<BS>", { remap = true })
 keymap("n", "`", function()
     vim.g.gd = true
     vim.defer_fn(function()
@@ -580,9 +579,9 @@ keymap("n", "yc", function()
 end, opts)
 keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
-        return "<d-1><cmd>vsp<CR><c--><c--><c-->"
+        return "<d-1><cmd>vsp<CR><c--><c-->"
     else
-        return "<cmd>vsp<CR><c--><c--><c-->"
+        return "<cmd>vsp<CR><c--><c-->"
     end
 end, { expr = true, remap = true })
 keymap("n", ",", function()
@@ -775,6 +774,7 @@ keymap("n", "<2-LeftMouse>", "<leader>d", { remap = true })
 keymap("n", "<leader>cc", function()
     Open_git_commit()
 end, opts)
+keymap("x", "P", "p", { remap = true })
 keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
     keymap("v", "K", "k", { buffer = 0 })

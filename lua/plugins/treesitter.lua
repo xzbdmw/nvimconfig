@@ -56,11 +56,11 @@ return {
                 -- Automatically jump forward to textobj, similar to targets.vim
                 lookahead = true,
 
-                keymaps = {
-                    -- You can use the capture groups defined in textobjects.scm
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                },
+                -- keymaps = {
+                --     -- You can use the capture groups defined in textobjects.scm
+                --     ["af"] = "@function.outer",
+                --     ["if"] = "@function.inner",
+                -- },
                 -- You can choose the select mode (default is charwise 'v')
                 --
                 -- Can also be a function which gets passed a table with the keys

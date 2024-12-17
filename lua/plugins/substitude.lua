@@ -2,7 +2,7 @@ return {
     "gbprod/substitute.nvim",
     config = function()
         require("substitute").setup({
-            on_substitute = nil,
+            on_substitute = require("yanky.integration").substitute(),
             yank_substituted_text = false,
             preserve_cursor_position = false,
             modifiers = nil,

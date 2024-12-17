@@ -1,6 +1,7 @@
 return {
     "echasnovski/mini.surround",
     lazy = false,
+    -- enabled = false,
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -22,46 +23,25 @@ return {
             ["<"] = { input = { "%b<>", "^.().*().$" }, output = { left = "<", right = ">" } },
         },
         mappings = {
-            add = "ma", -- Add surrounding in Normal and Visual modes
-            delete = "md", -- Delete surrounding
-            find = "mf", -- Find surrounding (to the right)
-            find_left = "mF", -- Find surrounding (to the left)
-            replace = "mr", -- Replace surrounding
-            update_n_lines = "<leader>mn", -- Update `n_lines`
+            add = "ma",
+            delete = "md",
+            find = "mf",
+            find_left = "mF",
+            highlight = "mh",
+            replace = "mr",
+            update_n_lines = "<leader>mn",
         },
     },
     config = function(_, opts)
-        -- use gz mappings instead of s to prevent conflict with leap
         require("mini.surround").setup(opts)
         local keymap = vim.keymap.set
-        local keymap_ops = { noremap = true, silent = true }
-        keymap("x", '"', function()
-            FeedKeys('ma"', "t")
-        end, keymap_ops)
-
-        keymap("x", "[[", function()
-            FeedKeys("ma[h", "t")
-            vim.schedule(function()
-                FeedKeys("%", "n")
-            end)
-        end, keymap_ops)
-
-        keymap("x", "{", function()
-            FeedKeys("ma{h", "t")
-            vim.schedule(function()
-                FeedKeys("%", "n")
-            end)
-        end, keymap_ops)
-
-        keymap("x", "(", function()
-            FeedKeys("ma(h", "t")
-            vim.schedule(function()
-                FeedKeys("%", "n")
-            end)
-        end, keymap_ops)
-
-        keymap("x", "`", function()
-            FeedKeys("ma`", "t")
-        end, keymap_ops)
+        local keymap_ops = { remap = true, silent = true }
+        keymap("x", '"', 'ma"', keymap_ops)
+        keymap("x", "<", "ma<", keymap_ops)
+        keymap("x", "'", "ma'", keymap_ops)
+        keymap("x", "[[", "ma[", keymap_ops)
+        keymap("x", "{", "ma{", keymap_ops)
+        keymap("x", "(", "ma(", keymap_ops)
+        keymap("x", "`", "ma`", keymap_ops)
     end,
 }
