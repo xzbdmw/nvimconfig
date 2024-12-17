@@ -347,7 +347,7 @@ return {
                 },
             },
         })
-        vim.keymap.set("n", "<leader>us", function()
+        vim.keymap.set("n", "<leader>uS", function()
             vim.g.show_nvim_tree_size = not vim.g.show_nvim_tree_size
             vim.cmd("NvimTreeRefresh")
         end)

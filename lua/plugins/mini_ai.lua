@@ -6,7 +6,7 @@ return {
         return {
             n_lines = 2000,
             custom_textobjects = {
-                -- f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+                f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
                 -- c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
                 t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
                 -- d = { "%f[%d]%d+" }, -- digits

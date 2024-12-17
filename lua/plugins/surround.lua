@@ -1,6 +1,7 @@
 return {
     "echasnovski/mini.surround",
     lazy = false,
+    -- enabled = false,
     keys = function(plugin, keys)
         -- Populate the keys based on the user's options
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -26,6 +27,7 @@ return {
             delete = "md", -- Delete surrounding
             find = "mf", -- Find surrounding (to the right)
             find_left = "mF", -- Find surrounding (to the left)
+            highlight = "mh", -- Highlight surrounding
             replace = "mr", -- Replace surrounding
             update_n_lines = "<leader>mn", -- Update `n_lines`
         },

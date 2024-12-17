@@ -670,23 +670,6 @@ _G.no_delay = function(animation)
             local debounce_trailing = require("gitsigns.debounce").debounce_trailing
             debounce_trailing(1, async.create(1, manager.update))(api.nvim_get_current_buf())
         end
-        -- Time(TST, "no_delay: ")
-        -- local row = api.nvim_win_get_cursor(0)[1]
-        -- local ts_indent = require("nvim-treesitter.indent")
-        -- local success, indent_number = pcall(ts_indent.get_indent, row)
-        -- api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("illuminate.highlight"), 0, -1)
-        --
-        -- local _, b = vim.fn.getline(row):find("^%s*")
-        -- local current_line = api.nvim_buf_get_lines(0, row - 1, row, false)[1]
-        -- local display_width = vim.fn.strdisplaywidth(current_line:sub(1, b))
-        --
-        -- if not success or display_width >= indent_number then
-        --     return
-        -- end
-        -- local indent = string.rep(" ", indent_number)
-        -- local line = vim.trim(current_line)
-        -- api.nvim_buf_set_lines(0, row - 1, row, false, { indent .. line })
-        -- pcall(api.nvim_win_set_cursor, 0, { row, indent_number })
     end)
     vim.defer_fn(function()
         pcall(_G.update_indent, true)
