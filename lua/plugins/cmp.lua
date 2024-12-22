@@ -118,11 +118,18 @@ return {
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
                             ignore()
-                            cmp.select_next_item()
-                            -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                            if utils.if_multicursor() then
+                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                            else
+                                cmp.select_next_item()
+                            end
                         else
                             ignore()
-                            cmp.select_prev_item()
+                            if utils.if_multicursor() then
+                                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                            else
+                                cmp.select_prev_item()
+                            end
                         end
                     else
                         fallback()
@@ -133,10 +140,18 @@ return {
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
                             ignore()
-                            cmp.select_prev_item()
+                            if utils.if_multicursor() then
+                                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                            else
+                                cmp.select_prev_item()
+                            end
                         else
                             ignore()
-                            cmp.select_next_item()
+                            if utils.if_multicursor() then
+                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                            else
+                                cmp.select_next_item()
+                            end
                         end
                     else
                         fallback()
