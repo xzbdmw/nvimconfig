@@ -157,7 +157,7 @@ return {
             -- initial pattern to use when opening flash
             pattern = "",
             -- When `true`, flash will try to continue the last search
-            continue = true,
+            continue = false,
             -- Set config to a function to dynamically change the config
             config = nil,
             -- You can override the default options for a specific mode.
