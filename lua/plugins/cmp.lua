@@ -213,7 +213,26 @@ return {
                     end
                 end),
                 ["<right>"] = cmp.mapping(function(fallback)
-                    fallback()
+                    _G.no_animation(_G.CI)
+                    if cmp.visible() then
+                        if utils.if_multicursor() then
+                            cmp.close()
+                            fallback()
+                        else
+                            _G.CON = true
+                            vim.defer_fn(function()
+                                _G.CON = nil
+                            end, 10)
+                            f.expand = false
+                            cmp.confirm({ select = true })
+                            vim.defer_fn(function()
+                                pcall(_G.update_indent, true) -- hlchunk
+                                pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                            end, 20)
+                        end
+                    else
+                        fallback()
+                    end
                 end),
                 ["<c-y>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -399,7 +418,12 @@ return {
                 }),
                 ["<right>"] = cmp.mapping({
                     c = function(fallback)
-                        fallback()
+                        if cmp.visible() then
+                            cmp.confirm({ select = true })
+                            vim.cmd([[redraw]])
+                        else
+                            fallback()
+                        end
                     end,
                 }),
                 ["<up>"] = {

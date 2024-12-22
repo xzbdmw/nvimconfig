@@ -16,6 +16,11 @@ return {
             mode = { "n", "v" },
             desc = "Code Action",
         },
+        {
+            "<c-e>",
+            "<Cmd>Lspsaga diagnostic_jump_next<CR>",
+            desc = "Code Action",
+        },
     },
     config = function()
         require("lspsaga").setup({

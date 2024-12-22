@@ -40,7 +40,7 @@ return {
             expr = true,
         },
         {
-            "p",
+            "gp",
             function()
                 _G.hide_cursor(function() end)
                 vim.g.type_o = true
@@ -60,6 +60,30 @@ return {
                     vim.o.eventignore = ""
                 end, 100)
                 return "<Plug>(YankyPutAfter)"
+            end,
+            expr = true,
+        },
+        {
+            "p",
+            function()
+                _G.hide_cursor(function() end)
+                vim.g.type_o = true
+                vim.schedule(function()
+                    vim.g.type_o = false
+                    require("mini.indentscope").h.auto_draw()
+                end)
+                local cursor = vim.api.nvim_win_get_cursor(0)[1]
+                vim.schedule(function()
+                    local new_cursor = vim.api.nvim_win_get_cursor(0)[1]
+                    if new_cursor ~= cursor then
+                        FeedKeys("0", "m")
+                    end
+                end)
+                vim.o.eventignore = "CursorMoved"
+                vim.defer_fn(function()
+                    vim.o.eventignore = ""
+                end, 100)
+                return "<Plug>(YankyPutAfter)mt`[v`]=`t"
             end,
             expr = true,
         },
