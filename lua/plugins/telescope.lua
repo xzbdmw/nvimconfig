@@ -918,7 +918,7 @@ return {
                             ["<C-->"] = actions.preview_scrolling_up,
                             ["<C-=>"] = actions.preview_scrolling_down,
                             ["<D-v>"] = function()
-                                FeedKeys('<C-r>"', "t")
+                                utils.insert_paste()
                             end,
                             ["<f17>"] = function()
                                 FeedKeys("<CR>", "t")

@@ -474,6 +474,22 @@ function M.change_guicursor(type)
     end
 end
 
+function M.mini_snippets_active()
+    if vim.g.snippet_expand == true then
+        return true
+    end
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local extmarks =
+        vim.api.nvim_buf_get_extmarks(0, vim.api.nvim_create_namespace("MiniSnippetsNodes"), 0, -1, { details = true })
+    for _, mark in ipairs(extmarks) do
+        local detail = mark[4]
+        if detail.hl_group == "MiniSnippetsCurrentReplace" and mark[3] == cursor[2] and mark[2] + 1 == cursor[1] then
+            return true
+        end
+    end
+    return false
+end
+
 function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
     local buf = api.nvim_get_current_buf()
@@ -543,18 +559,51 @@ function M.once(callback)
     callback()
 end
 
+function M.commented()
+    -- This is the commentstring in the current buffer, e.g. "# %s" for shell scripts
+    local comment_str = vim.bo.commentstring
+    -- If comment_str = "# %s", the marker is "#"
+    -- If comment_str = "// %s", the marker is "//"
+
+    -- We need to extract the part before '%s'
+    local marker = comment_str:match("^(.*)%%s")
+    if not marker or marker == "" then
+        -- We might not have a well-defined commentstring, or it might be something multi-line like "/* %s */"
+        return false
+    end
+
+    local line = vim.api.nvim_get_current_line()
+    local trimmed = line:match("^%s*(.-)$")
+
+    -- Check if line starts with the marker
+    return trimmed:match("^" .. vim.pesc(marker)) ~= nil
+end
+
 function M.search(mode)
-    api.nvim_create_autocmd("CmdlineChanged", {
-        once = true,
-        callback = function()
-            vim.o.scrolloff = 999
-        end,
-    })
-    vim.cmd("Noice disable")
+    vim.defer_fn(function()
+        local id
+        id = api.nvim_create_autocmd("CmdlineChanged", {
+            once = true,
+            callback = function()
+                vim.o.scrolloff = 999
+            end,
+        })
+        vim.api.nvim_create_autocmd("CmdlineLeave", {
+            once = true,
+            callback = function()
+                pcall(function(...)
+                    vim.api.nvim_del_autocmd(id)
+                end)
+            end,
+        })
+    end, 10)
+    pcall(function()
+        vim.cmd("Noice disable")
+    end)
     _G.parent_winid = vim.api.nvim_get_current_win()
     _G.parent_bufnr = vim.api.nvim_get_current_buf()
     _G.searchmode = mode
-    FeedKeys(mode, "n")
+    return mode .. [[\V]], "n"
 end
 
 function M.is_big_file(bufnr)
@@ -1612,13 +1661,13 @@ _G.Time = function(start, msg)
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
     if msg == "" then
-        -- vim.schedule(function()
-        print(vim.inspect(duration))
-        -- end)
+        vim.schedule(function()
+            print(vim.inspect(duration))
+        end)
     else
-        -- vim.schedule(function()
-        print(msg .. ":", vim.inspect(duration))
-        -- end)
+        vim.schedule(function()
+            print(msg .. ":", vim.inspect(duration))
+        end)
     end
 end
 

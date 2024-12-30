@@ -116,10 +116,9 @@ keymap({ "n" }, "<esc>", function()
     api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })
-    local luasnip = require("luasnip")
-    if luasnip.jumpable(1) or luasnip.jumpable(-1) then
-        luasnip.unlink_current()
-    end
+    pcall(function()
+        MiniSnippets.session.stop()
+    end)
     require("substitute.exchange").cancel()
     local flag = true
     for _, win in pairs(api.nvim_list_wins()) do

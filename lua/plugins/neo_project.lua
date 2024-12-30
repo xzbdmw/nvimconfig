@@ -1,9 +1,6 @@
 return {
     "coffebar/neovim-project",
     commit = "db586796f67e206f0494b1d64492b1db8c109589",
-    keys = {
-        { "<D-9>", "<cmd>NeovimProjectLoadRecent<CR>" },
-    },
     -- commit = "33a5d6ef5f9e035470c80cbec0bbfe23e776543c",
     opts = {
         filetype_autocmd_timeout = 0,
@@ -17,7 +14,7 @@ return {
             "/Users/xzb/Project/lua/color/nvim-cmp",
             "~/Project/rust/*",
             "~/raycast/*",
-            "/Users/xzb/Project/Rust/myneovide/neovide/",
+            "/Users/xzb/Project/Rust/myneovide/hello/",
             "/Users/xzb/Project/Rust/my_repo_neovide/neovide/",
             "/Users/xzb/Documents/xzbdmw的副本",
             "~/Project/vim/*",
@@ -32,7 +29,9 @@ return {
             "/Users/xzb/.local/share/nvimlazy/lazy/LazyVim",
             -- "/Users/xzb/.local/share/nvim_rust/lazy/*",
             "~/Project/java/*",
+            "~/Project/Swift/*",
             "~/Project/Js/*",
+            "~/Project/zig/*",
             "~/Project/Typescript/*",
             "~/Project/Python/*",
             "~/.config/*",

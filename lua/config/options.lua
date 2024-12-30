@@ -1,6 +1,7 @@
 vim.g.root_spec = { "cwd" }
 vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
+vim.o.cmdheight = 0
 vim.o.syntax = "manual"
 vim.g.loaded_netrwPlugin = 1
 vim.o.synmaxcol = 300
@@ -32,7 +33,7 @@ vim.opt.laststatus = 0
 vim.o.scrolloff = 6
 vim.o.gdefault = true
 vim.o.breakindent = true
-vim.g.neovide_text_gamma = 1.4
+vim.g.neovide_text_gamma = 1.5
 vim.opt.timeoutlen = 500
 vim.opt.swapfile = false
 vim.o.background = "light"

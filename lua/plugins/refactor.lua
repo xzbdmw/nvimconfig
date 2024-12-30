@@ -9,12 +9,16 @@ return {
         {
             "<leader>rf",
             function()
-                vim.cmd("Noice disable")
+                pcall(function()
+                    vim.cmd("Noice disable")
+                end)
                 api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.schedule(function()
-                            vim.cmd("Noice enable")
+                            pcall(function()
+                                vim.cmd("Noice enable")
+                            end)
                         end)
                     end,
                 })
@@ -26,12 +30,16 @@ return {
         {
             "<leader>ri",
             function()
-                vim.cmd("Noice disable")
+                pcall(function()
+                    vim.cmd("Noice disable")
+                end)
                 api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.schedule(function()
-                            vim.cmd("Noice enable")
+                            pcall(function()
+                                vim.cmd("Noice enable")
+                            end)
                         end)
                     end,
                 })
@@ -43,12 +51,16 @@ return {
         {
             "<leader>re",
             function()
-                vim.cmd("Noice disable")
+                pcall(function()
+                    vim.cmd("Noice disable")
+                end)
                 api.nvim_create_autocmd("CmdlineLeave", {
                     once = true,
                     callback = function()
                         vim.schedule(function()
-                            vim.cmd("Noice enable")
+                            pcall(function()
+                                vim.cmd("Noice enable")
+                            end)
                         end)
                     end,
                 })

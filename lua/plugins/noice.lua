@@ -11,6 +11,9 @@ return {
         },
     },
     config = function()
+        if vim.g.scrollback == true then
+            return
+        end
         local noice = require("noice")
         noice.setup({
             routes = {

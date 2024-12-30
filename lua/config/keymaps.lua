@@ -45,13 +45,13 @@ keymap({ "n" }, "/", function()
             pattern = "SearchBegin",
         })
     end)
-    utils.search("/")
-end, opts)
+    return utils.search("/")
+end, { expr = true })
 keymap({ "o" }, "b", "v<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 keymap({ "n", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 keymap({ "n" }, "?", function()
-    utils.search("?")
-end, opts)
+    return utils.search("?")
+end, { expr = true })
 
 keymap({ "c" }, "<c-n>", "<c-g>", opts)
 keymap({ "c" }, "<c-p>", "<c-t>", opts)
@@ -77,7 +77,7 @@ keymap("n", "<leader>ud", function()
     end
 end, opts)
 
-keymap("i", "<c-x><c-o>", function()
+keymap("i", "<c-x><c-b>", function()
     local cmp = require("cmp")
     if cmp.visible() then
         cmp.close()
@@ -148,21 +148,14 @@ keymap("o", "l", function()
     return utils.operator_mode_lh("after")
 end, { expr = true })
 
-keymap("i", "<c-x><right>", function()
-    local cmp = require("cmp")
-    if cmp.visible() then
-        cmp.close()
-    end
-    cmp.complete({
-        config = {
-            sources = {
-                {
-                    name = "buffer-lines",
-                },
-            },
-        },
-    })
-end)
+keymap("n", "<leader>sl", function()
+    local cmd = vim.fn.getreg("/"):gsub("\\V", "")
+    local type = vim.fn.getcmdtype()
+    vim.defer_fn(function()
+        FeedKeys("<space><bs><CR>", "n")
+    end, 5)
+    return "/" .. cmd
+end, { expr = true, remap = true })
 
 keymap("i", "<c-x><c-c>", function()
     vim.g.copilot_enable = true
@@ -269,7 +262,6 @@ keymap("i", "<c-a>", function()
     return "<c-a>"
 end, { expr = true })
 
-keymap("n", "<c-a>", "A", { remap = true })
 keymap("n", "<leader>", "", opts)
 
 local darker = false
@@ -327,8 +319,6 @@ end, { desc = "Delete Surrounding Indentation" })
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
-keymap("n", "<leader>an", "<Cmd>normal geiageina<CR>", opts)
-keymap("n", "<leader>ap", "<Cmd>normal geiageila<CR>", opts)
 keymap("n", "<leader>M", function()
     vim.g.skip_noice = not vim.g.skip_noice
 end, opts)
@@ -380,7 +370,7 @@ end, opts)
 keymap("c", "<space>", function()
     local mode = vim.fn.getcmdtype()
     if mode == "?" or mode == "/" then
-        return [[.\{-}]]
+        return [[\.\{-}]]
     else
         return " "
     end
@@ -493,6 +483,12 @@ end, opts)
 
 utils.load_appropriate_theme()
 
+keymap("n", "<c-c>", function()
+    if utils.commented() then
+        return "gcu"
+    end
+    return "gcai"
+end, { remap = true, expr = true })
 -- dot trick
 keymap("n", "<space><esc>", ".", opts)
 
@@ -502,6 +498,8 @@ keymap("n", "<space>;", "m6A;<esc>`6", opts)
 keymap("n", "<space>)", "m6A)<esc>`6", opts)
 keymap("n", "<space>;", "m6A,<esc>`6", opts)
 keymap("n", "<D-w>", "<cmd>close<CR>", opts)
+keymap("n", "<c-[>", "<c-w>h", opts)
+keymap("n", "<c-]>", "<c-w>l", opts)
 
 keymap("n", "<D-2>", function()
     if utils.has_filetype("trouble") and utils.check_trouble() then
@@ -552,7 +550,6 @@ keymap("n", "<Tab>", function()
 end, { desc = "swicth window" })
 
 keymap("x", "<C-r>", '"', opts)
-
 keymap("i", "<D-v>", function()
     utils.insert_paste()
 end)
@@ -583,7 +580,7 @@ keymap("x", "C", function()
     FeedKeys("ygvgc" .. cmd, "m")
     FeedKeys("p", "n")
 end, opts)
-keymap("n", "<leader>vr", function()
+keymap("n", "<d-d>", function()
     if utils.has_filetype("NvimTree") then
         return "<d-1><cmd>vsp<CR><c--><c-->"
     else
@@ -624,8 +621,8 @@ end, { expr = true })
 keymap("n", "<leader><up>", function()
     return "<C-w>K"
 end, { expr = true })
-keymap({ "n", "v" }, "J", "4j", opts)
-keymap({ "n", "v" }, "K", "4k", opts)
+keymap({ "n", "v" }, "J", "6j", opts)
+keymap({ "n", "v" }, "K", "6k", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 keymap("i", "<c-b>", "<S-left>", opts)
 keymap("i", "<c-f>", "<S-right>", opts)
@@ -655,7 +652,7 @@ keymap("n", "<leader>j", function()
     return "f{a<CR>"
 end, { expr = true, remap = true })
 
-keymap("n", "<M-w>", "<c-w>", opts)
+keymap("n", "<leader>m", "<c-w>o", opts)
 keymap({ "n", "o" }, "^", "0", opts)
 keymap("i", "<BS>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
@@ -785,8 +782,8 @@ keymap("n", "V", function()
     keymap("v", "J", "j", { buffer = 0 })
     keymap("v", "K", "k", { buffer = 0 })
     vim.defer_fn(function()
-        keymap("v", "J", "4j", { buffer = 0 })
-        keymap("v", "K", "4k", { buffer = 0 })
+        keymap("v", "J", "6j", { buffer = 0 })
+        keymap("v", "K", "6k", { buffer = 0 })
     end, 150)
     return "V"
 end, { expr = true })
@@ -811,7 +808,6 @@ keymap({ "n", "i" }, "<c-;>", function()
     local line = vim.api.nvim_get_current_line()
     vim.api.nvim_buf_set_text(0, row - 1, #line, row - 1, #line, { ";" })
 end, opts)
-
 keymap("n", "zz", function()
     utils.adjust_view(0, 3)
 end, opts)
@@ -863,10 +859,10 @@ pcall(function()
     del("n", "<leader>wd")
     del("t", "<esc><esc>")
     del("n", "<leader>fn")
+    del("n", "<leader>w|")
     del("n", "gra")
     del("n", "grn")
     del("n", "gsh")
-    del("n", "<leader>w|")
     del("n", "gshn")
     del("n", "gshl")
 end)

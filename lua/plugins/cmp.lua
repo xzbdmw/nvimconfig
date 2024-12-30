@@ -20,7 +20,8 @@ return {
         { dir = "~/Project/lua/cmp-rg/" },
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-buffer",
-        "saadparwaiz1/cmp_luasnip",
+        "echasnovski/mini.snippets",
+        -- "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
         "chrisgrieser/cmp_yanky",
         "uga-rosa/cmp-dictionary",
@@ -78,8 +79,12 @@ return {
                         args.body = remove_bracket_contents(args.body)
                         f.expand = true
                     end
-                    require("luasnip").lsp_expand(args.body)
                     -- vim.snippet.expand(args.body)
+                    require("mini.snippets").default_insert(
+                        { body = args.body },
+                        { empty_tabstop = "", empty_tabstop_final = "" }
+                    )
+                    -- require("luasnip").lsp_expand(args.body)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
@@ -251,29 +256,14 @@ return {
                 end),
                 ["<c-y>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        vim.g.cy = true
-                        _G.no_animation(_G.CI)
-                        _G.CON = true
-                        vim.defer_fn(function()
-                            _G.CON = nil
-                        end, 10)
-                        f.expand = true
-                        if utils.if_multicursor() then
-                            cmp.select_cur_item()
-                            vim.schedule(cmp.close)
-                        else
-                            cmp.confirm({ select = true })
-                        end
+                        cmp.close()
+                        fallback()
                     else
-                        _G.no_delay(0.0)
                         fallback()
                     end
-                    vim.defer_fn(function()
-                        pcall(_G.update_indent, true) -- hlchunk
-                        pcall(_G.mini_indent_auto_draw) -- mini-indentscope
-                    end, 20)
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
+                    TTT = vim.uv.hrtime()
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
                         _G.CON = true
@@ -318,7 +308,7 @@ return {
                         return true
                     end,
                 },
-                { name = "luasnip" },
+                -- { name = "luasnip" },
                 { name = "path" },
             }, {
                 {

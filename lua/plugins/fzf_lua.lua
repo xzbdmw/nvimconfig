@@ -3,6 +3,7 @@ return {
     commit = "9631145bd7b81e6bb4236f3806a370f054ced67d",
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    enabled = false,
     lazy = false,
     keys = {
         {

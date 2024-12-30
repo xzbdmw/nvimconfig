@@ -2,6 +2,7 @@ return {
     "L3MON4D3/LuaSnip",
     version = false,
     -- lazy = false,
+    enabled = false,
     event = "InsertEnter",
     keys = function()
         return {

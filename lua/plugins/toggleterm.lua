@@ -1,5 +1,12 @@
 return {
     "akinsho/toggleterm.nvim",
+    keys = {
+        {
+            "<D-k>",
+            "<Cmd>ToggleTerm<CR>",
+            mode = { "n", "t" },
+        },
+    },
     cmd = {
         "ToggleTerm",
         "ToggleTermSetName",
@@ -30,7 +37,7 @@ return {
                 vim.keymap.set("t", "q", "q", { buffer = true })
                 vim.keymap.set("n", "K", "kkkk", { buffer = true })
                 vim.keymap.set("n", "J", "jjjj", { buffer = true })
-                vim.keymap.set("t", "<f12>", function()
+                vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-u>clear<cr>", "n")
                     vim.bo.scrollback = 1
                     vim.defer_fn(function()

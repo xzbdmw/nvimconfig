@@ -29,7 +29,7 @@ return {
             find_left = "mF",
             highlight = "mh",
             replace = "mr",
-            update_n_lines = "<leader>mn",
+            update_n_lines = "mn",
         },
     },
     config = function(_, opts)

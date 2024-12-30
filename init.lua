@@ -122,7 +122,7 @@ api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.schedule(function()
             if vim.bo.filetype == "noice" then
-                vim.keymap.set("n", "K", "3k", { buffer = true })
+                vim.keymap.set("n", "K", "6k", { buffer = true })
                 vim.wo.signcolumn = "no"
             end
         end)
@@ -382,7 +382,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
         local is_enabled = require("noice.ui")._attached
         if not is_enabled then
             vim.schedule(function()
-                vim.cmd("Noice enable")
+                pcall(function()
+                    vim.cmd("Noice enable")
+                end)
             end)
         end
         vim.defer_fn(function()
@@ -657,6 +659,15 @@ api.nvim_create_autocmd("User", {
                     require("gitsigns").setqflist("all")
                 end, 500)
             end
+        end
+    end,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "MiniSnippetsSessionJump",
+    callback = function(args)
+        if args.data.tabstop_to == "0" and args.data.session_count > 1 then
+            MiniSnippets.session.stop()
         end
     end,
 })

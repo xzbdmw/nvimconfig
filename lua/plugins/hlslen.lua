@@ -20,13 +20,10 @@ return {
                     cmd = _G.star_search
                     _G.star_search = nil
                 end
-
-                -- if (cmd == nil or cmd == "" or cmd == " ") and vim.g.search_pos ~= nil then
-                --     -- __AUTO_GENERATED_PRINT_VAR_START__
-                --     print([==[function#function#if vim.g.search_pos:]==], vim.inspect(vim.g.search_pos)) -- __AUTO_GENERATED_PRINT_VAR_END__
-                --     render.clear(true, 0, true)
-                --     return
-                -- end
+                if cmd == [[\]] or cmd == [[\V]] then
+                    return
+                end
+                cmd = cmd:gsub("\\V", "")
 
                 local cur_row = unpack(api.nvim_win_get_cursor(0))
 
@@ -52,7 +49,7 @@ return {
                 local right = (" %d]"):format(cnt)
                 if not is_cmdline then
                     extmark:clearBuf(0)
-                    cmd = vim.trim(vim.fn.getreg("/")) -- because use cmp tab to select does not update search pattern
+                    cmd = vim.trim(vim.fn.getreg("/"):gsub("\\V", "")) -- because use cmp tab to select does not update search pattern
                 else
                     render.clear(true, 0, true)
                 end

@@ -6,6 +6,16 @@ return {
     -- -- stylua: ignore
     keys = {
         {
+            "r",
+            mode = "o",
+            function()
+                vim.o.scrolloff = 0
+                vim.g.flash_winbar = vim.wo.winbar
+                require("flash").remote()
+            end,
+            desc = "Remote Flash",
+        },
+        {
             "s",
             mode = { "n", "x", "o" },
             function()
@@ -19,8 +29,8 @@ return {
                 end, key_ns)
                 vim.g.disable_arrow = true
                 vim.o.scrolloff = 0
-                vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
                 vim.g.flash_winbar = vim.wo.winbar
+                vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
                 vim.cmd([[normal! m']])
                 require("flash").jump()
             end,
