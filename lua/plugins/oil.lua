@@ -1,6 +1,6 @@
 return {
     "stevearc/oil.nvim",
-    opts = {},
+    lazy = false,
     keys = {
         {
             "<leader>so",
