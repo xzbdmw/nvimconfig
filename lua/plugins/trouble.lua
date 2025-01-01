@@ -10,7 +10,7 @@ return {
             desc = "Diagnostics (Trouble)",
         },
         {
-            "<C-q>",
+            "<leader>uq",
             function()
                 if require("trouble").is_open("mydiags") then
                     vim.cmd("Trouble mydiags toggle filter.buf=0 focus=false")

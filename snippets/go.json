@@ -1,1 +1,12 @@
-{}
+{
+  "open": {
+    "body": [
+      "${1:f}, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)",
+      "if err != nil {",
+      "\t${0:}",
+      "\treturn",
+      "}"
+    ],
+    "prefix": "open"
+  }
+}

@@ -15,6 +15,7 @@ return {
     -- lazy = false,
     -- dir = "~/Project/lua/oricmp/nvim-cmp/",
     dependencies = {
+        "onsails/lspkind.nvim",
         "zbirenbaum/copilot-cmp",
         { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
         { dir = "~/Project/lua/cmp-rg/" },
@@ -36,6 +37,7 @@ return {
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
                 return not disabled
+                -- return false
             end,
             preselect = cmp.PreselectMode.None,
             window = {
@@ -79,6 +81,9 @@ return {
                         end
                         args.body = remove_bracket_contents(args.body)
                         f.expand = true
+                    end
+                    if vim.bo.filetype == "lua" then
+                        require("cmp.config").set_onetime({ sources = {} })
                     end
                     -- vim.snippet.expand(args.body)
                     require("mini.snippets").default_insert(
@@ -292,7 +297,13 @@ return {
                         return true
                     end,
                 },
-                { name = "mini.snippets" },
+                {
+                    name = "mini.snippets",
+                    option = {
+                        use_minisnippets_match_rule = false,
+                        only_show_in_line_start = true,
+                    },
+                },
                 { name = "path" },
             }, {
                 {
@@ -326,28 +337,25 @@ return {
                 -- kind is icon, abbr is completion name, menu is [Function]
                 fields = { "kind", "abbr", "menu" },
                 format = function(entry, vim_item)
-                    local function commom_format(e, item)
-                        local kind = require("lspkind").cmp_format({
-                            mode = "symbol_text",
-                            -- show_labelDetails = true, -- show labelDetails in menu. Disabled by default
-                        })(e, item)
-                        local strings = vim.split(kind.kind, "%s", { trimempty = true })
-                        kind.kind = " " .. (strings[1] or "") .. " "
-                        kind.menu = ""
-                        kind.concat = kind.abbr
-                        return kind
-                    end
-                    if vim.bo.filetype == "rust" then
-                        return f.rust_fmt(entry, vim_item)
-                    elseif vim.bo.filetype == "lua" then
-                        return f.lua_fmt(entry, vim_item)
-                    elseif vim.bo.filetype == "c" or vim.bo.filetype == "cpp" then
-                        return f.cpp_fmt(entry, vim_item)
-                    elseif vim.bo.filetype == "go" then
-                        return f.go_fmt(entry, vim_item)
+                    local kind = require("lspkind").cmp_format({
+                        mode = "symbol_text",
+                    })(entry, vim.deepcopy(vim_item))
+
+                    local highlights_info = require("colorful-menu").cmp_highlights(entry)
+                    -- error, such as missing parser, fallback to use raw label.
+                    if highlights_info == nil then
+                        vim_item.abbr = entry:get_completion_item().label
                     else
-                        return commom_format(entry, vim_item)
+                        vim_item.abbr_hl_group = highlights_info.highlights
+                        vim_item.abbr = highlights_info.text
                     end
+
+                    -- This is optional, you can omit if you don't use lspkind.
+                    local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                    vim_item.kind = " " .. (strings[1] or "") .. " "
+                    vim_item.menu = ""
+
+                    return vim_item
                 end,
             },
             experimental = {
@@ -363,6 +371,7 @@ return {
                     f.put_down_snippet,
                     compare.score,
                     compare.recently_used,
+                    compare.sort_text,
                     function(...)
                         return require("cmp_buffer"):compare_locality(...)
                     end,
@@ -373,12 +382,6 @@ return {
     end,
     config = function(_, opts)
         local cmp = require("cmp")
-
-        cmp.setup.filetype({ "markdown" }, {
-            completion = {
-                autocomplete = false,
-            },
-        })
         for _, source in ipairs(opts.sources) do
             source.group_index = source.group_index or 1
         end

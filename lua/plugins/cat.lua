@@ -26,7 +26,7 @@ return {
     config = function()
         require("catppuccin").setup({
             compile_path = vim.fn.stdpath("cache") .. "/cat",
-            flavour = "macchiato", -- latte, frappe, macchiato, mocha
+            flavour = "frappe", -- latte, frappe, macchiato, mocha
             background = { -- :h background
                 light = "latte",
                 dark = "mocha",
@@ -111,6 +111,8 @@ return {
                     Unvisited = { bg = "#34344F" },
                     MiniIndentscopeSymbol = { fg = "#6C7086" },
                     illuminatedwordwrite = { bg = "#253C59" },
+
+                    BlinkCmpLabelMatch = { style = { "bold" } },
                     illuminatedwordread = { bg = "#32354A" },
                     illuminatedWordText = { bg = "#32354A" },
                 }

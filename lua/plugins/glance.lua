@@ -51,7 +51,7 @@ return {
                 wrap = false,
             },
             border = {
-                enable = false, -- Show window borders. Only horizontal borders allowed
+                enable = not vim.g.neovide, -- Show window borders. Only horizontal borders allowed
                 top_char = "―",
                 bottom_char = "―",
             },

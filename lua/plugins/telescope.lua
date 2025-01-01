@@ -881,7 +881,7 @@ return {
                                 FeedKeys("<c-w>", "t")
                             end,
                             ["<C-u>"] = function()
-                                FeedKeys("<C-CR>", "t")
+                                FeedKeys("<C-u>", "n")
                             end,
                             ["<C-b>"] = function()
                                 FeedKeys("<s-left>", "t")
@@ -897,20 +897,14 @@ return {
                                 actions.close(bufnr)
                             end,
                             ["<CR>"] = function(bufnr)
-                                local ok, cmp = pcall(require, "cmp")
-                                if ok and cmp.visible() then
-                                    _G.no_animation(_G.CI)
-                                    cmp.confirm({ select = true })
-                                else
-                                    ST = vim.uv.hrtime()
-                                    vim.g.gd = true
-                                    vim.defer_fn(function()
-                                        vim.g.gd = false
-                                    end, 100)
-                                    _G.set_cursor_animation(0.0)
-                                    actions.select_default(bufnr)
-                                    require("config.utils").adjust_view(0, 4)
-                                end
+                                ST = vim.uv.hrtime()
+                                vim.g.gd = true
+                                vim.defer_fn(function()
+                                    vim.g.gd = false
+                                end, 100)
+                                _G.set_cursor_animation(0.0)
+                                actions.select_default(bufnr)
+                                require("config.utils").adjust_view(0, 4)
                             end,
                             ["<esc>"] = function()
                                 api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
@@ -952,7 +946,7 @@ return {
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 if not require("trouble").is_open("qflist") then
-                                    FeedKeys("<C-q>", "m")
+                                    FeedKeys("<leader>uq", "m")
                                 end
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,

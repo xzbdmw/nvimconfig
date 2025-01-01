@@ -65,8 +65,8 @@ return {
                 Normal = {
                     link = "Normal",
                 },
-                NormalFloat = {
-                    link = "Normal",
+                FloatBorder = {
+                    link = "FloatBorder",
                 },
                 -- FloatBorder = {
                 --     guifg = "<VALUE-HERE>",

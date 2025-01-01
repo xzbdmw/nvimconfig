@@ -14,6 +14,7 @@ return {
         filetypes = {
             "javascript",
             "typescript",
+            "typescriptreact",
             "vue",
         },
         settings = {

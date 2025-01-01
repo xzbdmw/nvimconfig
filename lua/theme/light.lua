@@ -79,12 +79,16 @@ end)
 keymap("n", "]q", function()
     if utils.has_filetype("trouble") then
         require("trouble").main_next({ skip_groups = true, jump = true })
+    else
+        vim.cmd("cnext")
     end
 end)
 
 keymap("n", "[q", function()
     if utils.has_filetype("trouble") then
         require("trouble").main_prev({ skip_groups = true, jump = true })
+    else
+        vim.cmd("cprev")
     end
 end)
 
@@ -113,10 +117,6 @@ keymap({ "n" }, "<esc>", function()
         vim.b.term_search_title = ""
         vim.cmd("noh")
         utils.refresh_term_title()
-        return
-    end
-    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
-        FeedKeys("q", "n")
         return
     end
     api.nvim_exec_autocmds("User", {

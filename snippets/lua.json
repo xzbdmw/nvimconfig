@@ -1,19 +1,53 @@
 {
+  "Nested Placeholder Snippet": {
+    "body": [
+      "T1=${1:<T2=$2>} and T2=${2:<T1=$1>}"
+    ],
+    "description": "A snippet with nested placeholders",
+    "prefix": "nested"
+  },
   "block": {
     "body": [
+      "vim.cmd('redraw!')",
       "local n = 1",
       "for i = 1, 1000000000 do",
-      "    n = n + 1",
+      "\tn = n + 1",
       "end"
     ],
-    "prefix": "block",
-    "desc": "block the editor"
+    "desc": "block the editor",
+    "prefix": "block"
+  },
+  "dbg": {
+    "body": "print(debug.traceback())",
+    "prefix": "dbg"
+  },
+  "dyk": {
+    "body": [
+      "vim.keymap.set(\"n\", \"<d-y>\", function()",
+      "\t$0",
+      "    \t\tend)"
+    ],
+    "prefix": "kdy"
   },
   "fun": {
     "body": [
       "function ()\n\t$0\nend"
     ],
     "prefix": "fun"
+  },
+  "init": {
+    "body": [
+      "local M = {}",
+      "",
+      "$0",
+      "",
+      "return M"
+    ],
+    "prefix": "init"
+  },
+  "ll": {
+    "body": "local ${1:var} = ${2:v}",
+    "prefix": "ll"
   },
   "perf": {
     "body": [
@@ -35,5 +69,15 @@
       "vim.schedule(${1:fn})"
     ],
     "prefix": "sch"
+  },
+  "zzz": {
+    "body": [
+      "local n = 1",
+      "for i = 1, 1000000000 do",
+      "    n = n + 1",
+      "end"
+    ],
+    "desc": "block the editor",
+    "prefix": "123"
   }
 }

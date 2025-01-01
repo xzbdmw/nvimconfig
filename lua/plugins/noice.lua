@@ -266,6 +266,10 @@ return {
             views = {
                 confirm = {
                     zindex = 1003,
+                    position = {
+                        row = "45%",
+                        col = "50%",
+                    },
                 },
                 cmdline_popup = {
                     zindex = 20,

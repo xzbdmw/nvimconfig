@@ -91,6 +91,7 @@ return {
                         },
                     },
                 },
+                -- rust_analyzer = {},
                 pylance = {},
                 lua_ls = {
                     settings = {

@@ -353,9 +353,9 @@ function M.insert_paste()
         end
         api.nvim_win_set_cursor(0, { row + #lines - 1, last_col })
     end
-    -- vim.schedule(function()
-    --     vim.o.eventignore = ""
-    -- end)
+    vim.schedule(function()
+        vim.o.eventignore = ""
+    end)
 end
 
 function M.insert_mode_space()

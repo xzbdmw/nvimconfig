@@ -29,7 +29,7 @@ return {
             },
             jsonFormatter = "jq",
             backdrop = {
-                enabled = true,
+                enabled = false,
                 blend = 50, -- between 0-100
             },
         })

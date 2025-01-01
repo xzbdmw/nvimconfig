@@ -3,9 +3,9 @@ vim.o.shell = "/opt/homebrew/bin/fish"
 vim.g.loaded_netrw = 1
 vim.o.cmdheight = 0
 vim.o.syntax = "manual"
-vim.o.timeout = false
+-- vim.o.timeout = false
 vim.g.loaded_netrwPlugin = 1
-vim.o.pumheight = 10
+vim.o.pumheight = 15
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
@@ -84,21 +84,12 @@ vim.g.rustaceanvim = {
         settings = {
             -- rust-analyzer language server configuration
             ["rust-analyzer"] = {
-                -- trace = {
-                --     server = "verbose",
-                -- },
-                -- server = {
-                --     extraEnv = {
-                --         RA_LOG = "info",
-                --         RA_LOG_FILE = "/Users/xzb/Downloads/ra.log",
-                --     },
-                -- },
                 completion = {
                     -- callable = {
                     --     snippets = "add_parentheses",
                     -- },
                     fullFunctionSignatures = {
-                        enable = true,
+                        enable = false,
                     },
                     privateEditable = {
                         enable = true,

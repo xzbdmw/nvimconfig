@@ -10,6 +10,8 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write")
 end, opts)
 
+keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
+
 keymap("n", "<leader>W", function()
     local origin = vim.o.eventignore
     vim.o.eventignore = "all"
@@ -322,7 +324,20 @@ end, { desc = "Delete Surrounding Indentation" })
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
-keymap("n", "<leader>M", "<c-w><c-o>", opts)
+keymap("n", "<leader>M", function()
+    vim.g.skip_noice = not vim.g.skip_noice
+end, opts)
+keymap("n", "<leader>tm", function()
+    if vim.bo.filetype == "toggleterm" then
+        local config = vim.api.nvim_win_get_config(0)
+        config.row = -1
+        config.col = 0
+        config.width = vim.o.columns - 2
+        config.height = vim.o.lines - 2
+        config.relative = "editor"
+        vim.api.nvim_win_set_config(0, config)
+    end
+end, opts)
 keymap("n", "<d-l>", function()
     if vim.bo.filetype == "toggleterm" then
         FeedKeys("a<c-l>", "n")
@@ -406,7 +421,7 @@ keymap("n", "<leader>ol", function()
     end
 end, opts)
 
-keymap("n", "<leader>uq", function()
+keymap("n", "<c-/>", function()
     if vim.v.hlsearch ~= 0 then
         require("hlslens").exportLastSearchToQuickfix()
     end
@@ -482,12 +497,8 @@ end, opts)
 
 utils.load_appropriate_theme()
 
-keymap("n", "<c-c>", function()
-    if utils.commented() then
-        return "gcu"
-    end
-    return "gcai"
-end, { remap = true, expr = true })
+keymap("n", "<c-c>", "gcc", { remap = true })
+keymap("x", "<c-c>", "gc", { remap = true })
 -- dot trick
 keymap("n", "<space><esc>", ".", opts)
 
@@ -515,7 +526,7 @@ keymap("n", "<D-2>", function()
     FeedKeys("zz", "m")
 end, opts)
 
-keymap("n", "gq", function()
+keymap("n", "<c-q>", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
         return "qa"
     else
@@ -561,6 +572,7 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/]], opts)
+keymap("x", "<leader>rw", [[y<esc>:%s/\V<C-r>"/]], opts)
 keymap("n", "<leader>rW", [[:%s/<C-r><C-a>/]], opts)
 keymap("n", "<leader>al", "f)i, ", opts)
 keymap("n", "<leader>ah", "F(a, <left><left>", opts)
@@ -579,7 +591,7 @@ keymap("x", "C", function()
     FeedKeys("ygvgc" .. cmd, "m")
     FeedKeys("p", "n")
 end, opts)
-keymap("n", "<d-d>", function()
+keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
         return "<d-1><cmd>vsp<CR><c--><c-->"
     else
