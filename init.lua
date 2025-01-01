@@ -25,6 +25,9 @@ vim.g.search_pos = nil
 vim.g.diffview_fname = ""
 vim.g.restore_view = true
 vim.g.show_nvim_tree_size = false
+-- This have to be commented because ghostty use --cmd to set
+-- vim.g.scrollback = true, or it will be overwritten.
+-- vim.g.scrollback = false
 
 vim.cmd("syntax off")
 
@@ -37,7 +40,7 @@ api.nvim_create_autocmd("TextYankPost", {
         local v = vim.v.event
         local regcontents = v.regcontents
         vim.schedule(function()
-            vim.fn.setreg("+", regcontents)
+            vim.fn.setreg("+", regcontents, "v")
         end)
     end,
 })
@@ -198,23 +201,6 @@ api.nvim_create_autocmd("FileType", {
     pattern = { "undotree", "diff" },
     callback = function()
         vim.cmd("setlocal syntax=ON")
-    end,
-})
-
-api.nvim_create_autocmd("TermOpen", {
-    callback = function(args)
-        local opts = { buffer = 0 }
-        if vim.endswith(args.file, [[#1]]) then
-            vim.keymap.set("t", "<esc>", function()
-                local line = api.nvim_get_current_line()
-                if vim.startswith(line, "│") then
-                    return "<c-c>"
-                else
-                    return [[<C-\><C-n>]]
-                end
-            end, { buffer = 0, expr = true })
-        end
-        vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
     end,
 })
 
@@ -379,14 +365,14 @@ api.nvim_create_autocmd("DiagnosticChanged", {
 
 api.nvim_create_autocmd("CmdlineLeave", {
     callback = function()
-        local is_enabled = require("noice.ui")._attached
-        if not is_enabled then
-            vim.schedule(function()
-                pcall(function()
+        pcall(function()
+            local is_enabled = require("noice.ui")._attached
+            if not is_enabled then
+                vim.schedule(function()
                     vim.cmd("Noice enable")
                 end)
-            end)
-        end
+            end
+        end)
         vim.defer_fn(function()
             vim.o.scrolloff = 6
         end, 20)

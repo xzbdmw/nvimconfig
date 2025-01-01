@@ -109,6 +109,12 @@ keymap("n", "[s", function()
 end)
 
 keymap({ "n" }, "<esc>", function()
+    if vim.bo.filetype == "toggleterm" then
+        vim.b.term_search_title = ""
+        vim.cmd("noh")
+        utils.refresh_term_title()
+        return
+    end
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         FeedKeys("q", "n")
         return
@@ -149,6 +155,7 @@ keymap({ "n" }, "<esc>", function()
     if flag then
         FeedKeys("<esc>", "n")
         vim.cmd("noh")
+        vim.b.term_search_title = ""
         vim.b.search_winbar = ""
         require("config.utils").refresh_search_winbar()
         vim.api.nvim_exec_autocmds("User", {
@@ -162,6 +169,7 @@ keymap("n", "H", function()
     local bufnr = api.nvim_get_current_buf()
     pcall(engin.keep_highlight, bufnr)
     vim.cmd("noh")
+    vim.b.term_search_title = ""
     vim.b.search_winbar = ""
     require("config.utils").refresh_search_winbar()
     vim.api.nvim_exec_autocmds("User", {

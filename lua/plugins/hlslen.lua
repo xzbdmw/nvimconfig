@@ -70,6 +70,11 @@ return {
                         )
                     end, 10)
                 end
+                vim.b.term_search_title = {
+                    { left, "HlSearchLensCountNoBg" },
+                    { of, "HlSearchLensCountItalicNoBg" },
+                    { right, "HlSearchLensCountNoBg" },
+                }
                 vim.b.search_winbar = "%#HlSearchLensCountNoBg#"
                     .. left
                     .. "%#HlSearchLensCountItalicNoBg#"

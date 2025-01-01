@@ -1,5 +1,42 @@
 return {
     "gbprod/substitute.nvim",
+    keys = {
+        {
+            "gr",
+            function()
+                require("substitute").operator({
+                    modifiers = function(state)
+                        if state.vmode == "line" then
+                            return { "reindent" }
+                        end
+                    end,
+                })
+            end,
+        },
+        {
+            "gR",
+            function()
+                require("substitute").operator()
+            end,
+        },
+        {
+            "grr",
+            "gr_",
+            { remap = true },
+        },
+        {
+            "ge",
+            function()
+                require("substitute.exchange").operator()
+            end,
+        },
+        {
+            "ge",
+            function()
+                require("substitute.exchange").visual()
+            end,
+        },
+    },
     config = function()
         require("substitute").setup({
             on_substitute = require("yanky.integration").substitute(),
@@ -27,19 +64,5 @@ return {
                 preserve_cursor_position = true,
             },
         })
-        -- Lua
-        vim.keymap.set("n", "gr", function()
-            require("substitute").operator({
-                modifiers = function(state)
-                    if state.vmode == "line" then
-                        return { "reindent" }
-                    end
-                end,
-            })
-        end)
-        vim.keymap.set("n", "gR", require("substitute").operator)
-        vim.keymap.set("n", "grr", "gr_", { remap = true })
-        vim.keymap.set("n", "ge", require("substitute.exchange").operator)
-        vim.keymap.set("x", "ge", require("substitute.exchange").visual)
     end,
 }

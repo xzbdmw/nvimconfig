@@ -1,6 +1,9 @@
 return {
     "folke/noice.nvim",
     dependencies = { { "MunifTanjim/nui.nvim" } },
+    cond = function()
+        return not vim.g.scrollback
+    end,
     keys = {
         {
             "<leader>na",
@@ -11,9 +14,6 @@ return {
         },
     },
     config = function()
-        if vim.g.scrollback == true then
-            return
-        end
         local noice = require("noice")
         noice.setup({
             routes = {
@@ -158,29 +158,6 @@ return {
                         view = "cmdline",
                         icon = " ?",
                     },
-                    -- search_down = {
-                    --     kind = "search",
-                    --     pattern = "^/",
-                    --     icon = "?",
-                    --     lang = "regex",
-                    --     conceal = true,
-                    --     opts = {
-                    --         zindex = 100,
-                    --         border = {
-                    --             style = "none",
-                    --             padding = { 0, 2 },
-                    --         },
-                    --         position = {
-                    --             row = "30%",
-                    --             col = "50%",
-                    --         },
-                    --         size = {
-                    --             min_width = 40,
-                    --             width = "auto",
-                    --             height = "auto",
-                    --         },
-                    --     }, -- global options for the cmdline. See section on views
-                    -- },
                     filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },

@@ -22,6 +22,8 @@ keymap({ "n" }, "g;", function()
     return "g;zz"
 end, { expr = true, remap = true })
 
+keymap({ "o" }, ";", "$", { remap = true })
+
 keymap({ "n" }, "gi", function()
     return "gi<C-o>zz"
 end, { expr = true, remap = true })
@@ -39,6 +41,7 @@ keymap({ "n" }, "<leader>ul", function()
     end
 end, opts)
 
+keymap({ "n" }, "<leader>bd", "<cmd>bd!<cr>", opts)
 keymap({ "n" }, "/", function()
     utils.once(function()
         vim.api.nvim_exec_autocmds("User", {
@@ -319,10 +322,8 @@ end, { desc = "Delete Surrounding Indentation" })
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
-keymap("n", "<leader>M", function()
-    vim.g.skip_noice = not vim.g.skip_noice
-end, opts)
-keymap("n", "<f12>", function()
+keymap("n", "<leader>M", "<c-w><c-o>", opts)
+keymap("n", "<d-l>", function()
     if vim.bo.filetype == "toggleterm" then
         FeedKeys("a<c-u>clear<cr>", "n")
         vim.bo.scrollback = 1

@@ -2,6 +2,9 @@ _G.reference = false
 return {
     {
         "neovim/nvim-lspconfig",
+        cond = function()
+            return not vim.g.scrollback
+        end,
         init = function()
             vim.lsp.handlers["textDocument/signatureHelp"] = require("config.utils").signature_help
             local keys = require("lazyvim.plugins.lsp.keymaps").get()

@@ -138,7 +138,7 @@ return {
     version = false,
     dir = "/Users/xzb/.local/share/nvim/lazy/nvim-tree",
     -- event = "VeryLazy",
-    lazy = false,
+    lazy = true,
     -- enabled = false,
     keys = {
         {
@@ -256,7 +256,8 @@ return {
                     exclude = {},
                 },
             },
-            disable_netrw = true,
+            disable_netrw = false,
+            hijack_netrw = false,
             sync_root_with_cwd = true,
             respect_buf_cwd = true,
             update_focused_file = {

@@ -169,6 +169,9 @@ function Open_git_commit()
 end
 
 function M.close_win()
+    if vim.g.scrollback == true then
+        vim.cmd("qa!")
+    end
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         FeedKeys("q", "n")
         return
@@ -925,6 +928,11 @@ function EditFromLazygit(file_path)
 end
 
 function CloseFromLazygit()
+    if vim.bo.filetype == "toggleterm" then
+        FeedKeys("<c-c>", "n")
+        return
+    end
+    vim.cmd("close")
     if
         _G.lazygit_previous_win ~= nil
         and api.nvim_win_is_valid(_G.lazygit_previous_win)
@@ -1164,6 +1172,10 @@ end
 _G.last = nil
 _G.first_time = false
 function M.on_complete(bo_line, bo_line_side, origin_height)
+    if not vim.g.neovide then
+        bo_line = "╰" .. string.rep("─", #bo_line - 2) .. "╯"
+        bo_line_side = "│" .. string.rep(" ", #bo_line_side - 2) .. "│"
+    end
     vim.schedule(function()
         local action_state = require("telescope.actions.state")
         local prompt_bufnr = require("telescope.state").get_existing_prompt_bufnrs()[1]
@@ -1456,7 +1468,23 @@ function M.clear_satellite_search()
     end
 end
 
+function M.refresh_term_title()
+    local conf = vim.api.nvim_win_get_config(0)
+    if conf.border ~= nil then
+        local c = {}
+        c.row = conf.row
+        c.col = conf.col
+        c.relative = conf.relative
+        c.footer = vim.b.term_search_title
+        c.footer_pos = "right"
+        vim.api.nvim_win_set_config(0, c)
+    end
+end
+
 function M.refresh_search_winbar()
+    if vim.bo.filetype == "toggleterm" then
+        return M.refresh_term_title()
+    end
     if vim.wo.winbar == "" or vim.b.winbar_expr == nil then
         return
     end
@@ -1626,8 +1654,14 @@ function M.set_winbar(buf)
         return
     end
     local filename = vim.fn.expand("%:t")
-    local devicons = require("nvim-web-devicons")
-    local icon, iconHighlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
+    local extension = string.match(filename, "%a+$")
+    local icon, iconHighlight
+    if extension == "txt" then
+        icon = "󰈙"
+        iconHighlight = "TXT"
+    else
+        icon, iconHighlight = require("nvim-web-devicons").get_icon(filename, extension, { default = true })
+    end
     local winid = api.nvim_get_current_win()
     local winconfig = api.nvim_win_get_config(winid)
     if winconfig.relative ~= "" and winconfig.zindex ~= 10 then

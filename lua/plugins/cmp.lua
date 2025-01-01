@@ -20,6 +20,7 @@ return {
         { dir = "~/Project/lua/cmp-rg/" },
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-buffer",
+        { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-mini-snippets/" },
         "echasnovski/mini.snippets",
         -- "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
@@ -215,23 +216,6 @@ return {
                     _G.no_animation(_G.CI)
                     fallback()
                 end),
-                ["<c-r>"] = cmp.mapping(function(fallback)
-                    _G.no_animation(_G.CI)
-                    if cmp.visible() then
-                        _G.CON = true
-                        vim.defer_fn(function()
-                            _G.CON = nil
-                        end, 10)
-                        f.expand = false
-                        cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
-                        vim.defer_fn(function()
-                            pcall(_G.update_indent, true) -- hlchunk
-                            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
-                        end, 20)
-                    else
-                        fallback()
-                    end
-                end),
                 ["<right>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     if cmp.visible() then
@@ -308,7 +292,7 @@ return {
                         return true
                     end,
                 },
-                -- { name = "luasnip" },
+                { name = "mini.snippets" },
                 { name = "path" },
             }, {
                 {

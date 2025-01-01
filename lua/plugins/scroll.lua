@@ -3,6 +3,9 @@ return {
     dependencies = {
         "xzbdmw/neovim-project",
     },
+    cond = function()
+        return not vim.g.scrollback
+    end,
     lazy = false,
     -- event = "VeryLazy",
     opts = {},

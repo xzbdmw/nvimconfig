@@ -6,7 +6,8 @@
       "    n = n + 1",
       "end"
     ],
-    "prefix": "block"
+    "prefix": "block",
+    "desc": "block the editor"
   },
   "fun": {
     "body": [

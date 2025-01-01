@@ -1,5 +1,8 @@
 return {
     "lewis6991/gitsigns.nvim",
+    cond = function()
+        return not vim.g.scrollback
+    end,
     config = function()
         local utils = require("config.utils")
         local config = require("gitsigns.config").config

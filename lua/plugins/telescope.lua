@@ -10,7 +10,6 @@ return {
         -- dir = "~/Project/lua/telescope.nvim/",
         commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
         version = false,
-        lazy = false,
         keys = {
             { "<leader><space>", false },
             { "<leader>so", false },
@@ -138,7 +137,7 @@ return {
                     require("telescope").extensions["neovim-project"].history({
                         on_complete = {
                             function()
-                                if vim.o.lines == 31 then
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
                                         "                                                          ",
                                         "                                                          ",
@@ -173,7 +172,7 @@ return {
                         layout_strategy = "horizontal",
                         on_complete = {
                             function()
-                                if vim.o.lines == 31 then
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
                                         "                                                                                           ",
                                         "                                                                                           ",
@@ -265,7 +264,7 @@ return {
                     require("telescope").extensions.aerial.aerial({
                         on_complete = {
                             function()
-                                if vim.o.lines == 31 then
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
                                         "                                       ",
                                         "                                       ",
@@ -294,7 +293,7 @@ return {
                         layout_config = {
                             horizontal = {
                                 height = 0.7, -- window height
-                                width = vim.o.lines == 31 and 0.30 or 0.25, -- window width
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.25, -- window width
                             },
                             mirror = false,
                         },
@@ -313,7 +312,7 @@ return {
                     require("telescope").extensions.smart_open.smart_open({
                         on_complete = {
                             function()
-                                if vim.o.lines == 31 then
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
                                         "                                       ",
                                         "                                       ",
@@ -341,7 +340,7 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = vim.o.lines == 31 and 0.30 or 0.32,
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.32,
                                 height = 0.7,
                             },
                             mirror = false,
@@ -734,7 +733,8 @@ return {
                     file_sorter = require("custom.file_sorter").file_sorter,
                     sorting_strategy = "ascending",
                     layout_strategy = "horizontal",
-                    borderchars = { " ", " ", "", " ", " ", " ", " ", " " },
+                    borderchars = vim.g.neovide and { " ", " ", "", " ", " ", " ", " ", " " }
+                        or { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
                     -- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
                     set_env = {
                         LESS = "",
@@ -970,6 +970,9 @@ return {
                             end,
                             ["Y"] = yank_preview_lines,
                             ["y"] = yank_selected_entry,
+                            ["p"] = function()
+                                FeedKeys("a<d-v><esc>", "m")
+                            end,
                             ["<C-->"] = actions.preview_scrolling_left,
                             ["<C-=>"] = actions.preview_scrolling_right,
                             ["<f16>"] = function()
@@ -1271,7 +1274,7 @@ return {
                         initial_mode = "normal",
                         on_complete = {
                             function()
-                                if vim.o.lines == 31 then
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
                                         "                                       ",
                                         "                                       ",

@@ -1,10 +1,9 @@
 return {
     "otavioschwanck/arrow.nvim",
-    -- commit = "f3d8470580ecbd5778a68091eca8d5da304f2e2a",
-    -- dir = "/Users/xzb/Project/lua/arrow.nvim/",
-    -- dir = "/Users/xzb/Project/lua/fork/arrow.nvim/",
-    -- event = "VeryLazy",
     priority = 10000,
+    cond = function()
+        return not vim.g.scrollback
+    end,
     opts = {
         separate_by_branch = false,
         per_buffer_config = {
@@ -51,7 +50,7 @@ return {
             width = "auto",
             height = "auto",
             row = 10,
-            border = "none",
+            border = vim.g.neovide and "none" or "rounded",
         },
     },
     config = function(_, opts)

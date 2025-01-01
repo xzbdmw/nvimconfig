@@ -34,9 +34,17 @@ return {
                 end
                 _G.set_cursor_animation(_G.CI)
                 vim.cmd("redraw!")
-                vim.keymap.set("t", "q", "q", { buffer = true })
-                vim.keymap.set("n", "K", "kkkk", { buffer = true })
-                vim.keymap.set("n", "J", "jjjj", { buffer = true })
+                vim.keymap.set("t", "<esc>", function()
+                    local line = vim.api.nvim_get_current_line()
+                    if
+                        vim.startswith(line, "╰─────────────────────")
+                        or vim.startswith(line, "│")
+                    then
+                        return "<esc>"
+                    end
+                    return [[<C-\><C-n>]]
+                end, { buffer = 0, expr = true })
+                vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
                 vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-u>clear<cr>", "n")
                     vim.bo.scrollback = 1
@@ -44,7 +52,9 @@ return {
                         vim.bo.scrollback = 100000
                     end, 100)
                 end, { buffer = true })
-            end, -- function to run when the terminal opens
+                vim.keymap.set("n", "K", "6k", { buffer = true })
+                vim.keymap.set("n", "J", "6j", { buffer = true })
+            end,
             on_close = function()
                 _G.no_animation()
                 vim.cmd("set laststatus=0")
@@ -77,29 +87,31 @@ return {
             terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
             persist_size = true,
             persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
-            direction = "horizontal",
+            direction = "float",
             close_on_exit = true, -- close the terminal window when the process exits
             -- Change the default shell. Can be a string or a function returning a string
             shell = vim.o.shell,
             auto_scroll = false, -- automatically scroll to the bottom on terminal output
             -- This field is only relevant if direction is set to 'float'
-            -- float_opts = {
-            --   -- The border key is *almost* the same as 'nvim_open_win'
-            --   -- see :h nvim_open_win for details on borders however
-            --   -- the 'curved' border is a custom border type
-            --   -- not natively supported but implemented in this plugin.
-            --   border = 'single' | 'double' | 'shadow' | 'curved' | ... other options supported by win open
-            --   -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
-            --   width = <value>,
-            --   height = <value>,
-            --   row = <value>,
-            --   col = <value>,
-            --   winblend = 3,
-            --   zindex = <value>,
-            --   title_pos = 'left' | 'center' | 'right', position of the title of the floating window
-            -- },
+            float_opts = {
+                -- The border key is *almost* the same as 'nvim_open_win'
+                -- see :h nvim_open_win for details on borders however
+                -- the 'curved' border is a custom border type
+                -- not natively supported but implemented in this plugin.
+                border = vim.g.neovide and "solid" or "rounded",
+                -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
+                width = function(info)
+                    return math.floor(vim.o.columns * 0.7)
+                end,
+                height = function()
+                    return math.floor(vim.o.lines * 0.8)
+                end,
+                winblend = 5,
+                zindex = 50,
+                title_pos = "left",
+            },
             winbar = {
-                enabled = false,
+                enabled = true,
                 name_formatter = function(term) --  term: Terminal
                     return term.name
                 end,
