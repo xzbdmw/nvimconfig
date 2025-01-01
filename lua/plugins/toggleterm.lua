@@ -28,12 +28,10 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
-                if vim.b.first_open then
-                    vim.cmd(":startinsert")
-                    vim.b.first_open = false
-                end
-                _G.set_cursor_animation(_G.CI)
+                vim.cmd(":startinsert")
                 vim.cmd("redraw!")
+                _G.set_cursor_animation(_G.CI)
+                -- We have to set the keymapping here for excluding lazygit.
                 vim.keymap.set("t", "<esc>", function()
                     local line = vim.api.nvim_get_current_line()
                     if
@@ -44,16 +42,13 @@ return {
                     end
                     return [[<C-\><C-n>]]
                 end, { buffer = 0, expr = true })
-                vim.keymap.set("t", "<C-d>", [[<C-\><C-w>]], opts)
                 vim.keymap.set("t", "<d-l>", function()
-                    FeedKeys("<c-u>clear<cr>", "n")
+                    FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
                     vim.defer_fn(function()
                         vim.bo.scrollback = 100000
                     end, 100)
                 end, { buffer = true })
-                vim.keymap.set("n", "K", "6k", { buffer = true })
-                vim.keymap.set("n", "J", "6j", { buffer = true })
             end,
             on_close = function()
                 _G.no_animation()

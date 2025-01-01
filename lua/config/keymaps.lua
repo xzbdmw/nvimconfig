@@ -325,7 +325,7 @@ keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>M", "<c-w><c-o>", opts)
 keymap("n", "<d-l>", function()
     if vim.bo.filetype == "toggleterm" then
-        FeedKeys("a<c-u>clear<cr>", "n")
+        FeedKeys("a<c-l>", "n")
         vim.bo.scrollback = 1
         vim.defer_fn(function()
             vim.bo.scrollback = 100000
