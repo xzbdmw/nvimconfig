@@ -374,7 +374,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
             end
         end)
         vim.defer_fn(function()
-            if vim.bo.filetype ~= "toggleterm" then
+            if vim.bo.filetype == "toggleterm" then
+                vim.o.scrolloff = 0
+            else
                 vim.o.scrolloff = 6
             end
         end, 20)

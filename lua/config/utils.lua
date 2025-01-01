@@ -321,7 +321,9 @@ function M.insert_C_R()
 end
 
 function M.insert_paste()
-    vim.o.eventignore = "TextChangedI"
+    if not M.mini_snippets_active() then
+        vim.o.eventignore = "TextChangedI"
+    end
     _G.no_animation(_G.CI)
     local cur_line = api.nvim_get_current_line()
     local _, first_char = cur_line:find("^%s*")
@@ -351,9 +353,9 @@ function M.insert_paste()
         end
         api.nvim_win_set_cursor(0, { row + #lines - 1, last_col })
     end
-    vim.schedule(function()
-        vim.o.eventignore = ""
-    end)
+    -- vim.schedule(function()
+    --     vim.o.eventignore = ""
+    -- end)
 end
 
 function M.insert_mode_space()

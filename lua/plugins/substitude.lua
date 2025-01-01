@@ -22,7 +22,7 @@ return {
         {
             "grr",
             "gr_",
-            { remap = true },
+            remap = true,
         },
         {
             "ge",
@@ -31,10 +31,16 @@ return {
             end,
         },
         {
+            "gee",
+            "ge_",
+            remap = true,
+        },
+        {
             "ge",
             function()
                 require("substitute.exchange").visual()
             end,
+            mode = "x",
         },
     },
     config = function()

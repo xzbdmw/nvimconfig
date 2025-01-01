@@ -21,6 +21,7 @@ return {
             ["["] = { input = { "%b[]", "^.().*().$" }, output = { left = "[", right = "]" } },
             ["{"] = { input = { "%b{}", "^.().*().$" }, output = { left = "{", right = "}" } },
             ["<"] = { input = { "%b<>", "^.().*().$" }, output = { left = "<", right = ">" } },
+            ["s"] = { input = { { "%b()", "%b[]", "%b{}" }, "^.().*().$" }, output = { left = "(", right = ")" } },
         },
         mappings = {
             add = "ma",
