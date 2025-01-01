@@ -374,7 +374,9 @@ api.nvim_create_autocmd("CmdlineLeave", {
             end
         end)
         vim.defer_fn(function()
-            vim.o.scrolloff = 6
+            if vim.bo.filetype ~= "toggleterm" then
+                vim.o.scrolloff = 6
+            end
         end, 20)
         local len = vim.g.neovide_cursor_animation_length
         if len ~= 0 then

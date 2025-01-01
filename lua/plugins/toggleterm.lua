@@ -28,6 +28,7 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
+                vim.wo.scrolloff = 0
                 vim.cmd(":startinsert")
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
@@ -45,9 +46,7 @@ return {
                 vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
-                    vim.defer_fn(function()
-                        vim.bo.scrollback = 100000
-                    end, 100)
+                    vim.bo.scrollback = 100000
                 end, { buffer = true })
             end,
             on_close = function()
