@@ -832,30 +832,10 @@ return {
                             ["<Tab>"] = focus_preview,
                             ["<c-g>"] = "to_fuzzy_refine",
                             ["<down>"] = function(prompt_bufnr)
-                                local ok, cmp = pcall(require, "cmp")
-                                if ok and cmp.visible() then
-                                    if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                                        _G.no_animation(_G.CI)
-                                        cmp.select_next_item()
-                                    else
-                                        cmp.select_prev_item()
-                                    end
-                                else
-                                    actions.move_selection_next(prompt_bufnr)
-                                end
+                                actions.move_selection_next(prompt_bufnr)
                             end,
                             ["<up>"] = function(prompt_bufnr)
-                                local ok, cmp = pcall(require, "cmp")
-                                if ok and cmp.visible() then
-                                    if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                                        _G.no_animation(_G.CI)
-                                        cmp.select_prev_item()
-                                    else
-                                        cmp.select_next_item()
-                                    end
-                                else
-                                    actions.move_selection_previous(prompt_bufnr)
-                                end
+                                actions.move_selection_previous(prompt_bufnr)
                             end,
                             ["("] = function()
                                 FeedKeys("\\(", "n")
@@ -933,10 +913,10 @@ return {
                                 actions.to_fuzzy_refine(bufnr)
                             end,
                             J = function(bufnr)
-                                require("telescope.actions.set").shift_selection(bufnr, 3)
+                                require("telescope.actions.set").shift_selection(bufnr, 6)
                             end,
                             K = function(bufnr)
-                                require("telescope.actions.set").shift_selection(bufnr, -3)
+                                require("telescope.actions.set").shift_selection(bufnr, -6)
                             end,
                             ["s"] = function(bufnr)
                                 actions.toggle_selection(bufnr)

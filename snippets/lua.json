@@ -17,6 +17,10 @@
     "desc": "block the editor",
     "prefix": "block"
   },
+  "cmdgs": {
+    "body": "<cmd>norm! gs<CR>",
+    "prefix": "cmdgs"
+  },
   "dbg": {
     "body": "print(debug.traceback())",
     "prefix": "dbg"

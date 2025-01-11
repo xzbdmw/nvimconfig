@@ -371,7 +371,6 @@ return {
                     f.put_down_snippet,
                     compare.score,
                     compare.recently_used,
-                    compare.sort_text,
                     function(...)
                         return require("cmp_buffer"):compare_locality(...)
                     end,

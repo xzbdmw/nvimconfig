@@ -1629,7 +1629,7 @@ function M.visual_search(cmd)
     local esc_pat = table.concat(esc_chunks, [[\n]])
     local search_cmd = ([[%s\V%s%s]]):format(cmd, esc_pat, "\n")
     _G.searchmode = cmd
-    return "oh\27" .. search_cmd
+    return "oh<esc>" .. search_cmd .. "N"
 end
 
 function M.star_search(cmd, word)
@@ -1931,7 +1931,10 @@ function M.gopls_extract_all()
                             local which_one = {}
                             for _, rang in ipairs(ranges) do
                                 local start_row, start_col = rang.start.line, rang.start.character
-                                if start_row == row - 1 then
+                                if
+                                    start_row == row - 1
+                                    and not (start_row == rang["end"].line and start_col == rang["end"].character)
+                                then
                                     if start_col < minimal_distance then
                                         which_one = { row, start_col }
                                         minimal_distance = start_col
