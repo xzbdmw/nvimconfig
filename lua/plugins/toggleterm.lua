@@ -29,7 +29,7 @@ return {
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
                 vim.wo.scrolloff = 0
-                vim.cmd(":startinsert")
+                -- vim.cmd(":startinsert")
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.

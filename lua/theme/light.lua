@@ -142,7 +142,11 @@ keymap({ "n" }, "<esc>", function()
             then
                 flag = false
                 _G.no_animation()
-                api.nvim_win_close(win, true)
+                vim.schedule(function()
+                    if vim.api.nvim_win_is_valid(win) then
+                        api.nvim_win_close(win, true)
+                    end
+                end)
             elseif win_config.zindex == 10 then
                 FeedKeys("<esc>", "n")
             end

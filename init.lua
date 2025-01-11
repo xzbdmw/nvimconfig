@@ -105,6 +105,33 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("FileType", {
+    pattern = "go",
+    callback = function()
+        vim.keymap.set("x", "<leader>re", function()
+            utils.gopls_extract_all()
+        end, { buffer = true })
+    end,
+})
+
+api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.go",
+    callback = function()
+        local params = vim.lsp.util.make_range_params()
+        params.context = { only = { "source.organizeImports" } }
+        local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+        for _, res in pairs(result or {}) do
+            for _, action in pairs(res.result or {}) do
+                if action.edit then
+                    vim.lsp.util.apply_workspace_edit(action.edit, "utf-8")
+                else
+                    vim.lsp.buf.execute_command(action.command)
+                end
+            end
+        end
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
     pattern = { "lazy" },
     callback = function(args)
         vim.defer_fn(function()

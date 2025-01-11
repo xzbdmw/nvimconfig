@@ -1896,6 +1896,59 @@ M.qf_populate = function(lines, opts)
 
     vim.cmd(commands)
 end
+
+function M.gopls_extract_all()
+    local mode = vim.api.nvim_get_mode().mode
+
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    if mode == "v" or mode == "V" then
+        local range = vim.lsp.buf.range_from_selection(0, mode)
+        local params = vim.lsp.util.make_given_range_params(range.start, range["end"], 0, "utf-8")
+        params.context = { only = { "refactor.extract.variable-all" } }
+        local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+        for _, res in pairs(result or {}) do
+            for _, action in pairs(res.result or {}) do
+                if action.data and action.data.arguments then
+                    -- Resolve the code action using gopls' expected structure
+                    vim.lsp.buf_request(0, "codeAction/resolve", action, function(err, resolved_action)
+                        if err then
+                            vim.notify("Error resolving code action: " .. err.message, vim.log.levels.ERROR)
+                            return
+                        end
+                        if resolved_action.edit then
+                            vim.lsp.util.apply_workspace_edit(resolved_action.edit, "utf-8")
+                            -- Find the first occurrence of newText edits
+                            local edits = resolved_action.edit.changes or resolved_action.edit.documentChanges
+                            local ranges = {}
+                            for _, edit in ipairs(edits) do
+                                for i, e in pairs(edit) do
+                                    for _, item in ipairs(e) do
+                                        table.insert(ranges, item.range)
+                                    end
+                                end
+                            end
+                            local minimal_distance = 1000000000
+                            local which_one = {}
+                            for _, rang in ipairs(ranges) do
+                                local start_row, start_col = rang.start.line, rang.start.character
+                                if start_row == row - 1 then
+                                    if start_col < minimal_distance then
+                                        which_one = { row, start_col }
+                                        minimal_distance = start_col
+                                    end
+                                end
+                            end
+                            FeedKeys("<esc>", "n")
+                            vim.api.nvim_win_set_cursor(0, { which_one[1] + 1, which_one[2] })
+                            FeedKeys("<leader>rn", "m")
+                        end
+                    end)
+                end
+            end
+        end
+    end
+end
+
 function M.f_search()
     vim.g.disable_arrow = true
     local key_ns = vim.api.nvim_create_namespace("f_search")
