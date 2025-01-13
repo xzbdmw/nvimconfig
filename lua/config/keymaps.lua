@@ -598,13 +598,6 @@ keymap("n", "<leader>vr", function()
         return "<cmd>vsp<CR><c--><c-->"
     end
 end, { expr = true, remap = true })
-keymap("n", ",", function()
-    if vim.g.disable_arrow then
-        return ""
-    end
-    return "]"
-end, { remap = true, expr = true })
-keymap("n", ",,", "]]", { remap = true })
 keymap("n", "<", function()
     return "["
 end, { remap = true, expr = true })

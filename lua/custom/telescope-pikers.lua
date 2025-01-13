@@ -337,7 +337,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
 
             if not options.disable_coordinates then
                 if entry.lnum then
-                    coordinates = string.format(" -> %s", entry.lnum)
+                    coordinates = string.format(":%s", entry.lnum)
                 end
             end
 
@@ -355,8 +355,8 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             --          internally and return in the correct format.
             return displayer({
                 { icon, iconHighlight },
-                { tailForDisplay, "ChangedCmpItemKindInterface" },
-                { text, "TelescopeNormal" },
+                { tailForDisplay, "@comment" },
+                { text },
             })
         end
 

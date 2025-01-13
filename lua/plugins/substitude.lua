@@ -2,7 +2,7 @@ return {
     "gbprod/substitute.nvim",
     keys = {
         {
-            "gr",
+            "s",
             function()
                 require("substitute").operator({
                     modifiers = function(state)
@@ -14,14 +14,14 @@ return {
             end,
         },
         {
-            "gR",
+            "S",
             function()
                 require("substitute").operator()
             end,
         },
         {
-            "grr",
-            "gr_",
+            "ss",
+            "s_",
             remap = true,
         },
         {

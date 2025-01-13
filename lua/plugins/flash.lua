@@ -6,6 +6,10 @@ return {
     -- -- stylua: ignore
     keys = {
         {
+            "s",
+            false,
+        },
+        {
             "r",
             mode = "o",
             function()
@@ -16,9 +20,12 @@ return {
             desc = "Remote Flash",
         },
         {
-            "s",
+            ",",
             mode = { "n", "x", "o" },
             function()
+                if vim.g.disable_flash then
+                    return
+                end
                 local key_ns = vim.api.nvim_create_namespace("flash;")
                 vim.on_key(function(key, typed)
                     if typed == ";" then

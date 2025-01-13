@@ -1958,6 +1958,7 @@ end
 
 function M.f_search()
     vim.g.disable_arrow = true
+    vim.g.disable_flash = true
     local key_ns = vim.api.nvim_create_namespace("f_search")
     local miss_count = 0
     vim.on_key(function(key, typed)
@@ -1968,6 +1969,7 @@ function M.f_search()
         elseif miss_count == 3 or typed == "\27" then
             vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
             vim.g.disable_arrow = false
+            vim.g.disable_flash = false
         elseif typed ~= "" then
             miss_count = miss_count + 1
         end

@@ -49,9 +49,9 @@
     ],
     "prefix": "init"
   },
-  "ll": {
-    "body": "local ${1:var} = ${2:v}",
-    "prefix": "ll"
+  "loc": {
+    "body": "local ${0:}",
+    "prefix": "loc"
   },
   "perf": {
     "body": [
