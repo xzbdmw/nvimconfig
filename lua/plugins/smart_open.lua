@@ -29,7 +29,7 @@ return {
                     match_algorithm = "fzf",
                     disable_devicons = false,
                     open_buffer_indicators = { previous = "󱝂 ", others = "󰫣 " },
-                    prompt_title = "Smart Open",
+                    prompt_title = "",
                     initial_mode = "insert",
                     layout_strategy = "horizontal",
                     previewer = false,

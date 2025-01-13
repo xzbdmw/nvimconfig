@@ -1708,6 +1708,7 @@ _G.Time = function(start, msg)
             print(msg .. ":", vim.inspect(duration))
         end)
     end
+    return duration
 end
 
 function M.search_to_qf()

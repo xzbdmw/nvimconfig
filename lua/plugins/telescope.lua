@@ -334,13 +334,13 @@ return {
                         match_algorithm = "fzf",
                         disable_devicons = false,
                         open_buffer_indicators = { previous = "󱝂 ", others = "󰫣 " },
-                        prompt_title = "Smart Open",
+                        prompt_title = "",
                         initial_mode = "insert",
                         layout_strategy = "horizontal",
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.32,
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.35,
                                 height = 0.7,
                             },
                             mirror = false,
@@ -363,8 +363,8 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = 0.35,
-                                height = 0.7,
+                                width = 0.5,
+                                height = 0.8,
                             },
                             mirror = false,
                         },
@@ -661,12 +661,13 @@ return {
                         end
                     end,
                 })
-
-                keymap("n", "h", function()
-                    vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
-                    closed = true
-                    api.nvim_del_autocmd(id)
-                end, { buffer = bufnr })
+                for _, key in ipairs({ "h", "i", "a" }) do
+                    keymap("n", key, function()
+                        vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                        closed = true
+                        api.nvim_del_autocmd(id)
+                    end, { buffer = bufnr })
+                end
 
                 keymap("n", "<Tab>", function()
                     focus_preview(prompt_bufnr)
@@ -722,6 +723,7 @@ return {
                     preview = {
                         highlight_limit = 0.8,
                     },
+                    results_title = "",
                     dynamic_preview_title = true,
                     disable_devicons = true,
                     prompt_prefix = " ",

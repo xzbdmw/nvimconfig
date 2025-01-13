@@ -64,6 +64,26 @@ api.nvim_create_autocmd({ "User" }, {
     end,
 })
 
+api.nvim_create_autocmd({ "TabEnter" }, {
+    callback = function(data)
+        vim.schedule(function()
+            local name = vim.api.nvim_buf_get_name(0)
+            if vim.startswith(name, "/private/var") then
+                FeedKeys("G", "n")
+                vim.wo.scrolloff = 0
+                vim.api.nvim_create_autocmd("TabClosed", {
+                    once = true,
+                    callback = function(d)
+                        if d.file == "2" then
+                            vim.system({ "open", "-a", "Ghostty" }):wait()
+                        end
+                    end,
+                })
+            end
+        end)
+    end,
+})
+
 api.nvim_create_autocmd("User", {
     pattern = { "ArrowUpdate" },
     callback = function()
