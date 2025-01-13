@@ -1121,6 +1121,18 @@ return {
                             },
                         },
                     },
+                    highlights = {
+                        initial_mode = "insert",
+                        layout_config = {
+                            horizontal = {
+                                width = 0.95,
+                                height = 0.95,
+                                preview_cutoff = 0,
+                                prompt_position = "top",
+                                preview_width = 0.6,
+                            },
+                        },
+                    },
                     git_commits = {
                         initial_mode = "normal",
                         layout_config = {

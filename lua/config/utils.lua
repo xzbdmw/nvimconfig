@@ -1694,6 +1694,9 @@ function M.set_winbar(buf)
 end
 
 _G.Time = function(start, msg)
+    if start == nil then
+        return
+    end
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
     if msg == "" then

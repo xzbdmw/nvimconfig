@@ -207,6 +207,7 @@ return {
                 -- FzfLuaBorder = { fg = "#BDBFC9" },
                 FzfLuaHeaderText = { link = "TelescopeTitle" },
                 FzfLuaHeaderBind = { link = "TelescopeTitle" },
+                TelescopeBorder = { fg = "#e8e7e0" },
                 -- FzfLuaBorder = { link = "TelescopeBorder" },
                 ArrowCurrentFile = { link = "Comment" },
                 CodeActionNumber = { link = "Comment" },
@@ -666,5 +667,11 @@ return {
             specs = specs,
             groups = groups,
         })
+
+        if vim.g.neovide then
+            vim.defer_fn(function()
+                vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = "#e8e7e0" })
+            end, 100)
+        end
     end,
 }
