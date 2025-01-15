@@ -193,6 +193,9 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
                     local action_state = require("telescope.actions.state")
                     local prompt_bufnr = require("telescope.state").get_existing_prompt_bufnrs()[1]
                     local picker = action_state.get_current_picker(prompt_bufnr)
+                    if picker == nil then
+                        return
+                    end
                     if not api.nvim_buf_is_valid(picker.results_bufnr) then
                         return
                     end
@@ -206,7 +209,7 @@ function telescopePickers.prettyGrepPicker(search, default_text, filetype)
             layout_config = {
                 vertical = {
                     prompt_position = "top",
-                    width = 0.8,
+                    width = 0.9,
                     height = 0.95,
                     mirror = true,
                     preview_cutoff = 0,

@@ -21,8 +21,11 @@ return {
         },
         {
             "ss",
-            "s_",
-            remap = true,
+            function()
+                FeedKeys("m7", "n")
+                FeedKeys("s_", "m")
+                FeedKeys("`7", "n")
+            end,
         },
         {
             "ge",

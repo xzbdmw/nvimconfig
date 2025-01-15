@@ -4,7 +4,7 @@ api = vim.api
 require("config.lazy")
 local utils = require("config.utils")
 
-_G.CI = 0.04
+_G.CI = 0.02
 _G.searchmode = "/"
 _G.lazygit_previous_win = nil
 _G.pre_gitsigns_qf_operation = ""

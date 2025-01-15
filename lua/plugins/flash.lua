@@ -32,6 +32,8 @@ return {
                         require("flash.prompt").jump_to_next_match(false)
                     elseif typed == "," then
                         require("flash.prompt").jump_to_prev_match(false)
+                    elseif typed == "\27" then
+                        vim.on_key(nil, api.nvim_create_namespace("flash;"))
                     end
                 end, key_ns)
                 vim.g.disable_arrow = true

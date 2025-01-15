@@ -16,6 +16,7 @@ return {
         "ToggleTermSendVisualSelection",
     },
     config = function()
+        local number = false
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
             size = function(term)
@@ -28,8 +29,10 @@ return {
             -- open_mapping = [[<f16>]],
             -- on_create = fun(t: Terminal), -- function to run when the terminal is first created
             on_open = function()
+                if number then
+                    vim.wo.number = true
+                end
                 vim.wo.scrolloff = 0
-                -- vim.cmd(":startinsert")
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
@@ -50,13 +53,13 @@ return {
                 end, { buffer = true })
             end,
             on_close = function()
-                _G.no_animation()
-                vim.cmd("set laststatus=0")
+                vim.o.scrolloff = 6
+                number = vim.wo.number
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
             -- on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr
             -- on_exit = fun(t: Terminal, job: number, exit_code: number, name: string) -- function to run when terminal process exits
-            -- hide_numbers = true, -- hide the number column in toggleterm buffers
+            hide_numbers = false, -- hide the number column in toggleterm buffers
             shade_filetypes = {},
             autochdir = true, -- when neovim changes it current directory the terminal will change it's own when next it's opened
             highlights = {

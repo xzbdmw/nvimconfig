@@ -29,7 +29,7 @@
     "body": [
       "vim.keymap.set(\"n\", \"<d-y>\", function()",
       "\t$0",
-      "    \t\tend)"
+      "end)"
     ],
     "prefix": "kdy"
   },

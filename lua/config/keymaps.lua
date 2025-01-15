@@ -258,8 +258,20 @@ keymap({ "v" }, "<d-v>", function()
     FeedKeys("<d-v>", "m")
 end, opts)
 keymap("o", "c", function()
-    _G.no_animation(_G.CI)
-    return "c"
+    local s = vim.v.operator
+    if s == "y" then
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        FeedKeys("<esc>yygcc", "m")
+        FeedKeys("p", "n")
+        FeedKeys(
+            "<cmd>lua " .. string.format("vim.api.nvim_win_set_cursor(%s, { %d, %d })", 0, row + 1, col) .. "<CR>",
+            "n"
+        )
+        return ""
+    else
+        _G.no_animation(_G.CI)
+        return "c"
+    end
 end, { expr = true })
 
 keymap("i", "<c-a>", function()
@@ -576,15 +588,6 @@ keymap("x", "<leader>rw", [[y<esc>:%s/\V<C-r>"/]], opts)
 keymap("n", "<leader>rW", [[:%s/<C-r><C-a>/]], opts)
 keymap("n", "<leader>al", "f)i, ", opts)
 keymap("n", "<leader>ah", "F(a, <left><left>", opts)
-keymap("o", "C", function()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    FeedKeys("yygcc", "m")
-    FeedKeys("p", "n")
-    FeedKeys(
-        "<cmd>lua " .. string.format("vim.api.nvim_win_set_cursor(%s, { %d, %d })", 0, row + 1, col) .. "<CR>",
-        "n"
-    )
-end, opts)
 keymap("x", "C", function()
     local s, _ = vim.fn.line("."), vim.fn.line("v")
     local cmd = string.format("<cmd>lua vim.api.nvim_win_set_cursor(0, { %d, 0 })<CR>", s)

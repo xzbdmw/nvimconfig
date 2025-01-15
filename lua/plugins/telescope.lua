@@ -848,7 +848,7 @@ return {
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 if not require("trouble").is_open("qflist") then
-                                    FeedKeys("<C-q>", "m")
+                                    FeedKeys("<leader>uq", "m")
                                 end
                             end,
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
@@ -901,7 +901,7 @@ return {
                             end,
                         },
                         n = {
-                            ["R"] = focus_result,
+                            ["/"] = focus_result,
                             ["<C-cr>"] = function(bufnr)
                                 FeedKeys("<cr>", "t")
                             end,
@@ -1120,18 +1120,6 @@ return {
                             i = {
                                 ["<CR>"] = gitsign_change_base,
                                 ["<c-p>"] = gitsign_change_base_pre,
-                            },
-                        },
-                    },
-                    highlights = {
-                        initial_mode = "insert",
-                        layout_config = {
-                            horizontal = {
-                                width = 0.95,
-                                height = 0.95,
-                                preview_cutoff = 0,
-                                prompt_position = "top",
-                                preview_width = 0.6,
                             },
                         },
                     },

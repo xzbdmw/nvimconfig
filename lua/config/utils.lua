@@ -1693,12 +1693,18 @@ function M.set_winbar(buf)
     end
 end
 
-_G.Time = function(start, msg)
+_G.Time = function(start, msg, notify)
+    if notify == nil then
+        notify = true
+    end
     if start == nil then
         return
     end
     msg = msg or ""
     local duration = 0.000001 * (vim.loop.hrtime() - start)
+    if not notify then
+        return duration
+    end
     if msg == "" then
         vim.schedule(function()
             print(vim.inspect(duration))
