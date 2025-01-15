@@ -1881,6 +1881,7 @@ M.operator_mode_lh = function(direction)
             return [[t{]]
         end
     end
+    return "l"
 end
 
 M.qf_populate = function(lines, opts)

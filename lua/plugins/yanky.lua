@@ -113,7 +113,7 @@ return {
             expr = true,
         },
         {
-            "<c-p>",
+            "gp",
             function()
                 require("yanky.textobj").last_put()
             end,

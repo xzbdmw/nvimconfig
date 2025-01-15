@@ -153,6 +153,16 @@ keymap("o", "l", function()
     return utils.operator_mode_lh("after")
 end, { expr = true })
 
+keymap("x", ";", function()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    vim.schedule(function()
+        if vim.api.nvim_win_get_cursor(0)[2] == col then
+            FeedKeys("l", "n")
+        end
+    end)
+    return utils.operator_mode_lh("after")
+end, { expr = true })
+
 keymap("n", "<leader>sl", function()
     local cmd = vim.fn.getreg("/"):gsub("\\V", "")
     local type = vim.fn.getcmdtype()
