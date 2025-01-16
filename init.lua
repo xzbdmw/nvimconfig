@@ -56,6 +56,22 @@ api.nvim_create_autocmd("FocusGained", {
     end,
 })
 
+api.nvim_create_autocmd({ "WinLeave" }, {
+    callback = function(data)
+        local win = vim.api.nvim_get_current_win()
+        vim.wo[win].cursorline = true
+    end,
+})
+
+api.nvim_create_autocmd({ "BufEnter" }, {
+    callback = function(data)
+        vim.schedule(function()
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win].cursorline = false
+        end)
+    end,
+})
+
 api.nvim_create_autocmd({ "User" }, {
     pattern = "TelescopePreviewerLoaded",
     callback = function(data)
