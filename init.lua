@@ -81,6 +81,15 @@ api.nvim_create_autocmd({ "User" }, {
     end,
 })
 
+api.nvim_create_autocmd("BufWritePre", {
+    pattern = { "*.md", "*.txt" },
+    callback = function()
+        local save_cursor = vim.fn.getpos(".")
+        vim.cmd([[%s/\s\+$//e]])
+        vim.fn.setpos(".", save_cursor)
+    end,
+})
+
 api.nvim_create_autocmd({ "TabEnter" }, {
     callback = function(data)
         vim.schedule(function()

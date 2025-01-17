@@ -8,5 +8,9 @@
       "}"
     ],
     "prefix": "open"
+  },
+  "sp": {
+    "body": "fmt.Sprintf(\"${0:}\")",
+    "prefix": "sp"
   }
 }

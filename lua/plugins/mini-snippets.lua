@@ -83,9 +83,5 @@ return {
                 insert = insert,
             },
         })
-        vim.cmd([[
-        hi clear MiniSnippetsCurrent
-        hi clear MiniSnippetsVisited
-        ]])
     end,
 }
