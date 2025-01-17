@@ -328,7 +328,12 @@ api.nvim_create_autocmd("CmdwinEnter", {
     callback = function(arg)
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
-        vim.b[arg.buf].cmdwin = true
+        local cmp = require("cmp")
+        if cmp.visible() then
+            cmp.close()
+        end
+        cmp.setup.buffer({ sources = cmp.config.sources({ { name = "cmdline" } }) })
+        vim.cmd("startinsert")
     end,
 })
 

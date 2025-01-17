@@ -864,7 +864,7 @@ function M.setUndotreeWinSize()
 end
 
 function M.update_preview_state(bufnr, winid)
-    local times = { 10, 20, 50 }
+    local times = { 0, 10, 20, 30, 50 }
     for _, timeout in ipairs(times) do
         vim.defer_fn(function()
             pcall(function()
