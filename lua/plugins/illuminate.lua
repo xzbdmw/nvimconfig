@@ -13,6 +13,7 @@ return {
             "help",
             "markdown",
             "Glance",
+            "snacks_picker_input",
             "fugitive",
             "aerial",
             "toggleterm",

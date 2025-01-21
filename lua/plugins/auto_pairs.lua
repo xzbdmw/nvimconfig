@@ -2,6 +2,7 @@ return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {
+        disable_filetype = { "snacks_picker_input", "TelescopePrompt" },
         break_undo = true,
         fast_wrap = {
             map = "<c-e>",

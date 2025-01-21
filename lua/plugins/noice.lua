@@ -134,7 +134,7 @@ return {
                         lang = "vim",
                         conceal = true,
                         opts = {
-                            zindex = 100,
+                            zindex = 800,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },

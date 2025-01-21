@@ -18,6 +18,42 @@ local function get_normal_bg_color()
     return bg_color
 end
 
+function M.gitsign_try_nav_first(title)
+    title = title or ""
+    local ok = false
+    local fn = function()
+        if ok then
+            return
+        end
+        local hunks = require("gitsigns.actions").get_nav_hunks(api.nvim_get_current_buf(), "all", true)
+        local target
+        if title == "Staged changes" then
+            target = "staged"
+        else -- include history revision(start with Diff)
+            target = "unstaged"
+        end
+        if hunks ~= nil and #hunks > 0 then
+            ok = true
+            require("gitsigns").nav_hunk("first", { target = target, navigation_message = false })
+            require("config.utils").adjust_view(0, 4)
+        end
+    end
+    fn()
+    local id
+    id = api.nvim_create_autocmd("User", {
+        pattern = "GitSignsUpdate",
+        callback = function()
+            if ok then
+                api.nvim_del_autocmd(id)
+            end
+            fn()
+        end,
+    })
+    vim.defer_fn(function()
+        pcall(api.nvim_del_autocmd, id)
+    end, 1000)
+end
+
 function M.get_cword()
     local mode = api.nvim_get_mode()
     local w
@@ -39,21 +75,28 @@ function M.load_appropriate_theme()
     end
 end
 
-function _G.hide_cursor(callback, timeout)
+function M.hide_cursor()
     local hl = api.nvim_get_hl_by_name("Cursor", true)
     hl.blend = 100
-    timeout = timeout or 0
     vim.opt.guicursor:append("a:Cursor/lCursor")
     pcall(api.nvim_set_hl, 0, "Cursor", hl)
+    return hl
+end
 
-    callback()
-
+function M.show_cursor(hl, timeout)
+    timeout = timeout or 0
     local old_hl = hl
     old_hl.blend = 0
     vim.defer_fn(function()
         vim.opt.guicursor:remove("a:Cursor/lCursor")
         pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
     end, timeout)
+end
+
+function _G.hide_cursor(callback, timeout)
+    local hl = M.hide_cursor()
+    callback()
+    M.show_cursor(hl, timeout)
 end
 
 function M.check_trouble()
@@ -1673,6 +1716,8 @@ function M.set_winbar(buf)
     local path = vim.fn.expand("%:~:.:h")
     local cwd = vim.fn.getcwd()
     local path_color = vim.startswith(absolute_path, cwd) and "%#NvimTreeFolderName#" or "%#LibPath#"
+    vim.b.path = vim.startswith(path, "~/") and "/Users/xzb/" .. path:sub(3, #path) .. "/" or path .. "/"
+    vim.b.lib = path_color == "%#LibPath#"
     if path ~= "" and filename ~= "" then
         local winbar_expr = " "
             .. path_color
@@ -1964,7 +2009,6 @@ function M.gopls_extract_all()
 end
 
 function M.f_search()
-    vim.g.disable_arrow = true
     vim.g.disable_flash = true
     local key_ns = vim.api.nvim_create_namespace("f_search")
     local miss_count = 0
@@ -1975,7 +2019,6 @@ function M.f_search()
             FeedKeys(",", "n")
         elseif miss_count == 3 or typed == "\27" then
             vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
-            vim.g.disable_arrow = false
             vim.g.disable_flash = false
         elseif typed ~= "" then
             miss_count = miss_count + 1

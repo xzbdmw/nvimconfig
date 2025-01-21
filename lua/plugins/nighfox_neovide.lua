@@ -64,7 +64,7 @@ return {
                 SnacksPickerCol = { link = "CmpGhostTextNonItalic" },
                 SnacksPickerMatch = { fg = "#C15E7A", style = "italic,bold" },
                 SnacksPickerDir = { link = "CmpGhostTextNonItalic" },
-                SnacksPickerFile = { link = "Comment" },
+                SnacksPickerFile = { link = "SmartUnOpened" },
                 SnacksPickerPreviewCursorLine = { link = "TelescopeSelection" },
                 SnacksPickerListCursorLine = { link = "TelescopeSelection" },
                 SnacksPickerBorder = { fg = "#e8e7e0" },

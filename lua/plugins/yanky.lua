@@ -83,6 +83,9 @@ return {
                 vim.defer_fn(function()
                     vim.o.eventignore = ""
                 end, 100)
+                if vim.bo.filetype == "markdown" or vim.bo.filetype == "txt" then
+                    return "<Plug>(YankyPutAfter)"
+                end
                 return "<Plug>(YankyPutAfter)mt`[v`]=`t"
             end,
             expr = true,
@@ -113,7 +116,7 @@ return {
             expr = true,
         },
         {
-            "gp",
+            "<c-p>",
             function()
                 require("yanky.textobj").last_put()
             end,

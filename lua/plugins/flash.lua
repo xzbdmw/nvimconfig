@@ -20,27 +20,17 @@ return {
             desc = "Remote Flash",
         },
         {
-            ",",
+            ";",
             mode = { "n", "x", "o" },
             function()
                 if vim.g.disable_flash then
                     return
                 end
-                local key_ns = vim.api.nvim_create_namespace("flash;")
-                vim.on_key(function(key, typed)
-                    if typed == ";" then
-                        require("flash.prompt").jump_to_next_match(false)
-                    elseif typed == "," then
-                        require("flash.prompt").jump_to_prev_match(false)
-                    elseif typed == "\27" then
-                        vim.on_key(nil, api.nvim_create_namespace("flash;"))
-                    end
-                end, key_ns)
-                vim.g.disable_arrow = true
+                vim.cmd([[normal! m']])
+                vim.g.disable_flash = true
                 vim.o.scrolloff = 0
                 vim.g.flash_winbar = vim.wo.winbar
                 vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
-                vim.cmd([[normal! m']])
                 require("flash").jump()
             end,
             desc = "Flash",

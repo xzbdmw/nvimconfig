@@ -920,10 +920,16 @@ return {
                             K = function(bufnr)
                                 require("telescope.actions.set").shift_selection(bufnr, -6)
                             end,
-                            ["s"] = function(bufnr)
-                                actions.toggle_selection(bufnr)
-                                FeedKeys("j", "m")
-                            end,
+                            ["s"] = {
+                                function(bufnr)
+                                    actions.toggle_selection(bufnr)
+                                    FeedKeys("j", "m")
+                                end,
+                                type = "action",
+                                opts = {
+                                    nowait = true,
+                                },
+                            },
                             ["zz"] = center_results,
                             ["<c-q>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)

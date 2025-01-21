@@ -1,5 +1,61 @@
 return {
     "folke/snacks.nvim",
+    keys = {
+        {
+            "<d-o>",
+            function()
+                local l2 = {
+                    layout = {
+                        backdrop = false,
+                        box = "vertical",
+                        width = 0.4,
+                        height = 0.7,
+                        {
+                            box = "vertical",
+                            border = "solid",
+                            title = "",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                            -- { win = "preview", title = "ss", border = "top" },
+                        },
+                    },
+                    preview = false,
+                }
+                -- local layouts = require("snacks.picker.config.layouts")
+                local layout = {
+                    layout = {
+                        backdrop = false,
+                        box = "horizontal",
+                        width = 0.9,
+                        height = 0.9,
+                        {
+                            box = "vertical",
+                            border = "rounded",
+                            title = "{source} {live}",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                        },
+                        { win = "preview", border = "rounded", width = 0.5 },
+                    },
+                    preview = true,
+                }
+
+                Snacks.picker.smart({
+                    filter = {
+                        cwd = true,
+                    },
+                    formatters = {
+                        file = {
+                            filename_first = true, -- display filename before the file path
+                        },
+                    },
+                    layout = l2,
+                })
+            end,
+        },
+    },
     version = false,
     -- enabled = false,
     -- priority = 1000,

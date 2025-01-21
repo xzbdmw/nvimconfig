@@ -6,6 +6,9 @@ return {
             function()
                 require("substitute").operator({
                     modifiers = function(state)
+                        if vim.bo.filetype == "markdown" or vim.bo.filetype == "txt" then
+                            return {}
+                        end
                         if state.vmode == "line" then
                             return { "reindent" }
                         end
@@ -15,9 +18,8 @@ return {
         },
         {
             "S",
-            function()
-                require("substitute").operator()
-            end,
+            "s$",
+            remap = true,
         },
         {
             "ss",

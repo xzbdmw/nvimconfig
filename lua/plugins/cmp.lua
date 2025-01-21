@@ -33,11 +33,14 @@ return {
         local compare = cmp.config.compare
         return {
             enabled = function()
+                if vim.api.nvim_get_mode().mode == "c" then
+                    return true
+                end
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
-                return not disabled
                 -- return false
+                return not disabled
             end,
             preselect = cmp.PreselectMode.None,
             window = {
@@ -65,7 +68,7 @@ return {
             },
             performance = {
                 debounce = 0,
-                throttle = 0,
+                throttle = 1,
                 fetching_timeout = 20000,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
@@ -85,12 +88,10 @@ return {
                     if vim.bo.filetype == "lua" then
                         require("cmp.config").set_onetime({ sources = {} })
                     end
-                    -- vim.snippet.expand(args.body)
                     require("mini.snippets").default_insert(
                         { body = args.body },
                         { empty_tabstop = "", empty_tabstop_final = "" }
                     )
-                    -- require("luasnip").lsp_expand(args.body)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
@@ -228,10 +229,6 @@ return {
                             cmp.close()
                             fallback()
                         else
-                            _G.CON = true
-                            vim.defer_fn(function()
-                                _G.CON = nil
-                            end, 10)
                             f.expand = false
                             cmp.confirm({ select = true })
                             vim.defer_fn(function()
@@ -255,10 +252,6 @@ return {
                     TTT = vim.uv.hrtime()
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
-                        _G.CON = true
-                        vim.defer_fn(function()
-                            _G.CON = nil
-                        end, 10)
                         f.expand = true
                         if utils.if_multicursor() then
                             cmp.select_cur_item()
@@ -385,6 +378,12 @@ return {
             source.group_index = source.group_index or 1
         end
         cmp.setup.cmdline({ "/", "?" }, {
+            enabled = function()
+                if vim.bo.filetype == "vim" then
+                    return false
+                end
+                return true
+            end,
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
                     c = function(fallback)

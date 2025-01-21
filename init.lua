@@ -58,6 +58,9 @@ api.nvim_create_autocmd("FocusGained", {
 
 api.nvim_create_autocmd({ "WinLeave" }, {
     callback = function(data)
+        if vim.bo.filetype == "lazyterm" then
+            return
+        end
         local win = vim.api.nvim_get_current_win()
         vim.wo[win].cursorline = true
     end,
@@ -156,6 +159,23 @@ api.nvim_create_autocmd("FileType", {
         vim.keymap.set("x", "<leader>re", function()
             utils.gopls_extract_all()
         end, { buffer = true })
+    end,
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "FlashHide",
+    callback = function()
+        local key_ns = vim.api.nvim_create_namespace("flash;")
+        vim.on_key(function(key, typed)
+            if typed == ";" then
+                require("flash.prompt").jump_to_next_match(false)
+            elseif typed == "," then
+                require("flash.prompt").jump_to_prev_match(false)
+            else
+                vim.on_key(nil, api.nvim_create_namespace("flash;"))
+                vim.g.disable_flash = false
+            end
+        end, key_ns)
     end,
 })
 
@@ -267,6 +287,14 @@ api.nvim_create_autocmd("FileType", {
                 end)
             end, { buffer = true })
         end, 100)
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
+    pattern = "lazyterm",
+    callback = function()
+        vim.keymap.set("t", "c", "<c-e>", { buffer = true })
+        vim.keymap.set("t", "q", "<c-q>", { buffer = true })
     end,
 })
 
@@ -700,6 +728,7 @@ api.nvim_create_autocmd("User", {
                 end
                 vim.cmd("NvimTreeRefresh")
             end
+            require("smart-open.util").reset_cache()
         end, 100)
     end,
 })

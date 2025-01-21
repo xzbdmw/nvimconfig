@@ -110,9 +110,7 @@ local function my_on_attach(bufnr)
             })
         end
     end
-    keymap("n", "S", toggle_status_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>S", toggle_status_filter)
-    keymap("n", "S", toggle_status_filter)
     local function toggle_all_filter()
         local is_arrow_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_arrow
         local is_buffer_filter_activated = require("nvim-tree.explorer.filters").config.filter_no_buffer
