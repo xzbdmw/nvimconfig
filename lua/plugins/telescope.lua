@@ -314,8 +314,8 @@ return {
                             function()
                                 if vim.o.lines == 31 or vim.o.lines == 30 then
                                     require("config.utils").on_complete(
-                                        "                                       ",
-                                        "                                       ",
+                                        "                                                 ",
+                                        "                                                 ",
                                         16
                                     )
                                 else
@@ -340,7 +340,7 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.35,
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.38 or 0.35,
                                 height = 0.7,
                             },
                             mirror = false,

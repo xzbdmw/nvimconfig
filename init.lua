@@ -293,8 +293,18 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
     pattern = "lazyterm",
     callback = function()
-        vim.keymap.set("t", "c", "<c-e>", { buffer = true })
-        vim.keymap.set("t", "q", "<c-q>", { buffer = true })
+        local function in_prompt()
+            local view = vim.fn.winsaveview()
+            local bottonline = view.topline + vim.api.nvim_win_get_height(0)
+            local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+            return bottonline - 1 ~= row
+        end
+        vim.keymap.set("t", "c", function()
+            return in_prompt() and "c" or "<c-e>"
+        end, { buffer = true, expr = true })
+        vim.keymap.set("t", "q", function()
+            return in_prompt() and "q" or "<c-q>"
+        end, { buffer = true, expr = true })
     end,
 })
 
