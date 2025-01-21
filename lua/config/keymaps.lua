@@ -188,15 +188,8 @@ keymap("i", "<c-x><c-c>", function()
 end)
 
 keymap("n", "<leader>h", function()
-    FeedKeys("0", "n")
+    FeedKeys("0", "m")
     vim.fn.winrestview({ leftcol = 0 })
-    vim.schedule(function()
-        local col = api.nvim_win_get_cursor(0)[2]
-        local char = api.nvim_get_current_line():sub(col + 1, col + 1)
-        if char == " " then
-            FeedKeys("w", "n")
-        end
-    end)
 end, opts)
 
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
@@ -827,6 +820,7 @@ keymap("n", "f", function()
 end, { expr = true })
 keymap({ "i", "n" }, "<c-'>", function()
     vim.cmd("norm! m'")
+    print("mark set")
 end, opts)
 keymap("n", "F", function()
     utils.f_search()

@@ -1,8 +1,9 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
-  "LazyVim": { "branch": "xzb", "commit": "3614c6977060954195d1b48aaf16e89fe3832913" },
+  "LazyVim": { "branch": "xzb", "commit": "5f3a67616af5c26aea9999f43ae9f734bad2b636" },
   "aerial.nvim": { "branch": "xzb", "commit": "eef6c8323ee2a9562badf1f6531c2db68b66a8e5" },
   "agitator.nvim": { "branch": "xzb", "commit": "b8b4a1f4452deabe0f6277d3539d0b6c5b7b851d" },
+  "alternate-toggler": { "branch": "main", "commit": "819800304d3e8e575fd6aa461a8bcf2217e1cfb6" },
   "arrow.nvim": { "branch": "xzb", "commit": "57c3abc974f2ae467e3f5e3811d19fc913e1d5ea" },
   "bigfile.nvim": { "branch": "main", "commit": "33eb067e3d7029ac77e081cfe7c45361887a311a" },
   "catppuccin": { "branch": "main", "commit": "a1439ad7c584efb3d0ce14ccb835967f030450fe" },
@@ -47,7 +48,7 @@
   "nui.nvim": { "branch": "xzb", "commit": "7ddc0cf795fa0d5ea9ba0d4e822de68d940a1fcd" },
   "nvim-autopairs": { "branch": "xzb", "commit": "7b8192e43488013d4fb5e9a70d96bab85b4311fc" },
   "nvim-bufdel": { "branch": "xzb", "commit": "dd4e4ff68d20bf252c68e29c1854b922b7bd1949" },
-  "nvim-cmp": { "branch": "dynamic-modified", "commit": "008d0599bd22688cdf33e520d153e010e5dcfdda" },
+  "nvim-cmp": { "branch": "dynamic-modified", "commit": "809fa4b5572285059da0a2f76603b9aec5fb30d5" },
   "nvim-hlslens": { "branch": "xzb", "commit": "54ed23e6db00cf89ecccb467e17fc132e6d66544" },
   "nvim-lint": { "branch": "master", "commit": "2669aabb8362fdc36aced5ba864b7135636ea863" },
   "nvim-lspconfig": { "branch": "xzb", "commit": "e588d44a8424c862803638696564dec8adb21ea4" },
@@ -87,5 +88,5 @@
   "vim-startuptime": { "branch": "master", "commit": "ac2cccb5be617672add1f4f3c0a55ce99ba34e01" },
   "vim-textobj-chainmember": { "branch": "xzb", "commit": "1e979c3d2ab0026513b7d3d289f54224cd9b7131" },
   "vim-textobj-user": { "branch": "master", "commit": "41a675ddbeefd6a93664a4dc52f302fe3086a933" },
-  "yanky.nvim": { "branch": "xzb", "commit": "f17446c54e82bad7ee1cc0ecdbb7e36603eb802e" }
+  "yanky.nvim": { "branch": "xzb", "commit": "3385071422cb9aaee5e528b6cbb42f5705ea9ed7" }
 }
