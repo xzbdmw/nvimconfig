@@ -76,21 +76,20 @@ function M.load_appropriate_theme()
 end
 
 function M.hide_cursor()
-    local hl = api.nvim_get_hl_by_name("Cursor", true)
-    hl.blend = 100
-    vim.opt.guicursor:append("a:Cursor/lCursor")
-    pcall(api.nvim_set_hl, 0, "Cursor", hl)
-    return hl
+    pcall(api.nvim_set_hl, 0, "Cursor", _G.hide_cursor_hl())
 end
 
-function M.show_cursor(hl, timeout)
-    timeout = timeout or 0
-    local old_hl = hl
+function M.show_cursor(timeout)
+    timeout = timeout or 1
+    local old_hl = _G.curosr_hl
     old_hl.blend = 0
-    vim.defer_fn(function()
-        vim.opt.guicursor:remove("a:Cursor/lCursor")
+    if timeout == 1 then
+        vim.defer_fn(function()
+            pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
+        end, timeout)
+    else
         pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
-    end, timeout)
+    end
 end
 
 function _G.hide_cursor(callback, timeout)

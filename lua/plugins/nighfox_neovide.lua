@@ -688,5 +688,6 @@ return {
                 vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = "#e8e7e0" })
             end, 100)
         end
+        _G.curosr_hl = api.nvim_get_hl_by_name("Cursor", true)
     end,
 }

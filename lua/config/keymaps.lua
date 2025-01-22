@@ -313,27 +313,6 @@ end, { expr = true })
 -- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
-keymap("o", "ao", function()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    -- select outer indentation
-    require("various-textobjs").indentation("outer", "outer")
-
-    -- plugin only switches to visual mode when a textobj has been found
-    local indentationFound = vim.fn.mode():find("V")
-    if not indentationFound then
-        return
-    end
-    -- dedent indentation
-    vim.cmd.normal({ "<", bang = true })
-
-    -- delete surrounding lines
-    local endBorderLn = vim.api.nvim_buf_get_mark(0, ">")[1]
-    local startBorderLn = vim.api.nvim_buf_get_mark(0, "<")[1]
-    vim.cmd(tostring(endBorderLn) .. " delete") -- delete end first so line index is not shifted
-    vim.cmd(tostring(startBorderLn) .. " delete")
-    vim.api.nvim_win_set_cursor(0, { row - 1, col })
-end, { desc = "Delete Surrounding Indentation" })
-
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
 keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
@@ -460,6 +439,33 @@ keymap("n", "gs", function()
     require("treesitter-context").go_to_context(vim.v.count1)
     require("config.utils").adjust_view(0, 3)
 end, opts)
+
+vim.keymap.set("o", "o", function()
+    local operator = vim.v.operator
+    if operator == "d" then
+        local scope = MiniIndentscope.get_scope()
+        local top = scope.border.top
+        local bottom = scope.border.bottom
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local move = ""
+        if row == bottom then
+            move = "k"
+        elseif row == top then
+            move = "j"
+        end
+        local ns = vim.api.nvim_create_namespace("border")
+        vim.api.nvim_buf_add_highlight(0, ns, "YankyPut", top - 1, 0, -1)
+        vim.api.nvim_buf_add_highlight(0, ns, "YankyPut", bottom - 1, 0, -1)
+        vim.defer_fn(function()
+            vim.api.nvim_buf_set_text(0, top - 1, 0, top - 1, -1, {})
+            vim.api.nvim_buf_set_text(0, bottom - 1, 0, bottom - 1, -1, {})
+            vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+        end, 150)
+        return "<esc>" .. move
+    else
+        return "o"
+    end
+end, { expr = true })
 
 keymap({ "n", "v" }, "<f13>", vim.lsp.buf.signature_help, opts)
 

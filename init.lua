@@ -29,6 +29,11 @@ vim.g.disable_flash = false
 -- This have to be commented because ghostty use --cmd to set
 -- vim.g.scrollback = true, or it will be overwritten.
 -- vim.g.scrollback = false
+_G.hide_cursor_hl = function()
+    local hide_hl = vim.deepcopy(_G.curosr_hl)
+    hide_hl.blend = 100
+    return hide_hl
+end
 
 vim.cmd("syntax off")
 
@@ -150,6 +155,13 @@ api.nvim_create_autocmd("FileType", {
     callback = function()
         FeedKeys("<Tab>", "m")
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+    end,
+})
+
+api.nvim_create_autocmd("FileType", {
+    pattern = { "markdown" },
+    callback = function()
+        vim.bo.indentexpr = "nvim_treesitter#indent()"
     end,
 })
 

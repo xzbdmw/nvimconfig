@@ -41,9 +41,9 @@ return {
                 vim.cmd("e " .. target_file_name)
             end,
         },
-        buffer_leader_key = "'",
+        buffer_leader_key = "\\",
         show_icons = true,
-        leader_key = "<c-;>", -- Recommended to be a single key
+        leader_key = [[']], -- Recommended to be a single key
         -- index_keys = "123jklafghAFGHJKLwrtyuiopWRTYUIOP", -- keys mapped to bookmark index, i.e. 1st bookmark will be accessible by 1, and 12th - by c
         hide_handbook = true,
         window = { -- controls the appearance and position of an arrow window (see nvim_open_win() for all options)
