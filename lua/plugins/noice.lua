@@ -134,18 +134,17 @@ return {
                         lang = "vim",
                         conceal = true,
                         opts = {
-                            zindex = 800,
+                            zindex = 250,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
-                                row = "30%",
-                                col = "50%",
+                                row = "100%",
+                                col = "0%",
                             },
                             size = {
-                                min_width = 40,
-                                width = "auto",
+                                width = "100%",
                                 height = "auto",
                             },
                         }, -- global options for the cmdline. See section on views
@@ -158,45 +157,47 @@ return {
                         view = "cmdline",
                         icon = " ?",
                     },
-                    filter = { pattern = "^:%s*!", icon = "$", lang = "bash", conceal = true },
+                    filter = { pattern = "ffffffff", icon = "$", lang = "bash", conceal = true },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
                         icon = " ",
                         lang = "lua",
                         conceal = true,
                         opts = {
+                            zindex = 250,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
-                                row = "30%",
-                                col = "50%",
+                                row = "100%",
+                                col = "0%",
                             },
                             size = {
-                                width = 40,
+                                width = "100%",
                                 height = "auto",
                             },
-                        }, -- global options for the cmdline. See section on views
+                        }, -- global options for the cmdline. See section on views, -- global options for the cmdline. See section on views
                     },
                     help = {
                         pattern = "^:%s*he?l?p?%s+",
                         icon = "? ",
                         conceal = true,
                         opts = {
+                            zindex = 250,
                             border = {
                                 style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
-                                row = "30%",
-                                col = "50%",
+                                row = "100%",
+                                col = "0%",
                             },
                             size = {
-                                width = 40,
+                                width = "100%",
                                 height = "auto",
                             },
-                        },
+                        }, -- global options for the cmdline. See section on views
                     },
                     input = {
                         opts = {

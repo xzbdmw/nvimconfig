@@ -374,8 +374,10 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+local origin = vim.g.neovide_flatten_floating_zindex
 api.nvim_create_autocmd("CmdwinEnter", {
     callback = function(arg)
+        vim.g.neovide_flatten_floating_zindex = origin .. ",249,250"
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
         local cmp = require("cmp")
@@ -384,6 +386,11 @@ api.nvim_create_autocmd("CmdwinEnter", {
         end
         cmp.setup.buffer({ sources = cmp.config.sources({ { name = "cmdline" } }) })
         vim.cmd("startinsert")
+    end,
+})
+api.nvim_create_autocmd("CmdwinLeave", {
+    callback = function(arg)
+        vim.g.neovide_flatten_floating_zindex = origin
     end,
 })
 
@@ -508,10 +515,7 @@ api.nvim_create_autocmd("CmdlineLeave", {
                 vim.o.scrolloff = 6
             end
         end, 20)
-        local len = vim.g.neovide_cursor_animation_length
-        if len ~= 0 then
-            _G.set_cursor_animation(0.0)
-        end
+        _G.set_cursor_animation(0.0)
     end,
 })
 

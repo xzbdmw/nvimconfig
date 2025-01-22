@@ -186,8 +186,7 @@ function Open_git_commit()
             width = 60,
             height = 10,
             relative = "editor",
-            border = "rounded",
-            zindex = 800,
+            border = "solid",
         })
         vim.wo.signcolumn = "no"
         local finish = function()
@@ -395,6 +394,7 @@ function M.insert_paste()
         end
         api.nvim_win_set_cursor(0, { row + #lines - 1, last_col })
     end
+    _G.indent_update()
     vim.schedule(function()
         vim.o.eventignore = ""
     end)

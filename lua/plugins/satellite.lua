@@ -4,7 +4,7 @@ return {
         require("satellite").setup({
             current_only = true,
             winblend = 0,
-            zindex = 800,
+            zindex = 230,
             excluded_filetypes = { "minifiles", "NvimTree" },
             width = 1,
             handlers = {

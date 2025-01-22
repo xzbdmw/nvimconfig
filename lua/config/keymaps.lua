@@ -590,9 +590,23 @@ keymap("n", "<D-a>", "ggVG", opts)
 keymap({ "n" }, "q", function()
     utils.close_win()
 end)
-keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/]], opts)
-keymap("x", "<leader>rw", [[y<esc>:%s/\V<C-r>"/]], opts)
-keymap("n", "<leader>rW", [[:%s/<C-r><C-a>/]], opts)
+
+keymap("n", "<leader>rw", function()
+    vim.cmd("Noice disable")
+    FeedKeys("<space><BS>", "n")
+    return [[:%s/\<<C-r><C-w>\>/]]
+end, { expr = true })
+keymap("x", "<leader>rw", function()
+    vim.cmd("Noice disable")
+    FeedKeys("<space><BS>", "n")
+    return [[y<esc>:%s/\V<C-r>"/]]
+end, { expr = true })
+keymap("n", "<leader>rW", function()
+    vim.cmd("Noice disable")
+    FeedKeys("<space><BS>", "n")
+    return [[:%s/<C-r><C-a>/]]
+end, { expr = true })
+
 keymap("n", "<leader>al", "f)i, ", opts)
 keymap("n", "<leader>ah", "F(a, <left><left>", opts)
 keymap("x", "C", function()

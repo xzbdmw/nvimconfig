@@ -425,6 +425,15 @@ return {
                         end
                     end,
                 },
+                ["<down>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end,
+                },
                 ["<c-n>"] = {
                     c = function()
                         if cmp.visible() then
@@ -440,15 +449,6 @@ return {
                         end
                         FeedKeys("<c-p>", "n")
                         vim.cmd("redraw!")
-                    end,
-                },
-                ["<down>"] = {
-                    c = function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        else
-                            fallback()
-                        end
                     end,
                 },
                 ["<C-d>"] = cmp.mapping(function(fallback)
@@ -469,6 +469,26 @@ return {
             }),
         })
         cmp.setup.cmdline(":", {
+            window = {
+                completion = cmp.config.window.bordered({
+                    border = "none",
+                    side_padding = 0,
+                    col_offset = 0,
+                    winhighlight = "CursorLine:MyCmpCursorLine,Normal:MyNormalFloat",
+                }),
+            },
+            formatting = {
+                -- kind is icon, abbr is completion name, menu is [Function]
+                fields = { "kind", "abbr", "menu" },
+                format = function(entry, vim_item)
+                    vim_item.kind = ""
+                    vim_item.menu = ""
+                    return vim_item
+                end,
+            },
+            completion = {
+                completeopt = "menu,menuone,noinsert,noselect",
+            },
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
                     i = cmp.mapping.confirm({ select = true }),
@@ -477,7 +497,7 @@ return {
                 ["<Down>"] = {
                     c = function(fallback)
                         if cmp.visible() then
-                            cmp.select_next_item()
+                            cmp.select_prev_item()
                         else
                             fallback()
                         end
@@ -486,10 +506,23 @@ return {
                 ["<C-d>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "c", "s" }),
+                ["<Tab>"] = {
+                    c = function(fallback)
+                        if cmp.visible() then
+                            local idx = cmp.get_selected_index()
+                            if idx == nil then
+                                cmp.select_next_item()
+                            end
+                            cmp.close()
+                        else
+                            fallback()
+                        end
+                    end,
+                },
                 ["<up>"] = {
                     c = function(fallback)
                         if cmp.visible() then
-                            cmp.select_prev_item()
+                            cmp.select_next_item()
                         else
                             fallback()
                         end
