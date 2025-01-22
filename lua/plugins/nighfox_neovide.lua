@@ -380,6 +380,7 @@ return {
                 ["@string.regexp.lua"] = { link = "@string.escape" },
                 ["@lsp.type.macro.lua"] = { link = "@variable" },
                 ["@go.error.go"] = { link = "@interface.name" },
+                ["@lsp.mod.placeholder.go"] = { link = "@printf.printf" },
                 ["@lsp.typemod.variable.number.go"] = { link = "@variable.member.go" },
                 ["@go.string.go"] = { link = "Keyword" },
                 ["@constant.go"] = { link = "@lsp.mod.const.go" },

@@ -22,12 +22,13 @@ return {
             remap = true,
         },
         {
-            "ss",
+            "s",
             function()
-                FeedKeys("m7", "n")
-                FeedKeys("s_", "m")
-                FeedKeys("`7", "n")
+                local cursor = vim.api.nvim_win_get_cursor(0)
+                return "_<cmd>lua vim.api.nvim_win_set_cursor(0,{" .. cursor[1] .. "," .. cursor[2] .. "})<cr>"
             end,
+            expr = true,
+            mode = "o",
         },
         {
             "ge",
