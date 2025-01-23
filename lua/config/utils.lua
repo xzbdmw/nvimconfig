@@ -186,7 +186,7 @@ function Open_git_commit()
             width = 60,
             height = 10,
             relative = "editor",
-            border = "solid",
+            border = vim.g.neovide and "solid" or "rounded",
         })
         vim.wo.signcolumn = "no"
         local finish = function()

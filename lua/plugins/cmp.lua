@@ -124,7 +124,6 @@ return {
                     end
                     vim.schedule(fallback)
                 end),
-                ["<C-9>"] = cmp.mapping.complete(),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
@@ -183,20 +182,49 @@ return {
                     end
                 end),
                 ["<C-n>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.close()
-                        vim.schedule(fallback)
-                    else
-                        fallback()
-                    end
+                    fallback()
                 end),
                 ["<C-p>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
-                        vim.schedule(fallback)
-                    else
-                        fallback()
                     end
+                    require("cmp").complete({
+                        config = {
+                            sources = {
+                                {
+                                    name = "buffer",
+                                },
+                            },
+                        },
+                    })
+                end),
+                ["<C-g>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    require("cmp").complete({
+                        config = {
+                            sources = {
+                                {
+                                    name = "rg",
+                                },
+                            },
+                        },
+                    })
+                end),
+                ["<C-y>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    require("cmp").complete({
+                        config = {
+                            sources = {
+                                {
+                                    name = "cmp_yanky",
+                                },
+                            },
+                        },
+                    })
                 end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -236,14 +264,6 @@ return {
                                 pcall(_G.mini_indent_auto_draw) -- mini-indentscope
                             end, 20)
                         end
-                    else
-                        fallback()
-                    end
-                end),
-                ["<c-y>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.close()
-                        fallback()
                     else
                         fallback()
                     end
@@ -548,9 +568,8 @@ return {
                     c = function()
                         if cmp.visible() then
                             cmp.close()
-                        else
-                            FeedKeys("<c-c>", "n")
                         end
+                        FeedKeys("<c-c>", "n")
                     end,
                 }),
                 ["<C-f>"] = cmp.mapping(function(fallback)

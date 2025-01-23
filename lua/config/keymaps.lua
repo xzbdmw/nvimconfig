@@ -21,16 +21,16 @@ keymap("n", "<leader>W", function()
 end, opts)
 
 keymap({ "n" }, "g;", function()
-    return "g;zz"
+    return "g;z"
 end, { expr = true, remap = true })
 
 keymap({ "n" }, "gi", function()
-    return "gi<C-o>zz"
+    return "gi<C-o>z"
 end, { expr = true, remap = true })
 
 keymap({ "n" }, "g,", function()
-    return "g,zz"
-end, { expr = true })
+    return "g,z"
+end, { expr = true, remap = true })
 
 keymap({ "n" }, "<leader>ul", function()
     local level = vim.o.conceallevel
@@ -79,53 +79,6 @@ keymap("n", "<leader>ud", function()
         _G.has_diagnostic = true
     end
 end, opts)
-
-keymap("i", "<c-x><c-b>", function()
-    local cmp = require("cmp")
-    if cmp.visible() then
-        cmp.close()
-    end
-    require("cmp").complete({
-        config = {
-            sources = {
-                {
-                    name = "buffer",
-                },
-            },
-        },
-    })
-end)
-keymap("i", "<c-x><c-g>", function()
-    local cmp = require("cmp")
-    if cmp.visible() then
-        cmp.close()
-    end
-    require("cmp").complete({
-        config = {
-            sources = {
-                {
-                    name = "rg",
-                },
-            },
-        },
-    })
-end)
-
-keymap("i", "<c-x><c-y>", function()
-    local cmp = require("cmp")
-    if cmp.visible() then
-        cmp.close()
-    end
-    require("cmp").complete({
-        config = {
-            sources = {
-                {
-                    name = "cmp_yanky",
-                },
-            },
-        },
-    })
-end)
 
 keymap("i", "<c-x><c-d>", function()
     local cmp = require("cmp")
@@ -831,9 +784,6 @@ keymap({ "s", "i", "n" }, "<C-7>", function()
     end
 end, opts)
 
-keymap("n", "zz", function()
-    utils.adjust_view(0, 3)
-end, opts)
 keymap("n", "f", function()
     utils.f_search()
     return "f"

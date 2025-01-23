@@ -32,7 +32,7 @@ return {
                             once = true,
                             callback = function()
                                 if vim.fn.line(".") > vim.fn.winheight(0) / 2 then
-                                    vim.cmd("normal zz")
+                                    vim.cmd("normal z")
                                 end
                             end,
                         })

@@ -146,13 +146,6 @@ return {
             end,
             mode = { "i", "n", "c" },
         },
-        {
-            "<c-9>",
-            function()
-                require("nvim-tree.api").tree.toggle({ focus = false })
-            end,
-            mode = { "i", "n", "c" },
-        },
     },
     config = function()
         local function folders_or_files_first(a, b)

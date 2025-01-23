@@ -61,7 +61,7 @@ return {
             -- Module mappings. Use `''` (empty string) to disable one.
             mappings = {
                 -- Expand snippet at cursor position. Created globally in Insert mode.
-                expand = "<C-y>",
+                expand = "<f1>",
 
                 -- Interact with default `expand.insert` session.
                 -- Created for the duration of active session(s)
