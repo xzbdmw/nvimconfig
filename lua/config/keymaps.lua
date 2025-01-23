@@ -326,6 +326,8 @@ keymap("c", "<d-s>", function()
     end)
 end, opts)
 
+keymap("c", "<M-space>", "<space>", opts)
+
 keymap("c", "<space>", function()
     local mode = vim.fn.getcmdtype()
     if mode == "?" or mode == "/" then

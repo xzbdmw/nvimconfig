@@ -24,6 +24,7 @@ return {
                     return
                 end
                 cmd = cmd:gsub("\\V", "")
+                cmd = cmd:gsub("\\%.\\%{%-}", ".*")
 
                 local cur_row = unpack(api.nvim_win_get_cursor(0))
 
@@ -50,6 +51,7 @@ return {
                 if not is_cmdline then
                     extmark:clearBuf(0)
                     cmd = vim.trim(vim.fn.getreg("/"):gsub("\\V", "")) -- because use cmp tab to select does not update search pattern
+                    cmd = cmd:gsub("\\%.\\%{%-}", ".*")
                 else
                     render.clear(true, 0, true)
                 end

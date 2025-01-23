@@ -88,6 +88,7 @@ return {
                     if vim.bo.filetype == "lua" then
                         require("cmp.config").set_onetime({ sources = {} })
                     end
+                    _G.no_animation(_G.CI)
                     require("mini.snippets").default_insert(
                         { body = args.body },
                         { empty_tabstop = "", empty_tabstop_final = "" }
@@ -408,6 +409,16 @@ return {
                 ["<CR>"] = cmp.mapping({
                     c = function(fallback)
                         fallback()
+                    end,
+                }),
+                ["<BS>"] = cmp.mapping({
+                    c = function(fallback)
+                        local cmd = vim.trim(vim.fn.getcmdline())
+                        if vim.endswith(cmd, "\\.\\{-}") then
+                            FeedKeys("<Bs><BS><BS><BS><BS><BS>", "n")
+                        else
+                            fallback()
+                        end
                     end,
                 }),
                 ["<esc>"] = cmp.mapping({

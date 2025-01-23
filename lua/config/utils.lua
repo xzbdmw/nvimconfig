@@ -768,10 +768,10 @@ _G.no_delay = function(animation)
         end
     end)
     vim.defer_fn(function()
-        pcall(_G.update_indent, true)
+        pcall(_G.indent_update)
         pcall(_G.mini_indent_auto_draw)
         _G.set_cursor_animation(_G.CI)
-    end, 50)
+    end, 20)
 end
 
 function M.update_visual_coloum()
