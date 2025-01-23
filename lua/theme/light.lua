@@ -1,9 +1,4 @@
-local success, engin = pcall(require, "illuminate.engine")
-local success, ref = pcall(require, "illuminate.reference")
-local success, go = pcall(require, "illuminate.goto")
 local utils = require("config.utils")
-_G.minidiff = false
-local ns = api.nvim_create_namespace("MiniDiffOverlay")
 local keymap = vim.keymap.set
 
 keymap("n", "n", function()
@@ -114,64 +109,47 @@ end)
 
 keymap({ "n" }, "<esc>", function()
     if vim.bo.filetype == "toggleterm" then
-        vim.b.term_search_title = ""
         vim.cmd("noh")
+        vim.b.term_search_title = ""
         utils.refresh_term_title()
         return
     end
+    -- lspsaga close diagnose window, gitsigns close inline preview/window
     api.nvim_exec_autocmds("User", {
         pattern = "ESC",
     })
     pcall(function()
-        MiniSnippets.session.stop()
+        while MiniSnippets.session.get() do
+            MiniSnippets.session.stop()
+        end
+        require("substitute.exchange").cancel()
+        require("illuminate.engine").clear_keeped_highlight()
+        require("illuminate.goto").clear_keeped_hl()
     end)
-    require("substitute.exchange").cancel()
-    local flag = true
+
     for _, win in pairs(api.nvim_list_wins()) do
-        local success, win_config = pcall(api.nvim_win_get_config, win)
-        if success then
-            if
-                win_config.relative ~= "" and win_config.zindex == 45
-                or win_config.zindex == 44
-                or win_config.zindex == 44
-                or win_config.zindex == 46
-                or win_config.zindex == 47
-                or win_config.zindex == 50
-                or win_config.zindex == 80
-                or win_config.zindex == 35 --lpsaga
-            then
-                flag = false
-                _G.no_animation()
-                vim.schedule(function()
-                    if vim.api.nvim_win_is_valid(win) then
-                        api.nvim_win_close(win, true)
-                    end
-                end)
-            elseif win_config.zindex == 10 then
-                FeedKeys("<esc>", "n")
+        if vim.api.nvim_win_is_valid(win) then
+            local win_config = api.nvim_win_get_config(win)
+            if win_config.relative ~= "" and vim.list_contains({ 44, 46, 47, 50, 80, 35, 45 }, win_config.zindex) then
+                api.nvim_win_close(win, true)
             end
         end
     end
-    if success then
-        engin.clear_keeped_highlight()
-        go.clear_keeped_hl()
-    end
-    if flag then
-        FeedKeys("<esc>", "n")
-        vim.cmd("noh")
-        vim.b.term_search_title = ""
-        vim.b.search_winbar = ""
-        require("config.utils").refresh_search_winbar()
-        vim.api.nvim_exec_autocmds("User", {
-            pattern = "ClearSatellite",
-        })
-    end
+
+    vim.cmd("noh")
+    vim.b.search_winbar = ""
+    require("config.utils").refresh_search_winbar()
+    vim.api.nvim_exec_autocmds("User", {
+        pattern = "ClearSatellite",
+    })
 end)
 
 -- illuminate
 keymap("n", "H", function()
     local bufnr = api.nvim_get_current_buf()
-    pcall(engin.keep_highlight, bufnr)
+    pcall(function()
+        require("illuminate.engine").keep_highlight(bufnr)
+    end)
     vim.cmd("noh")
     vim.b.term_search_title = ""
     vim.b.search_winbar = ""

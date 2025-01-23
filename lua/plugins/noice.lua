@@ -130,9 +130,9 @@ return {
                 format = {
                     cmdline = {
                         pattern = "^:",
-                        icon = "> ",
+                        icon = " >",
                         lang = "vim",
-                        conceal = true,
+                        conceal = false,
                         opts = {
                             zindex = 250,
                             border = {
@@ -157,12 +157,12 @@ return {
                         view = "cmdline",
                         icon = " ?",
                     },
-                    filter = { pattern = "ffffffff", icon = "$", lang = "bash", conceal = true },
+                    filter = { pattern = "ffffffff", icon = "$", lang = "bash", conceal = false },
                     lua = {
                         pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
-                        icon = " ",
+                        icon = " ",
                         lang = "lua",
-                        conceal = true,
+                        conceal = false,
                         opts = {
                             zindex = 250,
                             border = {
@@ -181,8 +181,8 @@ return {
                     },
                     help = {
                         pattern = "^:%s*he?l?p?%s+",
-                        icon = "? ",
-                        conceal = true,
+                        icon = " ?",
+                        conceal = false,
                         opts = {
                             zindex = 250,
                             border = {

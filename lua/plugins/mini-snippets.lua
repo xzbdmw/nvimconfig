@@ -16,6 +16,9 @@ return {
                             MiniSnippets.session.jump("next")
                         end
                     end)
+                    if vim.bo.filetype == "lua" then
+                        require("cmp.config").set_onetime({ sources = {} })
+                    end
                 end,
                 { silent = true },
             },
@@ -31,6 +34,9 @@ return {
                             MiniSnippets.session.jump("prev")
                         end
                     end)
+                    if vim.bo.filetype == "lua" then
+                        require("cmp.config").set_onetime({ sources = {} })
+                    end
                 end,
                 { silent = true },
             },

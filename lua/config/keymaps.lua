@@ -123,23 +123,6 @@ keymap("n", "<leader>sl", function()
     return "/" .. cmd
 end, { expr = true, remap = true })
 
-keymap("i", "<c-x><c-c>", function()
-    vim.g.copilot_enable = true
-    local cmp = require("cmp")
-    if cmp.visible() then
-        cmp.close()
-    end
-    cmp.complete({
-        config = {
-            sources = {
-                {
-                    name = "copilot",
-                },
-            },
-        },
-    })
-end)
-
 keymap("n", "<leader>h", function()
     FeedKeys("0", "m")
     vim.fn.winrestview({ leftcol = 0 })
@@ -376,6 +359,7 @@ keymap("n", "<c-/>", function()
 end, opts)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
+keymap({ "n", "x" }, "gj", "J", opts)
 keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("x", "w", "e", opts)
@@ -550,6 +534,13 @@ keymap("n", "<leader>rw", function()
     vim.cmd("Noice disable")
     FeedKeys("<space><BS>", "n")
     return [[:%s/\<<C-r><C-w>\>/]]
+end, { expr = true })
+keymap("x", ":", function()
+    vim.cmd("Noice disable")
+    vim.schedule(function()
+        FeedKeys("<space><BS>", "n")
+    end)
+    return ":s/"
 end, { expr = true })
 keymap("x", "<leader>rw", function()
     vim.cmd("Noice disable")

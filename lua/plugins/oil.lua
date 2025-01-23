@@ -84,6 +84,16 @@ return {
                     vim.fn.setreg("+", reg)
                     vim.notify("Copied " .. reg .. "to clipboard!", vim.log.levels.INFO, { title = "Oil" })
                 end,
+                ["<c-cr>"] = function()
+                    require("oil.actions").yank_entry.callback()
+                    local path = vim.fn.getreg('"')
+                    vim.system({ "open", "-R", path }):wait()
+                end,
+                ["<d-cr>"] = function()
+                    require("oil.actions").yank_entry.callback()
+                    local path = vim.fn.getreg('"')
+                    vim.system({ "open", path }):wait()
+                end,
                 ["<C-c>"] = "actions.close",
                 -- ["q"] = "actions.close",
                 ["<C-l>"] = "actions.refresh",

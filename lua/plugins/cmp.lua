@@ -88,11 +88,7 @@ return {
                     if vim.bo.filetype == "lua" then
                         require("cmp.config").set_onetime({ sources = {} })
                     end
-                    _G.no_animation(_G.CI)
-                    require("mini.snippets").default_insert(
-                        { body = args.body },
-                        { empty_tabstop = "", empty_tabstop_final = "" }
-                    )
+                    utils.mini_snippet_expand(args)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
@@ -185,7 +181,7 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
                 end),
-                ["<C-p>"] = cmp.mapping(function(fallback)
+                ["<C-b>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -198,6 +194,9 @@ return {
                             },
                         },
                     })
+                end),
+                ["<C-p>"] = cmp.mapping(function(fallback)
+                    fallback()
                 end),
                 ["<C-g>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then

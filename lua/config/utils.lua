@@ -774,7 +774,7 @@ _G.no_delay = function(animation)
     end, 20)
 end
 
-function M.update_visual_coloum()
+function M.try_update_visual_coloum()
     local mode = vim.api.nvim_get_mode().mode
     if vim.wo.signcolumn ~= "yes" then
         return
@@ -800,8 +800,8 @@ function M.update_visual_coloum()
                 })
             end
         end
-        _G.indent_update()
     end
+    _G.indent_update()
 end
 
 function M.record_winbar_enter()
@@ -1197,20 +1197,18 @@ function OilDir()
 end
 
 function M.set_oil_winbar(ev)
-    if vim.bo[ev.buf].filetype == "oil" and api.nvim_get_current_buf() == ev.buf then
-        local path, hl = OilDir()
-        local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
-        api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
+    local path, hl = OilDir()
+    local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
+    api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
 
-        vim.keymap.set("n", "q", function()
-            local is_split = require("config.utils").check_splits()
-            if is_split then
-                vim.cmd("close")
-            else
-                require("oil").close()
-            end
-        end, { buffer = 0 })
-    end
+    vim.keymap.set("n", "q", function()
+        local is_split = require("config.utils").check_splits()
+        if is_split then
+            vim.cmd("close")
+        else
+            require("oil").close()
+        end
+    end, { buffer = 0 })
 end
 
 _G.last = nil
@@ -1543,6 +1541,27 @@ function M.refresh_search_winbar()
     end
 end
 
+function M.mini_snippet_expand(args)
+    local cursor = api.nvim_win_get_cursor(0)
+    local line = api.nvim_get_current_line()
+    _G.no_animation(_G.CI)
+    local ok = pcall(
+        require("mini.snippets").default_insert,
+        { body = args.body },
+        { empty_tabstop = "", empty_tabstop_final = "" }
+    )
+    if not ok then
+        vim.notify("snippets failed to expand", vim.log.levels.INFO)
+        ---@diagnostic disable-next-line: missing-parameter
+        while MiniSnippets.session.get() do
+            MiniSnippets.session.stop()
+        end
+        api.nvim_buf_set_text(0, cursor[1] - 1, 0, cursor[1] - 1, -1, { line })
+        api.nvim_win_set_cursor(0, cursor)
+        require("mini.snippets").default_insert({ body = args.body }, { empty_tabstop = "", empty_tabstop_final = "" })
+    end
+end
+
 function M.refresh_diagnostic_winbar()
     local expr = vim.b.diag_winbar
     local search = vim.b.search_winbar or ""
@@ -1641,7 +1660,7 @@ function M.set_git_winbar()
     if vim.g.Base_commit_msg ~= "" then
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " = " .. vim.g.Diff_file_count .. " "
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. "(" .. vim.g.Diff_file_count .. ")"
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitNCWinbar#" .. vim.trim(vim.g.Base_commit_msg)
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "
@@ -1649,7 +1668,7 @@ function M.set_git_winbar()
     else
         if vim.g.Diff_file_count ~= 0 then
             git_winbar_expr = git_winbar_expr .. "%#CommitHasDiffWinbar#" .. vim.trim(vim.g.Last_commit_msg)
-            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " = " .. vim.g.Diff_file_count .. " "
+            git_winbar_expr = git_winbar_expr .. "%#Comment#" .. "(" .. vim.g.Diff_file_count .. ")"
         else
             git_winbar_expr = git_winbar_expr .. "%#CommitWinbar#" .. vim.trim(vim.g.Last_commit_msg or "")
             git_winbar_expr = git_winbar_expr .. "%#Comment#" .. " "

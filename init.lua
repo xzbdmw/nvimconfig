@@ -17,7 +17,6 @@ vim.g.vim_enter = true
 vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
-vim.g.copilot_enable = false
 vim.g.skip_noice = false
 vim.g.hlchunk_disable = false
 vim.g.cy = false
@@ -75,7 +74,10 @@ api.nvim_create_autocmd({ "BufEnter" }, {
     callback = function(data)
         vim.schedule(function()
             local win = vim.api.nvim_get_current_win()
-            vim.wo[win].cursorline = false
+            local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+            if name ~= nil then
+                vim.wo[win].cursorline = false
+            end
         end)
     end,
 })
@@ -277,6 +279,7 @@ api.nvim_create_autocmd("FileType", {
             vim.keymap.set({ "n" }, "<CR>", function()
                 vim.schedule(function()
                     if vim.bo.filetype == "lazyterm" then
+                        -- refresh lazygit
                         FeedKeys("<C-v><c-l>", "n")
                     end
                 end)
@@ -287,9 +290,6 @@ api.nvim_create_autocmd("FileType", {
                 end, 50)
 
                 vim.cmd("w")
-                if api.nvim_get_mode().mode == "i" then
-                    FeedKeys("<esc>", "n")
-                end
                 vim.cmd(string.format("bw! %d", buf))
                 vim.system({ "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" }, nil, function(result)
                     if result.code == 0 then
@@ -344,31 +344,21 @@ api.nvim_create_autocmd("ModeChanged", {
 })
 
 api.nvim_create_autocmd("FileType", {
-    pattern = {
-        "qf",
-    },
-    callback = function()
-        vim.defer_fn(function()
-            vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
-        end, 100)
+    pattern = "qf",
+    callback = function(args)
+        vim.keymap.set("n", "<cr>", "<cr>", { buffer = args.buf })
     end,
 })
+
 api.nvim_create_autocmd("FileType", {
     pattern = "oil",
     callback = function()
-        local hl = api.nvim_get_hl_by_name("Cursor", true)
-        hl.blend = 100
-        vim.opt.guicursor:append("a:Cursor/lCursor")
-        pcall(api.nvim_set_hl, 0, "Cursor", hl)
-
+        utils.hide_cursor()
         api.nvim_create_autocmd("User", {
             once = true,
             pattern = "OilCursor",
             callback = function()
-                local old_hl = hl
-                old_hl.blend = 0
-                vim.opt.guicursor:remove("a:Cursor/lCursor")
-                pcall(api.nvim_set_hl, 0, "Cursor", old_hl)
+                utils.show_cursor()
             end,
         })
     end,
@@ -395,39 +385,18 @@ api.nvim_create_autocmd("CmdwinLeave", {
 })
 
 api.nvim_create_autocmd("FileType", {
-    pattern = {
-        "help",
-    },
+    pattern = "help",
     callback = function(event)
-        vim.defer_fn(function()
-            if vim.api.nvim_buf_is_valid(event.buf) then
-                vim.keymap.set("n", "<CR>", "K", { buffer = event.buf })
-            end
-        end, 100)
+        -- incremental selectino will overwritten <CR>.
+        vim.schedule(function()
+            vim.keymap.set("n", "<CR>", "K", { buffer = event.buf })
+        end)
     end,
 })
 
 api.nvim_create_autocmd("FileType", {
-    pattern = {
-        "saga_codeaction",
-        "txt",
-        "PlenaryTestPopup",
-        "help",
-        "lspinfo",
-        "man",
-        "notify",
-        "qf",
-        "query",
-        "spectre_panel",
-        "startuptime",
-        "tsplayground",
-        "neotest-output",
-        "checkhealth",
-        "neotest-summary",
-        "vim",
-        "neotest-output-panel",
-        "toggleterm",
-    },
+    -- stylua: ignore
+    pattern = { "saga_codeaction", "txt", "PlenaryTestPopup", "help", "lspinfo", "man", "notify", "qf", "query", "spectre_panel", "startuptime", "tsplayground", "neotest-output", "checkhealth", "neotest-summary", "vim", "neotest-output-panel", "toggleterm" },
     callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", function()
@@ -480,12 +449,12 @@ api.nvim_create_autocmd("ModeChanged", {
 })
 
 api.nvim_create_autocmd("User", {
-    pattern = "v_V",
-    callback = utils.update_visual_coloum,
+    pattern = "v_V", -- visual mode press V
+    callback = utils.try_update_visual_coloum,
 })
 
 api.nvim_create_autocmd("CursorMoved", {
-    callback = utils.update_visual_coloum,
+    callback = utils.try_update_visual_coloum,
 })
 
 api.nvim_create_autocmd("DiagnosticChanged", {
@@ -519,7 +488,8 @@ api.nvim_create_autocmd("CmdlineLeave", {
     end,
 })
 
--- CmdlineLeave -> satellite.refreshCurrentBuf -> collet pos -> SatelliteSearch -> Satellite render
+-- Search confirm -> hlslens.refreshCurrentBuf -> collet pos ->
+-- hlslens calling nvim_exec_autocmds SatelliteSearch -> Satellite render
 api.nvim_create_autocmd("User", {
     pattern = "SatelliteSearch",
     callback = function()
@@ -645,6 +615,11 @@ api.nvim_create_autocmd("BufWinEnter", {
     end,
 })
 
+api.nvim_create_autocmd("User", {
+    pattern = "GitSignsUpdate",
+    callback = utils.set_git_winbar,
+})
+
 api.nvim_create_autocmd({ "BufWinLeave" }, {
     pattern = "*",
     callback = function()
@@ -656,10 +631,13 @@ api.nvim_create_autocmd({ "BufWinLeave" }, {
 
 api.nvim_create_autocmd({ "BufWinEnter" }, {
     pattern = "*",
-    callback = function()
+    callback = function(ev)
         if vim.wo.foldmethod == "diff" and vim.fn.tabpagenr() == 1 then
             print("foldmethod diff")
             vim.wo.foldmethod = "manual"
+        end
+        if vim.bo[ev.buf].filetype == "oil" and api.nvim_get_current_buf() == ev.buf then
+            utils.set_oil_winbar(ev)
         end
         if vim.bo.filetype == "fzf" then
             return
@@ -702,15 +680,13 @@ api.nvim_create_autocmd({ "User" }, {
             if vim.g.Base_commit ~= "" then
                 Signs_staged = nil
                 gs.change_base(vim.g.Base_commit, true)
-                -- when nvim start at first time, gitsigns may choose index as base
-                vim.defer_fn(function()
-                    utils.update_diff_file_count()
-                    gs.change_base(vim.g.Base_commit, true)
-                end, 200)
-                vim.defer_fn(function()
-                    utils.update_diff_file_count()
-                    gs.change_base(vim.g.Base_commit, true)
-                end, 500)
+                for _, t in ipairs({ 200, 500 }) do
+                    -- when nvim start at first time, gitsigns may choose index as base
+                    vim.defer_fn(function()
+                        utils.update_diff_file_count()
+                        gs.change_base(vim.g.Base_commit, true)
+                    end, t)
+                end
             else
                 vim.defer_fn(function()
                     utils.refresh_last_commit()
@@ -726,6 +702,7 @@ api.nvim_create_autocmd({ "User" }, {
 api.nvim_create_autocmd("User", {
     pattern = "LoadSessionPre",
     callback = function()
+        -- toggle all filter
         FeedKeys("<leader>F", "m")
         if require("gitsigns.config").config.word_diff then
             local gs = package.loaded.gitsigns
@@ -759,28 +736,22 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-api.nvim_create_autocmd("BufWinEnter", {
-    callback = utils.set_oil_winbar,
-})
-
 api.nvim_create_autocmd("User", {
     pattern = "GitSignsUserUpdate",
     callback = function()
         if utils.has_filetype("trouble") then
             if _G.pre_gitsigns_qf_operation == "cur" then
-                vim.defer_fn(function()
-                    require("gitsigns").setqflist(0)
-                end, 200)
-                vim.defer_fn(function()
-                    require("gitsigns").setqflist(0)
-                end, 500)
+                for _, t in ipairs({ 200, 500 }) do
+                    vim.defer_fn(function()
+                        require("gitsigns").setqflist(0)
+                    end, t)
+                end
             elseif _G.pre_gitsigns_qf_operation == "all" then
-                vim.defer_fn(function()
-                    require("gitsigns").setqflist("all")
-                end, 200)
-                vim.defer_fn(function()
-                    require("gitsigns").setqflist("all")
-                end, 500)
+                for _, t in ipairs({ 200, 500 }) do
+                    vim.defer_fn(function()
+                        require("gitsigns").setqflist("all")
+                    end, t)
+                end
             end
         end
     end,
@@ -793,11 +764,6 @@ api.nvim_create_autocmd("User", {
             MiniSnippets.session.stop()
         end
     end,
-})
-
-api.nvim_create_autocmd("User", {
-    pattern = "GitSignsUpdate",
-    callback = utils.set_git_winbar,
 })
 
 api.nvim_create_autocmd("User", {
@@ -820,16 +786,6 @@ api.nvim_create_autocmd("User", {
         vim.defer_fn(function()
             utils.update_diff_file_count()
         end, 300)
-    end,
-})
-
-api.nvim_create_autocmd("User", {
-    pattern = "copilot_callback",
-    callback = function()
-        FeedKeys("<c-x><c-c>", "m")
-        vim.defer_fn(function()
-            vim.g.copilot_enable = false
-        end, 10)
     end,
 })
 

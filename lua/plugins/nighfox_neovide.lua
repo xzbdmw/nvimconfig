@@ -128,6 +128,7 @@ return {
                 UfoFoldedBg = { bg = "#EBE8DB" },
                 ArrowIcon = { fg = "#717070" },
                 ArrowBookmarkNote = { fg = "#215062", style = "italic,bold" },
+                DiffFileCount = { fg = "#6D6B6B", style = "italic,bold" },
                 ArrowNoteMode = { bg = "#215062" },
                 CopilotSuggestion = { fg = "#1D6D8D" },
                 ArrowCursorLine = { link = "CursorLine" },
