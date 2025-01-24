@@ -516,9 +516,6 @@ return {
                     return vim_item
                 end,
             },
-            completion = {
-                completeopt = "menu,menuone,noinsert,noselect",
-            },
             mapping = cmp.mapping.preset.cmdline({
                 ["<CR>"] = cmp.mapping({
                     i = cmp.mapping.confirm({ select = true }),
@@ -536,19 +533,6 @@ return {
                 ["<C-d>"] = cmp.mapping(function(fallback)
                     fallback()
                 end, { "i", "c", "s" }),
-                ["<Tab>"] = {
-                    c = function(fallback)
-                        if cmp.visible() then
-                            local idx = cmp.get_selected_index()
-                            if idx == nil then
-                                cmp.select_next_item()
-                            end
-                            cmp.close()
-                        else
-                            fallback()
-                        end
-                    end,
-                },
                 ["<up>"] = {
                     c = function(fallback)
                         if cmp.visible() then

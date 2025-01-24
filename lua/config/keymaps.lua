@@ -123,6 +123,12 @@ keymap("n", "<leader>sl", function()
     return "/" .. cmd
 end, { expr = true, remap = true })
 
+keymap("n", ".", function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.api.nvim_buf_set_mark(0, "c", row, col, {})
+    return "."
+end, { expr = true })
+
 keymap("n", "<leader>h", function()
     FeedKeys("0", "m")
     vim.fn.winrestview({ leftcol = 0 })
@@ -132,7 +138,6 @@ keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
 end, opts)
-keymap("n", "<C-m>", "%", opts)
 keymap("n", "g.", "`.", opts)
 keymap("n", "o", function()
     _G.no_delay(0)
@@ -379,7 +384,7 @@ keymap("n", "gs", function()
     require("config.utils").adjust_view(0, 3)
 end, opts)
 
-vim.keymap.set("o", "o", function()
+keymap("o", "o", function()
     local operator = vim.v.operator
     if operator == "d" then
         local scope = MiniIndentscope.get_scope()
@@ -658,7 +663,7 @@ keymap("i", "<BS>", function()
         vim.schedule(function()
             vim.api.nvim_set_current_line(line:sub(col + 1, #line))
             vim.api.nvim_win_set_cursor(0, { row, 0 })
-            FeedKeys("<BS>", "n")
+            FeedKeys("<c-g>u<BS>", "n")
             FeedKeys("<space>", "n")
         end)
         return ""

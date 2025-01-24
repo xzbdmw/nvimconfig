@@ -6,6 +6,16 @@
     "description": "A snippet with nested placeholders",
     "prefix": "nested"
   },
+  "auto": {
+    "body": [
+      "vim.api.nvim_create_autocmd(\"${1:}\", {",
+      "    callback = function ()",
+      "        ${0:}",
+      "    end",
+      "})"
+    ],
+    "prefix": "auto"
+  },
   "block": {
     "body": [
       "vim.cmd('redraw!')",
@@ -20,6 +30,10 @@
   "cmdgs": {
     "body": "<cmd>norm! gs<CR>",
     "prefix": "cmdgs"
+  },
+  "cursor": {
+    "body": "local row, col = unpack(vim.api.nvim_win_get_cursor(0))",
+    "prefix": "cursor"
   },
   "dbg": {
     "body": "print(debug.traceback())",

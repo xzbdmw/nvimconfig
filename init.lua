@@ -60,7 +60,7 @@ api.nvim_create_autocmd("FocusGained", {
     end,
 })
 
-api.nvim_create_autocmd({ "WinLeave" }, {
+api.nvim_create_autocmd({ "BufLeave" }, {
     callback = function(data)
         if vim.bo.filetype == "lazyterm" then
             return

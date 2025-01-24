@@ -4,22 +4,13 @@ return {
     lazy = false,
     keys = function()
         local function put(position)
-            local reg = vim.fn.getreg('"')
-            local goto_start = ""
-            if reg:find("\n") ~= nil then
-                goto_start = "^"
-            end
-
             vim.g.hlchunk_disable = true
             vim.g.type_o = true
             vim.schedule(function()
                 vim.g.type_o = false
                 require("mini.indentscope").h.auto_draw()
             end)
-            if vim.bo.filetype == "markdown" or vim.bo.filetype == "txt" then
-                return "<Plug>(YankyPut" .. position .. ")" .. goto_start
-            end
-            return "<Plug>(YankyPut" .. position .. ")mt`[v`]=`t" .. goto_start
+            return "<Plug>(YankyPut" .. position .. ")"
         end
 
         return {
@@ -28,7 +19,6 @@ return {
                 "<Plug>(YankyYank)",
                 mode = { "n", "x" },
             },
-
             {
                 "<leader>p",
                 function()
@@ -51,20 +41,9 @@ return {
                 expr = true,
             },
             {
-                "gp",
-                function()
-                    vim.g.type_o = true
-                    vim.schedule(function()
-                        vim.g.type_o = false
-                        require("mini.indentscope").h.auto_draw()
-                    end)
-                    return "<Plug>(YankyPutAfter)"
-                end,
-                expr = true,
-            },
-            {
                 "p",
                 function()
+                    SS = vim.uv.hrtime()
                     return put("After")
                 end,
                 expr = true,

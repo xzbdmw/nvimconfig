@@ -22,6 +22,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "msg_show", find = "snippets" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "InlayHint" },
                     opts = { skip = true },
                 },

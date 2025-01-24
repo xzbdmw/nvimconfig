@@ -28,7 +28,7 @@ return {
 
                 -- Multiply (duplicate) text
                 multiply = {
-                    prefix = "gm",
+                    prefix = "<c-m>",
 
                     -- Function which can modify text before multiplying
                     func = nil,
@@ -36,7 +36,7 @@ return {
 
                 -- Replace text with register
                 replace = {
-                    prefix = "g2",
+                    prefix = "gr",
 
                     -- Whether to reindent new text to match previous indent
                     reindent_linewise = true,

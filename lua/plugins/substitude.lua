@@ -4,43 +4,27 @@ return {
         {
             "s",
             function()
+                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+                vim.api.nvim_buf_set_mark(0, "c", row, col, {})
                 require("substitute").operator({
                     modifiers = function(state)
-                        if vim.bo.filetype == "markdown" or vim.bo.filetype == "txt" then
-                            return {}
-                        end
                         if state.vmode == "line" then
-                            return { "reindent" }
+                            vim.api.nvim_win_set_cursor(0, vim.api.nvim_buf_get_mark(0, "c"))
+                            return {}
                         end
                     end,
                 })
             end,
         },
-        {
-            "S",
-            "s$",
-            remap = true,
-        },
-        {
-            "s",
-            function()
-                local cursor = vim.api.nvim_win_get_cursor(0)
-                return "_<cmd>lua vim.api.nvim_win_set_cursor(0,{" .. cursor[1] .. "," .. cursor[2] .. "})<cr>"
-            end,
-            expr = true,
-            mode = "o",
-        },
+        { "S", "s$", remap = true },
+        { "s", "_", mode = "o" },
         {
             "ge",
             function()
                 require("substitute.exchange").operator()
             end,
         },
-        {
-            "gee",
-            "ge_",
-            remap = true,
-        },
+        { "gee", "ge_", remap = true },
         {
             "ge",
             function()
