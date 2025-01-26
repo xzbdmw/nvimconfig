@@ -70,13 +70,27 @@ api.nvim_create_autocmd({ "BufLeave" }, {
     end,
 })
 
+api.nvim_create_autocmd({ "CursorMoved" }, {
+    callback = function(data)
+        local win = vim.api.nvim_get_current_win()
+        if vim.wo[win].cursorline then
+            local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+            if name ~= nil or vim.bo.filetype == "oil" then
+                vim.wo[win].cursorline = false
+            end
+        end
+    end,
+})
+
 api.nvim_create_autocmd({ "BufEnter" }, {
     callback = function(data)
         vim.schedule(function()
             local win = vim.api.nvim_get_current_win()
-            local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-            if name ~= nil then
-                vim.wo[win].cursorline = false
+            if vim.wo[win].cursorline then
+                local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+                if name ~= nil then
+                    vim.wo[win].cursorline = false
+                end
             end
         end)
     end,

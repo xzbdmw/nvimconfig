@@ -6,11 +6,11 @@ return {
             function()
                 if open == 0 then
                     -- vim.cmd("FocusDisable")
-                    vim.opt.number = false
+                    vim.o.number = false
                     open = 1
                 else
                     -- vim.cmd("FocusEnable")
-                    vim.opt.number = true
+                    vim.o.number = true
                     open = 0
                 end
                 vim.cmd("NoNeckPain")

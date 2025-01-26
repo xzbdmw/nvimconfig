@@ -277,6 +277,7 @@ return {
                 CmpItemAbbrMatch = { fg = "none", style = "bold,nocombine" },
                 CmpItemAbbrMatchCursorLine = { fg = "none", style = "bold,underline,nocombine", sp = "#e8e7e0" },
                 CmpItemAbbrMatchFuzzyCursorLine = { fg = "none", style = "bold,underline,nocombine", sp = "#e8e7e0" },
+                CmpItemAbbrMatchCmdLine = { link = "TelescopeMatching" },
                 BlinkCmpLabelMatch = { style = "bold" },
                 BlinkCmpMenu = { link = "MyNormalFloat" },
                 CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },

@@ -53,8 +53,10 @@ return {
                 end, { buffer = true })
             end,
             on_close = function()
-                vim.o.scrolloff = 6
-                number = vim.wo.number
+                if vim.api.nvim_buf_get_name(0):find("#toggleterm") ~= nil then
+                    vim.o.scrolloff = 6
+                    number = vim.wo.number
+                end
             end, -- function to run when the terminal closes
             -- on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
             -- on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr

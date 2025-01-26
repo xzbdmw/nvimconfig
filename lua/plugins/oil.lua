@@ -96,7 +96,7 @@ return {
                 end,
                 ["<C-c>"] = "actions.close",
                 -- ["q"] = "actions.close",
-                ["<C-l>"] = "actions.refresh",
+                ["<leader><c-r>"] = "actions.refresh",
                 ["-"] = "actions.parent",
                 -- ["p"] = "actions.parent",
                 ["_"] = "actions.open_cwd",

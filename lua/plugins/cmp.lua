@@ -521,6 +521,11 @@ return {
                     i = cmp.mapping.confirm({ select = true }),
                     c = cmp.mapping.confirm({ select = false }),
                 }),
+                ["<Tab>"] = {
+                    c = function(fallback)
+                        FeedKeys("<CR>", "n")
+                    end,
+                },
                 ["<Down>"] = {
                     c = function(fallback)
                         if cmp.visible() then
