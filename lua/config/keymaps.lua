@@ -279,16 +279,6 @@ keymap("n", "<d-l>", function()
     end
 end, opts)
 
-keymap({ "n" }, "<C-n>", function()
-    vim.cmd("MCstart")
-    FeedKeys("n", "m")
-end)
-
-keymap({ "x" }, "<c-n>", function()
-    vim.cmd("MCstart")
-    FeedKeys("n", "m")
-end)
-
 keymap("x", "*", function()
     return utils.visual_search("/")
 end, { desc = ":help v_star-default", expr = true, silent = true })
@@ -372,17 +362,11 @@ keymap("x", "w", "e", opts)
 keymap("n", "gf", function()
     utils.gF()
 end, opts)
-keymap("v", "<up>", ":MoveBlock(-1)<CR>", opts)
-keymap("v", "<down>", ":MoveBlock(1)<CR>", opts)
-keymap("n", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
-keymap("n", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
-keymap("v", "<up>", "<A-k>", { remap = true, desc = "Move Up" })
-keymap("v", "<down>", "<A-j>", { remap = true, desc = "Move Down" })
 
-keymap("n", "gs", function()
-    require("treesitter-context").go_to_context(vim.v.count1)
-    require("config.utils").adjust_view(0, 3)
-end, opts)
+keymap("n", "<down>", "<cmd>m .+1<cr>==", opts)
+keymap("n", "<up>", "<cmd>m .-2<cr>==", opts)
+keymap("v", "<down>", ":m '>+1<cr>gv=gv", opts)
+keymap("v", "<up>", ":m '<-2<cr>gv=gv", opts)
 
 keymap("o", "o", function()
     local operator = vim.v.operator
@@ -442,17 +426,6 @@ keymap("n", "<leader>cd", function()
         vim.cmd("tabclose! " .. 2)
     end
 end, opts)
-
-keymap("n", "<leader>z", function()
-    local is_comment = vim.fn.foldclosed(vim.fn.line("."))
-    if is_comment ~= -1 then
-        return "<leader><leader>zo"
-    else
-        FeedKeys("m6", "n")
-        FeedKeys("<leader><leader>zfai", "m")
-        FeedKeys("`6", "n")
-    end
-end, { remap = true, expr = true })
 
 keymap("n", "<leader>sm", function()
     vim.cmd("messages")
@@ -817,8 +790,7 @@ keymap("n", "gd", function()
     vim.lsp.buf.definition()
 end)
 
-keymap("n", "<leader><leader>zf", "zf", opts)
-keymap("n", "<leader><leader>zo", "zo", opts)
+keymap("n", "<leader>z", "z", opts)
 keymap("n", "z", function()
     utils.adjust_view(0, 3)
 end, opts)

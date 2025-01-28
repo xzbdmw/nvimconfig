@@ -126,18 +126,10 @@ return {
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
                             ignore()
-                            if utils.if_multicursor() then
-                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-                            else
-                                cmp.select_next_item()
-                            end
+                            cmp.select_next_item()
                         else
                             ignore()
-                            if utils.if_multicursor() then
-                                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-                            else
-                                cmp.select_prev_item()
-                            end
+                            cmp.select_prev_item()
                         end
                     else
                         fallback()
@@ -148,18 +140,10 @@ return {
                         if cmp.core.view.custom_entries_view:is_direction_top_down() then
                             _G.no_animation(_G.CI)
                             ignore()
-                            if utils.if_multicursor() then
-                                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-                            else
-                                cmp.select_prev_item()
-                            end
+                            cmp.select_prev_item()
                         else
                             ignore()
-                            if utils.if_multicursor() then
-                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-                            else
-                                cmp.select_next_item()
-                            end
+                            cmp.select_next_item()
                         end
                     else
                         fallback()
@@ -253,17 +237,12 @@ return {
                 ["<right>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     if cmp.visible() then
-                        if utils.if_multicursor() then
-                            cmp.close()
-                            fallback()
-                        else
-                            f.expand = false
-                            cmp.confirm({ select = true })
-                            vim.defer_fn(function()
-                                pcall(_G.update_indent, true) -- hlchunk
-                                pcall(_G.mini_indent_auto_draw) -- mini-indentscope
-                            end, 20)
-                        end
+                        f.expand = false
+                        cmp.confirm({ select = true })
+                        vim.defer_fn(function()
+                            pcall(_G.update_indent, true) -- hlchunk
+                            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+                        end, 20)
                     else
                         fallback()
                     end
@@ -273,7 +252,7 @@ return {
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
                         f.expand = true
-                        if utils.if_multicursor() then
+                        if require("multicursor-nvim").numCursors() > 1 then
                             cmp.select_cur_item()
                             vim.schedule(cmp.close)
                         else
@@ -495,7 +474,7 @@ return {
                 end, { "i", "c", "s" }),
             }),
             sources = cmp.config.sources({
-                { name = "buffer" },
+                -- { name = "buffer" },
             }),
         })
         cmp.setup.cmdline(":", {

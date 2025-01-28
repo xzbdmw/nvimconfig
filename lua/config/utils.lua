@@ -378,7 +378,7 @@ function M.insert_paste()
         return
     end
     if #lines == 1 then
-        api.nvim_put({ vim.trim(body) }, "c", false, true)
+        FeedKeys(vim.trim(body), "n")
     else
         local last_col = #lines[#lines]
         if not is_empty then
@@ -504,10 +504,6 @@ function M.insert_mode_space()
             return "<esc>"
         end, { expr = true })
     end, 200)
-end
-
-function M.if_multicursor()
-    return M.has_namespace("multicursors")
 end
 
 function M.change_guicursor(type)
@@ -726,7 +722,7 @@ function M.clear()
 end
 
 function M.do_highlight(buf)
-    if api.nvim_get_current_buf() ~= buf then
+    if api.nvim_get_current_buf() ~= buf or require("multicursor-nvim").numCursors() > 1 then
         return
     end
     local count = vim.api.nvim_buf_line_count(buf)
@@ -744,7 +740,7 @@ function M.do_highlight(buf)
     M.prev_match_win = {}
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local id = vim.fn.matchadd(
-            "MatchAddVisul",
+            "LighterVisual",
             "\\M" .. vim.trim(text:gsub("\\", "\\\\"):gsub("\n", "\\n")),
             100,
             -1,
@@ -1769,13 +1765,13 @@ _G.Time = function(start, msg, notify)
         return duration
     end
     if msg == "" then
-        vim.schedule(function()
-            print(vim.inspect(duration))
-        end)
+        -- vim.schedule(function()
+        print(vim.inspect(duration))
+        -- end)
     else
-        vim.schedule(function()
-            print(msg .. ":", vim.inspect(duration))
-        end)
+        -- vim.schedule(function()
+        print(msg .. ":", vim.inspect(duration))
+        -- end)
     end
     return duration
 end

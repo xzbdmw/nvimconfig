@@ -51,6 +51,10 @@ return {
                     vim.bo.scrollback = 1
                     vim.bo.scrollback = 100000
                 end, { buffer = true })
+                vim.keymap.set("t", "<c-[>", function()
+                    require("config.utils").change_guicursor("block")
+                    return "<esc>"
+                end, { buffer = true, expr = true })
             end,
             on_close = function()
                 if vim.api.nvim_buf_get_name(0):find("#toggleterm") ~= nil then

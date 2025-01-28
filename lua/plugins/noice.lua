@@ -205,19 +205,20 @@ return {
                     },
                     input = {
                         opts = {
+                            zindex = 51,
                             border = {
-                                style = "rounded",
+                                style = "none",
                                 padding = { 0, 1 },
                             },
                             position = {
-                                row = "30%",
-                                col = "50%",
+                                row = "100%",
+                                col = "0%",
                             },
                             size = {
-                                width = 40,
+                                width = "100%",
                                 height = "auto",
                             },
-                        },
+                        }, -- global options for the cmdline. See section on views
                     }, -- Used by input()
                 },
             },

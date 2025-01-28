@@ -3,6 +3,7 @@ return {
     dependencies = {
         "smoka7/hydra.nvim",
     },
+    enabled = false,
     opts = {},
     cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
     config = function()
