@@ -409,6 +409,27 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("TextChangedI", {
+    callback = function()
+        local snip = require("config.autosnip")
+        if vim.bo.filetype == "go" then
+            snip.go_auto_add_equal()
+            snip.go_auto_add_pair()
+            snip.auto_add_forr()
+            snip.auto_add_fori()
+            snip.auto_add_if()
+            snip.auto_add_ret()
+        elseif vim.bo.filetype == "lua" then
+            snip.lua_auto_add_local()
+            snip.lua_auto_add_while()
+            snip.auto_add_if()
+            snip.auto_add_forr()
+            snip.auto_add_fori()
+            snip.auto_add_ret()
+        end
+    end,
+})
+
 api.nvim_create_autocmd("FileType", {
     -- stylua: ignore
     pattern = { "saga_codeaction", "txt", "PlenaryTestPopup", "help", "lspinfo", "man", "notify", "qf", "query", "spectre_panel", "startuptime", "tsplayground", "neotest-output", "checkhealth", "neotest-summary", "vim", "neotest-output-panel", "toggleterm" },

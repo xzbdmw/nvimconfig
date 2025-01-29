@@ -47,6 +47,22 @@
     ],
     "prefix": "kdy"
   },
+  "fori": {
+    "body": [
+      "for i = ${1:1}, ${2:10, 1} do",
+      "   ${0:} ",
+      "end"
+    ],
+    "prefix": "fori"
+  },
+  "forr": {
+    "body": [
+      "for ${1:index}, ${2:value} in ipairs(${3:t}) do",
+      "   ${0:} ",
+      "end"
+    ],
+    "prefix": "forr"
+  },
   "fun": {
     "body": [
       "function ()\n\t$0\nend"

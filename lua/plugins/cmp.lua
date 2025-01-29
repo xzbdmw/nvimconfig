@@ -282,6 +282,9 @@ return {
                             end
                         elseif vim.bo.filetype == "lua" then
                             local word = entry:get_word()
+                            if entry:get_completion_item().label == "local function" then
+                                return false
+                            end
                             if word == "re" then
                                 return false
                             end
@@ -376,6 +379,16 @@ return {
         for _, source in ipairs(opts.sources) do
             source.group_index = source.group_index or 1
         end
+        cmp.setup.filetype({ "cpp", "c" }, {
+            window = {
+                completion = cmp.config.window.bordered({
+                    border = "none",
+                    side_padding = 0,
+                    col_offset = -4,
+                    winhighlight = "CursorLine:MyCmpCursorLine,Normal:MyNormalFloat",
+                }),
+            },
+        })
         cmp.setup.cmdline({ "/", "?" }, {
             enabled = function()
                 if vim.bo.filetype == "vim" then
