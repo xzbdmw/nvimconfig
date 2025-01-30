@@ -409,12 +409,27 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("User", {
+    pattern = "Confirm",
+    callback = function(e)
+        if vim.bo.filetype == "go" then
+            local kind = e.data[2]
+            local col = vim.api.nvim_win_get_cursor(0)[2]
+            if kind == 9 and #vim.api.nvim_get_current_line() == col then
+                FeedKeys(".", "n")
+            end
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd("TextChangedI", {
     callback = function()
         local snip = require("config.autosnip")
         if vim.bo.filetype == "go" then
             snip.go_auto_add_equal()
             snip.go_auto_add_pair()
+            snip.go_auto_add_func()
+            snip.go_auto_add_method()
             snip.auto_add_forr()
             snip.auto_add_fori()
             snip.auto_add_if()

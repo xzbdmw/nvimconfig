@@ -122,6 +122,8 @@ keymap({ "n" }, "<esc>", function()
         while MiniSnippets.session.get() do
             MiniSnippets.session.stop()
         end
+    end)
+    pcall(function()
         require("substitute.exchange").cancel()
         require("illuminate.engine").clear_keeped_highlight()
         require("illuminate.goto").clear_keeped_hl()

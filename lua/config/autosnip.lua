@@ -78,6 +78,30 @@ function M.go_auto_add_equal()
     FeedKeys("= ", "n")
 end
 
+function M.go_auto_add_method()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*met$") == nil) then
+        return
+    end
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+    MiniSnippets.expand()
+end
+
+function M.go_auto_add_func()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*func$") == nil) then
+        return
+    end
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+    MiniSnippets.expand()
+end
+
 function M.go_auto_add_pair()
     local line = vim.api.nvim_get_current_line()
     if (string.match(line, "^func %w+%b()") or string.match(line, "%=%s*func%b()")) == nil then

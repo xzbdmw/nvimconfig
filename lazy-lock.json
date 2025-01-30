@@ -5,7 +5,6 @@
   "agitator.nvim": { "branch": "xzb", "commit": "b8b4a1f4452deabe0f6277d3539d0b6c5b7b851d" },
   "alternate-toggler": { "branch": "xzb", "commit": "566feb2f48646c8eeb7b006c74e02ca8a74b8115" },
   "arrow.nvim": { "branch": "xzb", "commit": "57c3abc974f2ae467e3f5e3811d19fc913e1d5ea" },
-  "auto-fix-return.nvim": { "branch": "master", "commit": "a416df7f337410a063ba8a6904b4c809d9bac1ca" },
   "bigfile.nvim": { "branch": "main", "commit": "33eb067e3d7029ac77e081cfe7c45361887a311a" },
   "catppuccin": { "branch": "main", "commit": "a1439ad7c584efb3d0ce14ccb835967f030450fe" },
   "cmp-buffer": { "branch": "xzb", "commit": "df80a5474facb81513cc4b9d649ed5b98023740a" },
@@ -47,6 +46,7 @@
   "nui.nvim": { "branch": "xzb", "commit": "7ddc0cf795fa0d5ea9ba0d4e822de68d940a1fcd" },
   "nvim-autopairs": { "branch": "xzb", "commit": "7b8192e43488013d4fb5e9a70d96bab85b4311fc" },
   "nvim-bufdel": { "branch": "xzb", "commit": "dd4e4ff68d20bf252c68e29c1854b922b7bd1949" },
+  "nvim-chainsaw": { "branch": "main", "commit": "f155fc296278fae3001cd27a5095f86460d80f84" },
   "nvim-cmp": { "branch": "dynamic-modified", "commit": "fc15b6a90ddbf30d67e695d8edeaa4b8058e6b5d" },
   "nvim-hlslens": { "branch": "xzb", "commit": "54ed23e6db00cf89ecccb467e17fc132e6d66544" },
   "nvim-lint": { "branch": "master", "commit": "2669aabb8362fdc36aced5ba864b7135636ea863" },
@@ -64,7 +64,6 @@
   "plenary.nvim": { "branch": "master", "commit": "8aad4396840be7fc42896e3011751b7609ca4119" },
   "profile.nvim": { "branch": "master", "commit": "0ee32b7aba31d84b0ca76aaff2ffcb11f8f5449f" },
   "rainbow-delimiters.nvim": { "branch": "xzb", "commit": "500e7d60cb130d99fb4f990f00cfd39dbe8d3018" },
-  "refactoring.nvim": { "branch": "master", "commit": "d2786877c91aa409c824f27b4ce8a9f560dda60a" },
   "rustaceanvim": { "branch": "xzb", "commit": "5edd636a97f3853e21c5d0f2f54ce5c7ec7b6fb4" },
   "satellite.nvim": { "branch": "xzb", "commit": "b387ea5af60d08653a421ee11ee331ac266fdde0" },
   "scrollEOF.nvim": { "branch": "xzb", "commit": "bf607770943894a471ac8148626706449beec086" },
@@ -85,7 +84,7 @@
   "undotree": { "branch": "master", "commit": "56c684a805fe948936cda0d1b19505b84ad7e065" },
   "venv-selector.nvim": { "branch": "main", "commit": "f16c25bf16ac6e8bbdbcc9e9b3a1a00729d00c99" },
   "vim-startuptime": { "branch": "master", "commit": "ac2cccb5be617672add1f4f3c0a55ce99ba34e01" },
-  "vim-textobj-chainmember": { "branch": "xzb", "commit": "1e979c3d2ab0026513b7d3d289f54224cd9b7131" },
+  "vim-textobj-chainmember": { "branch": "xzb", "commit": "8839aeab9141df1241c91f0dfbb7fa9470a67594" },
   "vim-textobj-user": { "branch": "master", "commit": "41a675ddbeefd6a93664a4dc52f302fe3086a933" },
   "yanky.nvim": { "branch": "xzb", "commit": "cf967b2fe60c9b9f5b5c1520d18a067cc8bf3135" }
 }
