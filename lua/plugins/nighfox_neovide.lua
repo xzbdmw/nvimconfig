@@ -223,8 +223,9 @@ return {
                 -- FzfLuaBorder = { link = "TelescopeBorder" },
                 ArrowCurrentFile = { link = "Comment" },
                 CodeActionNumber = { link = "Comment" },
+                QuickFixLine = { style = "bold,italic" },
                 MyCmpCursorLine = { bg = "#faf7e8", style = "underline,bold,italic", sp = "#e8e7e0" }, -- only current line need to add underline
-                NoMyCmpCursorLine = { bg = "#faf7e8" }, -- for other cmp lines
+                NoMyCmpCursorLine = { bg = "#faf7e8", style = "bold,italic" }, -- when there is only one entry
                 BlinkCmpMenuSelection = { link = "MyCursorLine" },
                 illuminatedWordText = { bg = "#E3E0E0" },
                 illuminatedWordRead = { bg = "#E3E0E0" },

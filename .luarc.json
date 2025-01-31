@@ -1,11 +1,14 @@
 {
-    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
     "runtime.version": "LuaJIT",
     "diagnostics.disable": [
         "deprecated",
         "undefined-field",
         "undefined-global",
         "need-check-nil"
+    ],
+    "workspace.library": [
+        "/usr/local/share/nvim/runtime/lua/",
+        "${3rd}/luv/library"
     ],
     "diagnostics.globals": [
         "MiniFiles",

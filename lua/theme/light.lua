@@ -108,6 +108,10 @@ keymap("n", "[s", function()
 end)
 
 keymap({ "n" }, "<esc>", function()
+    if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
+        FeedKeys("q", "n")
+        return
+    end
     if vim.bo.filetype == "toggleterm" then
         vim.cmd("noh")
         vim.b.term_search_title = ""

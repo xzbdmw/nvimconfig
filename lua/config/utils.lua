@@ -1707,6 +1707,7 @@ function M.set_winbar(buf)
         buf ~= api.nvim_get_current_buf()
         or vim.bo.filetype == "NvimTree"
         or vim.bo.filetype == "toggleterm"
+        or vim.bo.filetype == "qf"
         or vim.bo.filetype == "DiffviewFiles"
         or vim.bo.buftype == "nofile"
     then
@@ -1871,14 +1872,6 @@ M.operator_mode_lh = function(direction)
     local next = "("
     for i = 1, #substring do
         local char = substring:sub(i, i)
-        if char == [["]] then
-            next = "double"
-            break
-        end
-        if char == [[']] then
-            next = "single"
-            break
-        end
         if char == [[(]] then
             break
         end
@@ -1914,10 +1907,6 @@ M.operator_mode_lh = function(direction)
             return "T]"
         elseif next == "}" then
             return [[T}]]
-        elseif next == "double" then
-            return [[T"]]
-        elseif next == "single" then
-            return [[T']]
         elseif next == "{" then
             return [[T{]]
         end
@@ -1932,10 +1921,6 @@ M.operator_mode_lh = function(direction)
             return "t]"
         elseif next == "}" then
             return [[t}]]
-        elseif next == "double" then
-            return [[t"]]
-        elseif next == "single" then
-            return [[t']]
         elseif next == "{" then
             return [[t{]]
         end

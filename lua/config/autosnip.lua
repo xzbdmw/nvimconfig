@@ -27,10 +27,16 @@ end
 function M.auto_add_if()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*if$") == nil) then
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*iff$") == nil) then
         return
     end
-    MiniSnippets.expand()
+    FeedKeys("<BS>", "m")
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+    vim.schedule(function()
+        MiniSnippets.expand()
+    end)
 end
 
 function M.lua_auto_add_while()
@@ -60,10 +66,10 @@ end
 function M.auto_add_ret()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*re$") == nil) then
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*ree$") == nil) then
         return
     end
-    FeedKeys("turn ", "n")
+    FeedKeys("<BS>turn ", "n")
     if require("cmp").visible() then
         require("cmp").close()
     end

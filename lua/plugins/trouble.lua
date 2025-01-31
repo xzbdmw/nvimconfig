@@ -66,6 +66,10 @@ return {
             r = "refresh",
             R = "toggle_refresh",
             q = "close",
+            c = function()
+                vim.cmd("Trouble qflist toggle focus=false")
+                require("quicker").toggle({ focus = true })
+            end,
             o = "jump_close",
             ["<esc>"] = "cancel",
             ["<cr>"] = "jump",

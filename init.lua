@@ -76,7 +76,7 @@ api.nvim_create_autocmd({ "CursorMoved" }, {
         local win = vim.api.nvim_get_current_win()
         if vim.wo[win].cursorline then
             local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-            if name ~= nil or vim.bo.filetype == "oil" then
+            if name ~= nil or vim.bo.filetype == "oil" or vim.bo.filetype == "qf" then
                 vim.wo[win].cursorline = false
             end
         end

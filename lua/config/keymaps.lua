@@ -50,8 +50,6 @@ keymap({ "n" }, "/", function()
     end)
     return utils.search("/")
 end, { expr = true })
-keymap({ "o" }, "b", "v<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
-keymap({ "n", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 keymap({ "n" }, "?", function()
     return utils.search("?")
 end, { expr = true })
@@ -395,7 +393,7 @@ keymap("o", "o", function()
     end
 end, { expr = true })
 
-keymap({ "n", "v" }, "<f13>", vim.lsp.buf.signature_help, opts)
+keymap({ "n", "v", "i" }, "<a-s>", vim.lsp.buf.signature_help, opts)
 
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
 
