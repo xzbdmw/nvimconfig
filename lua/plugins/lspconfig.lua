@@ -99,6 +99,15 @@ return {
                             runtime = {
                                 version = "LuaJIT",
                             },
+                            -- semantic = {
+                            --     enable = false,
+                            -- },
+                            workspace = {
+                                library = {
+                                    "${3rd}/luv/library",
+                                    "/usr/local/share/nvim/runtime/lua/",
+                                },
+                            },
                             hint = {
                                 enable = true,
                                 ["setType"] = true,

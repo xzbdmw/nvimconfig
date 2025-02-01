@@ -67,7 +67,9 @@ return {
             R = "toggle_refresh",
             q = "close",
             c = function()
-                vim.cmd("Trouble qflist toggle focus=false")
+                if require("config.utils").has_filetype("trouble") then
+                    require("config.utils").close_any_trouble_window()
+                end
                 require("quicker").toggle({ focus = true })
             end,
             o = "jump_close",

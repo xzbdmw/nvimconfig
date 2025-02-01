@@ -13,6 +13,7 @@ return {
             if not api.nvim_buf_is_valid(buf) then
                 return
             end
+            del({ "n", "x" }, "<d-s>", { buffer = buf })
             del({ "n", "x" }, "N", { buffer = buf })
             del({ "n", "x" }, "n", { buffer = buf })
             del({ "n", "x" }, "u", { buffer = buf })
@@ -30,6 +31,12 @@ return {
         local function set_buffer_keys()
             keymap({ "n", "x" }, "q", function()
                 mc.matchSkipCursor(1)
+            end, opts)
+            keymap({ "n", "x" }, "<D-s>", function()
+                vim.api.nvim_exec_autocmds("User", {
+                    pattern = "ESC",
+                })
+                vim.cmd("write")
             end, opts)
             keymap({ "n", "x" }, "<c-q>", function()
                 mc.matchSkipCursor(-1)
@@ -91,6 +98,9 @@ return {
             mc.toggleCursor()
         end)
         keymap({ "n", "x" }, "<c-n>", function()
+            if vim.api.nvim_get_mode().mode == "n" then
+                FeedKeys("viw", "mix")
+            end
             begin()
             mc.matchAddCursor(1)
         end)

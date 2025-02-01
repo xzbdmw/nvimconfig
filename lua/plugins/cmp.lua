@@ -165,7 +165,7 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     fallback()
                 end),
-                ["<C-b>"] = cmp.mapping(function(fallback)
+                ["<C-b>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -514,7 +514,7 @@ return {
                     c = cmp.mapping.confirm({ select = false }),
                 }),
                 ["<Tab>"] = {
-                    c = function(fallback)
+                    c = function()
                         FeedKeys("<CR>", "n")
                     end,
                 },

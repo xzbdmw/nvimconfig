@@ -93,12 +93,11 @@ function M.show_cursor(timeout)
 end
 
 function _G.hide_cursor(callback, timeout)
-    local hl = M.hide_cursor()
     callback()
-    M.show_cursor(hl, timeout)
+    M.show_cursor(timeout)
 end
 
-function M.check_trouble()
+function M.close_any_trouble_window()
     local ret = false
     if require("trouble").is_open("qflist") then
         vim.cmd("Trouble qflist toggle focus=false")
@@ -231,6 +230,10 @@ function M.close_win()
         vim.api.nvim_win_close(M.filetype_windowid("help"), true)
         return
     end
+    if M.has_filetype("qf") then
+        vim.cmd("cclose")
+        return
+    end
     if M.has_filetype("noice") then -- close :messages window
         local winid = M.filetype_windowid("noice")
         if api.nvim_win_get_config(winid).zindex == nil then
@@ -242,7 +245,7 @@ function M.close_win()
         FeedKeys("<f16>", "m")
         return
     end
-    if M.has_filetype("trouble") and M.check_trouble() then
+    if M.has_filetype("trouble") and M.close_any_trouble_window() then
         return
     end
     if require("config.utils").has_filetype("gitsigns.blame") then
@@ -349,7 +352,7 @@ function M.insert_C_R()
     })
     local key_ns = api.nvim_create_namespace("on_key")
     local count = 0
-    vim.on_key(function(key, typed)
+    vim.on_key(function(key)
         count = count + 1
         if count == 3 then
             if key == "\27" then
@@ -535,7 +538,6 @@ end
 
 function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
-    local buf = api.nvim_get_current_buf()
     local extmark
     if type then
         extmark = api.nvim_buf_get_extmarks(0, ns, { 0, 0 }, { -1, -1 }, { type = type })
@@ -634,7 +636,7 @@ function M.search(mode)
         vim.api.nvim_create_autocmd("CmdlineLeave", {
             once = true,
             callback = function()
-                pcall(function(...)
+                pcall(function()
                     vim.api.nvim_del_autocmd(id)
                 end)
             end,
@@ -681,7 +683,7 @@ end
 
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
-    pcall(function(...)
+    pcall(function()
         local tabpage = api.nvim_get_current_tabpage()
         if tabpage ~= 1 then
             return
@@ -852,7 +854,7 @@ function M.record_winbar_enter()
     end
 
     winbar_macro("")
-    vim.on_key(function(key, typed)
+    vim.on_key(function(_, typed)
         typed = translate_raw_key(typed)
         if api.nvim_buf_get_option(0, "buftype") ~= "prompt" then
             winbar_macro(typed)
@@ -1192,7 +1194,7 @@ function OilDir()
     end
 end
 
-function M.set_oil_winbar(ev)
+function M.set_oil_winbar()
     local path, hl = OilDir()
     local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
     api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
@@ -1270,7 +1272,7 @@ function M.filetype_windowid(filetype)
     return 0
 end
 
-function M.writeFile(path, content)
+function M.writeFile(content)
     local file = io.open("path", "w")
     if file then
         file:write(content .. "\n")
@@ -1282,7 +1284,6 @@ end
 
 --- @param filter function if false we should realy return
 function M.real_enter(callback, filter, who)
-    local cur_buf = api.nvim_get_current_buf()
     who = who or ""
     local timer = vim.loop.new_timer()
     vim.defer_fn(function()
@@ -1293,7 +1294,7 @@ function M.real_enter(callback, filter, who)
         end
     end, 2000)
     local has_start = false
-    local timout = function(opts)
+    local timout = function()
         if not filter() then
             ---@diagnostic disable-next-line: need-check-nil
             if timer:is_active() then
@@ -1311,23 +1312,14 @@ function M.real_enter(callback, filter, who)
             timer:close()
             -- haven't start
             has_start = true
-            if
-                vim.b[cur_buf].gitsigns_preview
-                or vim.b[cur_buf].rust
-                or api.nvim_win_get_config(0).zindex == 9
-                or M.has_filetype("undotree")
-            then
-            else
-                -- vim.notify(who .. "Timer haven't start in " .. opts.time .. "ms!", vim.log.levels.INFO)
-            end
             callback()
         end
     end
     vim.defer_fn(function()
-        timout({ time = 20 })
+        timout()
     end, 30)
     vim.defer_fn(function()
-        timout({ time = 1000 })
+        timout()
     end, 1000)
     local col = vim.fn.screencol()
     local row = vim.fn.screenrow()
@@ -1955,7 +1947,7 @@ end
 function M.gopls_extract_all()
     local mode = vim.api.nvim_get_mode().mode
 
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local row = vim.api.nvim_win_get_cursor(0)[1]
     if mode == "v" or mode == "V" then
         local range = vim.lsp.buf.range_from_selection(0, mode)
         local params = vim.lsp.util.make_given_range_params(range.start, range["end"], 0, "utf-8")
@@ -1976,7 +1968,7 @@ function M.gopls_extract_all()
                             local edits = resolved_action.edit.changes or resolved_action.edit.documentChanges
                             local ranges = {}
                             for _, edit in ipairs(edits) do
-                                for i, e in pairs(edit) do
+                                for _, e in pairs(edit) do
                                     for _, item in ipairs(e) do
                                         table.insert(ranges, item.range)
                                     end
@@ -2011,7 +2003,7 @@ function M.f_search()
     vim.g.disable_flash = true
     local key_ns = vim.api.nvim_create_namespace("f_search")
     local miss_count = 0
-    vim.on_key(function(key, typed)
+    vim.on_key(function(_, typed)
         if typed == ";" then
             FeedKeys(";", "n")
         elseif typed == "," then

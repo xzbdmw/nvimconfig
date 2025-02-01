@@ -114,7 +114,6 @@ end, { expr = true })
 
 keymap("n", "<leader>sl", function()
     local cmd = vim.fn.getreg("/"):gsub("\\V", "")
-    local type = vim.fn.getcmdtype()
     vim.defer_fn(function()
         FeedKeys("<space><bs><CR>", "n")
     end, 5)
@@ -372,7 +371,7 @@ keymap("o", "o", function()
         local scope = MiniIndentscope.get_scope()
         local top = scope.border.top
         local bottom = scope.border.bottom
-        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local row = vim.api.nvim_win_get_cursor(0)[1]
         local move = ""
         if row == bottom then
             move = "k"
@@ -446,7 +445,8 @@ keymap("n", "<c-[>", "<c-w>h", opts)
 keymap("n", "<c-]>", "<c-w>l", opts)
 
 keymap("n", "<D-2>", function()
-    if utils.has_filetype("trouble") and utils.check_trouble() then
+    if utils.has_filetype("trouble") then
+        utils.close_any_trouble_window()
     end
     if
         utils.has_namespace("gitsigns_signs_staged", "highlight") or utils.has_namespace("gitsigns_signs_", "highlight")
@@ -455,7 +455,7 @@ keymap("n", "<D-2>", function()
     end
     local is_git_filter_activated = require("nvim-tree.explorer.filters").config.filter_git_clean
     if is_git_filter_activated then
-        FeedKeys("S", "m")
+        FeedKeys("<leader>S", "m")
     end
     FeedKeys("zz", "m")
 end, opts)

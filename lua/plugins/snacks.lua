@@ -60,7 +60,6 @@ return {
     -- enabled = false,
     -- priority = 1000,
     -- lazy = false,
-    ---@type snacks.Config
     opts = {
         picker = {
             enabled = true,
@@ -99,7 +98,7 @@ return {
                         --     mode = { "i", "n" },
                         -- },
                         ["`"] = {
-                            function(data)
+                            function()
                                 FeedKeys("file:$<left>", "n")
                             end,
                             mode = { "i", "n" },
