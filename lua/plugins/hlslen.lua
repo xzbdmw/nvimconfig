@@ -1,6 +1,7 @@
 return {
     "kevinhwang91/nvim-hlslens",
     version = false,
+    event = "User SearchBegin",
     -- enabled = false,
     config = function()
         local cmd = ""

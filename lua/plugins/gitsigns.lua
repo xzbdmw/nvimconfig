@@ -138,10 +138,10 @@ return {
 
                 map("n", "<leader>si", function()
                     toggle_inline_diff()
-                    local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
+                    local times = { 0, 10, 30, 60 }
                     for _, time in ipairs(times) do
                         vim.defer_fn(function()
-                            vim.cmd("redraw!")
+                            pcall(_G.indent_update)
                         end, time)
                     end
                 end)
@@ -192,7 +192,9 @@ return {
                     gs.setqflist("all")
                 end)
 
-                map({ "o", "x" }, "ih", "<cmd>Gitsigns select_hunk<CR>")
+                map({ "o", "x" }, "ih", function()
+                    gs.select_hunk()
+                end)
             end,
             auto_attach = true,
             attach_to_untracked = false,
@@ -222,7 +224,7 @@ return {
         vim.keymap.set("n", "<leader><leader>b", "<cmd>Gitsigns toggle_current_line_blame<CR>")
         vim.keymap.set("n", "<leader>sp", function()
             vim.cmd("Gitsigns preview_hunk_inline")
-            local times = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 100, 200 }
+            local times = { 0, 10, 30, 60 }
             for _, time in ipairs(times) do
                 vim.defer_fn(function()
                     _G.indent_update()

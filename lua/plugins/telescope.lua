@@ -433,7 +433,7 @@ return {
                     if ok then
                         return
                     end
-                    local hunks = require("gitsigns.actions").get_nav_hunks(api.nvim_get_current_buf(), "all", true)
+                    local hunks = require("gitsigns.actions").get_hunks(api.nvim_get_current_buf())
                     local target
                     if title == "Staged changes" then
                         target = "staged"

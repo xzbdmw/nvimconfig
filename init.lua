@@ -62,7 +62,7 @@ api.nvim_create_autocmd("FocusGained", {
 })
 
 api.nvim_create_autocmd({ "BufLeave" }, {
-    callback = function(data)
+    callback = function()
         if vim.bo.filetype == "lazyterm" then
             return
         end
@@ -72,7 +72,7 @@ api.nvim_create_autocmd({ "BufLeave" }, {
 })
 
 api.nvim_create_autocmd({ "CursorMoved" }, {
-    callback = function(data)
+    callback = function()
         local win = vim.api.nvim_get_current_win()
         if vim.wo[win].cursorline then
             local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
@@ -84,7 +84,7 @@ api.nvim_create_autocmd({ "CursorMoved" }, {
 })
 
 api.nvim_create_autocmd({ "BufEnter" }, {
-    callback = function(data)
+    callback = function()
         vim.schedule(function()
             local win = vim.api.nvim_get_current_win()
             if vim.wo[win].cursorline then
@@ -101,8 +101,17 @@ api.nvim_create_autocmd({ "User" }, {
     pattern = "TelescopePreviewerLoaded",
     callback = function(data)
         local winid = data.data.winid
+        local preview_buf = api.nvim_win_get_buf(winid)
         vim.wo[winid].number = true
-        utils.update_preview_state(api.nvim_win_get_buf(winid), winid)
+        utils.update_preview_state(preview_buf, winid)
+        local ns = api.nvim_create_namespace("preview_match")
+        vim.api.nvim_buf_clear_namespace(preview_buf, ns, 0, -1)
+        utils.update_preview_match(ns, preview_buf)
+        for _, t in ipairs({ 0, 10 }) do
+            vim.defer_fn(function()
+                utils.update_preview_match(ns, preview_buf)
+            end, t)
+        end
     end,
 })
 
@@ -116,7 +125,7 @@ api.nvim_create_autocmd("BufWritePre", {
 })
 
 api.nvim_create_autocmd({ "TabEnter" }, {
-    callback = function(data)
+    callback = function()
         vim.schedule(function()
             local name = vim.api.nvim_buf_get_name(0)
             if vim.startswith(name, "/private/var") then
@@ -195,7 +204,7 @@ api.nvim_create_autocmd("User", {
     pattern = "FlashHide",
     callback = function()
         local key_ns = vim.api.nvim_create_namespace("flash;")
-        vim.on_key(function(key, typed)
+        vim.on_key(function(_, typed)
             if typed == ";" then
                 require("flash.prompt").jump_to_next_match(false)
             elseif typed == "," then
@@ -323,8 +332,8 @@ api.nvim_create_autocmd("FileType", {
         local function in_prompt()
             local view = vim.fn.winsaveview()
             local bottonline = view.topline + vim.api.nvim_win_get_height(0)
-            local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-            return bottonline - 1 ~= row
+            local row = vim.api.nvim_win_get_cursor(0)[1]
+            return bottonline - 1 ~= row or api.nvim_buf_get_lines(0, row - 1, row, false)[1]:match("Search") ~= nil
         end
         vim.keymap.set("t", "c", function()
             return in_prompt() and "c" or "<c-e>"
@@ -362,6 +371,15 @@ api.nvim_create_autocmd("FileType", {
     pattern = "qf",
     callback = function(args)
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = args.buf })
+        vim.keymap.set("n", "<Tab>", function()
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_get_config(win).zindex == 52 then
+                    vim.api.nvim_win_close(win, true)
+                    break
+                end
+            end
+            utils.normal_tab()
+        end, { buffer = args.buf })
     end,
 })
 
@@ -381,7 +399,7 @@ api.nvim_create_autocmd("FileType", {
 
 local origin = vim.g.neovide_flatten_floating_zindex
 api.nvim_create_autocmd("CmdwinEnter", {
-    callback = function(arg)
+    callback = function()
         vim.g.neovide_flatten_floating_zindex = origin .. ",249,250"
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
@@ -394,7 +412,7 @@ api.nvim_create_autocmd("CmdwinEnter", {
     end,
 })
 api.nvim_create_autocmd("CmdwinLeave", {
-    callback = function(arg)
+    callback = function()
         vim.g.neovide_flatten_floating_zindex = origin
     end,
 })
@@ -406,19 +424,6 @@ api.nvim_create_autocmd("FileType", {
         vim.schedule(function()
             vim.keymap.set("n", "<CR>", "K", { buffer = event.buf })
         end)
-    end,
-})
-
-vim.api.nvim_create_autocmd("User", {
-    pattern = "Confirm",
-    callback = function(e)
-        if vim.bo.filetype == "go" then
-            local kind = e.data[2]
-            local col = vim.api.nvim_win_get_cursor(0)[2]
-            if kind == 9 and #vim.api.nvim_get_current_line() == col then
-                FeedKeys(".", "n")
-            end
-        end
     end,
 })
 
@@ -688,7 +693,7 @@ api.nvim_create_autocmd({ "BufWinEnter" }, {
             vim.wo.foldmethod = "manual"
         end
         if vim.bo[ev.buf].filetype == "oil" and api.nvim_get_current_buf() == ev.buf then
-            utils.set_oil_winbar(ev)
+            utils.set_oil_winbar()
         end
         if vim.bo.filetype == "fzf" then
             return

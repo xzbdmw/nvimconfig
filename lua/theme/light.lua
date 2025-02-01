@@ -21,6 +21,8 @@ keymap("n", "n", function()
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_next({ skip_groups = true, jump = true })
+    elseif utils.has_filetype("qf") then
+        FeedKeys("]q", "m")
     elseif require("config.utils").has_namespace("gitsigns_signs_", "highlight") then
         FeedKeys("]c", "m")
     else
@@ -49,6 +51,8 @@ keymap("n", "N", function()
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_prev({ skip_groups = true, jump = true })
+    elseif utils.has_filetype("qf") then
+        FeedKeys("[q", "m")
     elseif require("config.utils").has_namespace("gitsigns_signs_", "highlight") then
         FeedKeys("[c", "m")
     else
@@ -131,6 +135,7 @@ keymap({ "n" }, "<esc>", function()
         require("substitute.exchange").cancel()
         require("illuminate.engine").clear_keeped_highlight()
         require("illuminate.goto").clear_keeped_hl()
+        pcall(_G.indent_update)
     end)
 
     for _, win in pairs(api.nvim_list_wins()) do

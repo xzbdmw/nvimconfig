@@ -1,6 +1,7 @@
 return {
     "Wansmer/sibling-swap.nvim",
     requires = { "nvim-treesitter" },
+    keys = { { "<leader>an" }, { "<leader>ap" } },
     config = function()
         require("sibling-swap").setup({
             allowed_separators = {

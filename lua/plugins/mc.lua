@@ -13,6 +13,9 @@ return {
             if not api.nvim_buf_is_valid(buf) then
                 return
             end
+            del({ "n", "x" }, "<d-s>", { buffer = buf })
+            del({ "n", "x" }, "y", { buffer = buf })
+            del({ "i" }, "<d-v>", { buffer = buf })
             del({ "n", "x" }, "N", { buffer = buf })
             del({ "n", "x" }, "n", { buffer = buf })
             del({ "n", "x" }, "u", { buffer = buf })
@@ -30,6 +33,16 @@ return {
         local function set_buffer_keys()
             keymap({ "n", "x" }, "q", function()
                 mc.matchSkipCursor(1)
+            end, opts)
+            keymap({ "n", "x" }, "y", "y", opts)
+            keymap({ "i" }, "<d-v>", function()
+                vim.notify("use <C-r> instead")
+            end, opts)
+            keymap({ "n", "x" }, "<D-s>", function()
+                vim.api.nvim_exec_autocmds("User", {
+                    pattern = "ESC",
+                })
+                vim.cmd("write")
             end, opts)
             keymap({ "n", "x" }, "<c-q>", function()
                 mc.matchSkipCursor(-1)
@@ -91,6 +104,9 @@ return {
             mc.toggleCursor()
         end)
         keymap({ "n", "x" }, "<c-n>", function()
+            if vim.api.nvim_get_mode().mode == "n" then
+                FeedKeys("viw", "mix")
+            end
             begin()
             mc.matchAddCursor(1)
         end)
@@ -105,22 +121,6 @@ return {
         keymap("x", "s", function()
             begin()
             mc.splitCursors()
-        end)
-        keymap("x", "I", function()
-            if vim.fn.mode() == vim.api.nvim_replace_termcodes("<c-v>", true, true, true) then
-                begin()
-                mc.insertVisual()
-            else
-                FeedKeys("I", "n")
-            end
-        end)
-        keymap("x", "A", function()
-            if vim.fn.mode() == vim.api.nvim_replace_termcodes("<c-v>", true, true, true) then
-                begin()
-                mc.appendVisual()
-            else
-                FeedKeys("A", "n")
-            end
         end)
         keymap("n", "<c-leftmouse>", function()
             if not vim.g.mc_aptive then

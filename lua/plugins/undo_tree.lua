@@ -1,5 +1,4 @@
 return {
-    lazy = false,
     keys = {
         {
             "<leader>un",

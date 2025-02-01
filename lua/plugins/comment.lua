@@ -1,7 +1,9 @@
 return {
     "numToStr/Comment.nvim",
+    init = function()
+        vim.keymap.del("n", "gcc")
+    end,
     keys = {
-        { "gcc", mode = "n", desc = "comment toggle current line" },
         { "gc", mode = { "n", "o" }, desc = "comment toggle linewise" },
         { "gc", mode = "x", desc = "comment toggle linewise (visual)" },
         { "gbc", mode = "n", desc = "comment toggle current block" },
@@ -18,7 +20,7 @@ return {
         ---LHS of toggle mappings in NORMAL mode
         toggler = {
             ---Line-comment toggle keymap
-            line = "gcc",
+            line = "<NOP>",
             ---Block-comment toggle keymap
             block = "gbc",
         },
@@ -32,11 +34,11 @@ return {
         ---LHS of extra mappings
         extra = {
             ---Add comment on the line above
-            above = "gcO",
+            above = "<NOP>",
             ---Add comment on the line below
-            below = "gco",
+            below = "<NOP>",
             ---Add comment at the end of line
-            eol = "gcA",
+            eol = "<NOP>",
         },
         ---Enable keybindings
         ---NOTE: If given `false` then the plugin won't create any mappings

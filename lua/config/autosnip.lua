@@ -66,7 +66,7 @@ end
 function M.auto_add_ret()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*ree$") == nil) then
+    if string.match(line, "^%s*re ") == nil then
         return
     end
     FeedKeys("<BS>turn ", "n")

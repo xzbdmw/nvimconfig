@@ -38,7 +38,6 @@ return {
         local keymap = vim.keymap.set
         local keymap_ops = { remap = true, silent = true }
         keymap("x", '"', 'ma"', keymap_ops)
-        keymap("x", "<", "ma<", keymap_ops)
         keymap("x", "'", "ma'", keymap_ops)
         keymap("x", "[[", "ma[", keymap_ops)
         keymap("x", "{", "ma{", keymap_ops)

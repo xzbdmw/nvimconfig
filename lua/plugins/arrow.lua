@@ -1,6 +1,6 @@
 return {
     "otavioschwanck/arrow.nvim",
-    priority = 10000,
+    keys = { { "'" }, { "\\" } },
     cond = function()
         return not vim.g.scrollback
     end,

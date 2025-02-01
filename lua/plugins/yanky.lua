@@ -1,7 +1,6 @@
 return {
     "gbprod/yanky.nvim",
     -- commit = "0dc8e0f262246ce4a891f0adf61336b3afe7c579",
-    lazy = false,
     keys = function()
         local function put(position)
             vim.g.hlchunk_disable = true
@@ -12,7 +11,6 @@ return {
             end)
             return "<Plug>(YankyPut" .. position .. ")"
         end
-
         return {
             {
                 "y",
