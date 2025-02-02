@@ -460,6 +460,12 @@ keymap("n", "<D-2>", function()
     FeedKeys("zz", "m")
 end, opts)
 
+vim.keymap.set("o", "c", function()
+    if vim.o.operatorfunc == "v:lua.require'Comment.api'.locked'toggle.linewise'" then
+        return "_"
+    end
+end, { expr = true })
+
 keymap("n", "<c-q>", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
         return "qa"

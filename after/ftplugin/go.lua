@@ -16,13 +16,7 @@ local function handler(_, result, ctx)
         end
     end
 end
-vim.keymap.set("n", "<leader>xt", function()
-    require("dap-go").debug_test()
-    require("dapui").toggle()
-    vim.api.nvim_exec_autocmds("User", {
-        pattern = "ToggleDebug",
-    })
-end, { buffer = true })
+
 vim.keymap.set("v", "<Tab>", function()
     local mode = api.nvim_get_mode().mode
     if mode == "v" or mode == "V" then
