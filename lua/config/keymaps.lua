@@ -408,7 +408,10 @@ keymap("n", "<leader>uu", function()
 end, { expr = true })
 
 keymap("n", "<leader>sd", function()
-    if vim.g.Base_commit == "" then
+    local tabs = vim.api.nvim_list_tabpages()
+    if #tabs > 1 then
+        FeedKeys("<leader>`", "m")
+    elseif vim.g.Base_commit == "" then
         vim.cmd("DiffviewOpen")
     else
         vim.cmd("DiffviewOpen " .. vim.g.Base_commit)

@@ -204,6 +204,14 @@ return {
                 end,
             },
             {
+                "<leader>sG",
+                function()
+                    return "<leader>sH"
+                end,
+                expr = true,
+                remap = true,
+            },
+            {
                 "<leader>fb",
                 function()
                     local filename = vim.fn.expand("%:t")
