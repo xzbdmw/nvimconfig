@@ -674,7 +674,7 @@ function M.insert_mode_tab()
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
         return "<Tab>"
     else
-        return "<right>"
+        return "<c-g>U<right>"
     end
 end
 

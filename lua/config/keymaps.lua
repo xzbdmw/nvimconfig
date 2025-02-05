@@ -407,6 +407,8 @@ keymap("n", "<leader>uu", function()
     end
 end, { expr = true })
 
+keymap("i", "<left>", "<c-g>U<left>")
+keymap("i", "<right>", "<c-g>U<right>")
 keymap("n", "<leader>sd", function()
     local tabs = vim.api.nvim_list_tabpages()
     if #tabs > 1 then

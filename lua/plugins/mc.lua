@@ -14,6 +14,7 @@ return {
                 return
             end
             del({ "n", "x" }, "<d-s>", { buffer = buf })
+            del({ "n", "x" }, "<Tab>", { buffer = buf })
             del({ "n", "x" }, "y", { buffer = buf })
             del({ "i" }, "<d-v>", { buffer = buf })
             del({ "n", "x" }, "N", { buffer = buf })
@@ -33,6 +34,9 @@ return {
         local function set_buffer_keys()
             keymap({ "n", "x" }, "q", function()
                 mc.matchSkipCursor(1)
+            end, opts)
+            keymap({ "n", "x" }, "<Tab>", function()
+                mc.toggleCursor()
             end, opts)
             keymap({ "n", "x" }, "y", "y", opts)
             keymap({ "i" }, "<d-v>", function()
@@ -99,10 +103,6 @@ return {
             begin()
             mc.restoreCursors()
         end)
-        keymap({ "n", "x" }, "<d-x>", function()
-            begin()
-            mc.toggleCursor()
-        end)
         keymap({ "n", "x" }, "<c-n>", function()
             if vim.api.nvim_get_mode().mode == "n" then
                 FeedKeys("viw", "mix")
@@ -118,6 +118,10 @@ return {
             begin()
             mc.matchCursors()
         end)
+        keymap({ "x" }, "mw", function()
+            begin()
+            mc.matchCursors([[\<\w]])
+        end)
         keymap("x", "s", function()
             begin()
             mc.splitCursors()
@@ -131,7 +135,7 @@ return {
         end)
         vim.api.nvim_set_hl(0, "MultiCursorCursor", { link = "MultiCursor" })
         vim.api.nvim_set_hl(0, "MultiCursorVisual", { link = "LighterVisual" })
-        vim.api.nvim_set_hl(0, "MultiCursorDisabledCursor", { link = "Visual" })
+        vim.api.nvim_set_hl(0, "MultiCursorDisabledCursor", { link = "MCDisabled" })
         vim.api.nvim_set_hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
     end,
 }

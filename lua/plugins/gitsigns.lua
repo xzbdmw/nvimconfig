@@ -47,12 +47,22 @@ return {
                 -- Navigation
                 map("n", "]c", function()
                     gs.nav_hunk("next", { target = "unstaged", navigation_message = false })
-                    require("config.utils").adjust_view(0, 3)
+                    vim.api.nvim_create_autocmd("CursorMoved", {
+                        once = true,
+                        callback = function()
+                            require("config.utils").adjust_view(0, 3)
+                        end,
+                    })
                 end)
 
                 map("n", "[c", function()
                     gs.nav_hunk("prev", { target = "unstaged", navigation_message = false })
-                    require("config.utils").adjust_view(0, 3)
+                    vim.api.nvim_create_autocmd("CursorMoved", {
+                        once = true,
+                        callback = function()
+                            require("config.utils").adjust_view(0, 3)
+                        end,
+                    })
                 end)
 
                 map("n", "<leader>rh", function()
