@@ -9,6 +9,10 @@ return {
                 mode = { "i" },
                 function()
                     _G.no_animation(_G.CI)
+                    if require("multicursor-nvim").numCursors() > 1 then
+                        return
+                    end
+
                     local cur = vim.api.nvim_win_get_cursor(0)
                     MiniSnippets.session.jump("next")
                     vim.schedule(function()
@@ -27,6 +31,10 @@ return {
                 mode = { "i" },
                 function()
                     _G.no_animation(_G.CI)
+                    if require("multicursor-nvim").numCursors() > 1 then
+                        return
+                    end
+
                     local cur = vim.api.nvim_win_get_cursor(0)
                     MiniSnippets.session.jump("prev")
                     vim.schedule(function()

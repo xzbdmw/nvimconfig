@@ -86,7 +86,7 @@ return {
                 GrugFarResultsMatchAdded = { bg = "#CAFCD6" },
                 GrugFarResultsMatchRemoved = { bg = "#FFDEDE" },
                 GitSignsChangeInline = { link = "DiffText" },
-                GitSignsAddInline = { bg = "#BEE6BE" },
+                GitSignsAddInline = { link = "DiffText" },
                 GitSignsChangePreview = { link = "DiffChange" },
                 GitSignsStagedDeleteNr = { fg = "#b4637a" },
                 GitSignsStagedChangeNr = { fg = "#8688BF" },

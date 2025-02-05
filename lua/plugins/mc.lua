@@ -19,15 +19,14 @@ return {
             del({ "i" }, "<d-v>", { buffer = buf })
             del({ "n", "x" }, "N", { buffer = buf })
             del({ "n", "x" }, "n", { buffer = buf })
-            del({ "n", "x" }, "u", { buffer = buf })
+            del({ "n" }, "u", { buffer = buf })
+            del({ "n" }, "<C-R>", { buffer = buf })
             del({ "n", "x" }, "q", { buffer = buf })
             del({ "n", "x" }, "<c-q>", { buffer = buf })
             del({ "n", "x" }, "<leader><c-a>", { buffer = buf })
             del({ "n", "x" }, "<leader><c-q>", { buffer = buf })
             del({ "n", "x" }, "<leader><c-e>", { buffer = buf })
             del({ "n", "x" }, "<leader>x", { buffer = buf })
-            del({ "n", "x" }, "<c-t>", { buffer = buf })
-            del({ "x" }, "<leader>e", { buffer = buf })
             del({ "n", "x" }, ")", { buffer = buf })
             del({ "n", "x" }, "(", { buffer = buf })
         end
@@ -57,15 +56,10 @@ return {
             keymap({ "n", "x" }, "N", function()
                 mc.matchAddCursor(-1)
             end, opts)
-            keymap({ "n", "x" }, "u", function()
-                vim.api.nvim_exec_autocmds("User", {
-                    pattern = "ESC",
-                })
-                return "u"
-            end, { expr = true, remap = true })
+            keymap({ "n" }, "u", "u", opts)
+            keymap({ "n" }, "<C-r>", "<C-r>", opts)
             keymap({ "n", "x" }, "<leader>x", mc.deleteCursor, opts)
             keymap({ "n", "x" }, "<leader><c-q>", mc.duplicateCursors, opts)
-            keymap({ "n", "x" }, "<leader>e", mc.enableCursors, opts)
             keymap({ "n", "x" }, "<leader><c-a>", mc.alignCursors, opts)
             keymap("x", "<leader><c-e>", function()
                 mc.transposeCursors(1)
@@ -74,9 +68,9 @@ return {
             keymap({ "n", "x" }, "(", mc.prevCursor, opts)
         end
         local begin = function()
-            if vim.g.mc_active then
-                return
-            end
+            -- if vim.g.mc_active then
+            --     return
+            -- end
             vim.g.mc_active = true
             local buf = vim.api.nvim_get_current_buf()
             set_buffer_keys()

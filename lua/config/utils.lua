@@ -1542,8 +1542,8 @@ end
 
 function M.refresh_satellite_search()
     local winid = vim.api.nvim_get_current_win()
-    local ok, bwinid = pcall(require("satellite.view").get_or_create_view, winid)
-    if ok then
+    pcall(function()
+        local bwinid = require("satellite.view")(get_or_create_view, winid)
         for _, handler in ipairs(require("satellite.handlers").handlers) do
             if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
                 if handler.name == "search" then
@@ -1551,13 +1551,13 @@ function M.refresh_satellite_search()
                 end
             end
         end
-    end
+    end)
 end
 
 function M.clear_satellite_search()
     local winid = vim.api.nvim_get_current_win()
-    local ok, bwinid = pcall(require("satellite.view").get_or_create_view, winid)
-    if ok then
+    pcall(function()
+        local bwinid = require("satellite.view")(get_or_create_view, winid)
         for _, handler in ipairs(require("satellite.handlers").handlers) do
             if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
                 if handler.name == "search" then
@@ -1566,7 +1566,7 @@ function M.clear_satellite_search()
                 end
             end
         end
-    end
+    end)
 end
 
 function M.refresh_term_title()
@@ -1601,6 +1601,10 @@ function M.refresh_search_winbar()
 end
 
 function M.mini_snippet_expand(args)
+    if require("multicursor-nvim").numCursors() > 1 then
+        vim.snippet.expand(args.body)
+        return
+    end
     local cursor = api.nvim_win_get_cursor(0)
     local line = api.nvim_get_current_line()
     _G.no_animation(_G.CI)

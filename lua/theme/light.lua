@@ -112,6 +112,10 @@ keymap("n", "[s", function()
 end)
 
 keymap({ "n" }, "<esc>", function()
+    if not require("multicursor-nvim").cursorsEnabled() then
+        require("multicursor-nvim").enableCursors()
+        return
+    end
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         FeedKeys("q", "n")
         return

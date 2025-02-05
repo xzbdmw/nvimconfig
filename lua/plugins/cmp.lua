@@ -252,12 +252,7 @@ return {
                     if cmp.visible() then
                         _G.no_animation(_G.CI)
                         f.expand = true
-                        if require("multicursor-nvim").numCursors() > 1 then
-                            cmp.select_cur_item()
-                            vim.schedule(cmp.close)
-                        else
-                            cmp.confirm({ select = true })
-                        end
+                        cmp.confirm({ select = true })
                     else
                         _G.no_delay(0.0)
                         fallback()

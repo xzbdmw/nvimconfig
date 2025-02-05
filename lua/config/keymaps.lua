@@ -201,9 +201,8 @@ keymap("o", "c", function()
     if s == "y" then
         local row, col = unpack(vim.api.nvim_win_get_cursor(0))
         FeedKeys("<esc>yygc_", "m")
-        FeedKeys("p", "n")
         FeedKeys(
-            "<cmd>lua " .. string.format("vim.api.nvim_win_set_cursor(%s, { %d, %d })", 0, row + 1, col) .. "<CR>",
+            "p<cmd>lua " .. string.format("vim.api.nvim_win_set_cursor(%s, { %d, %d })", 0, row + 1, col) .. "<CR>",
             "n"
         )
         return ""
@@ -609,6 +608,25 @@ end, { expr = true, remap = true })
 
 keymap("n", "<leader>m", "<c-w>o", opts)
 keymap({ "n", "o" }, "^", "0", opts)
+keymap("i", "<c-u>", "<cmd>undo<CR>", opts)
+keymap("i", ",", function()
+    if require("multicursor-nvim").numCursors() > 1 then
+        return ","
+    end
+    return ",<c-g>u"
+end, { expr = true })
+keymap("i", ".", function()
+    if require("multicursor-nvim").numCursors() > 1 then
+        return "."
+    end
+    return ".<c-g>u"
+end, { expr = true })
+keymap("i", ";", function()
+    if require("multicursor-nvim").numCursors() > 1 then
+        return ";"
+    end
+    return ";<c-g>u"
+end, { expr = true })
 keymap("i", "<BS>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         return "<BS>"
