@@ -3,7 +3,7 @@ return {
     event = "InsertEnter",
     opts = {
         disable_filetype = { "snacks_picker_input", "TelescopePrompt" },
-        break_undo = true,
+        break_undo = false,
         fast_wrap = {
             map = "<c-e>",
             chars = { "{", "[", "(", '"', "'", "<" },

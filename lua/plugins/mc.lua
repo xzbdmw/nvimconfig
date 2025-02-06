@@ -68,9 +68,9 @@ return {
             keymap({ "n", "x" }, "(", mc.prevCursor, opts)
         end
         local begin = function()
-            -- if vim.g.mc_active then
-            --     return
-            -- end
+            if vim.g.mc_active then
+                return
+            end
             vim.g.mc_active = true
             local buf = vim.api.nvim_get_current_buf()
             set_buffer_keys()
@@ -98,9 +98,9 @@ return {
             mc.restoreCursors()
         end)
         keymap({ "n", "x" }, "<c-n>", function()
-            if vim.api.nvim_get_mode().mode == "n" then
-                FeedKeys("viw", "mix")
-            end
+            -- if vim.api.nvim_get_mode().mode == "n" then
+            --     FeedKeys("viw", "mix")
+            -- end
             begin()
             mc.matchAddCursor(1)
         end)

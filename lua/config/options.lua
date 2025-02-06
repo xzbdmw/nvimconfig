@@ -9,7 +9,7 @@ vim.o.pumheight = 15
 vim.o.showbreak = "↪ "
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000
-vim.opt.diffopt:append({ "linematch:60", "algorithm:histogram", "indent-heuristic" })
+vim.opt.diffopt:append({ "linematch:40", "algorithm:histogram", "indent-heuristic" })
 vim.o.virtualedit = "block"
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
@@ -18,7 +18,6 @@ vim.o.foldtext = ""
 vim.o.expandtab = false
 vim.o.foldmethod = "manual"
 vim.o.incsearch = true
-vim.o.showtabline = 0
 vim.o.relativenumber = false
 vim.o.pumblend = 0
 vim.o.shiftwidth = 4
@@ -77,63 +76,3 @@ vim.g.neovide_touch_deadzone = 0
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0.00
 vim.g.neovide_hide_mouse_when_typing = true
-
-vim.g.rustaceanvim = {
-    server = {
-        cmd = function()
-            return { "rust-analyzer" }
-        end,
-        -- trace = {
-        --     server = "verbose",
-        -- },
-        settings = {
-            -- rust-analyzer language server configuration
-            ["rust-analyzer"] = {
-                completion = {
-                    -- callable = {
-                    --     snippets = "add_parentheses",
-                    -- },
-                    fullFunctionSignatures = {
-                        enable = false,
-                    },
-                    privateEditable = {
-                        enable = true,
-                    },
-                },
-                procMacro = {
-                    ignored = {
-                        tokio_macros = {
-                            "main",
-                            "test",
-                        },
-                        tracing_attributes = {
-                            "instrument",
-                        },
-                    },
-                },
-                inlayHints = {
-                    parameterHints = false,
-                    closureReturnTypeHints = "with_block",
-                },
-                workspace = {
-                    symbol = {
-                        search = {
-                            -- scope = "workspace_and_dependencies",
-                            -- scope = "workspace",
-                        },
-                    },
-                },
-            },
-        },
-    },
-    tools = {
-        hover_actions = {
-            replace_builtin_hover = true,
-        },
-        float_win_config = {
-            border = "solid",
-            auto_focus = false,
-            winhighlight = "CursorLine:MyCursorLine,Normal:MyNormalFloat",
-        },
-    },
-}

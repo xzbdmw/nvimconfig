@@ -408,6 +408,14 @@ end, { expr = true })
 
 keymap("i", "<left>", "<c-g>U<left>")
 keymap("i", "<right>", "<c-g>U<right>")
+
+keymap("n", "<leader>bD", function()
+    local winbar = vim.wo.winbar
+    vim.cmd(string.format("tabedit %% | leftabove vnew |set ft=%s ", vim.bo.filetype))
+    vim.wo[vim.api.nvim_get_current_win()].winbar = winbar
+    vim.cmd([[r ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
+end, opts)
+
 keymap("n", "<leader>sd", function()
     local tabs = vim.api.nvim_list_tabpages()
     if #tabs > 1 then
@@ -534,6 +542,9 @@ keymap("n", "<leader>rW", function()
 end, { expr = true })
 
 keymap("n", "<leader>al", "f)i, ", opts)
+keymap("n", "<leader><c-c>", function()
+    vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
+end, opts)
 keymap("n", "<leader>ah", "F(a, <left><left>", opts)
 keymap("x", "C", function()
     local s, _ = vim.fn.line("."), vim.fn.line("v")
@@ -671,7 +682,22 @@ keymap("n", "<d-w>", "<c-w>", opts)
 -- Command line mapping
 keymap("c", "<C-d>", "<C-w>", opts)
 keymap("c", "<d-v>", '<c-r>"', opts)
-
+-- cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\V\\%V" : '/'
+keymap("x", "/", [[<esc>/\%V]], { remap = true })
+keymap("x", "A", function()
+    if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
+        return "<c-v>A"
+    else
+        return "A"
+    end
+end, { expr = true })
+keymap("x", "I", function()
+    if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
+        return "<c-v>I"
+    else
+        return "I"
+    end
+end, { expr = true })
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
 -- keymap("c", "<c-f>", "<S-Right>", opts)
