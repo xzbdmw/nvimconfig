@@ -353,6 +353,7 @@ end, opts)
 
 keymap("n", "<leader>q", "<cmd>qall!<CR>", opts)
 keymap({ "n", "x" }, "gj", "J", opts)
+keymap("n", "gv", "`[v`]", opts)
 keymap({ "n", "i", "c", "t" }, "<f17>", "<cmd>qall!<CR>", opts)
 keymap("n", "Y", "y$", opts)
 keymap("x", "w", "e", opts)
@@ -609,6 +610,29 @@ keymap("n", "E", function()
     return "Ea"
 end, { expr = true })
 
+keymap("n", "<c-;>", function()
+    return "q:"
+end, { expr = true })
+keymap("n", "<leader>ol", function()
+    if vim.o.diffopt:find("linematch") ~= nil then
+        vim.opt.diffopt:remove({ "linematch:60" })
+        vim.notify("remove linematch", vim.log.levels.INFO)
+    else
+        vim.opt.diffopt:append({ "linematch:60" })
+        vim.notify("append linematch", vim.log.levels.INFO)
+    end
+end, opts)
+
+keymap("n", "<leader>o<space>", function()
+    if vim.o.diffopt:find("iwhiteall") ~= nil then
+        vim.opt.diffopt:remove({ "iwhiteall" })
+        vim.notify("remove iwhiteall", vim.log.levels.INFO)
+    else
+        vim.opt.diffopt:append({ "iwhiteall" })
+        vim.notify("append iwhiteall", vim.log.levels.INFO)
+    end
+end, opts)
+
 keymap("n", "<leader>j", function()
     _G.set_cursor_animation(0)
     vim.defer_fn(function()
@@ -685,18 +709,10 @@ keymap("c", "<d-v>", '<c-r>"', opts)
 -- cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\V\\%V" : '/'
 keymap("x", "/", [[<esc>/\%V]], { remap = true })
 keymap("x", "A", function()
-    if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
-        return "<c-v>A"
-    else
-        return "A"
-    end
+    return "<esc>a"
 end, { expr = true })
 keymap("x", "I", function()
-    if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
-        return "<c-v>I"
-    else
-        return "I"
-    end
+    return "o<esc>i"
 end, { expr = true })
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)

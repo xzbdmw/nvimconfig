@@ -9,7 +9,7 @@ vim.o.pumheight = 15
 vim.o.showbreak = "↪ "
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000
-vim.opt.diffopt:append({ "linematch:40", "algorithm:histogram", "indent-heuristic" })
+vim.opt.diffopt:append({ "linematch:60", "indent-heuristic" })
 vim.o.virtualedit = "block"
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661

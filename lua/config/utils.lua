@@ -1301,8 +1301,10 @@ function M.on_complete(bo_line, bo_line_side, origin_height)
         local count = api.nvim_buf_line_count(picker.results_bufnr)
         if count == 1 and vim.api.nvim_buf_get_lines(picker.results_bufnr, 0, -1, false)[1] == "" then
             local line = vim.api.nvim_buf_get_lines(picker.prompt_bufnr, 0, -1, false)[1]
-            local new_line = line:gsub("'", " ")
-            api.nvim_buf_set_lines(picker.prompt_bufnr, 0, -1, false, { new_line })
+            if line:find("'", nil, true) ~= nil then
+                local new_line = line:gsub("'", " ")
+                api.nvim_buf_set_lines(picker.prompt_bufnr, 0, -1, false, { new_line })
+            end
         end
         local top_win = api.nvim_win_get_config(picker.results_win)
         local buttom_buf = api.nvim_win_get_buf(picker.results_win + 1)

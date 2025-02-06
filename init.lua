@@ -402,6 +402,7 @@ api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
         vim.g.neovide_flatten_floating_zindex = origin .. ",249,250"
         vim.keymap.set("n", "<cr>", "<cr>", { buffer = true })
+        vim.keymap.set({ "i", "n" }, "<Tab>", "<cr>", { buffer = true })
         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
         local cmp = require("cmp")
         if cmp.visible() then

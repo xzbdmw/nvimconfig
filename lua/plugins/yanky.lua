@@ -3,7 +3,6 @@ return {
     -- commit = "0dc8e0f262246ce4a891f0adf61336b3afe7c579",
     keys = function()
         local function put(position)
-            vim.g.hlchunk_disable = true
             vim.g.type_o = true
             vim.schedule(function()
                 vim.g.type_o = false

@@ -12,6 +12,7 @@ return {
         filetypes_denylist = {
             "help",
             "markdown",
+            "vim",
             "Glance",
             "snacks_picker_input",
             "fugitive",
