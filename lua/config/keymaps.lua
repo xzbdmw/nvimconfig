@@ -24,10 +24,6 @@ keymap({ "n" }, "g;", function()
     return "g;z"
 end, { expr = true, remap = true })
 
-keymap({ "n" }, "gi", function()
-    return "gi<C-o>z"
-end, { expr = true, remap = true })
-
 keymap({ "n" }, "g,", function()
     return "g,z"
 end, { expr = true, remap = true })
@@ -136,13 +132,12 @@ keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
 end, opts)
 keymap("n", "g.", "`.", opts)
+
 keymap("n", "o", function()
-    _G.no_delay(0)
-    return "o"
-end, { expr = true, remap = true })
+    return utils.smart_newline(0, "o")
+end, { expr = true })
 keymap("n", "O", function()
-    _G.no_delay(0)
-    return "O"
+    return utils.smart_newline(0, "O")
 end, { expr = true })
 
 keymap("n", "i", function()

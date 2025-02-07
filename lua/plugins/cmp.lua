@@ -254,7 +254,7 @@ return {
                         f.expand = true
                         cmp.confirm({ select = true })
                     else
-                        _G.no_delay(0.0)
+                        utils.speedup_newline(0)
                         fallback()
                     end
                     vim.defer_fn(function()

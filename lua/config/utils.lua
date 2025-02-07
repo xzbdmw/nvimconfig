@@ -749,7 +749,7 @@ function M.do_highlight(buf)
     end
 end
 
-_G.no_delay = function(animation)
+M.speedup_newline = function(animation)
     TST = vim.uv.hrtime()
     vim.g.type_o = true
     _G.set_cursor_animation(animation)
@@ -761,12 +761,35 @@ _G.no_delay = function(animation)
             local debounce_trailing = require("gitsigns.debounce").debounce_trailing
             debounce_trailing(1, async.create(1, manager.update))(api.nvim_get_current_buf())
         end
-    end)
-    vim.defer_fn(function()
         pcall(_G.indent_update)
         pcall(_G.mini_indent_auto_draw)
+    end)
+    vim.defer_fn(function()
         _G.set_cursor_animation(_G.CI)
     end, 20)
+end
+
+M.smart_newline = function(animation, direction)
+    M.speedup_newline(animation)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local above = api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+    local below = api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+    if direction == "O" then
+        above, below = below, above
+    end
+    if above == nil or below == nil then
+        return direction
+    end
+    local ae, be = above:sub(#above, #above), below:sub(#below, #below)
+    if (ae == "," or ae == "{") and be == "," then
+        if require("multicursor-nvim").numCursors() > 1 then
+            return direction .. ",<c-g>U<left><esc>a"
+        else
+            return direction .. ",<c-g>U<left>"
+        end
+    else
+        return direction
+    end
 end
 
 function M.try_update_visual_coloum()

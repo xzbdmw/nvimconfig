@@ -98,9 +98,9 @@ return {
             mc.restoreCursors()
         end)
         keymap({ "n", "x" }, "<c-n>", function()
-            -- if vim.api.nvim_get_mode().mode == "n" then
-            --     FeedKeys("viw", "mix")
-            -- end
+            if vim.api.nvim_get_mode().mode == "n" then
+                FeedKeys("viw", "mix")
+            end
             begin()
             mc.matchAddCursor(1)
         end)
