@@ -409,7 +409,6 @@ api.nvim_create_autocmd("CmdwinEnter", {
             cmp.close()
         end
         cmp.setup.buffer({ sources = cmp.config.sources({ { name = "cmdline" } }) })
-        vim.cmd("startinsert")
     end,
 })
 api.nvim_create_autocmd("CmdwinLeave", {
@@ -444,6 +443,7 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.lua_auto_add_local()
             snip.lua_auto_add_while()
             snip.auto_add_if()
+            snip.lua_abbr()
             snip.auto_add_forr()
             snip.auto_add_fori()
             snip.auto_add_ret()

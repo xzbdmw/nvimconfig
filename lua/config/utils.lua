@@ -408,35 +408,8 @@ function M.insert_mode_space()
     if has_map or api.nvim_buf_get_option(0, "buftype") == "prompt" then
         return
     end
-    local changed_keys = {
-        ["<Esc>"] = "<esc>",
-        ["<C-A>"] = "a",
-        ["<C-B>"] = "b",
-        ["<C-C>"] = "c",
-        ["<C-D>"] = "d",
-        ["<C-E>"] = "e",
-        ["<C-F>"] = "f",
-        ["<C-G>"] = "g",
-        ["<C-H>"] = "h",
-        ["<C-I>"] = "i",
-        ["<C-J>"] = "j",
-        ["<C-K>"] = "k",
-        ["<C-L>"] = "l",
-        ["<C-M>"] = "m",
-        ["<C-N>"] = "n",
-        ["<C-O>"] = "o",
-        ["<C-P>"] = "p",
-        ["<C-Q>"] = "q",
-        ["<C-R>"] = "r",
-        ["<C-S>"] = "s",
-        ["<C-T>"] = "t",
-        ["<C-U>"] = "u",
-        ["<C-V>"] = "v",
-        ["<C-W>"] = "w",
-        ["<C-X>"] = "x",
-        ["<C-Y>"] = "y",
-        ["<C-Z>"] = "z",
-    }
+    -- stylua: ignore
+    local changed_keys = { ["<Esc>"] = "<esc>", ["<C-A>"] = "a", ["<C-B>"] = "b", ["<C-C>"] = "c", ["<C-D>"] = "d", ["<C-E>"] = "e", ["<C-F>"] = "f", ["<C-G>"] = "g", ["<C-H>"] = "h", ["<C-I>"] = "i", ["<C-J>"] = "j", ["<C-K>"] = "k", ["<C-L>"] = "l", ["<C-M>"] = "m", ["<C-N>"] = "n", ["<C-O>"] = "o", ["<C-P>"] = "p", ["<C-Q>"] = "q", ["<C-R>"] = "r", ["<C-S>"] = "s", ["<C-T>"] = "t", ["<C-U>"] = "u", ["<C-V>"] = "v", ["<C-W>"] = "w", ["<C-X>"] = "x", ["<C-Y>"] = "y", ["<C-Z>"] = "z" }
 
     original_keymaps = vim.api.nvim_get_keymap("i")
 

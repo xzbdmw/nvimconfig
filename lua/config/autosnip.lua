@@ -39,6 +39,19 @@ function M.auto_add_if()
     end)
 end
 
+function M.lua_abbr()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    for s, n in pairs({ lcoal = "<BS><BS><BS><BS>ocal", funciton = "<BS><BS><BS><BS>tion", functino = "<BS><BS>on" }) do
+        if string.match(line, "^%s*" .. s .. "$") ~= nil then
+            FeedKeys(n, "m")
+            if require("cmp").visible() then
+                require("cmp").close()
+            end
+        end
+    end
+end
+
 function M.lua_auto_add_while()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
@@ -69,7 +82,7 @@ function M.auto_add_ret()
     if string.match(line, "^%s*ren") == nil then
         return
     end
-    FeedKeys("<BS>turn ", "n")
+    FeedKeys("<BS>turn", "n")
     if require("cmp").visible() then
         require("cmp").close()
     end
