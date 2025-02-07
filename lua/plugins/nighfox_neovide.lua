@@ -63,7 +63,7 @@ return {
                 SnacksPickerRow = { link = "CmpGhostTextNonItalic" },
                 SnacksPickerDelim = { link = "SnacksPickerRow" },
                 SnacksPickerCol = { link = "CmpGhostTextNonItalic" },
-                SnacksPickerMatch = { link = "TelescopeGrepMatching" },
+                SnacksPickerMatch = { link = "TelescopeMatching" },
                 SnacksPickerDir = { link = "CmpGhostTextNonItalic" },
                 SnacksPickerFile = { link = "SmartUnOpened" },
                 SnacksPickerPreviewCursorLine = { link = "TelescopeSelection" },

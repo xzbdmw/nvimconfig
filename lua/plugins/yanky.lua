@@ -104,7 +104,7 @@ return {
         highlight = {
             on_put = true,
             on_yank = true,
-            timer = 130,
+            timer = 180,
         },
         preserve_cursor_position = {
             enabled = true,

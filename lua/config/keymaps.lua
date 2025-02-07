@@ -633,11 +633,18 @@ keymap("n", "<leader>j", function()
     vim.defer_fn(function()
         _G.set_cursor_animation(_G.CI)
     end, 100)
+    local cur = api.nvim_get_current_line()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local f1, f2 = cur:find("function(.*) (end)")
+    if f1 ~= nil then
+        return string.format("<Cmd>lua vim.api.nvim_win_set_cursor(0, { %d, %d })<CR>a<CR><esc>O", row, f2 - 4)
+    end
     return "f{a<CR>"
 end, { expr = true, remap = true })
 
 keymap("n", "<leader>m", "<c-w>o", opts)
 keymap({ "n", "o" }, "^", "0", opts)
+keymap("i", "<d-z>", "<cmd>undo<CR>", opts)
 keymap("i", "<c-u>", "<cmd>undo<CR>", opts)
 keymap("i", ",", function()
     if require("multicursor-nvim").numCursors() > 1 then

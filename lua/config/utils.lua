@@ -775,7 +775,8 @@ M.smart_newline = function(animation, direction)
     local above = api.nvim_buf_get_lines(0, row - 1, row, false)[1]
     local below = api.nvim_buf_get_lines(0, row, row + 1, false)[1]
     if direction == "O" then
-        above, below = below, above
+        above = api.nvim_buf_get_lines(0, row - 2, row - 1, false)[1]
+        below = api.nvim_buf_get_lines(0, row - 1, row, false)[1]
     end
     if above == nil or below == nil then
         return direction
