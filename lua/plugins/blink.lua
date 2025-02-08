@@ -13,25 +13,26 @@ return {
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
     config = function()
         require("blink.cmp").setup({
-            snippets = {
-                -- Function to use when expanding LSP provided snippets
-                expand = function(snippet)
-                    require("mini.snippets").default_insert(
-                        { body = snippet },
-                        { empty_tabstop = "", empty_tabstop_final = "" }
-                    )
-                end,
-            },
+            -- snippets = {
+            --     -- Function to use when expanding LSP provided snippets
+            --     expand = function(snippet)
+            --         require("mini.snippets").default_insert(
+            --             { body = snippet },
+            --             { empty_tabstop = "", empty_tabstop_final = "" }
+            --         )
+            --     end,
+            -- },
             keymap = {
                 preset = "enter",
                 ["<d-d>"] = { "show_documentation" },
                 ["<c-n>"] = {},
                 ["<c-p>"] = {},
             },
+            sources = {
+                -- Disable command line completion:
+                cmdline = {},
+            },
             completion = {
-                ghost_text = {
-                    enabled = true,
-                },
                 menu = {
                     draw = {
                         -- We don't need label_description now because label and label_description are already

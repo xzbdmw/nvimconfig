@@ -608,7 +608,8 @@ end, { expr = true })
 keymap("n", "<c-;>", function()
     return "q:"
 end, { expr = true })
-keymap("n", "<leader>ol", function()
+
+keymap("n", "<leader>om", function()
     if vim.o.diffopt:find("linematch") ~= nil then
         vim.opt.diffopt:remove({ "linematch:60" })
         vim.notify("remove linematch", vim.log.levels.INFO)
