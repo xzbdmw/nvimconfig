@@ -3,6 +3,13 @@ return {
     lazy = false,
     keys = {
         {
+            "-",
+            function()
+                return "<cmd>Oil<cr>"
+            end,
+            expr = true,
+        },
+        {
             "<leader>so",
             function()
                 return "<cmd>Oil<cr>"

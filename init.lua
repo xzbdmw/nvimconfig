@@ -351,6 +351,14 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
+api.nvim_create_autocmd("TextYankPost", {
+    pattern = "*",
+    callback = function(_)
+        pcall(vim.highlight.on_yank, { higroup = "YankyYanked", timeout = 130, priority = 2000 })
+    end,
+})
+
+vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search", default = true })
 api.nvim_create_autocmd("ModeChanged", {
     callback = function()
         local old_mode = vim.v.event.old_mode
@@ -814,14 +822,14 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-api.nvim_create_autocmd("User", {
-    pattern = "MiniSnippetsSessionJump",
-    callback = function(args)
-        if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
-            MiniSnippets.session.stop()
-        end
-    end,
-})
+-- api.nvim_create_autocmd("User", {
+--     pattern = "MiniSnippetsSessionJump",
+--     callback = function(args)
+--         if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
+--             MiniSnippets.session.stop()
+--         end
+--     end,
+-- })
 
 api.nvim_create_autocmd("User", {
     pattern = { "NvimTreeReloaded" },

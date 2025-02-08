@@ -724,9 +724,11 @@ end
 
 M.speedup_newline = function(animation)
     TST = vim.uv.hrtime()
-    vim.g.type_o = true
     _G.set_cursor_animation(animation)
+    vim.g.type_o = true
+    vim.o.eventignore = "TextChanged,TextChangedI"
     vim.schedule(function()
+        vim.o.eventignore = ""
         vim.g.type_o = false
         local ok, async = pcall(require, "gitsigns.async")
         if ok then
@@ -762,7 +764,7 @@ M.smart_newline = function(animation, direction)
             return direction .. ",<c-g>U<left>"
         end
     else
-        return direction
+        return vim.fn.getreginfo('"').regtype == "v" and direction .. " <BS>" or direction
     end
 end
 
@@ -1265,6 +1267,9 @@ function M.update_preview_match(ns, preview_buf)
     local title = picker.layout.picker.prompt_title
     if title == "Live Grep" then
         local sel = picker:get_selection()
+        if sel == nil then
+            return
+        end
         local submatches = sel.value.submatches[1]
         local s, e = submatches.start, submatches["end"]
         vim.api.nvim_buf_add_highlight(preview_buf, ns, "Search", sel.lnum - 1, s, e)
@@ -1542,7 +1547,7 @@ end
 function M.refresh_satellite_search()
     local winid = vim.api.nvim_get_current_win()
     pcall(function()
-        local bwinid = require("satellite.view")(get_or_create_view, winid)
+        local bwinid = require("satellite.view").get_or_create_view(winid)
         for _, handler in ipairs(require("satellite.handlers").handlers) do
             if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
                 if handler.name == "search" then
@@ -1556,7 +1561,7 @@ end
 function M.clear_satellite_search()
     local winid = vim.api.nvim_get_current_win()
     pcall(function()
-        local bwinid = require("satellite.view")(get_or_create_view, winid)
+        local bwinid = require("satellite.view").get_or_create_view(winid)
         for _, handler in ipairs(require("satellite.handlers").handlers) do
             if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
                 if handler.name == "search" then

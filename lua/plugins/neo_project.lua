@@ -9,6 +9,7 @@ return {
             "/usr/local/share/nvim/runtime/lua/vim",
             "/Users/xzb/Project/lua/lua/fzf-lua",
             "/Users/xzb/Project/lua/fork/*",
+            "/Users/xzb/.config/fish/",
             "/Users/xzb/Project/lua/origin/nvim-cmp",
             "/Users/xzb/Project/lua/oricmp/nvim-cmp",
             "/Users/xzb/Project/lua/color/nvim-cmp",

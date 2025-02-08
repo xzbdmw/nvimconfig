@@ -311,6 +311,7 @@ return {
                         end,
                     },
                 },
+            }, {
                 { name = "dictionary" },
             }),
             matching = {

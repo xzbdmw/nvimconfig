@@ -327,6 +327,16 @@ keymap("n", "*", function()
     require("hlslens").start()
 end)
 
+local prev_conceal = 0
+keymap("n", "<leader>oc", function()
+    if vim.wo.conceallevel >= 1 then
+        prev_conceal = vim.wo.conceallevel
+        vim.wo.conceallevel = 0
+    else
+        vim.wo.conceallevel = prev_conceal
+    end
+end, opts)
+
 keymap("n", "<leader>ol", function()
     local enabled = vim.o.list
     if not enabled then
@@ -356,11 +366,6 @@ keymap("x", "w", "e", opts)
 keymap("n", "gf", function()
     utils.gF()
 end, opts)
-
-keymap("n", "<down>", "<cmd>m .+1<cr>==", opts)
-keymap("n", "<up>", "<cmd>m .-2<cr>==", opts)
-keymap("v", "<down>", ":m '>+1<cr>gv=gv", opts)
-keymap("v", "<up>", ":m '<-2<cr>gv=gv", opts)
 
 keymap("o", "o", function()
     local operator = vim.v.operator
