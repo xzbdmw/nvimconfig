@@ -2098,19 +2098,27 @@ function M.f_search()
     vim.g.disable_flash = true
     local key_ns = vim.api.nvim_create_namespace("f_search")
     local miss_count = 0
-    vim.on_key(function(_, typed)
-        if typed == ";" then
-            FeedKeys(";", "n")
-        elseif typed == "," then
-            FeedKeys(",", "n")
-        elseif miss_count == 3 or typed == "\27" then
-            vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
-            vim.g.disable_flash = false
-        elseif typed ~= "" then
-            miss_count = miss_count + 1
+    vim.on_key(function(key, typed)
+        if miss_count > 1 then
+            -- ignore keys by FeedKeys(";", "n")
+            if typed == "" and key == ";" then
+                return
+            end
+            if typed == ";" then
+                FeedKeys(";", "n")
+                return
+            elseif key == "," then
+                return
+            else
+                vim.on_key(nil, vim.api.nvim_create_namespace("f_search"))
+                vim.g.disable_flash = false
+                return
+            end
         end
+        miss_count = miss_count + 1
     end, key_ns)
 end
+
 _G.no_animation = function(length)
     length = length or 0
     _G.set_cursor_animation(0.0)

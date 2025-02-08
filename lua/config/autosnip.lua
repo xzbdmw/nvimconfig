@@ -43,7 +43,7 @@ function M.lua_abbr()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
     for s, n in pairs({ lcoal = "<BS><BS><BS><BS>ocal", funciton = "<BS><BS><BS><BS>tion", functino = "<BS><BS>on" }) do
-        if string.match(line, "^%s*" .. s .. "$") ~= nil then
+        if string.match(line, "^%s*" .. s) ~= nil then
             FeedKeys(n, "m")
             if require("cmp").visible() then
                 require("cmp").close()
