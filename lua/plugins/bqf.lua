@@ -1,6 +1,7 @@
 return {
     "kevinhwang91/nvim-bqf",
     event = "FileType qf",
+    enabled = false,
     config = function()
         require("bqf").setup({
             preview = {

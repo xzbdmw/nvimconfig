@@ -82,7 +82,12 @@ function M.auto_add_ret()
     if string.match(line, "^%s*ren") == nil then
         return
     end
-    FeedKeys("<BS>turn", "n")
+    if #vim.api.nvim_get_current_line() ~= col then
+        FeedKeys("<BS>turn ", "n")
+    else
+        FeedKeys("<BS>turn", "n")
+        return
+    end
     if require("cmp").visible() then
         require("cmp").close()
     end

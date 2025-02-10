@@ -6,12 +6,14 @@ return {
             function()
                 require("smart-splits").resize_left()
             end,
+            mode = { "n", "i" },
         },
         {
             "<C-=>",
             function()
                 require("smart-splits").resize_right()
             end,
+            mode = { "n", "i" },
         },
     },
     config = function()

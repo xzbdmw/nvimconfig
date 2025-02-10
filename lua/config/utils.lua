@@ -757,7 +757,7 @@ M.smart_newline = function(animation, direction)
         return direction
     end
     local ae, be = above:sub(#above, #above), below:sub(#below, #below)
-    if (ae == "," or ae == "{") and be == "," then
+    if vim.bo.filetype == "lua" and (ae == "," or ae == "{") and (be == "," or be == "{") then
         if require("multicursor-nvim").numCursors() > 1 then
             return direction .. ",<c-g>U<left><esc>a"
         else

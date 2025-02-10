@@ -26,6 +26,7 @@ vim.g.restore_view = true
 vim.g.show_nvim_tree_size = false
 vim.g.disable_flash = false
 vim.g.mc_active = false
+vim.g.sign_padding = true
 -- This have to be commented because ghostty use --cmd to set
 -- vim.g.scrollback = true, or it will be overwritten.
 -- vim.g.scrollback = false

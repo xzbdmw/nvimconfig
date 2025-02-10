@@ -337,6 +337,11 @@ keymap("n", "<leader>oc", function()
     end
 end, opts)
 
+keymap("n", "<leader>op", function()
+    vim.g.sign_padding = not vim.g.sign_padding
+    vim.api.nvim__redraw({ statuscolumn = true })
+end, opts)
+
 keymap("n", "<leader>ol", function()
     local enabled = vim.o.list
     if not enabled then

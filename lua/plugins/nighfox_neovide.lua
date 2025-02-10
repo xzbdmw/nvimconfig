@@ -164,7 +164,7 @@ return {
                 LeapLabelPrimary = { link = "LeapMatch" },
                 -- diffRemoved = { fg = "#E7EADE" },
                 MiniDiffSignAdd = { link = "GitSignsAdd" },
-                GitSignsDeleteVirtLn = { fg = "#000000", bg = "#ecd7d6" },
+                GitSignsDeleteVirtLn = { bg = "#ecd7d6" },
                 MiniDiffOverAdd = { bg = "#E6EADD" },
                 MiniDiffSignChange = { link = "diffChanged" },
                 -- MiniDiffOverContext = { bg = "#E6E6E6" },
