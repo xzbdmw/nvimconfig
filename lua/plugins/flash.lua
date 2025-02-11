@@ -10,6 +10,17 @@ return {
             false,
         },
         {
+            "S",
+            mode = { "o" },
+            function()
+                vim.g.treesitter_search = true
+                vim.o.scrolloff = 0
+                vim.g.flash_winbar = vim.wo.winbar
+                require("flash").treesitter()
+            end,
+            desc = "Flash Treesitter",
+        },
+        {
             "r",
             mode = "o",
             function()
@@ -194,7 +205,7 @@ return {
                 -- options used for treesitter selections
                 -- `require("flash").treesitter()`
                 treesitter = {
-                    labels = "abcdefghijklmnopqrstuvwxyz",
+                    labels = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
                     jump = { pos = "range", autojump = true },
                     search = { incremental = false },
                     label = { before = true, after = true, style = "inline" },

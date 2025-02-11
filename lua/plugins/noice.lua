@@ -1,7 +1,6 @@
 return {
     "folke/noice.nvim",
     dependencies = { { "MunifTanjim/nui.nvim" } },
-    -- enabled = false,
     cond = function()
         return not vim.g.scrollback
     end,

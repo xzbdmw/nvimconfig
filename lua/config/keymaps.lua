@@ -524,22 +524,12 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 
-keymap("n", "<leader>rw", function()
-    vim.cmd("Noice disable")
-    FeedKeys("<space><BS>", "n")
-    return [[:%s/\<<C-r><C-w>\>/]]
-end, { expr = true })
 keymap("x", ":", function()
     vim.cmd("Noice disable")
     vim.schedule(function()
         FeedKeys("<space><BS>", "n")
     end)
     return ":s/"
-end, { expr = true })
-keymap("x", "<leader>rw", function()
-    vim.cmd("Noice disable")
-    FeedKeys("<space><BS>", "n")
-    return [[y<esc>:%s/\V<C-r>"/]]
 end, { expr = true })
 keymap("n", "<leader>rW", function()
     vim.cmd("Noice disable")
@@ -653,7 +643,6 @@ keymap("n", "<leader>j", function()
     return "f{a<CR>"
 end, { expr = true, remap = true })
 
-keymap("n", "<leader>m", "<c-w>o", opts)
 keymap({ "n", "o" }, "^", "0", opts)
 keymap("i", "<d-z>", "<cmd>undo<CR>", opts)
 keymap("i", "<c-u>", "<cmd>undo<CR>", opts)

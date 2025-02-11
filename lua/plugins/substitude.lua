@@ -17,7 +17,19 @@ return {
             end,
         },
         { "S", "s$", remap = true },
-        { "s", "_", mode = "o" },
+        {
+            "s",
+            function()
+                if vim.v.operator == "g@" and vim.o.operatorfunc:find("substitute") ~= nil then
+                    return "_"
+                else
+                    return "S"
+                end
+            end,
+            mode = "o",
+            expr = true,
+            remap = true,
+        },
         {
             "ge",
             function()
@@ -41,13 +53,14 @@ return {
             modifiers = nil,
             highlight_substituted_text = {
                 enabled = true,
-                timer = 180,
+                timer = 130,
             },
             range = {
                 prefix = "s",
-                prompt_current_text = false,
-                confirm = false,
-                complete_word = false,
+                prompt_current_text = true,
+                confirm = true,
+                complete_word = true,
+                group_substituted_text = true,
                 subject = nil,
                 range = nil,
                 suffix = "",

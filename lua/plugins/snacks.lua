@@ -78,23 +78,6 @@ return {
                     })
                 end,
             },
-            {
-                "<d-o>",
-                function()
-                    TT = vim.uv.hrtime()
-                    Snacks.picker.smart({
-                        filter = {
-                            cwd = true,
-                        },
-                        formatters = {
-                            file = {
-                                filename_first = true, -- display filename before the file path
-                            },
-                        },
-                        layout = layout_no_prewview,
-                    })
-                end,
-            },
         }
     end,
     version = false,
