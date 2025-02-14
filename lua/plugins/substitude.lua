@@ -31,6 +31,28 @@ return {
             remap = true,
         },
         {
+            "<leader>rk",
+            function()
+                vim.cmd("Noice disable")
+                require("substitute.range").word()
+                vim.api.nvim_create_autocmd("CmdlineEnter", {
+                    once = true,
+                    callback = function()
+                        vim.cmd("redraw!")
+                    end,
+                })
+            end,
+            mode = { "n" },
+        },
+        {
+            "<leader>rj",
+            function()
+                local mc = require("multicursor-nvim")
+                mc.operator({ motion = "iw", visual = true })
+            end,
+            mode = { "n" },
+        },
+        {
             "ge",
             function()
                 require("substitute.exchange").operator()
@@ -56,16 +78,16 @@ return {
                 timer = 130,
             },
             range = {
-                prefix = "s",
-                prompt_current_text = true,
-                confirm = true,
-                complete_word = true,
-                group_substituted_text = true,
-                subject = nil,
-                range = nil,
-                suffix = "",
-                auto_apply = false,
-                cursor_position = "end",
+                -- prefix = "s",
+                -- prompt_current_text = true,
+                -- confirm = true,
+                -- complete_word = true,
+                -- group_substituted_text = true,
+                -- subject = nil,
+                -- range = nil,
+                -- suffix = "",
+                -- auto_apply = false,
+                -- cursor_position = "end",
             },
             exchange = {
                 motion = false,

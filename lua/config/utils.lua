@@ -1176,6 +1176,117 @@ function M.adjust_view(buf, size, force)
     end
 end
 
+function M.context_win_height()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_is_valid(win) and api.nvim_win_get_config(win).zindex == 31 then
+            return api.nvim_win_get_config(win).height
+        end
+    end
+    return 0
+end
+
+function M.restore_mc_view()
+    local visual = vim.fn.mode():find("[vV]") ~= nil
+    local mc = require("multicursor-nvim")
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local view = vim.fn.winsaveview()
+    local bo_line = vim.fn.line("w$")
+    local stage = 0
+    local id
+    id = vim.api.nvim_create_autocmd("SafeState", {
+        callback = function()
+            if stage == 0 then
+                row, col = unpack(vim.api.nvim_win_get_cursor(0))
+            end
+            if stage == 1 then
+                vim.api.nvim_del_autocmd(id)
+                local ctx_height = require("config.utils").context_win_height()
+                if require("multicursor-nvim").numCursors() > 1 then
+                    local n_r, n_c = unpack(vim.api.nvim_win_get_cursor(0))
+                    if view.topline + ctx_height <= n_r and n_r <= bo_line then
+                        mc.action(function(ctx)
+                            ctx:seekCursor({ row, col }, 1, true):select()
+                        end)
+                        if visual then
+                            mc.prevCursor()
+                        end
+                        vim.fn.winrestview({ topline = view.topline })
+                    else
+                        vim.cmd("norm! zz")
+                        vim.keymap.set({ "n", "x" }, "<c-o>", function()
+                            mc.action(function(ctx)
+                                ctx:seekCursor({ row, col }, 1, true):select()
+                            end)
+                            if visual then
+                                mc.prevCursor()
+                            end
+                            vim.fn.winrestview({ topline = view.topline })
+                            vim.keymap.del({ "n", "x" }, "<c-o>", { buffer = true })
+                        end, { buffer = true })
+                    end
+                    require("config.utils").mc_virt_count()
+                else
+                    api.nvim_exec_autocmds("User", {
+                        pattern = "ESC",
+                    })
+                    vim.fn.winrestview({ topline = view.topline })
+                end
+                return
+            end
+            stage = stage + 1
+        end,
+    })
+end
+
+function M.mc_virt_count()
+    local ns = api.nvim_create_namespace("cursor-mc-count")
+    local bufnr = vim.api.nvim_get_current_buf()
+    local sc = require("multicursor-nvim").numCursors()
+    if sc <= 1 then
+        return
+    end
+    local mc = require("multicursor-nvim")
+    local cursors = {}
+    mc.action(function(ctx)
+        cursors = ctx:getCursors()
+    end)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local current = -1
+    for i, cursor in ipairs(cursors) do
+        if cursor._pos[2] == row and cursor._pos[3] == col + 1 then
+            current = i
+            break
+        end
+    end
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+    vim.api.nvim_buf_set_extmark(0, ns, vim.api.nvim_win_get_cursor(0)[1] - 1, 0, {
+        hl_group = "CursorLine",
+        hl_eol = true,
+        strict = false,
+        end_row = vim.api.nvim_win_get_cursor(0)[1],
+    })
+    vim.api.nvim_buf_set_extmark(0, ns, vim.api.nvim_win_get_cursor(0)[1] - 1, 0, {
+        virt_text = {
+            { "[" .. current, "illuminatedH" },
+            { " of ", "illuminatedHItalic" },
+            { sc .. "]", "illuminatedH" },
+        },
+        virt_text_pos = "eol",
+    })
+    vim.b.search_winbar = "%#HlSearchLensCountNoBg#"
+        .. " ["
+        .. current
+        .. "%#HlSearchLensCountItalicNoBg#"
+        .. " of "
+        .. "%#HlSearchLensCountNoBg#"
+        .. sc
+        .. "]"
+    M.refresh_search_winbar()
+    M.refresh_satellite_search()
+
+    vim.cmd("redraw")
+end
+
 function OilDir()
     local cwd = vim.fn.getcwd()
     local path = require("oil").get_current_dir()

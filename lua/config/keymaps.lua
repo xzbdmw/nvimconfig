@@ -98,16 +98,6 @@ keymap("o", "l", function()
     return utils.operator_mode_lh("after")
 end, { expr = true })
 
-keymap("x", ";", function()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    vim.schedule(function()
-        if vim.api.nvim_win_get_cursor(0)[2] == col then
-            FeedKeys("l", "n")
-        end
-    end)
-    return utils.operator_mode_lh("after")
-end, { expr = true })
-
 keymap("n", "<leader>sl", function()
     local cmd = vim.fn.getreg("/"):gsub("\\V", "")
     vim.defer_fn(function()
@@ -248,7 +238,6 @@ end, { expr = true })
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
 keymap({ "o", "x" }, "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 keymap("n", "<leader>cm", "<cmd>messages clear<CR>", opts)
-keymap("n", "gw", "griw", { remap = true })
 keymap("i", "<d-c>", "<cmd>messages clear<CR>", opts)
 keymap("n", "<leader>M", function()
     vim.g.skip_noice = not vim.g.skip_noice

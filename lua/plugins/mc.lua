@@ -7,9 +7,13 @@ return {
         local del = function(...)
             pcall(vim.keymap.del, ...)
         end
+        local cursormoveid
         local opts = { buffer = true, nowait = true }
         local function del_buffer_keys(buf)
             require("multicursor-nvim").clearCursors()
+            vim.g.mc_active = false
+            api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("cursor-mc-count"), 0, -1)
+            api.nvim_del_autocmd(cursormoveid)
             if not api.nvim_buf_is_valid(buf) then
                 return
             end
@@ -66,11 +70,9 @@ return {
             end, opts)
             keymap({ "n", "x" }, ")", function()
                 mc.nextCursor()
-                vim.cmd("norm! zz")
             end, opts)
             keymap({ "n", "x" }, "(", function()
                 mc.prevCursor()
-                vim.cmd("norm! zz")
             end, opts)
         end
         local begin = function()
@@ -78,6 +80,14 @@ return {
                 return
             end
             vim.g.mc_active = true
+            cursormoveid = api.nvim_create_autocmd("CursorMoved", {
+                buffer = api.nvim_get_current_buf(),
+                callback = function()
+                    vim.schedule(function()
+                        require("config.utils").mc_virt_count()
+                    end)
+                end,
+            })
             local buf = vim.api.nvim_get_current_buf()
             set_buffer_keys()
             vim.api.nvim_create_autocmd("User", {
@@ -90,17 +100,25 @@ return {
         end
 
         mc.setup()
-        keymap("n", "<leader>rw", function()
+        keymap({ "n", "x" }, "mw", function()
             begin()
-            require("multicursor-nvim.operator").operator({ motion = "iw", visual = true })
+            vim.cmd([[normal! m']])
+            mc.operator({ motion = "iw", visual = true })
+            require("config.utils").restore_mc_view()
         end)
-        keymap({ "x" }, "mw", function()
+        keymap({ "n" }, "mW", function()
             begin()
-            mc.matchCursors([[\<\w]])
+            vim.cmd([[normal! m']])
+            mc.operator()
+            require("config.utils").restore_mc_view()
         end)
-        keymap({ "n" }, "mw", function()
+        -- keymap({ "n" }, "ms", function()
+        --     begin()
+        --     require("multicursor-nvim.operator").operator({ pattern = [[\<\w]] })
+        -- end)
+        keymap({ "n" }, "ms", function()
             begin()
-            require("multicursor-nvim.operator").operator({ pattern = [[\<\w]] })
+            mc.operator({ pattern = [[\<\w]] })
         end)
         keymap({ "n", "v" }, "<a-n>", function()
             begin()

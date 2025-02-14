@@ -21,7 +21,7 @@ return {
             desc = "Flash Treesitter",
         },
         {
-            "r",
+            "x",
             mode = "o",
             function()
                 vim.o.scrolloff = 0

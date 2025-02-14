@@ -57,7 +57,7 @@ api.nvim_create_autocmd("FocusGained", {
     callback = function()
         local loaded_content = vim.fn.getreg("+")
         if loaded_content ~= "" then
-            vim.fn.setreg('"', loaded_content)
+            vim.fn.setreg('"', loaded_content, loaded_content:find("\n") ~= nil and "V" or "v")
         end
     end,
 })
@@ -352,13 +352,6 @@ api.nvim_create_autocmd("FileType", {
     end,
 })
 
-api.nvim_create_autocmd("TextYankPost", {
-    pattern = "*",
-    callback = function(_)
-        pcall(vim.highlight.on_yank, { higroup = "YankyYanked", timeout = 130, priority = 2000 })
-    end,
-})
-
 vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search", default = true })
 api.nvim_create_autocmd("ModeChanged", {
     callback = function()
@@ -444,19 +437,17 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.go_auto_add_pair()
             snip.go_auto_add_func()
             snip.go_auto_add_method()
-            snip.auto_add_forr()
-            snip.auto_add_fori()
-            snip.auto_add_if()
-            snip.auto_add_ret()
         elseif vim.bo.filetype == "lua" then
             snip.lua_auto_add_local()
             snip.lua_auto_add_while()
-            snip.auto_add_if()
             snip.lua_abbr()
-            snip.auto_add_forr()
-            snip.auto_add_fori()
-            snip.auto_add_ret()
         end
+        snip.auto_add_if()
+        snip.auto_add_ret()
+        snip.autotrue()
+        snip.autofalse()
+        snip.auto_add_forr()
+        snip.auto_add_fori()
     end,
 })
 

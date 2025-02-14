@@ -13,9 +13,9 @@ return {
                     -- rust-analyzer language server configuration
                     ["rust-analyzer"] = {
                         completion = {
-                            -- callable = {
-                            --     snippets = "add_parentheses",
-                            -- },
+                            callable = {
+                                snippets = "add_parentheses",
+                            },
                             fullFunctionSignatures = {
                                 enable = false,
                             },

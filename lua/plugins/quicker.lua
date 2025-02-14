@@ -65,9 +65,9 @@ return {
             highlight = {
                 attach_parser = true,
                 -- Use treesitter highlighting
-                treesitter = true,
+                treesitter = false,
                 -- Use LSP semantic token highlighting
-                lsp = false,
+                lsp = true,
                 -- Load the referenced buffers to apply more accurate highlights (may be slow)
                 load_buffers = false,
             },
