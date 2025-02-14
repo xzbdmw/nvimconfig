@@ -93,6 +93,26 @@ function M.auto_add_ret()
     end
 end
 
+function M.autotrue()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local _, idx = string.find(line, ".*=%s*(ture)")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("<BS><BS><BS>rue", "n")
+end
+
+function M.autofalse()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local _, idx = string.find(line, ".*=%s*(flase)")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("<BS><BS><BS><BS>alse", "n")
+end
+
 function M.go_auto_add_equal()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
