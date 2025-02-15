@@ -746,7 +746,7 @@ end
 
 M.smart_newline = function(animation, direction)
     M.speedup_newline(animation)
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local row = vim.api.nvim_win_get_cursor(0)[1]
     local above = api.nvim_buf_get_lines(0, row - 1, row, false)[1]
     local below = api.nvim_buf_get_lines(0, row, row + 1, false)[1]
     if direction == "O" then
@@ -1185,8 +1185,7 @@ function M.context_win_height()
     return 0
 end
 
-function M.restore_mc_view()
-    local visual = vim.fn.mode():find("[vV]") ~= nil
+function M.restore_mc_view(visual)
     local mc = require("multicursor-nvim")
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local view = vim.fn.winsaveview()
@@ -1202,8 +1201,13 @@ function M.restore_mc_view()
                 vim.api.nvim_del_autocmd(id)
                 local ctx_height = require("config.utils").context_win_height()
                 if require("multicursor-nvim").numCursors() > 1 then
-                    local n_r, n_c = unpack(vim.api.nvim_win_get_cursor(0))
+                    local n_r = vim.api.nvim_win_get_cursor(0)[1]
                     if view.topline + ctx_height <= n_r and n_r <= bo_line then
+                        vim.fn.winrestview({ topline = view.topline })
+                    else
+                        vim.cmd("norm! zz")
+                    end
+                    vim.keymap.set({ "n", "x" }, "<c-o>", function()
                         mc.action(function(ctx)
                             ctx:seekCursor({ row, col }, 1, true):select()
                         end)
@@ -1211,19 +1215,8 @@ function M.restore_mc_view()
                             mc.prevCursor()
                         end
                         vim.fn.winrestview({ topline = view.topline })
-                    else
-                        vim.cmd("norm! zz")
-                        vim.keymap.set({ "n", "x" }, "<c-o>", function()
-                            mc.action(function(ctx)
-                                ctx:seekCursor({ row, col }, 1, true):select()
-                            end)
-                            if visual then
-                                mc.prevCursor()
-                            end
-                            vim.fn.winrestview({ topline = view.topline })
-                            vim.keymap.del({ "n", "x" }, "<c-o>", { buffer = true })
-                        end, { buffer = true })
-                    end
+                        vim.keymap.del({ "n", "x" }, "<c-o>", { buffer = true })
+                    end, { buffer = true })
                     require("config.utils").mc_virt_count()
                 else
                     api.nvim_exec_autocmds("User", {
@@ -1240,7 +1233,6 @@ end
 
 function M.mc_virt_count()
     local ns = api.nvim_create_namespace("cursor-mc-count")
-    local bufnr = vim.api.nvim_get_current_buf()
     local sc = require("multicursor-nvim").numCursors()
     if sc <= 1 then
         return
@@ -1248,6 +1240,9 @@ function M.mc_virt_count()
     local mc = require("multicursor-nvim")
     local cursors = {}
     mc.action(function(ctx)
+        if ctx == nil then
+            return
+        end
         cursors = ctx:getCursors()
     end)
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -1258,10 +1253,14 @@ function M.mc_virt_count()
             break
         end
     end
+    if current == -1 then
+        return
+    end
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
     vim.api.nvim_buf_set_extmark(0, ns, vim.api.nvim_win_get_cursor(0)[1] - 1, 0, {
         hl_group = "CursorLine",
         hl_eol = true,
+        priority = 1,
         strict = false,
         end_row = vim.api.nvim_win_get_cursor(0)[1],
     })
@@ -1468,7 +1467,7 @@ function M.writeFile(content)
     end
 end
 
---- @param filter function if false we should realy return
+--- @param filter function if false we should really return
 function M.real_enter(callback, filter, who)
     who = who or ""
     local timer = vim.loop.new_timer()
@@ -2140,7 +2139,6 @@ M.qf_populate = function(lines, opts)
 
     vim.fn.setqflist(lines, opts.mode)
 
-    -- ux
     local commands = table.concat({
         "horizontal copen",
         (opts.scroll_to_end and "normal! G") or "",
@@ -2148,6 +2146,27 @@ M.qf_populate = function(lines, opts)
     }, "\n")
 
     vim.cmd(commands)
+end
+
+function M.add_word_to_dir()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    local row, col = pos[1] - 1, pos[2]
+    -- stylua: ignore
+    local params = { textDocument = vim.lsp.util.make_text_document_params(), range = { start = { line = row, character = col }, ["end"] = { line = row, character = col } }, context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics(), triggerKind = 1 } }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    for id, res in pairs(result or {}) do
+        for _, action in pairs(res.result or {}) do
+            if action.title ~= nil and action.title:find("Add .* to the global dictionary") ~= nil then
+                local client = vim.lsp.get_client_by_id(id)
+                client.request("workspace/executeCommand", {
+                    command = action.command,
+                    arguments = action.arguments,
+                    workDoneToken = action.workDoneToken,
+                }, nil, api.nvim_get_current_buf())
+                return
+            end
+        end
+    end
 end
 
 function M.gopls_extract_all()

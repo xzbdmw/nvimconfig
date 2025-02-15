@@ -93,6 +93,30 @@ return {
                 },
                 -- rust_analyzer = {},
                 pylance = {},
+                -- harper_ls = {
+                --     settings = {
+                --         ["harper-ls"] = {
+                --             linters = {
+                --                 spell_check = true,
+                --                 spelled_numbers = false,
+                --                 an_a = true,
+                --                 sentence_capitalization = false,
+                --                 unclosed_quotes = false,
+                --                 wrong_quotes = false,
+                --                 long_sentences = false,
+                --                 repeated_words = false,
+                --                 spaces = false,
+                --                 matcher = false,
+                --                 correct_number_suffix = false,
+                --                 number_suffix_capitalization = false,
+                --                 multiple_sequential_pronouns = false,
+                --                 linking_verbs = false,
+                --                 avoid_curses = false,
+                --                 terminating_conjunctions = false,
+                --             },
+                --         },
+                --     },
+                -- },
                 lua_ls = {
                     settings = {
                         Lua = {
@@ -154,7 +178,7 @@ return {
                             experimentalPostfixCompletions = true,
                             analyses = {
                                 unusedparams = true,
-                                shadow = true,
+                                shadow = false,
                                 testinggoroutine = false,
                             },
                             staticcheck = false,

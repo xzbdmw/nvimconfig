@@ -63,11 +63,10 @@ return {
             -- Keep the cursor to the right of the filename and lnum columns
             constrain_cursor = true,
             highlight = {
-                attach_parser = true,
-                -- Use treesitter highlighting
-                treesitter = false,
+                treesitter = true,
+                max_lines = 1000,
                 -- Use LSP semantic token highlighting
-                lsp = true,
+                lsp = false,
                 -- Load the referenced buffers to apply more accurate highlights (may be slow)
                 load_buffers = false,
             },

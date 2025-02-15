@@ -12,6 +12,7 @@ return {
         local function del_buffer_keys(buf)
             require("multicursor-nvim").clearCursors()
             vim.g.mc_active = false
+            vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("cursor-mc-count"), 0, -1)
             api.nvim_del_autocmd(cursormoveid)
             if not api.nvim_buf_is_valid(buf) then
@@ -80,12 +81,20 @@ return {
                 return
             end
             vim.g.mc_active = true
+            vim.o.guicursor = "n-sm-ve-v:block-Cursor,i-c-ci:ver16-Cursor,r-cr-o:hor7-Cursor"
             cursormoveid = api.nvim_create_autocmd("CursorMoved", {
                 buffer = api.nvim_get_current_buf(),
                 callback = function()
                     vim.schedule(function()
                         require("config.utils").mc_virt_count()
                     end)
+                end,
+            })
+            api.nvim_create_autocmd("TextChanged", {
+                once = true,
+                buffer = api.nvim_get_current_buf(),
+                callback = function()
+                    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
                 end,
             })
             local buf = vim.api.nvim_get_current_buf()
@@ -98,26 +107,31 @@ return {
                 end,
             })
         end
+        local reset_state = function()
+            if vim.g.mc_active then
+                api.nvim_exec_autocmds("User", {
+                    pattern = "ESC",
+                })
+            end
+            begin()
+        end
 
         mc.setup()
         keymap({ "n", "x" }, "mw", function()
-            begin()
+            reset_state()
             vim.cmd([[normal! m']])
+            local visual = vim.fn.mode():find("[vV]") ~= nil
             mc.operator({ motion = "iw", visual = true })
-            require("config.utils").restore_mc_view()
+            require("config.utils").restore_mc_view(visual)
         end)
         keymap({ "n" }, "mW", function()
-            begin()
+            reset_state()
             vim.cmd([[normal! m']])
             mc.operator()
             require("config.utils").restore_mc_view()
         end)
-        -- keymap({ "n" }, "ms", function()
-        --     begin()
-        --     require("multicursor-nvim.operator").operator({ pattern = [[\<\w]] })
-        -- end)
         keymap({ "n" }, "ms", function()
-            begin()
+            reset_state()
             mc.operator({ pattern = [[\<\w]] })
         end)
         keymap({ "n", "v" }, "<a-n>", function()
@@ -160,7 +174,7 @@ return {
             mc.handleMouse()
         end)
         vim.api.nvim_set_hl(0, "MultiCursorCursor", { link = "MultiCursor" })
-        vim.api.nvim_set_hl(0, "MultiCursorVisual", { link = "LighterVisual" })
+        vim.api.nvim_set_hl(0, "MultiCursorVisual", { link = "Visual" })
         vim.api.nvim_set_hl(0, "MultiCursorDisabledCursor", { link = "MCDisabled" })
         vim.api.nvim_set_hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
     end,

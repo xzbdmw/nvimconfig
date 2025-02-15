@@ -328,6 +328,7 @@ end, opts)
 
 keymap("n", "<leader>op", function()
     vim.g.sign_padding = not vim.g.sign_padding
+    vim.notify("sign padding " .. vim.g.sign_padding and "enabled" or "disabled", vim.log.levels.INFO)
     vim.api.nvim__redraw({ statuscolumn = true })
 end, opts)
 
@@ -335,9 +336,11 @@ keymap("n", "<leader>ol", function()
     local enabled = vim.o.list
     if not enabled then
         vim.o.list = true
+        vim.notify("list enabled", vim.log.levels.INFO)
         vim.g.hlchunk_disable = true
         _G.hlchunk_clear()
     else
+        vim.notify("list disabled", vim.log.levels.INFO)
         vim.o.list = false
         vim.g.hlchunk_disable = false
     end

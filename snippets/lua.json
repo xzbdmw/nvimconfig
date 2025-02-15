@@ -83,6 +83,10 @@
     "body": "local ${0:}",
     "prefix": "loc"
   },
+  "notify": {
+    "body": "vim.notify(\"${1:}\", vim.log.levels.${0:INFO})",
+    "prefix": "notify"
+  },
   "perf": {
     "body": [
       "local time = vim.uv.hrtime()",

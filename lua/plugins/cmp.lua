@@ -39,6 +39,7 @@ return {
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
+                -- disabled = disabled or vim.bo.filetype == "qf"
                 -- return false
                 return not disabled
             end,
@@ -182,7 +183,7 @@ return {
                 ["<C-p>"] = cmp.mapping(function(fallback)
                     fallback()
                 end),
-                ["<C-g>"] = cmp.mapping(function(fallback)
+                ["<C-g>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -196,7 +197,7 @@ return {
                         },
                     })
                 end),
-                ["<C-y>"] = cmp.mapping(function(fallback)
+                ["<C-y>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
                     end
@@ -497,7 +498,7 @@ return {
             formatting = {
                 -- kind is icon, abbr is completion name, menu is [Function]
                 fields = { "kind", "abbr", "menu" },
-                format = function(entry, vim_item)
+                format = function(_, vim_item)
                     vim_item.kind = ""
                     vim_item.menu = ""
                     return vim_item
