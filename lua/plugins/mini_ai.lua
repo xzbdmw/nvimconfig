@@ -6,7 +6,7 @@ return {
         return {
             n_lines = 2000,
             custom_textobjects = {
-                f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+                [","] = ai.gen_spec.treesitter({ i = "@parameter.inner", a = "@parameter.outer" }, {}),
                 c = ai.gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }, {}),
                 g = function() -- Whole buffer, similar to `gg` and 'G' motion
                     local from = { line = 1, col = 1 }

@@ -250,7 +250,7 @@ return {
                 illuminatedWordKeepWrite = { link = "IncSearch" },
                 StatusLine = { link = "Normal" },
                 BufferLineBackground = { bg = "#E7E5D9", fg = "#3B4D56" },
-                LspSignatureActiveParameter = { fg = "#000000", bg = "#D0D8D8" },
+                LspSignatureActiveParameter = { fg = "", bg = "#D0D8D8" },
                 StatusLineNC = { link = "Normal" },
                 WinBar = { bg = "#FAF7E8", fg = "#3B4D56", style = "" },
                 WinBarNC = { bg = "#FAF7E8", fg = "#3B4D56", style = "" },

@@ -16,6 +16,10 @@ return {
             snippets = {
                 -- Function to use when expanding LSP provided snippets
                 expand = function(snippet)
+                    if require("multicursor-nvim").numCursors() > 1 then
+                        vim.snippet.expand(snippet)
+                        return
+                    end
                     require("mini.snippets").default_insert(
                         { body = snippet },
                         { empty_tabstop = "", empty_tabstop_final = "" }
@@ -28,9 +32,8 @@ return {
                 ["<c-n>"] = {},
                 ["<c-p>"] = {},
             },
-            sources = {
-                -- Disable command line completion:
-                cmdline = {},
+            cmdline = {
+                sources = {},
             },
             completion = {
                 menu = {

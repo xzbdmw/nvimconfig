@@ -3,7 +3,6 @@ api = vim.api
 
 require("config.lazy")
 local utils = require("config.utils")
-
 _G.CI = 0.02
 _G.searchmode = "/"
 _G.lazygit_previous_win = nil
@@ -439,6 +438,8 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.go_auto_add_method()
         elseif vim.bo.filetype == "lua" then
             snip.lua_auto_add_local()
+            snip.lua_auto_pai()
+            snip.lua_auto_pia()
             snip.lua_auto_add_while()
             snip.lua_abbr()
         end

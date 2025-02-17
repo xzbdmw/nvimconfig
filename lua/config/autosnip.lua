@@ -64,6 +64,26 @@ function M.lua_auto_add_while()
     MiniSnippets.expand()
 end
 
+function M.lua_auto_pai()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local _, idx = string.find(line, "pai")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("<BS><BS><BS>api", "n")
+end
+
+function M.lua_auto_pia()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local _, idx = string.find(line, "pia")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("<BS><BS><BS>api", "n")
+end
+
 function M.lua_auto_add_local()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()

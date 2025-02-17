@@ -121,7 +121,7 @@ return {
             reset_state()
             vim.cmd([[normal! m']])
             local visual = vim.fn.mode():find("[vV]") ~= nil
-            mc.operator({ motion = "iw", visual = true })
+            mc.operator({ motion = "iw" })
             require("config.utils").restore_mc_view(visual)
         end)
         keymap({ "n" }, "mW", function()
@@ -148,15 +148,16 @@ return {
             mc.restoreCursors()
         end)
         keymap({ "n", "x" }, "<c-n>", function()
-            if vim.api.nvim_get_mode().mode == "n" then
-                FeedKeys("viw", "mix")
-            end
+            -- if vim.api.nvim_get_mode().mode == "n" then
+            --     FeedKeys("viw", "mix")
+            -- end
             begin()
             mc.matchAddCursor(1)
         end)
         keymap({ "n", "x" }, "<leader>ma", function()
             begin()
             mc.matchAllAddCursors()
+            require("config.utils").mc_virt_count()
         end)
         keymap("x", "mm", function()
             begin()

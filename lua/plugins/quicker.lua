@@ -63,8 +63,9 @@ return {
             -- Keep the cursor to the right of the filename and lnum columns
             constrain_cursor = true,
             highlight = {
+                attach_parser = true,
                 treesitter = true,
-                max_lines = 1000,
+                max_lines = 10000,
                 -- Use LSP semantic token highlighting
                 lsp = false,
                 -- Load the referenced buffers to apply more accurate highlights (may be slow)

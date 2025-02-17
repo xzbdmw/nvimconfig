@@ -39,7 +39,6 @@ return {
                 local disabled = false
                 disabled = disabled or (api.nvim_buf_get_option(0, "buftype") == "prompt")
                 disabled = disabled or utils.is_big_file(api.nvim_get_current_buf())
-                -- disabled = disabled or vim.bo.filetype == "qf"
                 -- return false
                 return not disabled
             end,

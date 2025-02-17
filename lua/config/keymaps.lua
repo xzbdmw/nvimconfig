@@ -7,11 +7,18 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.defer_fn(function()
         keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
     end, 100)
-    vim.cmd("write")
+    vim.cmd("write!")
 end, opts)
 
 keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
 
+keymap({ "i", "n" }, "<c-m>", function()
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    vim.lsp.buf.signature_help()
+end)
 keymap("n", "<leader>W", function()
     local origin = vim.o.eventignore
     vim.o.eventignore = "all"
