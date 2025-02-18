@@ -18,6 +18,34 @@ keymap({ "v", "n" }, "<leader>vp", function()
     vim.api.nvim_buf_set_lines(0, row, row, false, { edits })
 end, { buffer = bufnr })
 
+vim.keymap.set({ "n", "i" }, "<d-y>", function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local c = vim.api.nvim_buf_get_text(0, row - 1, col - 1, row - 1, col, {})
+    local params = {
+        textDocument = {
+            uri = vim.uri_from_bufnr(0), -- Use the current buffer's URI
+        },
+        position = vim.lsp.util.make_position_params().position, -- Get the current cursor position
+        ch = c[1], -- Example trigger character that triggers the formatting
+        options = {
+            tabSize = 4,
+            insertSpaces = true, -- Use spaces instead of tabs
+        },
+    }
+    vim.lsp.buf_request(0, "textDocument/onTypeFormatting", params, function(err, result)
+        if err then
+            print("Error formatting: " .. err.message)
+        else
+            -- Apply the result (TextEdits) to the buffer
+            if result then
+                for _, edit in ipairs(result) do
+                    vim.lsp.util.apply_text_edits({ edit }, api.nvim_get_current_buf(), "utf-8")
+                end
+            end
+        end
+    end)
+end)
+
 keymap("n", "<leader>cp", function()
     vim.cmd.RustLsp("explainError")
 end, { silent = true, buffer = bufnr, desc = "rust hover type info" })

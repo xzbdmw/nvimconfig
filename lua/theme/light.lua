@@ -136,7 +136,6 @@ keymap({ "n" }, "<esc>", function()
         end
     end)
     pcall(function()
-        require("multicursor-nvim").clearCursors()
         require("substitute.exchange").cancel()
         require("illuminate.engine").clear_keeped_highlight()
         require("illuminate.goto").clear_keeped_hl()

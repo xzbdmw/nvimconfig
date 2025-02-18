@@ -22,6 +22,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { event = "lsp", find = "Diagnosing" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "msg_show", find = "second" },
                     opts = { skip = true },
                 },

@@ -14,7 +14,7 @@ return {
             vim.g.mc_active = false
             vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("cursor-mc-count"), 0, -1)
-            api.nvim_del_autocmd(cursormoveid)
+            pcall(api.nvim_del_autocmd, cursormoveid)
             if not api.nvim_buf_is_valid(buf) then
                 return
             end

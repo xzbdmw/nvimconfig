@@ -3,9 +3,9 @@ local utils = require("config.utils")
 local keymap = vim.keymap.set
 
 keymap({ "n", "i" }, "<D-s>", function()
-    keymap({ "n" }, "<f16>", "k", opts)
+    keymap({ "n" }, "<d-k>", "k", opts)
     vim.defer_fn(function()
-        keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts)
+        keymap({ "n", "i" }, "<d-k>", "<cmd>ToggleTerm<CR>", opts)
     end, 100)
     vim.cmd("write!")
 end, opts)
@@ -335,7 +335,7 @@ end, opts)
 
 keymap("n", "<leader>op", function()
     vim.g.sign_padding = not vim.g.sign_padding
-    vim.notify("sign padding " .. vim.g.sign_padding and "enabled" or "disabled", vim.log.levels.INFO)
+    vim.notify("sign padding " .. (vim.g.sign_padding and "enabled" or "disabled"), vim.log.levels.INFO)
     vim.api.nvim__redraw({ statuscolumn = true })
 end, opts)
 
@@ -702,6 +702,7 @@ keymap("i", "<BS>", function()
     end
 end, { expr = true })
 keymap("n", "<leader>k", "<C-i>", opts)
+keymap("n", "U", "g~ ", opts)
 keymap("n", "<d-w>", "<c-w>", opts)
 
 -- Command line mapping

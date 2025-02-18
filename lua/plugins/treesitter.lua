@@ -59,9 +59,10 @@ return {
                 include_surrounding_whitespace = false,
             },
             move = {
-                goto_next_start = { ["]f"] = "@function.outer" },
+                enabled = true,
+                goto_next_start = { ["]f"] = "@function.outer", ["]a"] = "@parameter.inner" },
                 goto_next_end = { ["]e"] = "@function.outer" },
-                goto_previous_start = { ["[f"] = "@function.outer" },
+                goto_previous_start = { ["[f"] = "@function.outer", ["[a"] = "@parameter.outer" },
                 goto_previous_end = { ["[e"] = "@function.outer" },
             },
         },

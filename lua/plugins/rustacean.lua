@@ -12,6 +12,9 @@ return {
                 settings = {
                     -- rust-analyzer language server configuration
                     ["rust-analyzer"] = {
+                        typing = {
+                            triggerChars = ".={<(",
+                        },
                         completion = {
                             fullFunctionSignatures = {
                                 enable = false,

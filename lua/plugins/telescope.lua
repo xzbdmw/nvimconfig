@@ -301,7 +301,7 @@ return {
                         layout_config = {
                             horizontal = {
                                 height = 0.7, -- window height
-                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.24, -- window width
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.30 or 0.30, -- window width
                             },
                             mirror = false,
                         },
