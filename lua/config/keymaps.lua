@@ -10,6 +10,17 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write!")
 end, opts)
 
+keymap({ "n", "i" }, "<c-q>", function()
+    keymap({ "n" }, "<d-k>", "k", opts)
+    vim.defer_fn(function()
+        keymap({ "n", "i" }, "<d-k>", "<cmd>ToggleTerm<CR>", opts)
+    end, 100)
+    if vim.fn.mode() == "i" then
+        vim.cmd("stopinsert")
+    end
+    vim.cmd("write!")
+end, opts)
+
 keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
 
 keymap({ "i", "n" }, "<c-m>", function()
@@ -67,7 +78,10 @@ end, opts)
 _G.has_diagnostic = false
 keymap("n", "<leader>ud", function()
     if _G.has_diagnostic then
-        vim.diagnostic.config({ virtual_text = false })
+        vim.diagnostic.config({
+            virtual_text = false,
+            update_in_insert = false,
+        })
         _G.has_diagnostic = false
     else
         vim.diagnostic.config({
@@ -76,6 +90,7 @@ keymap("n", "<leader>ud", function()
                 source = "if_many",
                 spacing = 2,
             },
+            update_in_insert = false,
         })
         _G.has_diagnostic = true
     end
@@ -324,6 +339,7 @@ keymap("n", "*", function()
 end)
 
 local prev_conceal = 0
+keymap({ "n", "o" }, "-", "$", opts)
 keymap("n", "<leader>oc", function()
     if vim.wo.conceallevel >= 1 then
         prev_conceal = vim.wo.conceallevel
@@ -476,14 +492,6 @@ keymap("n", "<D-2>", function()
     end
     FeedKeys("zz", "m")
 end, opts)
-
-keymap("n", "<c-q>", function()
-    if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
-        return "qa"
-    else
-        return "q"
-    end
-end, { expr = true })
 
 keymap("i", "<space>", function()
     if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then

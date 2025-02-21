@@ -99,11 +99,11 @@ end
 function M.auto_add_ret()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    local _, idx = string.find(line, "ren")
+    local _, idx = string.find(line, "%s+ren ")
     if idx == nil or col ~= idx then
         return
     end
-    FeedKeys("<BS>turn", "n")
+    FeedKeys("<BS><BS>turn ", "n")
     if require("cmp").visible() then
         require("cmp").close()
     end

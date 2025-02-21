@@ -127,9 +127,6 @@ local function my_on_attach(bufnr)
     end
     keymap("n", "F", toggle_all_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>F", toggle_all_filter)
-    keymap({ "n", "i" }, "<D-n>", function()
-        api.fs.create()
-    end, { desc = "create new file" })
 end
 return {
     -- "nvim-tree/nvim-tree.lua",
