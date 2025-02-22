@@ -308,6 +308,12 @@ function M.noice_incsearch_at_start()
     return cursor
 end
 
+function M.cursor_char()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local x = vim.api.nvim_buf_get_text(0, row - 1, col, row - 1, col + 1, {})
+    return x[1]
+end
+
 function M.fold_method_diff()
     local tabnum = vim.fn.tabpagenr()
     if tabnum ~= 1 then

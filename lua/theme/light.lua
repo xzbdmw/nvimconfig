@@ -139,6 +139,7 @@ keymap({ "n" }, "<esc>", function()
         require("substitute.exchange").cancel()
         require("illuminate.engine").clear_keeped_highlight()
         require("illuminate.goto").clear_keeped_hl()
+        require("clever-wrap").clean()
         pcall(_G.indent_update)
     end)
 

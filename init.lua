@@ -243,6 +243,7 @@ api.nvim_create_autocmd("BufWritePost", {
                         end
                         if resolved_action.edit then
                             vim.lsp.util.apply_workspace_edit(resolved_action.edit, client.offset_encoding)
+                            vim.cmd("silent write")
                         end
                     end)
                     return
@@ -467,7 +468,7 @@ vim.api.nvim_create_autocmd("TextChangedI", {
     callback = function()
         local snip = require("config.autosnip")
         if vim.bo.filetype == "go" then
-            snip.go_auto_add_equal()
+            -- snip.go_auto_add_equal()
             snip.go_auto_add_pair()
             snip.go_auto_add_func()
             snip.go_auto_add_method()
@@ -850,14 +851,14 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
--- api.nvim_create_autocmd("User", {
---     pattern = "MiniSnippetsSessionJump",
---     callback = function(args)
---         if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
---             MiniSnippets.session.stop()
---         end
---     end,
--- })
+api.nvim_create_autocmd("User", {
+    pattern = "MiniSnippetsSessionJump",
+    callback = function(args)
+        if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
+            MiniSnippets.session.stop()
+        end
+    end,
+})
 
 api.nvim_create_autocmd("User", {
     pattern = { "NvimTreeReloaded" },

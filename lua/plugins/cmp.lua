@@ -76,15 +76,6 @@ return {
             },
             snippet = {
                 expand = function(args)
-                    if not f.expand then
-                        local function remove_bracket_contents(input)
-                            local pattern = "^(.*)%b().*$"
-                            local result = string.gsub(input, pattern, "%1")
-                            return result
-                        end
-                        args.body = remove_bracket_contents(args.body)
-                        f.expand = true
-                    end
                     if vim.bo.filetype == "lua" then
                         require("cmp.config").set_onetime({ sources = {} })
                     end

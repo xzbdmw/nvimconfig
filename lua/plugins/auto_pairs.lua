@@ -5,7 +5,7 @@ return {
         disable_filetype = { "snacks_picker_input", "TelescopePrompt" },
         break_undo = false,
         fast_wrap = {
-            map = "<c-e>",
+            map = "<c-9>",
             chars = { "{", "[", "(", '"', "'", "<" },
             mirror_chars = { "}", "]", ")", '"', "'", ">" },
             pattern = [=[[%'%"%>%]%)%;%s%}%,]]=],

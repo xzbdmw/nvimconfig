@@ -19,6 +19,7 @@ return {
                 return
             end
             del({ "n", "x" }, "<d-s>", { buffer = buf })
+            del({ "n", "x" }, "<leader>w", { buffer = buf })
             del({ "n", "x" }, "<Tab>", { buffer = buf })
             del({ "n", "x" }, "y", { buffer = buf })
             del({ "i" }, "<d-v>", { buffer = buf })
@@ -45,6 +46,12 @@ return {
             keymap({ "n", "x" }, "y", "y", opts)
             keymap({ "i" }, "<d-v>", function()
                 vim.notify("use <C-r> instead")
+            end, opts)
+            keymap({ "n", "x" }, "<leader>w", function()
+                vim.api.nvim_exec_autocmds("User", {
+                    pattern = "ESC",
+                })
+                vim.cmd("write")
             end, opts)
             keymap({ "n", "x" }, "<D-s>", function()
                 vim.api.nvim_exec_autocmds("User", {
