@@ -18,7 +18,12 @@ return {
         },
         {
             "<c-e>",
-            "<Cmd>Lspsaga diagnostic_jump_next<CR>",
+            function()
+                if require("config.utils").should_wrap() then
+                    return
+                end
+                vim.cmd("Lspsaga diagnostic_jump_next")
+            end,
             desc = "Code Action",
         },
     },

@@ -50,8 +50,7 @@ return {
             },
             -- Callback function to run any custom logic or keymaps for the quickfix buffer
             on_qf = function(bufnr)
-                vim.bo.tabstop = 4
-                local win = vim.fn.win_findbuf(bufnr)
+                vim.wo.statuscolumn = ""
             end,
             edit = {
                 -- Enable editing the quickfix like a normal buffer

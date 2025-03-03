@@ -216,13 +216,9 @@ return {
                 end),
                 ["<left>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
-                    fallback()
-                end),
-                ["<c-cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.close()
                     end
-                    _G.no_animation(_G.CI)
                     fallback()
                 end),
                 ["<right>"] = cmp.mapping(function(fallback)
@@ -237,6 +233,14 @@ return {
                     else
                         fallback()
                     end
+                    fallback()
+                end),
+                ["<c-cr>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                    _G.no_animation(_G.CI)
+                    fallback()
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     TTT = vim.uv.hrtime()

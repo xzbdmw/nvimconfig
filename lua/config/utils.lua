@@ -314,6 +314,19 @@ function M.cursor_char()
     return x[1]
 end
 
+function M.should_wrap()
+    if require("multicursor-nvim").numCursors() > 1 then
+        local cursor_char = require("config.utils").cursor_char()
+        for _, v in ipairs({ "(", "{", "[", "<", '"', "'", ")", "}", ">", "]" }) do
+            if cursor_char == v then
+                require("clasp").wrap("next")
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function M.fold_method_diff()
     local tabnum = vim.fn.tabpagenr()
     if tabnum ~= 1 then

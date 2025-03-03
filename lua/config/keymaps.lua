@@ -68,14 +68,26 @@ keymap({ "n" }, "?", function()
     return utils.search("?")
 end, { expr = true })
 
+keymap({ "n" }, "<leader><c-p>", function()
+    FeedKeys("p", "n")
+    FeedKeys("gvgc", "m")
+end, opts)
 keymap({ "c" }, "<c-n>", "<c-g>", opts)
 keymap({ "c" }, "<c-p>", "<c-t>", opts)
 
-vim.keymap.set({ "n", "i" }, "<c-'>", function()
-    require("clasp").jump("prev")
+keymap({ "i" }, "<c-e>", function()
+    require("clasp").wrap("next")
+end)
+keymap({ "i", "n" }, "<c-'>", function()
+    require("clasp").wrap("prev")
 end)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
+end, opts)
+keymap({ "n" }, "X", function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    FeedKeys('$"_x', "nx")
+    vim.api.nvim_win_set_cursor(0, { row, col })
 end, opts)
 
 _G.has_diagnostic = false
@@ -329,7 +341,16 @@ keymap({ "n", "v" }, "<D-->", function()
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1
 end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
-keymap("n", "<leader><c-r>", "<cmd>e!<cr>", opts)
+
+keymap("n", "<leader><c-r>", function()
+    vim.cmd(":e!")
+    if vim.wo.signcolumn == "no" then
+        vim.wo.signcolumn = "yes"
+    end
+    if vim.wo.signcolumn == "" then
+        vim.wo.statuscolumn = [[%!v:lua.require'lazyvim.util'.ui.statuscolumn()]]
+    end
+end, opts)
 
 keymap("n", "*", function()
     vim.g.type_star = true
@@ -495,9 +516,6 @@ keymap("n", "<D-2>", function()
 end, opts)
 
 keymap("i", "<space>", function()
-    if vim.fn.reg_recording() == "" and vim.fn.reg_executing() == "" then
-        utils.insert_mode_space()
-    end
     return "<space>"
 end, { expr = true })
 
@@ -613,6 +631,19 @@ keymap("n", "E", function()
     return "Ea"
 end, { expr = true })
 
+keymap("i", "<c-;>", function()
+    local cmp = require("cmp")
+    _G.no_animation(_G.CI)
+    if cmp.visible() then
+        require("config.cmpformat").expand = false
+        cmp.confirm({ select = true })
+        vim.defer_fn(function()
+            pcall(_G.update_indent, true) -- hlchunk
+            pcall(_G.mini_indent_auto_draw) -- mini-indentscope
+        end, 20)
+    end
+end, opts)
+
 keymap("n", "<c-;>", function()
     return "q:"
 end, { expr = true })
@@ -653,7 +684,13 @@ end, { expr = true, remap = true })
 
 keymap({ "n", "o" }, "^", "0", opts)
 keymap("i", "<d-z>", "<cmd>undo<CR>", opts)
-keymap("i", "<c-u>", "<cmd>undo<CR>", opts)
+keymap("i", "<c-u>", function()
+    vim.o.eventignore = "TextChangedI"
+    vim.schedule(function()
+        vim.o.eventignore = ""
+    end)
+    return "<cmd>undo<CR>"
+end, { expr = true })
 keymap("i", ",", function()
     if require("multicursor-nvim").numCursors() > 1 then
         return ","
@@ -698,7 +735,7 @@ keymap("i", "<BS>", function()
             break
         end
     end
-    if all_space == true and col ~= 0 then
+    if all_space == true and col ~= 0 and vim.bo.filetype ~= "markdown" and vim.bo.filetype ~= "txt" then
         vim.schedule(function()
             vim.api.nvim_set_current_line(line:sub(col + 1, #line))
             vim.api.nvim_win_set_cursor(0, { row, 0 })

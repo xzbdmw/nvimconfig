@@ -15,6 +15,9 @@ return {
                         typing = {
                             triggerChars = ".={<(",
                         },
+                        checkOnSave = {
+                            command = "clippy",
+                        },
                         completion = {
                             fullFunctionSignatures = {
                                 enable = false,

@@ -50,6 +50,9 @@ keymap("n", "<leader>cp", function()
     vim.cmd.RustLsp("explainError")
 end, { silent = true, buffer = bufnr, desc = "rust hover type info" })
 keymap("n", "<C-e>", function()
+    if require("config.utils").should_wrap() then
+        return
+    end
     vim.cmd("RustLsp renderDiagnostic cycle")
 end, { silent = true, buffer = bufnr, desc = "rust render diagnostics" })
 keymap({ "x" }, "<Tab>", function()

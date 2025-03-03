@@ -1,6 +1,5 @@
 return {
     "jake-stewart/multicursor.nvim",
-    verison = false,
     config = function()
         local mc = require("multicursor-nvim")
         local keymap = vim.keymap.set
@@ -124,6 +123,11 @@ return {
         end
 
         mc.setup()
+
+        keymap({ "n", "x" }, "<leader><tab><tab>", function()
+            begin()
+            mc.toggleCursor()
+        end)
         keymap({ "n", "x" }, "mw", function()
             reset_state()
             vim.cmd([[normal! m']])

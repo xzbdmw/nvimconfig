@@ -166,10 +166,11 @@ keymap("n", "H", function()
     pcall(function()
         require("illuminate.engine").keep_highlight(bufnr)
     end)
+    require("config.utils").refresh_search_winbar()
+    vim.cmd("redraw!")
     vim.cmd("noh")
     vim.b.term_search_title = ""
     vim.b.search_winbar = ""
-    require("config.utils").refresh_search_winbar()
     vim.api.nvim_exec_autocmds("User", {
         pattern = "ClearSatellite",
     })

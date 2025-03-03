@@ -67,7 +67,7 @@ end
 function M.lua_auto_pai()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    local _, idx = string.find(line, "pai")
+    local _, idx = string.find(line, "vim%.pai")
     if idx == nil or col ~= idx then
         return
     end
@@ -77,7 +77,7 @@ end
 function M.lua_auto_pia()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    local _, idx = string.find(line, "pia")
+    local _, idx = string.find(line, "vim%.pia")
     if idx == nil or col ~= idx then
         return
     end
@@ -99,11 +99,15 @@ end
 function M.auto_add_ret()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    local _, idx = string.find(line, "%s+ren")
+    local idx
+    _, idx = string.find(line, "%s+ren")
     if idx == nil or col ~= idx then
-        return
+        idx = string.find(line, "^ren$")
+        if idx == nil then
+            return
+        end
     end
-    FeedKeys("<BS>turn", "n")
+    FeedKeys("<c-g>u<BS>turn", "n")
     if require("cmp").visible() then
         require("cmp").close()
     end
@@ -112,7 +116,7 @@ end
 function M.autotrue()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
-    local _, idx = string.find(line, "ture")
+    local _, idx = string.find(line, ".*%sture")
     if idx == nil or col ~= idx then
         return
     end

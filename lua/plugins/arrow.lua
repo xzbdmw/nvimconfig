@@ -1,6 +1,7 @@
 return {
     "otavioschwanck/arrow.nvim",
     keys = { { "'" }, { "\\" } },
+    lazy = false,
     cond = function()
         return not vim.g.scrollback
     end,

@@ -10,6 +10,10 @@ return {
         require("alternate-toggler").setup({
             alternates = {
                 ["||"] = "&&",
+                ["&&"] = "||",
+                ["first"] = "second",
+                ["second"] = "third",
+                ["third"] = "fourth",
                 ["or"] = "and",
                 ["=="] = function()
                     return vim.bo.filetype == "lua" and "~=" or "!="
