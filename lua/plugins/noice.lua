@@ -4,6 +4,7 @@ return {
     cond = function()
         return not vim.g.scrollback
     end,
+    -- enabled = false,
     keys = {
         {
             "<leader>na",

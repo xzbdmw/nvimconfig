@@ -91,16 +91,6 @@ keymap("n", "[q", function()
     end
 end)
 
-keymap("n", "]r", function()
-    require("illuminate").goto_next_reference(true)
-    vim.cmd("normal z")
-end)
-
-keymap("n", "[r", function()
-    require("illuminate").goto_prev_reference(true)
-    vim.cmd("normal z")
-end)
-
 keymap("n", "]s", function()
     vim.cmd("normal! n")
     vim.cmd("normal z")

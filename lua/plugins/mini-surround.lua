@@ -91,7 +91,7 @@ return {
                 delete = "md",
                 find = "mf",
                 find_left = "mF",
-                highlight = "mh",
+                highlight = "mH",
                 replace = "mr",
                 update_n_lines = "mN",
             },

@@ -2,16 +2,17 @@ return {
     "jake-stewart/multicursor.nvim",
     config = function()
         local mc = require("multicursor-nvim")
+        local examples = require("multicursor-nvim.examples")
         local keymap = vim.keymap.set
         local del = function(...)
             pcall(vim.keymap.del, ...)
         end
+        local prev
         local cursormoveid
         local opts = { buffer = true, nowait = true }
         local function del_buffer_keys(buf)
             require("multicursor-nvim").clearCursors()
             vim.g.mc_active = false
-            vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
             api.nvim_buf_clear_namespace(0, api.nvim_create_namespace("cursor-mc-count"), 0, -1)
             pcall(api.nvim_del_autocmd, cursormoveid)
             if not api.nvim_buf_is_valid(buf) then
@@ -27,6 +28,7 @@ return {
             del({ "n" }, "u", { buffer = buf })
             del({ "n" }, "<C-R>", { buffer = buf })
             del({ "n", "x" }, "q", { buffer = buf })
+            del({ "n", "x" }, "Q", { buffer = buf })
             del({ "n", "x" }, "<c-q>", { buffer = buf })
             del({ "n", "x" }, "<leader><c-a>", { buffer = buf })
             del({ "n", "x" }, "<leader><c-q>", { buffer = buf })
@@ -37,7 +39,26 @@ return {
         end
         local function set_buffer_keys()
             keymap({ "n", "x" }, "q", function()
-                mc.matchSkipCursor(1)
+                if prev == "word" then
+                    mc.matchSkipCursor(1)
+                elseif prev == "line" then
+                    mc.lineSkipCursor(1)
+                elseif prev == "diag" then
+                    mc.diagnosticSkipCursor(1)
+                elseif prev == "document" then
+                    examples.documentHighlightSkipCursor(1)
+                end
+            end, opts)
+            keymap({ "n", "x" }, "Q", function()
+                if prev == "word" then
+                    mc.matchSkipCursor(-1)
+                elseif prev == "line" then
+                    mc.lineSkipCursor(-1)
+                elseif prev == "diag" then
+                    mc.diagnosticSkipCursor(-1)
+                elseif prev == "document" then
+                    examples.documentHighlightSkipCursor(-1)
+                end
             end, opts)
             keymap({ "n", "x" }, "<Tab>", function()
                 mc.toggleCursor()
@@ -62,10 +83,26 @@ return {
                 mc.matchSkipCursor(-1)
             end, opts)
             keymap({ "n", "x" }, "n", function()
-                mc.matchAddCursor(1)
+                if prev == "word" then
+                    mc.matchAddCursor(1)
+                elseif prev == "line" then
+                    mc.lineAddCursor(1)
+                elseif prev == "diag" then
+                    examples.diagnosticAddCursor(1)
+                elseif prev == "document" then
+                    examples.documentHighlightAddCursor(1)
+                end
             end, opts)
             keymap({ "n", "x" }, "N", function()
-                mc.matchAddCursor(-1)
+                if prev == "word" then
+                    mc.matchAddCursor(-1)
+                elseif prev == "line" then
+                    mc.lineAddCursor(-1)
+                elseif prev == "diag" then
+                    examples.diagnosticAddCursor(-1)
+                elseif prev == "document" then
+                    examples.documentHighlightAddCursor(-1)
+                end
             end, opts)
             keymap({ "n" }, "u", "u", opts)
             keymap({ "n" }, "<C-r>", "<C-r>", opts)
@@ -87,20 +124,12 @@ return {
                 return
             end
             vim.g.mc_active = true
-            vim.o.guicursor = "n-sm-ve-v:block-Cursor,i-c-ci:ver16-Cursor,r-cr-o:hor7-Cursor"
             cursormoveid = api.nvim_create_autocmd("CursorMoved", {
                 buffer = api.nvim_get_current_buf(),
                 callback = function()
                     vim.schedule(function()
                         require("config.utils").mc_virt_count()
                     end)
-                end,
-            })
-            api.nvim_create_autocmd("TextChanged", {
-                once = true,
-                buffer = api.nvim_get_current_buf(),
-                callback = function()
-                    vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
                 end,
             })
             local buf = vim.api.nvim_get_current_buf()
@@ -135,6 +164,39 @@ return {
             mc.operator({ motion = "iw" })
             require("config.utils").restore_mc_view(visual)
         end)
+
+        keymap({ "n", "x" }, "me", function()
+            begin()
+            mc.diagnosticMatchCursors({ severity = vim.diagnostic.severity.ERROR })
+        end)
+
+        keymap({ "n", "x" }, "]D", function()
+            begin()
+            prev = "diag"
+            examples.diagnosticAddCursor(1)
+        end)
+        keymap({ "n", "x" }, "[D", function()
+            begin()
+            prev = "diag"
+            examples.diagnosticAddCursor(-1)
+        end)
+
+        keymap({ "n", "x" }, "mh", function()
+            begin()
+            prev = "document"
+            examples.documentHighlightMatchCursors()
+        end)
+        keymap({ "n", "x" }, "]r", function()
+            begin()
+            prev = "document"
+            examples.documentHighlightAddCursor(1)
+        end)
+        keymap({ "n", "x" }, "[r", function()
+            begin()
+            prev = "document"
+            examples.documentHighlightAddCursor(-1)
+        end)
+
         keymap({ "n" }, "mW", function()
             reset_state()
             vim.cmd([[normal! m']])
@@ -147,6 +209,7 @@ return {
         end)
         keymap({ "n", "v" }, "<d-n>", function()
             begin()
+            prev = "line"
             mc.lineAddCursor(1)
         end)
         -- bring back cursors if you accidentally clear them
@@ -159,6 +222,7 @@ return {
             --     FeedKeys("viw", "mix")
             -- end
             begin()
+            prev = "word"
             mc.matchAddCursor(1)
         end)
         keymap({ "n", "x" }, "<leader>ma", function()
