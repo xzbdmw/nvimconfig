@@ -173,7 +173,11 @@ return {
         keymap({ "n", "x" }, "]D", function()
             begin()
             prev = "diag"
-            examples.diagnosticAddCursor(1)
+            if require("multicursor-nvim").numCursors() > 1 then
+                examples.diagnosticAddCursor(1)
+            else
+                examples.diagnosticSkipCursor(1)
+            end
         end)
         keymap({ "n", "x" }, "[D", function()
             begin()

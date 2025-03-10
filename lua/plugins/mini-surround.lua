@@ -92,7 +92,7 @@ return {
                 find = "mf",
                 find_left = "mF",
                 highlight = "mH",
-                replace = "mr",
+                replace = "mc",
                 update_n_lines = "mN",
             },
         },

@@ -475,19 +475,24 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.go_auto_add_pair()
             snip.go_auto_add_func()
             snip.go_auto_add_method()
+            snip.auto_add_forr()
+            snip.auto_add_fori()
+            snip.auto_add_forj()
+            snip.auto_add_forl()
         elseif vim.bo.filetype == "lua" then
             snip.lua_auto_add_local()
             snip.lua_auto_pai()
             snip.lua_auto_pia()
             snip.lua_auto_add_while()
             snip.lua_abbr()
+            snip.auto_add_forr()
+            snip.auto_add_fori()
+            snip.auto_add_forj()
         end
         snip.auto_add_if()
         snip.auto_add_ret()
         snip.autotrue()
         snip.autofalse()
-        snip.auto_add_forr()
-        snip.auto_add_fori()
     end,
 })
 

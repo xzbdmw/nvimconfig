@@ -24,6 +24,30 @@ function M.auto_add_fori()
     MiniSnippets.expand()
 end
 
+function M.auto_add_forl()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forl$") == nil) then
+        return
+    end
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+    MiniSnippets.expand()
+end
+
+function M.auto_add_forj()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forj$") == nil) then
+        return
+    end
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+    MiniSnippets.expand()
+end
+
 function M.auto_add_if()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()

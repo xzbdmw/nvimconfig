@@ -46,15 +46,11 @@ return {
                     end
                     return [[<C-\><C-n>]]
                 end, { buffer = 0, expr = true })
-                vim.keymap.set("t", "<d-l>", function()
+                vim.keymap.set("t", "<c-[>", function()
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
                     vim.bo.scrollback = 100000
                 end, { buffer = true })
-                vim.keymap.set("t", "<c-[>", function()
-                    require("config.utils").change_guicursor("block")
-                    return "<esc>"
-                end, { buffer = true, expr = true })
             end,
             on_close = function()
                 if vim.api.nvim_buf_get_name(0):find("#toggleterm") ~= nil then

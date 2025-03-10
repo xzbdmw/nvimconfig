@@ -1,4 +1,12 @@
 {
+  "forl": {
+    "body": [
+      "for ${1:i} := range ${2:len} {",
+      "\t${0:}",
+      "}"
+    ],
+    "prefix": "forl"
+  },
   "ifl": {
     "body": [
       "if ${1:}, ok := ${2:}; ${3:ok} {",
@@ -6,6 +14,60 @@
       "}"
     ],
     "prefix": "ifl"
+  },
+  "jkd4": {
+    "body": [
+      "// [1 1 1 1]",
+      "// [1 1 1 1]",
+      "// [1 1 1 1]",
+      "// [1 1 1 1]"
+    ],
+    "prefix": "jkd4"
+  },
+  "jkd5": {
+    "body": [
+      "// [1 1 1 1 1]",
+      "// [1 1 1 1 1]",
+      "// [1 1 1 1 1]",
+      "// [1 1 1 1 1]",
+      "// [1 1 1 1 1]"
+    ],
+    "prefix": "jkd5"
+  },
+  "jkd6": {
+    "body": [
+      "// [1 1 1 1 1 1]",
+      "// [1 1 1 1 1 1]",
+      "// [1 1 1 1 1 1]",
+      "// [1 1 1 1 1 1]",
+      "// [1 1 1 1 1 1]",
+      "// [1 1 1 1 1 1]"
+    ],
+    "prefix": "jkd6"
+  },
+  "jkdp": {
+    "body": [
+      "dp := make([][]int, ${1:len})",
+      "for i := range dp {",
+      "\tdp[i] = make([]int, ${2:len})",
+      "}"
+    ],
+    "prefix": "jkdp"
+  },
+  "jke-1": {
+    "body": "if got != tt.want {",
+    "prefix": "jke"
+  },
+  "jkf": {
+    "body": "{\"first\", ${0:}},",
+    "prefix": "jkf"
+  },
+  "jkres": {
+    "body": [
+      "var res ${1:type}",
+      "return res"
+    ],
+    "prefix": "jkres"
   },
   "open": {
     "body": [

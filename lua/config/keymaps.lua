@@ -10,17 +10,6 @@ keymap({ "n", "i" }, "<D-s>", function()
     vim.cmd("write!")
 end, opts)
 
-keymap({ "n", "i" }, "<c-q>", function()
-    keymap({ "n" }, "<d-k>", "k", opts)
-    vim.defer_fn(function()
-        keymap({ "n", "i" }, "<d-k>", "<cmd>ToggleTerm<CR>", opts)
-    end, 100)
-    if vim.fn.mode() == "i" then
-        vim.cmd("stopinsert")
-    end
-    vim.cmd("write!")
-end, opts)
-
 keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
 
 keymap({ "i", "n" }, "<c-m>", function()
@@ -68,10 +57,14 @@ keymap({ "n" }, "?", function()
     return utils.search("?")
 end, { expr = true })
 
-keymap({ "n" }, "<leader><c-p>", function()
-    FeedKeys("p", "n")
-    FeedKeys("gvgc", "m")
-end, opts)
+keymap({ "o" }, "p", function()
+    if vim.v.operator == "c" then
+        FeedKeys("<esc>p", "n")
+        FeedKeys("gvgc", "m")
+    else
+        return "p"
+    end
+end, { expr = true })
 keymap({ "c" }, "<c-n>", "<c-g>", opts)
 keymap({ "n", "x" }, "g<c-a>", function()
     require("multicursor-nvim").sequenceIncrement()
@@ -140,6 +133,27 @@ end, { expr = true })
 keymap("o", "l", function()
     return utils.operator_mode_lh("after")
 end, { expr = true })
+
+keymap("x", "B", function()
+    vim.cmd([[execute "normal! \<esc>"]])
+    local mode = vim.fn.visualmode()
+    local function range()
+        local s = vim.api.nvim_buf_get_mark(0, "<")
+        local e = vim.api.nvim_buf_get_mark(0, ">")
+        if mode == "v" then
+            return s[1], s[2], e[1], e[2]
+        else
+            return s[1], 0, e[1], #vim.api.nvim_buf_get_lines(0, e[1] - 1, e[1], false)[1] - 1
+        end
+    end
+    local ns = vim.api.nvim_create_namespace("bold")
+    local row_start, col_start, row_end, col_end = range()
+    vim.api.nvim_buf_set_extmark(0, ns, row_start - 1, col_start, {
+        end_row = row_end - 1,
+        end_col = col_end + 1,
+        hl_group = "illuminatedH",
+    })
+end)
 
 keymap("n", "<leader>sl", function()
     local cmd = vim.fn.getreg("/"):gsub("\\V", "")
@@ -268,7 +282,7 @@ keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<esc>cb"
 end, { expr = true, remap = true })
-keymap("n", "`", function()
+keymap("n", "<c-[>", function()
     vim.g.gd = true
     vim.defer_fn(function()
         vim.g.gd = false
@@ -296,13 +310,13 @@ keymap("n", "<leader>tm", function()
         vim.api.nvim_win_set_config(0, config)
     end
 end, opts)
-keymap("n", "<d-l>", function()
+keymap("n", "<c-[>", function()
     if vim.bo.filetype == "toggleterm" then
         FeedKeys("a<c-l>", "n")
         vim.bo.scrollback = 1
         vim.bo.scrollback = 100000
     end
-end, opts)
+end, { expr = true, remap = true })
 
 keymap("x", "*", function()
     return utils.visual_search("/")
@@ -556,6 +570,10 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 
+keymap({ "n" }, "Q", function()
+    vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
+end)
+
 keymap("x", ":", function()
     vim.cmd("Noice disable")
     vim.schedule(function()
@@ -582,9 +600,9 @@ keymap("x", "C", function()
 end, opts)
 keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
-        return "<d-1><cmd>vsp<CR><c--><c-->"
+        return "<d-1><cmd>vsp<CR><c--><c--><leader>op"
     else
-        return "<cmd>vsp<CR><c--><c-->"
+        return "<cmd>vsp<CR><c--><c--><leader>op"
     end
 end, { expr = true, remap = true })
 keymap("n", "<", function()
