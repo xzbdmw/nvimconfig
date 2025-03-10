@@ -55,30 +55,6 @@ return {
                 end,
             },
             {
-                "<leader>-",
-                function()
-                    Snacks.picker.zoxide({
-                        layout = layout_no_prewview,
-                        actions = {
-                            oil = function(picker, item)
-                                picker:close()
-                                vim.cmd("Oil " .. item.file)
-                            end,
-                        },
-                        win = {
-                            input = {
-                                keys = {
-                                    ["<CR>"] = {
-                                        "oil",
-                                        mode = { "i", "n" },
-                                    },
-                                },
-                            },
-                        },
-                    })
-                end,
-            },
-            {
                 "<d-o>",
                 function()
                     TT = vim.uv.hrtime()

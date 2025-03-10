@@ -46,7 +46,7 @@ return {
                     end
                     return [[<C-\><C-n>]]
                 end, { buffer = 0, expr = true })
-                vim.keymap.set("t", "<c-[>", function()
+                vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
                     vim.bo.scrollback = 100000

@@ -177,6 +177,8 @@ end, opts)
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
+    vim.cmd("SmartOpenValidate")
+    vim.cmd("SmartOpenRefresh")
 end, opts)
 keymap("n", "g.", "`.", opts)
 
@@ -282,14 +284,6 @@ keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<esc>cb"
 end, { expr = true, remap = true })
-keymap("n", "<c-[>", function()
-    vim.g.gd = true
-    vim.defer_fn(function()
-        vim.g.gd = false
-    end, 100)
-    _G.no_animation()
-    return "<cmd>e #<cr>"
-end, { expr = true })
 
 -- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
@@ -310,13 +304,13 @@ keymap("n", "<leader>tm", function()
         vim.api.nvim_win_set_config(0, config)
     end
 end, opts)
-keymap("n", "<c-[>", function()
+keymap("n", "<d-l>", function()
     if vim.bo.filetype == "toggleterm" then
         FeedKeys("a<c-l>", "n")
         vim.bo.scrollback = 1
         vim.bo.scrollback = 100000
     end
-end, { expr = true, remap = true })
+end)
 
 keymap("x", "*", function()
     return utils.visual_search("/")
@@ -460,6 +454,9 @@ end, { expr = true })
 
 keymap({ "n", "v", "i" }, "<a-s>", vim.lsp.buf.signature_help, opts)
 
+vim.keymap.set("n", "<d-y>", function()
+    LazyVim.terminal.open({ "yazi" }, { cwd = LazyVim.root.get(), esc_esc = false, ctrl_hjkl = false })
+end)
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
 
 keymap("n", "<leader>uu", function()
@@ -921,7 +918,6 @@ keymap("n", "gd", function()
     vim.lsp.buf.definition()
 end)
 
-keymap("n", "<leader>z", "z", opts)
 keymap("n", "z", function()
     utils.adjust_view(0, 3)
 end, opts)

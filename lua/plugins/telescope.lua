@@ -12,6 +12,55 @@ return {
         version = false,
         keys = {
             { "<leader><space>", false },
+            {
+                "<leader>-",
+                function()
+                    require("telescope").extensions.zoxide.list({
+                        on_complete = {
+                            function()
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
+                                    require("config.utils").on_complete(
+                                        "                                                 ",
+                                        "                                                 ",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "                                                     ",
+                                        "                                                     ",
+                                        18
+                                    )
+                                end
+                            end,
+                        },
+                        disable_devicons = false,
+                        prompt_title = "Zoxide",
+                        initial_mode = "insert",
+                        layout_strategy = "horizontal",
+                        previewer = false,
+                        layout_config = {
+                            horizontal = {
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.38 or 0.35,
+                                height = 0.7,
+                            },
+                            mirror = false,
+                        },
+                        attach_mappings = function(i, map)
+                            map({ "i", "n" }, "<CR>", function(prompt_bufnr)
+                                actions.close(prompt_bufnr)
+                                local e = action_state.get_selected_entry()
+                                vim.cmd("Oil " .. e.path)
+                            end, { desc = "desc for which key" })
+                            map({ "i", "n" }, "<c-CR>", function(prompt_bufnr)
+                                actions.close(prompt_bufnr)
+                                local e = action_state.get_selected_entry()
+                                vim.cmd("cd " .. e.path)
+                            end, { desc = "desc for which key" })
+                            return true
+                        end,
+                    })
+                end,
+            },
             { "<leader>so", false },
             { "<leader>uC", false },
             { "<leader>sf", false },

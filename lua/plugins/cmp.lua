@@ -233,7 +233,6 @@ return {
                     else
                         fallback()
                     end
-                    fallback()
                 end),
                 ["<c-cr>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
