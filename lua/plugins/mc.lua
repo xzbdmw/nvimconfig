@@ -80,7 +80,7 @@ return {
                 vim.cmd("write")
             end, opts)
             keymap({ "n", "x" }, "<c-q>", function()
-                mc.matchSkipCursor(-1)
+                require("multicursor-nvim").disableCursors()
             end, opts)
             keymap({ "n", "x" }, "n", function()
                 if prev == "word" then

@@ -576,8 +576,47 @@ keymap({ "n" }, "q", function()
     utils.close_win()
 end)
 
+do
+    vim.g.show_diag = true
+    local handler = {
+        underline = vim.diagnostic.handlers.underline.show,
+        signs = vim.diagnostic.handlers.signs.show,
+        virtual_text = vim.diagnostic.handlers.virtual_text.show,
+        virtual_lines = vim.diagnostic.handlers.virtual_lines.show,
+    }
+    vim.diagnostic.handlers.underline.show = function(...)
+        if not vim.g.show_diag then
+            return
+        end
+        handler.underline(...)
+    end
+    vim.diagnostic.handlers.signs.show = function(...)
+        if not vim.g.show_diag then
+            return
+        end
+        handler.signs(...)
+    end
+    vim.diagnostic.handlers.virtual_lines.show = function(...)
+        if not vim.g.show_diag then
+            return
+        end
+        handler.virtual_lines(...)
+    end
+    vim.diagnostic.handlers.virtual_text.show = function(...)
+        if not vim.g.show_diag then
+            return
+        end
+        handler.virtual_text(...)
+    end
+end
 keymap({ "n" }, "Q", function()
-    vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
+    vim.g.show_diag = not vim.g.show_diag
+    if vim.g.show_diag == false then
+        vim.diagnostic.hide()
+    else
+        vim.diagnostic.show()
+    end
+    utils.set_diagnostic_winbar()
 end)
 
 keymap("n", "<leader>rW", function()
@@ -597,9 +636,9 @@ keymap("x", "C", function()
 end, opts)
 keymap("n", "<leader>vr", function()
     if utils.has_filetype("NvimTree") then
-        return "<d-1><cmd>vsp<CR><c--><c--><leader>op"
+        return "<d-1><cmd>vsp<CR><c--><c-->"
     else
-        return "<cmd>vsp<CR><c--><c--><leader>op"
+        return "<cmd>vsp<CR><c--><c-->"
     end
 end, { expr = true, remap = true })
 keymap("n", "<", function()

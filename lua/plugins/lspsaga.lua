@@ -19,12 +19,11 @@ return {
         {
             "<c-e>",
             function()
-                if require("config.utils").should_wrap() then
-                    return
-                end
-                vim.cmd("Lspsaga diagnostic_jump_next")
+                return "]d"
             end,
             desc = "Code Action",
+            expr = true,
+            remap = true,
         },
     },
     config = function()

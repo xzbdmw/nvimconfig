@@ -46,6 +46,9 @@ return {
                         return "<esc>"
                     end
                 end, { buffer = 0, expr = true })
+                vim.keymap.set("t", "<c-[>", function()
+                    vim.cmd("stopinsert")
+                end, { buffer = true })
                 vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1

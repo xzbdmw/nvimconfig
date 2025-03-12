@@ -1727,15 +1727,25 @@ function M.set_diagnostic_winbar()
     local num_warnings = counts[vim.diagnostic.severity.WARN] or 0
 
     if num_errors > 0 then
-        vim.b.diag_winbar = "%#diffRemoved#" .. "  " .. num_errors
-        M.refresh_diagnostic_winbar()
+        if not vim.g.show_diag then
+            vim.b.diag_winbar = "%#diffRemoved#" .. "  " .. num_errors
+        else
+            vim.b.diag_winbar = "%#diffRemoved#" .. "  " .. num_errors
+        end
     elseif num_warnings > 0 then
-        vim.b.diag_winbar = "%#CmpGhostText#" .. "  " .. num_warnings
-        M.refresh_diagnostic_winbar()
+        if not vim.g.show_diag then
+            vim.b.diag_winbar = "%#CmpGhostText#" .. "  " .. num_warnings
+        else
+            vim.b.diag_winbar = "%#CmpGhostText#" .. "  " .. num_warnings
+        end
     else
-        vim.b.diag_winbar = ""
-        M.refresh_diagnostic_winbar()
+        if not vim.g.show_diag then
+            vim.b.diag_winbar = "%#CmpGhostText#" .. "  "
+        else
+            vim.b.diag_winbar = ""
+        end
     end
+    M.refresh_diagnostic_winbar()
 end
 
 function M.set_git_winbar()

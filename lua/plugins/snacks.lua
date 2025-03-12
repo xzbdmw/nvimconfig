@@ -81,47 +81,32 @@ return {
     end,
     version = false,
     opts = {
-        ---@type table<string, snacks.win.Config>
-        styles = {
-            terminal = {
-                backdrop = { transparent = true, blend = 100 },
-                keys = {
-                    ["<d-CR>"] = {
-                        function()
-                            FeedKeys("<D-o>", "n")
-                        end,
-                        mode = "t",
-                    },
-                },
-            },
-            -- your styles configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
-        },
         terminal = {
             win = {
+                style = {
+                    backdrop = false,
+                    wo = {
+                        winblend = 5,
+                    },
+                },
                 width = math.floor(vim.o.columns * 0.7),
                 height = math.floor(vim.o.lines * 0.8),
             },
-            bo = {
-                filetype = "snacks_terminal",
-            },
-            wo = {},
         },
-        statuscolumn = {
-            enabled = true,
-            left = { "sign" }, -- priority of signs on the left (high to low)
-            right = { "git" }, -- priority of signs on the right (high to low)
-            folds = {
-                open = false, -- show open fold icons
-                git_hl = false, -- use Git Signs hl for fold icons
-            },
-            git = {
-                -- patterns to match Git signs
-                patterns = { "GitSign", "MiniDiffSign" },
-            },
-            refresh = 1, -- refresh at most every 50ms
-        },
+        -- statuscolumn = {
+        --     enabled = true,
+        --     left = { "sign" }, -- priority of signs on the left (high to low)
+        --     right = { "git" }, -- priority of signs on the right (high to low)
+        --     folds = {
+        --         open = false, -- show open fold icons
+        --         git_hl = false, -- use Git Signs hl for fold icons
+        --     },
+        --     git = {
+        --         -- patterns to match Git signs
+        --         patterns = { "GitSign", "MiniDiffSign" },
+        --     },
+        --     refresh = 1, -- refresh at most every 50ms
+        -- },
         picker = {
             enabled = true,
             prompt = " ",
