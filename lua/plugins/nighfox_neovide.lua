@@ -363,7 +363,7 @@ return {
                 DiagnosticUnderlineWarn = { sp = "#999797", style = "undercurl" },
                 DiagnosticUnderlineErrorUnused = { sp = "#6F6D6C", style = "undercurl" },
                 DiagnosticSignWarn = { fg = "#999797" },
-                DiagnosticUnnecessary = { fg = "none", bg = "none" },
+                DiagnosticUnnecessary = { link = "DiagnosticUnderlineErrorUnused" },
                 DiagnosticVirtualTextInfo = { fg = "#215062", bg = "none" },
                 DiagnosticVirtualTextHint = { fg = "#215063", bg = "none" },
                 SagaBeacon = { bg = "#F1D694" },

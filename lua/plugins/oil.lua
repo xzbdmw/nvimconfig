@@ -130,8 +130,8 @@ return {
                 sort = {
                     -- sort order can be "asc" or "desc"
                     -- see :help oil-columns to see which columns are sortable
-                    { "ctime", "desc" },
                     { "type", "asc" },
+                    { "ctime", "desc" },
                     { "name", "asc" },
                 },
             },

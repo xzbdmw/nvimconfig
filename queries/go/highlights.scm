@@ -237,6 +237,22 @@
 ; Spell
 ; ((interpreted_string_literal) @spell
 ;   (#not-has-parent? @spell import_spec))
+;
+
+; Regex
+(call_expression
+  (selector_expression) @_function
+  (#any-of? @_function
+    "regexp.Match" "regexp.MatchReader" "regexp.MatchString" "regexp.Compile" "regexp.CompilePOSIX"
+    "regexp.MustCompile" "regexp.MustCompilePOSIX")
+  (argument_list
+    .
+    [
+      (raw_string_literal
+        (raw_string_literal_content) @string.regexp)
+      (interpreted_string_literal
+        (interpreted_string_literal_content) @string.regexp)
+    ]))
 
 (type_declaration (type_spec name:(type_identifier) @interface.name type:(interface_type)))
 ((type_identifier)@go.error(#eq? @go.error "error")(#set! "priority" 1051))

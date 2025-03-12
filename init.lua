@@ -326,7 +326,6 @@ api.nvim_create_autocmd("FileType", {
         api.nvim_create_autocmd("CursorMoved", {
             once = true,
             callback = function()
-                utils.change_guicursor("block")
                 vim.cmd("norm! gg")
                 FeedKeys("a", "m")
                 vim.cmd("setlocal syntax=ON")
@@ -388,21 +387,6 @@ api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search", default = true })
-api.nvim_create_autocmd("ModeChanged", {
-    callback = function()
-        local old_mode = vim.v.event.old_mode
-        local new_mode = vim.v.event.new_mode
-        if old_mode == "t" then
-            utils.change_guicursor("block")
-            _G.set_cursor_animation(0)
-        end
-        if new_mode == "t" then
-            if vim.bo.filetype ~= "lazyterm" then
-                utils.change_guicursor("vertical")
-            end
-        end
-    end,
-})
 
 api.nvim_create_autocmd("FileType", {
     pattern = "qf",
@@ -532,23 +516,23 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
-api.nvim_create_autocmd("ModeChanged", {
-    pattern = "n:V",
-    callback = function()
-        if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
-            return
-        end
-        local s, e = vim.fn.line("."), vim.fn.line("v")
-        local ns = api.nvim_create_namespace("visual_range")
-        api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
-            end_row = e - 1,
-            strict = false,
-            priority = 1,
-            sign_text = " ",
-        })
-        _G.indent_update()
-    end,
-})
+-- api.nvim_create_autocmd("ModeChanged", {
+--     pattern = "n:V",
+--     callback = function()
+--         if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
+--             return
+--         end
+--         local s, e = vim.fn.line("."), vim.fn.line("v")
+--         local ns = api.nvim_create_namespace("visual_range")
+--         api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
+--             end_row = e - 1,
+--             strict = false,
+--             priority = 1,
+--             sign_text = " ",
+--         })
+--         _G.indent_update()
+--     end,
+-- })
 
 api.nvim_create_autocmd("User", {
     pattern = "v_V", -- visual mode press V
@@ -923,7 +907,7 @@ vim.api.nvim_create_user_command("LspCapabilities", function()
             end
             table.sort(capAsList) -- sorts alphabetically
             local msg = "# " .. client.name .. "\n" .. table.concat(capAsList, "\n")
-            vim.notify(msg, "trace", {
+            vim.notify(msg, vim.log.levels.INFO, {
                 on_open = function(win)
                     local buf = vim.api.nvim_win_get_buf(win)
                     vim.api.nvim_buf_set_option(buf, "filetype", "markdown")

@@ -7,7 +7,7 @@
         "need-check-nil"
     ],
     "workspace.library": [
-        "/usr/local/share/nvim/runtime/lua/",
+        "/Users/xzb/Downloads/nvim-macos-arm64/share/nvim/runtime/lua/",
         "${3rd}/luv/library"
     ],
     "diagnostics.globals": [

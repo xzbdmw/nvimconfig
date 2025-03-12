@@ -190,9 +190,6 @@ function Open_git_commit()
         vim.wo.signcolumn = "no"
         local finish = function()
             _G.hide_cursor(function() end)
-            if filetype == "lazyterm" then
-                M.change_guicursor("vertical")
-            end
             vim.schedule(M.refresh_telescope_git_status)
         end
         vim.api.nvim_create_autocmd("WinClosed", {
@@ -499,17 +496,6 @@ function M.insert_mode_space()
             return "<esc>"
         end, { expr = true })
     end, 200)
-end
-
-function M.change_guicursor(type)
-    if not vim.g.neovide then
-        return
-    end
-    if type == "vertical" then
-        vim.o.guicursor = "n-sm-ve:ver16-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
-    else
-        vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
-    end
 end
 
 function M.mini_snippets_active()
@@ -982,6 +968,11 @@ function EditFromLazygit(file_path)
     else
         vim.cmd("e " .. file_path)
     end
+end
+
+function ChangeDirYazi(file_path)
+    local dir = vim.fs.dirname(file_path)
+    vim.cmd("cd " .. dir)
 end
 
 function CloseFromLazygit()
@@ -1484,76 +1475,6 @@ function M.writeFile(content)
     else
         print("Failed to open the file!")
     end
-end
-
---- @param filter function if false we should really return
-function M.real_enter(callback, filter, who)
-    who = who or ""
-    local timer = vim.loop.new_timer()
-    vim.defer_fn(function()
-        ---@diagnostic disable-next-line: need-check-nil
-        local is_active = timer:is_active()
-        if is_active then
-            vim.notify(who .. "Timer haven't been closed!", vim.log.levels.ERROR)
-        end
-    end, 2000)
-    local has_start = false
-    local timout = function()
-        if not filter() then
-            ---@diagnostic disable-next-line: need-check-nil
-            if timer:is_active() then
-                ---@diagnostic disable-next-line: need-check-nil
-                timer:close()
-            end
-            return
-        end
-        if has_start then
-            return
-        end
-        ---@diagnostic disable-next-line: need-check-nil
-        if timer:is_active() then
-            ---@diagnostic disable-next-line: need-check-nil
-            timer:close()
-            -- haven't start
-            has_start = true
-            callback()
-        end
-    end
-    vim.defer_fn(function()
-        timout()
-    end, 30)
-    vim.defer_fn(function()
-        timout()
-    end, 1000)
-    local col = vim.fn.screencol()
-    local row = vim.fn.screenrow()
-    ---@diagnostic disable-next-line: need-check-nil
-    timer:start(2, 2, function()
-        vim.schedule(function()
-            if not filter() then
-                ---@diagnostic disable-next-line: need-check-nil
-                if timer:is_active() then
-                    ---@diagnostic disable-next-line: need-check-nil
-                    timer:close()
-                end
-                return
-            end
-            if has_start then
-                return
-            end
-            local new_col = vim.fn.screencol()
-            local new_row = vim.fn.screenrow()
-            if new_row ~= row or new_col ~= col then
-                ---@diagnostic disable-next-line: need-check-nil
-                if timer:is_active() then
-                    ---@diagnostic disable-next-line: need-check-nil
-                    timer:close()
-                    has_start = true
-                    callback()
-                end
-            end
-        end)
-    end)
 end
 
 function M.set_glance_winbar()

@@ -4,7 +4,6 @@ return {
     cond = function()
         return not vim.g.scrollback
     end,
-    -- enabled = false,
     keys = {
         {
             "<leader>na",
@@ -20,6 +19,10 @@ return {
             routes = {
                 {
                     filter = { event = "msg_show", find = "'modifiable' is off" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { find = "Terminal" },
                     opts = { skip = true },
                 },
                 {
@@ -257,7 +260,7 @@ return {
                 },
                 hover = {
                     view = nil,
-                    enabled = true,
+                    enabled = false,
                     win_options = {
                         wrap = true,
                         linebreak = false,

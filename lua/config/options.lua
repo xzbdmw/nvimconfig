@@ -31,15 +31,17 @@ vim.o.tabstop = 4
 vim.o.jumpoptions = "stack,view,clean"
 vim.o.smarttab = false
 -- vim.o.linespace = 7  mac, defaults write com.apple.dock tilesize -integer 7, font size 17
-vim.o.linespace = 7 -- LG display, defaults write com.apple.dock tilesize -integer 13, font size 18
+vim.o.linespace = 6 -- LG display, defaults write com.apple.dock tilesize -integer 11 font size 18
 vim.o.numberwidth = 1
 vim.o.whichwrap = "b,s,h,l"
 vim.o.concealcursor = "nc"
-vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"
+vim.o.guicursor = "n-sm-ve:block-Cursor,i-c-ci-t:ver16-Cursor,r-cr-v-o:hor7-Cursor"
 vim.o.laststatus = 0
 vim.o.scrolloff = 6
 vim.o.gdefault = true
 vim.o.breakindent = true
+-- vim.o.statuscolumn = "%s%l  "
+vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 vim.g.neovide_text_gamma = 1.5
 vim.o.timeoutlen = 500
 vim.o.swapfile = false
@@ -53,7 +55,6 @@ vim.g.cmp_completion = true
 
 -- Neovide
 vim.g.neovide_unlink_border_highlights = false
-vim.g.neovide_transparency = 1
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_position_animation_length = 0
 vim.g.neovide_padding_top = 0

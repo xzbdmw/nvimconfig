@@ -6,7 +6,7 @@ return {
         filetype_autocmd_timeout = 0,
         last_session_on_startup = true,
         projects = { -- define project roots
-            "/usr/local/share/nvim/runtime/lua/vim",
+            -- "/usr/local/share/nvim/runtime/lua/vim",
             "/Users/xzb/Project/lua/lua/fzf-lua",
             "/Users/xzb/Project/lua/fork/*",
             "/Users/xzb/.config/fish/",
@@ -24,7 +24,7 @@ return {
             "~/Project/Go/*",
             "~/Project/C/*",
             "~/Project/C++/*",
-            "/Users/xzb/Downloads/nvim-macos/share/nvim/*",
+            "/Users/xzb/Downloads/nvim-macos-arm64/share/nvim/runtime/lua/vim",
             "/Users/xzb/Downloads/lih-admin_2",
             "/Users/xzb/.local/share/nvim/lazy/*",
             "/Users/xzb/.local/share/nvimlazy/lazy/LazyVim",

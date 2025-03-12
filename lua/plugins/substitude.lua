@@ -31,20 +31,6 @@ return {
             remap = true,
         },
         {
-            "<leader>rk",
-            function()
-                vim.cmd("Noice disable")
-                require("substitute.range").word()
-                vim.api.nvim_create_autocmd("CmdlineEnter", {
-                    once = true,
-                    callback = function()
-                        vim.cmd("redraw!")
-                    end,
-                })
-            end,
-            mode = { "n" },
-        },
-        {
             "<leader>rj",
             function()
                 local mc = require("multicursor-nvim")

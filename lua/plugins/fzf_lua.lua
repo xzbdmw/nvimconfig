@@ -167,7 +167,6 @@ return {
                     },
                 },
                 on_create = function()
-                    -- require("config.utils").change_guicursor("vertical")
                     pcall(vim.cmd, "DisableHL")
                     vim.g.fzf = true
                     vim.b.miniindentscope_disable = true

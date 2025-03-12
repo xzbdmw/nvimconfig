@@ -83,6 +83,7 @@ end)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
+
 keymap({ "n" }, "X", function()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     FeedKeys('$"_x', "nx")
@@ -90,20 +91,23 @@ keymap({ "n" }, "X", function()
 end, opts)
 
 _G.has_diagnostic = false
+keymap({ "n" }, "]d", function()
+    vim.diagnostic.goto_next({ float = not _G.has_diagnostic })
+end, opts)
+keymap({ "n" }, "[d", function()
+    vim.diagnostic.goto_prev({ float = not _G.has_diagnostic })
+end, opts)
 keymap("n", "<leader>ud", function()
     if _G.has_diagnostic then
         vim.diagnostic.config({
+            virtual_lines = false,
             virtual_text = false,
             update_in_insert = false,
         })
         _G.has_diagnostic = false
     else
         vim.diagnostic.config({
-            virtual_text = {
-                prefix = "",
-                source = "if_many",
-                spacing = 2,
-            },
+            virtual_lines = { current_line = false },
             update_in_insert = false,
         })
         _G.has_diagnostic = true
@@ -284,6 +288,14 @@ keymap("i", "<C-d>", function()
     _G.no_animation()
     return "<esc>cb"
 end, { expr = true, remap = true })
+keymap("n", "`", function()
+    vim.g.gd = true
+    vim.defer_fn(function()
+        vim.g.gd = false
+    end, 100)
+    _G.no_animation()
+    return "<cmd>e #<cr>"
+end, { expr = true })
 
 -- various textobjects
 keymap({ "o", "x" }, "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
@@ -454,9 +466,6 @@ end, { expr = true })
 
 keymap({ "n", "v", "i" }, "<a-s>", vim.lsp.buf.signature_help, opts)
 
-vim.keymap.set("n", "<d-y>", function()
-    LazyVim.terminal.open({ "yazi" }, { cwd = LazyVim.root.get(), esc_esc = false, ctrl_hjkl = false })
-end)
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
 
 keymap("n", "<leader>uu", function()
@@ -571,16 +580,7 @@ keymap({ "n" }, "Q", function()
     vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
 end)
 
-keymap("x", ":", function()
-    vim.cmd("Noice disable")
-    vim.schedule(function()
-        FeedKeys("<space><BS>", "n")
-    end)
-    return ":s/"
-end, { expr = true })
 keymap("n", "<leader>rW", function()
-    vim.cmd("Noice disable")
-    FeedKeys("<space><BS>", "n")
     return [[:%s/<C-r><C-a>/]]
 end, { expr = true })
 
@@ -605,7 +605,7 @@ end, { expr = true, remap = true })
 keymap("n", "<", function()
     return "["
 end, { remap = true, expr = true })
-keymap("n", "<leader>L", function()
+keymap("n", "<leader>os", function()
     vim.wo.number = not vim.wo.number
     if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
         if vim.wo.signcolumn == "no" then
@@ -695,7 +695,7 @@ keymap("n", "<leader>j", function()
         _G.set_cursor_animation(_G.CI)
     end, 100)
     local cur = api.nvim_get_current_line()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local row = unpack(vim.api.nvim_win_get_cursor(0))
     local f1, f2 = cur:find("function(.*) (end)")
     if f1 ~= nil then
         return string.format("<Cmd>lua vim.api.nvim_win_set_cursor(0, { %d, %d })<CR>a<CR><esc>O", row, f2 - 4)

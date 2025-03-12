@@ -17,6 +17,7 @@ return {
     },
     config = function()
         local number = false
+        local esc_timer = esc_timer or (vim.uv or vim.loop).new_timer()
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
             size = function(term)
@@ -37,14 +38,13 @@ return {
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
                 vim.keymap.set("t", "<esc>", function()
-                    local line = vim.api.nvim_get_current_line()
-                    if
-                        vim.startswith(line, "╰─────────────────────")
-                        or vim.startswith(line, "│")
-                    then
+                    if esc_timer:is_active() then
+                        esc_timer:stop()
+                        vim.cmd("stopinsert")
+                    else
+                        esc_timer:start(200, 0, function() end)
                         return "<esc>"
                     end
-                    return [[<C-\><C-n>]]
                 end, { buffer = 0, expr = true })
                 vim.keymap.set("t", "<d-l>", function()
                     FeedKeys("<c-l>", "n")

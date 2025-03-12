@@ -100,7 +100,6 @@ keymap("n", "[s", function()
     vim.cmd("normal! N")
     vim.cmd("normal z")
 end)
-
 keymap({ "n" }, "<esc>", function()
     if not require("multicursor-nvim").cursorsEnabled() then
         require("multicursor-nvim").enableCursors()
