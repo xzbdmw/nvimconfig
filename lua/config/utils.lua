@@ -573,6 +573,44 @@ function M.normal_tab()
     end
 end
 
+function M.onTypeFormatting()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+    local c = vim.api.nvim_buf_get_text(0, row - 1, col - 1, row - 1, col, {})
+    local params = {
+        textDocument = {
+            uri = vim.uri_from_bufnr(0), -- Use the current buffer's URI
+        },
+        position = vim.lsp.util.make_position_params(0, vim.lsp.util._get_offset_encoding(0)).position, -- Get the current cursor position
+        ch = c[1], -- Example trigger character that triggers the formatting
+        options = {
+            tabSize = 4,
+            insertSpaces = true, -- Use spaces instead of tabs
+        },
+    }
+    vim.lsp.buf_request(0, "textDocument/onTypeFormatting", params, function(err, result)
+        if err then
+            print("Error formatting: " .. err.message)
+        else
+            if result then
+                for _, edit in ipairs(result) do
+                    if (edit.newText == ">" or edit.newText == ";") and edit.range.start.line == row - 1 then
+                        local distance = edit.range.start.character - col
+                        FeedKeys(
+                            string.rep("<c-g>U<right>", distance)
+                                .. edit.newText
+                                .. string.rep("<c-g>U<left>", distance + 1),
+                            "n"
+                        )
+                    else
+                        vim.lsp.util.apply_text_edits({ edit }, api.nvim_get_current_buf(), "utf-8")
+                    end
+                end
+            end
+        end
+    end)
+end
+
 function M.once(callback)
     local done = false
     if done then
@@ -794,7 +832,7 @@ function M.try_update_visual_coloum()
                 api.nvim_buf_set_extmark(0, ns, i - 1, 0, {
                     end_row = i,
                     strict = false,
-                    sign_text = " ",
+                    virt_text = { { "", "Hl" } },
                     priority = 1,
                 })
             end

@@ -516,23 +516,23 @@ api.nvim_create_autocmd("ModeChanged", {
     end,
 })
 
--- api.nvim_create_autocmd("ModeChanged", {
---     pattern = "n:V",
---     callback = function()
---         if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
---             return
---         end
---         local s, e = vim.fn.line("."), vim.fn.line("v")
---         local ns = api.nvim_create_namespace("visual_range")
---         api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
---             end_row = e - 1,
---             strict = false,
---             priority = 1,
---             sign_text = " ",
---         })
---         _G.indent_update()
---     end,
--- })
+api.nvim_create_autocmd("ModeChanged", {
+    pattern = "n:V",
+    callback = function()
+        if api.nvim_get_mode().mode == "v" or vim.wo.signcolumn ~= "yes" then
+            return
+        end
+        local s, e = vim.fn.line("."), vim.fn.line("v")
+        local ns = api.nvim_create_namespace("visual_range")
+        api.nvim_buf_set_extmark(0, ns, s - 1, 0, {
+            end_row = e - 1,
+            strict = false,
+            priority = 1,
+            virt_text = { { "", "Hl" } },
+        })
+        _G.indent_update()
+    end,
+})
 
 api.nvim_create_autocmd("User", {
     pattern = "v_V", -- visual mode press V
@@ -673,18 +673,6 @@ api.nvim_create_autocmd({ "BufWritePost" }, {
         end
         require("session_manager").save_current_session()
     end,
-})
-
--- bootstrap lazy.nvim, LazyVim and your plugins
-api.nvim_create_autocmd("FileType", {
-    pattern = "python",
-    callback = function()
-        local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
-        if venv ~= "" then
-            require("venv-selector").retrieve_from_cache()
-        end
-    end,
-    once = true,
 })
 
 api.nvim_create_autocmd("BufWinEnter", {

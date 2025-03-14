@@ -85,6 +85,21 @@ return {
             win = {
                 style = {
                     backdrop = false,
+                    keys = {
+                        q = {
+                            function()
+                                return "<cmd>close<CR>"
+                            end,
+                            mode = { "t", "n" },
+                            expr = true,
+                        },
+                        ["<c-[>"] = {
+                            function()
+                                vim.cmd("stopinsert")
+                            end,
+                            mode = "t",
+                        },
+                    },
                     wo = {
                         winblend = 5,
                     },

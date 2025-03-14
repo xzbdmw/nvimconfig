@@ -1,10 +1,11 @@
 return {
     "linux-cultist/venv-selector.nvim",
-    commit = "5bbc482ca9fa24329c203ca67903802d298a1767",
+    -- commit = "5bbc482ca9fa24329c203ca67903802d298a1767",
+    branch = "regexp",
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
     opts = {
-        anaconda_base_path = "/opt/homebrew/Caskroom/miniconda/base",
-        anaconda_envs_path = "/opt/homebrew/Caskroom/miniconda/base/envs",
+        -- anaconda_base_path = "/opt/homebrew/Caskroom/miniconda/base",
+        -- anaconda_envs_path = "/opt/homebrew/Caskroom/miniconda/base/envs",
     },
     cmd = "VenvSelect",
     -- event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping

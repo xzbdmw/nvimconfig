@@ -1,5 +1,6 @@
 return {
     "yioneko/nvim-type-fmt",
+    enabled = false,
     ft = "rust",
     config = function()
         require("type-fmt").setup({
