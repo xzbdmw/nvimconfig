@@ -145,11 +145,31 @@ function M.is_detached()
     return false
 end
 
+function M.git_root()
+    local root_spec = vim.uv.cwd()
+    local f_buf = _G.lazygit_previous_win == nil and 0 or vim.api.nvim_win_get_buf(_G.lazygit_previous_win)
+    if vim.b[f_buf].lib == true then
+        local pathes = vim.fs.find(".git", {
+            path = vim.api.nvim_buf_get_name(f_buf),
+            upward = true,
+            limit = math.huge,
+            type = "directory",
+        })
+        if pathes == nil or #pathes == 0 then
+            vim.notify("No Git Root found", vim.log.levels.WARN)
+        else
+            root_spec = vim.fs.dirname(pathes[1])
+        end
+    end
+    return root_spec
+end
+
 function Open_git_commit()
-    vim.system({ "git", "commit" }):wait()
+    local root_spec = M.git_root()
+    vim.system({ "git", "commit" }, { cwd = root_spec }):wait()
     local previous_win = vim.api.nvim_get_current_win()
     local previous_buf = vim.api.nvim_win_get_buf(previous_win)
-    local file_path = vim.fn.getcwd() .. "/.git/COMMIT_EDITMSG"
+    local file_path = root_spec .. "/.git/COMMIT_EDITMSG"
     local filetype = vim.bo[previous_buf].filetype
     local buf = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_buf_call(buf, function()
@@ -311,7 +331,7 @@ function M.cursor_char()
     return x[1]
 end
 
-function M.should_wrap()
+function M.try_wrap()
     if require("multicursor-nvim").numCursors() > 1 then
         local cursor_char = require("config.utils").cursor_char()
         for _, v in ipairs({ "(", "{", "[", "<", '"', "'", ")", "}", ">", "]" }) do
