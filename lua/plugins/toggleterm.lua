@@ -36,6 +36,32 @@ return {
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
+                vim.keymap.set("n", "<CR>", function()
+                    local cur = vim.api.nvim_win_get_cursor(0)
+                    local f = vim.fn.findfile(vim.fn.expand("<cfile>"))
+                    if f == "" then
+                        vim.api.nvim_win_set_cursor(0, { cur[1] + 1, cur[2] })
+                        f = vim.fn.findfile(vim.fn.expand("<cfile>"))
+                        if f == "" then
+                            vim.api.nvim_win_set_cursor(0, cur)
+                            return
+                        end
+                    end
+                    FeedKeys("gF", "nx")
+                    local buf = vim.api.nvim_win_get_buf(0)
+                    local line = vim.api.nvim_win_get_cursor(0)[1]
+                    FeedKeys("<c-o>", "nx")
+                    vim.cmd("stopinsert")
+                    vim.api.nvim_win_set_cursor(0, cur)
+                    vim.schedule(function()
+                        vim.cmd("close")
+                        vim.api.nvim_win_set_buf(0, buf)
+                        FeedKeys(line .. "G", "n")
+                        require("config.utils").adjust_view(0, 3)
+                        vim.wo.number = true
+                        vim.wo.signcolumn = "yes"
+                    end)
+                end, { buffer = 0 })
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
                     local line = vim.api.nvim_get_current_line()
