@@ -20,7 +20,7 @@ return {
             end
             del({ "n", "x" }, "<d-s>", { buffer = buf })
             del({ "n", "x" }, "<leader>w", { buffer = buf })
-            del({ "n", "x" }, "<Tab>", { buffer = buf })
+            del({ "n" }, "<Tab>", { buffer = buf })
             del({ "n", "x" }, "y", { buffer = buf })
             del({ "i" }, "<d-v>", { buffer = buf })
             del({ "n", "x" }, "N", { buffer = buf })
@@ -60,7 +60,7 @@ return {
                     examples.documentHighlightSkipCursor(-1)
                 end
             end, opts)
-            keymap({ "n", "x" }, "<Tab>", function()
+            keymap({ "n" }, "<Tab>", function()
                 mc.toggleCursor()
             end, opts)
             keymap({ "n", "x" }, "y", "y", opts)

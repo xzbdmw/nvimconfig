@@ -58,13 +58,21 @@ local function rust_sort(kind1, kind2, entry1, entry2)
     if kind2 == types.lsp.CompletionItemKind.Snippet then
         return true
     end
+
     -- Field higher than function/method
     if (kind1 == 2 or kind1 == 3) and kind2 == 5 then
         return false
     elseif (kind2 == 2 or kind2 == 3) and kind1 == 5 then
         return true
     end
-    -- Variable the highest
+
+    -- EnumMember higher than function/method
+    if (kind1 == 2 or kind1 == 3) and kind2 == 20 then
+        return false
+    elseif (kind2 == 2 or kind2 == 3) and kind1 == 20 then
+        return true
+    end
+
     if kind1 ~= 6 and kind2 == 6 then
         return false
     elseif kind2 ~= 6 and kind1 == 6 then

@@ -17,7 +17,6 @@ keymap("n", "n", function()
     end
     if #require("illuminate.reference").buf_get_keeped_references(api.nvim_get_current_buf()) > 0 then
         require("illuminate.goto").goto_next_keeped_reference(true)
-        vim.cmd("normal z")
         return
     elseif utils.has_filetype("trouble") then
         require("trouble").main_next({ skip_groups = true, jump = true })
@@ -27,7 +26,6 @@ keymap("n", "n", function()
         FeedKeys("]c", "m")
     else
         require("illuminate").goto_next_reference(true)
-        vim.cmd("normal z")
     end
 end)
 

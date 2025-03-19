@@ -75,7 +75,12 @@ end)
 keymap({ "c" }, "<c-p>", "<c-t>", opts)
 
 keymap({ "i" }, "<c-e>", function()
-    require("clasp").wrap("next")
+    local mc = require("multicursor-nvim")
+    if mc.numCursors() > 1 then
+        vim.cmd("stopinsert")
+    else
+        require("clasp").wrap("next")
+    end
 end)
 keymap({ "i", "n" }, "<c-'>", function()
     require("clasp").wrap("prev")
@@ -101,14 +106,11 @@ keymap("n", "<leader>ud", function()
     if _G.has_diagnostic then
         vim.diagnostic.config({
             virtual_lines = false,
-            virtual_text = false,
-            update_in_insert = false,
         })
         _G.has_diagnostic = false
     else
         vim.diagnostic.config({
-            virtual_lines = { current_line = false },
-            update_in_insert = false,
+            virtual_lines = true,
         })
         _G.has_diagnostic = true
     end
@@ -517,7 +519,6 @@ utils.load_appropriate_theme()
 
 keymap("n", "<c-c>", "gc_", { remap = true })
 keymap("x", "<c-c>", "gc", { remap = true })
-keymap("n", "x", '"_x', opts)
 
 -- mark trick
 keymap("n", "<space>;", "m6A;<esc>`6", opts)
@@ -898,6 +899,7 @@ end, opts)
 keymap({ "n" }, "<leader>fn", '<cmd>lua require("nvim-tree.api").fs.create()<CR>', { desc = "create new file" })
 
 keymap("n", "<2-LeftMouse>", "<leader>d", { remap = true })
+keymap("n", "<c-q>", "qa")
 keymap("n", "<leader>cc", function()
     Open_git_commit()
 end, opts)

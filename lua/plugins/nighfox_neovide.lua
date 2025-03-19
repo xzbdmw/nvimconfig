@@ -342,7 +342,7 @@ return {
                 CmpItemKindFolder = { fg = "#D4A959" },
                 CmpItemKindMethod = { fg = "#6C8ED4" },
                 CmpItemKindValue = { fg = "#6C8ED4" },
-                CmpItemKindEnumMember = { fg = "#6C8ED4" },
+                CmpItemKindEnumMember = { link = "CmpItemKindField" },
                 CmpItemKindInterface = { fg = "#B5585F" },
                 CmpItemKindTypeParameter = { fg = "#58B5A8" },
                 ChangedCmpItemKindField = { fg = "#B5585F" },

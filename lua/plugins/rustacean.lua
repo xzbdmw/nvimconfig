@@ -1,6 +1,14 @@
 return {
     "mrcjkb/rustaceanvim",
     init = function()
+        local ns = vim.api.nvim_create_namespace("onTypeFormatting")
+        vim.on_key(function(_, typed)
+            if (typed == "<" or typed == "=") and vim.bo.filetype == "rust" then
+                vim.schedule(function()
+                    require("config.utils").onTypeFormatting()
+                end)
+            end
+        end, ns)
         vim.g.rustaceanvim = {
             server = {
                 cmd = function()

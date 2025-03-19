@@ -19,11 +19,13 @@ return {
         {
             "<c-e>",
             function()
-                return "]d"
+                if require("multicursor-nvim").numCursors() > 1 then
+                    require("clasp").wrap("next")
+                else
+                    FeedKeys("]d", "m")
+                end
             end,
             desc = "Code Action",
-            expr = true,
-            remap = true,
         },
     },
     config = function()

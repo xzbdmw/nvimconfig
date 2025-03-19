@@ -15,7 +15,7 @@ return {
                 Constructor = "  ",
                 Copilot = "  ",
                 Enum = " 󰯹 ",
-                EnumMember = " E ",
+                EnumMember = "  ",
                 Event = "  ",
                 Field = "  ",
                 File = "  ",

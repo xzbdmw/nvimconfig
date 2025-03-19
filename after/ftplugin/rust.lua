@@ -22,7 +22,7 @@ keymap("n", "<leader>cp", function()
     vim.cmd.RustLsp("explainError")
 end, { silent = true, buffer = bufnr, desc = "rust hover type info" })
 keymap("n", "<C-e>", function()
-    if require("config.utils").should_wrap() then
+    if require("config.utils").try_wrap() then
         return
     end
     vim.cmd("RustLsp renderDiagnostic cycle")

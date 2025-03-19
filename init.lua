@@ -834,7 +834,7 @@ api.nvim_create_autocmd("User", {
 api.nvim_create_autocmd("User", {
     pattern = "MiniSnippetsSessionJump",
     callback = function(args)
-        if args.data.tabstop_to == "0" then
+        if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
             MiniSnippets.session.stop()
         end
     end,
