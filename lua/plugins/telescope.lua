@@ -13,7 +13,7 @@ return {
         keys = {
             { "<leader><space>", false },
             {
-                "<leader>-",
+                "<leader>z",
                 function()
                     require("telescope").extensions.zoxide.list({
                         on_complete = {
@@ -45,7 +45,7 @@ return {
                             },
                             mirror = false,
                         },
-                        attach_mappings = function(i, map)
+                        attach_mappings = function(_, map)
                             map({ "i", "n" }, "<CR>", function(prompt_bufnr)
                                 actions.close(prompt_bufnr)
                                 local e = action_state.get_selected_entry()
@@ -65,7 +65,7 @@ return {
             { "<leader>uC", false },
             { "<leader>sf", false },
             {
-                "<leader>sH",
+                "<leader>sh",
                 function()
                     return "<cmd>Telescope highlights<cr>"
                 end,
@@ -79,10 +79,6 @@ return {
                     vim.cmd("Telescope current_buffer_fuzzy_find")
                 end,
                 mode = { "n", "i" },
-            },
-            {
-                "<leader>sh",
-                false,
             },
             { "<leader>sr", "<cmd>Telescope resume<CR>" },
             { "<leader>sd", false },
@@ -159,7 +155,7 @@ return {
                 end,
             },
             {
-                "<leader>fB",
+                "<leader>fb",
                 function()
                     require("custom.telescope-pikers").prettyBuffersPicker(true, "normal")
                 end,
@@ -261,7 +257,7 @@ return {
                 remap = true,
             },
             {
-                "<leader>fb",
+                "<leader>fB",
                 function()
                     local filename = vim.fn.expand("%:t")
                     local default_text = "@" .. filename .. " "
@@ -570,7 +566,7 @@ return {
                 end,
             })
 
-            local function change_base(commit, commit_msg, prompt_bufnr)
+            local function change_base(commit, commit_msg)
                 vim.g.Base_commit = commit
                 Signs_staged = nil
                 vim.g.Base_commit_msg = ""
@@ -629,17 +625,16 @@ return {
                 local splits = vim.split(result.stdout, "\n")
                 commit = splits[1]:sub(1, 7)
                 local commit_msg = splits[2]:gsub("\n", "")
-                change_base(commit, commit_msg, prompt_bufnr)
+                change_base(commit, commit_msg)
             end
 
             local function gitsign_change_base(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
-                local commit = selection.value
                 local sts = vim.split(selection.ordinal, " ")
                 table.remove(sts, 1)
                 local commit_msg = table.concat(sts, " ")
-                change_base(selection.value, commit_msg, prompt_bufnr)
+                change_base(selection.value, commit_msg)
             end
 
             local focus_preview = function(prompt_bufnr)
@@ -660,6 +655,23 @@ return {
                     api.nvim_win_set_cursor(winid, cursor)
                     require("config.utils").update_preview_state(bufnr, winid)
                     vim.cmd(string.format("noautocmd lua vim.api.nvim_set_current_win(%s)", prompt_win))
+                end, { buffer = bufnr })
+                local write = function()
+                    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+                    local entry = require("telescope.actions.state").get_selected_entry()
+                    local filename = require("plenary.path"):new(entry.filename):normalize(vim.loop.cwd())
+                    local real_buf = vim.fn.bufadd(filename)
+                    vim.fn.bufload(real_buf)
+                    vim.api.nvim_buf_call(real_buf, function()
+                        vim.api.nvim_buf_set_lines(real_buf, 0, -1, false, lines)
+                        vim.cmd.write()
+                    end)
+                end
+                keymap("n", "<leader>w", function()
+                    write()
+                end, { buffer = bufnr })
+                keymap("n", "<d-s>", function()
+                    write()
                 end, { buffer = bufnr })
                 keymap("n", "<cr>", function()
                     local filename = vim.b[bufnr].filepath
@@ -914,7 +926,7 @@ return {
                                 _G.last = nil
                                 actions.close(bufnr)
                             end,
-                            ["<C-cr>"] = function(bufnr)
+                            ["<C-cr>"] = function()
                                 FeedKeys("<cr>", "t")
                             end,
                             ["<C-d>"] = function()
@@ -960,7 +972,7 @@ return {
                         },
                         n = {
                             ["/"] = focus_result,
-                            ["<C-cr>"] = function(bufnr)
+                            ["<C-cr>"] = function()
                                 FeedKeys("<cr>", "t")
                             end,
                             ["<C-c>"] = function(bufnr)

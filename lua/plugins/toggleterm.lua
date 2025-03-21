@@ -56,9 +56,10 @@ return {
                     vim.schedule(function()
                         vim.cmd("close")
                         vim.api.nvim_win_set_buf(0, buf)
-                        FeedKeys(line .. "G", "n")
+                        FeedKeys(line .. "G^", "n")
                         require("config.utils").adjust_view(0, 3)
                         vim.wo.number = true
+                        vim.wo.statuscolumn = [[%!v:lua.require'lazyvim.util'.ui.statuscolumn()]]
                         vim.wo.signcolumn = "yes"
                     end)
                 end, { buffer = 0 })

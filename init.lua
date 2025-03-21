@@ -97,6 +97,18 @@ api.nvim_create_autocmd({ "BufEnter" }, {
     end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "qf",
+    callback = function()
+        vim.schedule(function()
+            local origin = vim.o.eventignore
+            vim.o.eventignore = "all"
+            vim.cmd("wall")
+            vim.o.eventignore = origin
+        end)
+    end,
+})
+
 api.nvim_create_autocmd({ "User" }, {
     pattern = "TelescopePreviewerLoaded",
     callback = function(data)
@@ -350,12 +362,16 @@ api.nvim_create_autocmd("FileType", {
 
                 vim.cmd("w")
                 vim.cmd(string.format("bw! %d", buf))
-                vim.system({ "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" }, nil, function(result)
-                    if result.code == 0 then
-                        vim.notify(result.stdout, vim.log.levels.INFO)
-                        require("nvim-tree.actions.reloaders").reload_explorer()
+                vim.system(
+                    { "git", "commit", "--cleanup=strip", "-F", "./.git/COMMIT_EDITMSG" },
+                    { cwd = utils.git_root() },
+                    function(result)
+                        if result.code == 0 then
+                            vim.notify(result.stdout, vim.log.levels.INFO)
+                            require("nvim-tree.actions.reloaders").reload_explorer()
+                        end
                     end
-                end)
+                )
             end, { buffer = true })
         end, 100)
     end,
@@ -457,8 +473,6 @@ vim.api.nvim_create_autocmd("TextChangedI", {
         if vim.bo.filetype == "go" then
             -- snip.go_auto_add_equal()
             snip.go_auto_add_pair()
-            snip.go_auto_add_func()
-            snip.go_auto_add_method()
             snip.auto_add_forr()
             snip.auto_add_fori()
             snip.auto_add_forj()
@@ -472,6 +486,8 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.auto_add_forr()
             snip.auto_add_fori()
             snip.auto_add_forj()
+        elseif vim.bo.filetype == "rust" then
+            snip.auto_expand_Result()
         end
         snip.auto_add_if()
         snip.auto_add_ret()

@@ -1,9 +1,9 @@
 local utils = require("config.utils")
 local bufnr = api.nvim_get_current_buf()
 local keymap = vim.keymap.set
--- keymap({ "n", "v" }, "gl", function()
+-- keymap({ "n", "v" }, "gl", hello()
 --     vim.cmd.RustLsp({ "hover", "actions" })
---     vim.defer_fn(function()
+--     vim.defer_fn(hello()
 --         FeedKeys("<esc>", "n")
 --         vim.cmd.RustLsp({ "hover", "range" })
 --     end, 100)

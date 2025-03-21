@@ -1,7 +1,7 @@
 local M = {}
 
 function M.auto_add_forr()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forr$") == nil) then
         return
@@ -13,7 +13,7 @@ function M.auto_add_forr()
 end
 
 function M.auto_add_fori()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*fori$") == nil) then
         return
@@ -25,7 +25,7 @@ function M.auto_add_fori()
 end
 
 function M.auto_add_forl()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forl$") == nil) then
         return
@@ -36,8 +36,22 @@ function M.auto_add_forl()
     MiniSnippets.expand()
 end
 
+function M.auto_expand_Result()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local line = vim.api.nvim_get_current_line()
+    local idx
+    _, idx = string.find(line, "Re")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("sult<><c-g>U<left>", "n")
+    if require("cmp").visible() then
+        require("cmp").close()
+    end
+end
+
 function M.auto_add_forj()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forj$") == nil) then
         return
@@ -49,7 +63,7 @@ function M.auto_add_forj()
 end
 
 function M.auto_add_if()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*iff$") == nil) then
         return
@@ -64,7 +78,6 @@ function M.auto_add_if()
 end
 
 function M.lua_abbr()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local line = vim.api.nvim_get_current_line()
     for s, n in pairs({ lcoal = "<BS><BS><BS><BS>ocal", funciton = "<BS><BS><BS><BS>tion", functino = "<BS><BS>on" }) do
         if string.match(line, "^%s*" .. s) ~= nil then
@@ -77,7 +90,7 @@ function M.lua_abbr()
 end
 
 function M.lua_auto_add_while()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*whil$") == nil) then
         return
@@ -89,7 +102,7 @@ function M.lua_auto_add_while()
 end
 
 function M.lua_auto_pai()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     local _, idx = string.find(line, "vim%.pai")
     if idx == nil or col ~= idx then
@@ -99,7 +112,7 @@ function M.lua_auto_pai()
 end
 
 function M.lua_auto_pia()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     local _, idx = string.find(line, "vim%.pia")
     if idx == nil or col ~= idx then
@@ -109,7 +122,7 @@ function M.lua_auto_pia()
 end
 
 function M.lua_auto_add_local()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*ll$") == nil) then
         return
@@ -121,7 +134,7 @@ function M.lua_auto_add_local()
 end
 
 function M.auto_add_ret()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     local idx
     _, idx = string.find(line, "%s+ren")
@@ -138,7 +151,7 @@ function M.auto_add_ret()
 end
 
 function M.autotrue()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     local _, idx = string.find(line, ".*%sture")
     if idx == nil or col ~= idx then
@@ -148,7 +161,7 @@ function M.autotrue()
 end
 
 function M.autofalse()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     local _, idx = string.find(line, "flase")
     if idx == nil or col ~= idx then
@@ -158,7 +171,7 @@ function M.autofalse()
 end
 
 function M.go_auto_add_equal()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*%w+%s+:$") == nil) then
         return
@@ -167,7 +180,7 @@ function M.go_auto_add_equal()
 end
 
 function M.go_auto_add_method()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*met$") == nil) then
         return
@@ -179,7 +192,7 @@ function M.go_auto_add_method()
 end
 
 function M.go_auto_add_func()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
     if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*func$") == nil) then
         return
@@ -195,7 +208,7 @@ function M.go_auto_add_pair()
     if (string.match(line, "^func %w+%b()") or string.match(line, "%=%s*func%b()")) == nil then
         return
     end
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local col = vim.api.nvim_win_get_cursor(0)[2]
     if line:sub(col, col) == "," then
         for i = col - 1, 1, -1 do
             local char = line:sub(i, i)

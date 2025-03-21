@@ -55,7 +55,7 @@ return {
                 end,
             },
             {
-                "<leader>z",
+                "<leader>y",
                 function()
                     Snacks.terminal.toggle({ cmd = { "yazi", vim.uv.cwd() } })
                 end,
