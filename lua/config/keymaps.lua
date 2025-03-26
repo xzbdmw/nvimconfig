@@ -12,6 +12,7 @@ end, opts)
 
 keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
 
+keymap("i", "<S-CR>", "<CR>", { remap = true })
 keymap({ "i", "n" }, "<c-m>", function()
     local cmp = require("cmp")
     if cmp.visible() then
@@ -553,8 +554,12 @@ keymap("i", "<space>", function()
 end, { expr = true })
 
 keymap("i", "<Tab>", function()
-    return utils.insert_mode_tab()
-end, { expr = true })
+    local cmp = require("cmp")
+    if cmp.visible() then
+        cmp.close()
+    end
+    utils.insert_mode_tab()
+end, opts)
 
 keymap("x", "V", function()
     vim.schedule(function()
@@ -702,7 +707,7 @@ keymap("i", "<c-;>", function()
     local cmp = require("cmp")
     _G.no_animation(_G.CI)
     if cmp.visible() then
-        require("config.cmpformat").expand = false
+        require("config.cmpsort").expand = false
         cmp.confirm({ select = true })
         vim.defer_fn(function()
             pcall(_G.update_indent, true) -- hlchunk

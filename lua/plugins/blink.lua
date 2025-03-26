@@ -62,7 +62,7 @@ return {
 
                     -- pass a function for custom behavior
                     function(item_a, item_b)
-                        return require("config.cmpformat").sort(item_a.kind, item_b.kind)
+                        return require("config.cmpsort").sort(item_a.kind, item_b.kind)
                     end,
 
                     "score",

@@ -1,8 +1,5 @@
 return {
     "echasnovski/mini.snippets",
-    dependencies = "rafamadriz/friendly-snippets",
-    version = false,
-    lazy = false,
     keys = function()
         return {
             {
@@ -60,10 +57,6 @@ return {
             return snippets.default_insert(snippet, { empty_tabstop = "", empty_tabstop_final = "" })
         end
 
-        -- a)pe
-        local my_m = function(snippet, pos)
-            return MiniSnippets.default_match(snippet, { pattern_fuzzy = "" })
-        end
         require("mini.snippets").setup({
             snippets = {
                 -- Load custom file with global snippets first (adjust for Windows)

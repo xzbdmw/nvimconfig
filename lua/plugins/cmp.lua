@@ -1,4 +1,4 @@
-local f = require("config.cmpformat")
+local f = require("config.cmpsort")
 local utils = require("config.utils")
 local ignore = function()
     vim.o.eventignore = "TextChangedI"
@@ -16,6 +16,7 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "chrisgrieser/cmp_yanky",
         "uga-rosa/cmp-dictionary",
+        "echasnovski/mini.snippets",
         "xzbdmw/cmp-mini-snippets",
         { dir = "~/Project/lua/cmp-rg/" },
     },
@@ -96,12 +97,6 @@ return {
                         cmp.close()
                     end
                     fallback()
-                end),
-                ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.close()
-                    end
-                    vim.schedule(fallback)
                 end),
                 ["<down>"] = function(fallback)
                     if cmp.visible() then

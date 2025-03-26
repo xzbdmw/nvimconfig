@@ -6,7 +6,6 @@ return {
         indent = { enable = false },
         auto_install = true,
         -- stylua: ignore
-        ensure_installed = { "markdown", "rust", "vue", "java", "bash", "c", "diff", "html", "javascript", "jsdoc", "json", "jsonc", "lua", "luadoc", "luap", "markdown_inline", "python", "query", "regex", "toml", "tsx", "typescript", "vim", "vimdoc", "yaml" },
         incremental_selection = {
             enable = true,
             keymaps = {

@@ -304,7 +304,7 @@ api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.schedule(function()
             if vim.bo.filetype == "noice" then
-                vim.keymap.set("n", "K", "6k", { buffer = true })
+                vim.keymap.set("n", "K", "5k", { buffer = true })
                 vim.wo.signcolumn = "no"
             end
         end)

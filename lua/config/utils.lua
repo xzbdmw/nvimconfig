@@ -704,13 +704,13 @@ function M.insert_mode_tab()
     local line = vim.fn.getline(".")
     local line_len = #line
     if col == line_len then
-        return "<Tab>"
+        FeedKeys("<Tab>", "n")
     end
     ---@diagnostic disable-next-line: param-type-mismatch
     if col == 0 or vim.fn.getline("."):sub(1, col):match("^%s*$") then
-        return "<Tab>"
+        FeedKeys("<Tab>", "n")
     else
-        return "<c-g>U<right>"
+        FeedKeys("<c-g>U<right>", "n")
     end
 end
 
@@ -1717,24 +1717,12 @@ function M.mini_snippet_expand(args)
         vim.snippet.expand(args.body)
         return
     end
-    local cursor = api.nvim_win_get_cursor(0)
-    local line = api.nvim_get_current_line()
     _G.no_animation(_G.CI)
-    local ok = pcall(
+    pcall(
         require("mini.snippets").default_insert,
         { body = args.body },
         { empty_tabstop = "", empty_tabstop_final = "" }
     )
-    if not ok then
-        vim.notify("snippets failed to expand", vim.log.levels.INFO)
-        ---@diagnostic disable-next-line: missing-parameter
-        while MiniSnippets.session.get() do
-            MiniSnippets.session.stop()
-        end
-        api.nvim_buf_set_text(0, cursor[1] - 1, 0, cursor[1] - 1, -1, { line })
-        api.nvim_win_set_cursor(0, cursor)
-        require("mini.snippets").default_insert({ body = args.body }, { empty_tabstop = "", empty_tabstop_final = "" })
-    end
 end
 
 function M.refresh_diagnostic_winbar()

@@ -146,36 +146,6 @@ return {
                     zindex = 20,
                 },
             },
-            symbols = {
-                desc = "document symbols",
-                mode = "lsp_document_symbols",
-                focus = false,
-                win = { position = "right" },
-                filter = {
-                    -- remove Package since luals uses it for control flow structures
-                    ["not"] = { ft = "lua", kind = "Package" },
-                    any = {
-                        -- all symbol kinds for help / markdown files
-                        ft = { "help", "markdown" },
-                        -- default set of symbol kinds
-                        kind = {
-                            "Class",
-                            "Constructor",
-                            "Enum",
-                            "Field",
-                            "Function",
-                            "Interface",
-                            "Method",
-                            "Module",
-                            "Namespace",
-                            "Package",
-                            "Property",
-                            "Struct",
-                            "Trait",
-                        },
-                    },
-                },
-            },
         },
         icons = {
             indent = {
@@ -190,34 +160,6 @@ return {
             },
             folder_closed = " ",
             folder_open = " ",
-            kinds = {
-                Array = " ",
-                Boolean = "󰨙 ",
-                Class = " ",
-                Constant = "󰏿 ",
-                Constructor = " ",
-                Enum = " ",
-                EnumMember = " ",
-                Event = " ",
-                Field = " ",
-                File = " ",
-                Function = "󰊕 ",
-                Interface = " ",
-                Key = " ",
-                Method = "󰊕 ",
-                Module = " ",
-                Namespace = "󰦮 ",
-                Null = " ",
-                Number = "󰎠 ",
-                Object = " ",
-                Operator = " ",
-                Package = " ",
-                Property = " ",
-                String = " ",
-                Struct = "󰆼 ",
-                TypeParameter = " ",
-                Variable = "󰀫 ",
-            },
         },
     }, -- for default options, refer to the configuration section for custom setup.
 }

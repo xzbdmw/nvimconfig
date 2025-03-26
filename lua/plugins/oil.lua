@@ -76,8 +76,8 @@ return {
                 ["<CR>"] = "actions.select",
                 ["="] = "actions.select",
                 ["<C-h>"] = "actions.select_split",
+                ["<leader>sp"] = "actions.preview",
                 ["<C-t>"] = "actions.select_tab",
-                ["<C-p>"] = false,
                 ["Y"] = function()
                     require("oil.actions").yank_entry.callback()
                     local reg = vim.fn.getreg('"')
