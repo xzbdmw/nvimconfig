@@ -20,7 +20,10 @@ return {
             return {
                 custom_surroundings = {
                     f = {
-                        input = { { "%f[%w_%.][%w_%.]+%b<>", "%f[%w_%.][%w_%.]+%b()" }, "^.-[<%(]().*()[>%)]$" },
+                        input = {
+                            { "%f[%w_%.][%w_%.]+%b<>", "%f[%w_%.][%w_%.]+%b()", "%f[%w_%.][%w_%.]+%b[]" },
+                            "^.-[<%(%[]().*()[>%)%]]$",
+                        },
                         output = function()
                             local fun_name = MiniSurround.user_input("Function name")
                             if fun_name == nil then

@@ -20,7 +20,7 @@ M.reverse_prioritize = function(entry1, entry2)
     end
 end
 
-local function go_sort(kind1, kind2, entry1, entry2)
+local function go_sort(kind1, kind2)
     -- Snippet lower
     if kind1 == types.lsp.CompletionItemKind.Snippet then
         return false
@@ -50,7 +50,7 @@ local function go_sort(kind1, kind2, entry1, entry2)
     return nil
 end
 
-local function rust_sort(kind1, kind2, entry1, entry2)
+local function rust_sort(kind1, kind2)
     -- Snippet lower
     if kind1 == types.lsp.CompletionItemKind.Snippet then
         return false
@@ -78,18 +78,18 @@ local function rust_sort(kind1, kind2, entry1, entry2)
     elseif kind2 ~= 6 and kind1 == 6 then
         return true
     end
-    local word1 = entry1:get_word()
-    local word2 = entry2:get_word()
-    -- Make if higher than if-let
-    if (kind1 == 14 and kind2 == 14) and (word1 == "if let" and (word2 == "if  {" or word2 == "if")) then
-        return false
-    elseif (kind2 == 14 and kind1 == 14) and (word2 == "if let" and (word1 == "if  {" or word1 == "if")) then
-        return true
-    end
+    -- local word1 = entry1:get_word()
+    -- local word2 = entry2:get_word()
+    -- -- Make if higher than if-let
+    -- if (kind1 == 14 and kind2 == 14) and (word1 == "if let" and (word2 == "if  {" or word2 == "if")) then
+    --     return false
+    -- elseif (kind2 == 14 and kind1 == 14) and (word2 == "if let" and (word1 == "if  {" or word1 == "if")) then
+    --     return true
+    -- end
     return nil
 end
 
-local function lua_sort(kind1, kind2, entry1, entry2)
+local function lua_sort(kind1, kind2)
     -- Variable the highest
     if kind1 ~= 6 and kind2 == 6 then
         return false
@@ -105,11 +105,22 @@ M.put_down_snippet = function(entry1, entry2)
     kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
     kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
     if vim.bo.filetype == "go" then
-        return go_sort(kind1, kind2, entry1, entry2)
+        return go_sort(kind1, kind2)
     elseif vim.bo.filetype == "rust" then
-        return rust_sort(kind1, kind2, entry1, entry2)
+        return rust_sort(kind1, kind2)
     elseif vim.bo.filetype == "lua" then
-        return lua_sort(kind1, kind2, entry1, entry2)
+        return lua_sort(kind1, kind2)
+    end
+    return nil
+end
+
+M.sort = function(kind1, kind2)
+    if vim.bo.filetype == "go" then
+        return go_sort(kind1, kind2)
+    elseif vim.bo.filetype == "rust" then
+        return rust_sort(kind1, kind2)
+    elseif vim.bo.filetype == "lua" then
+        return lua_sort(kind1, kind2)
     end
     return nil
 end

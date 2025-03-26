@@ -65,14 +65,12 @@ keymap({ "o" }, "p", function()
         return "p"
     end
 end, { expr = true })
-keymap({ "c" }, "<c-n>", "<c-g>", opts)
 keymap({ "n", "x" }, "g<c-a>", function()
     require("multicursor-nvim").sequenceIncrement()
 end)
 keymap({ "n", "x" }, "g<c-x>", function()
     require("multicursor-nvim").sequenceDecrement()
 end)
-keymap({ "c" }, "<c-p>", "<c-t>", opts)
 
 keymap({ "i" }, "<c-e>", function()
     local mc = require("multicursor-nvim")
@@ -83,7 +81,15 @@ keymap({ "i" }, "<c-e>", function()
     end
 end)
 keymap({ "i", "n" }, "<c-'>", function()
-    require("clasp").wrap("prev")
+    require("clasp").wrap("prev", function(nodes)
+        local n = {}
+        for _, node in ipairs(nodes) do
+            if node.end_row == vim.api.nvim_win_get_cursor(0)[1] - 1 then
+                table.insert(n, node)
+            end
+        end
+        return n
+    end)
 end)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
@@ -223,7 +229,6 @@ keymap("n", "<leader><leader>g", function()
 end, opts)
 
 keymap({ "o", "n", "x" }, "<right>", "]", { remap = true })
-keymap({ "o", "n", "x" }, "<left>", "[", { remap = true })
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
@@ -776,7 +781,7 @@ keymap("i", "<BS>", function()
         return "<BS>"
     end
     _G.no_animation(_G.CI)
-    local res = require("nvim-autopairs").bs()
+    local res = package.loaded["nvim-autopairs"] and require("nvim-autopairs").bs() or ""
     if res ~= "" then
         return res
     end
@@ -826,7 +831,6 @@ keymap("x", "I", function()
 end, { expr = true })
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
--- keymap("c", "<c-f>", "<S-Right>", opts)
 keymap("c", "<d-w>", "<c-f>", opts)
 keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)

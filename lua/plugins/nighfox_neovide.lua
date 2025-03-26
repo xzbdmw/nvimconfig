@@ -243,7 +243,8 @@ return {
                 QuickFixLine = { style = "bold,italic" },
                 MyCmpCursorLine = { bg = "#faf7e8", style = "underline,bold,italic", sp = "#e8e7e0" }, -- only current line need to add underline
                 NoMyCmpCursorLine = { bg = "#faf7e8", style = "bold,italic" }, -- when there is only one entry
-                BlinkCmpMenuSelection = { link = "MyCursorLine" },
+                BlinkCmpMenuSelection = { style = "underline,bold,italic", sp = "#e8e7e0" },
+                BlinkCmpGhostText = { link = "CmpGhostText" },
                 illuminatedWordText = { bg = "#E3E0E0" },
                 illuminatedWordRead = { bg = "#E3E0E0" },
                 illuminatedWordKeepText = { link = "Search" },
@@ -371,7 +372,10 @@ return {
                 TelescopeTitle = { fg = "#3D4D56" },
                 TelescopeNormal = { fg = "#000000" },
                 Search = { fg = "none", bg = "#C2D7DE" },
-                YankyPut = { bg = "#FCF0A1" },
+                YankyPut = { link = "CursorLine" },
+                BlinkPairsOrange = { link = "@constant" },
+                BlinkPairsPurple = { link = "@constant.macro" },
+                BlinkPairsBlue = { link = "rainbowcol6" },
                 YankyYanked = { link = "YankyPut" },
                 SubstituteSubstituted = { link = "YankyPut" },
                 Whitespace = { fg = "#868DB7" },

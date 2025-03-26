@@ -2,6 +2,7 @@ return {
     "echasnovski/mini.snippets",
     dependencies = "rafamadriz/friendly-snippets",
     version = false,
+    lazy = false,
     keys = function()
         return {
             {

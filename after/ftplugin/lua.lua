@@ -1,6 +1,0 @@
-vim.keymap.set("x", "<leader>sp", function()
-    FeedKeys('<esc>"zyaq', "mx")
-    local content = vim.fn.getreg(string.format("z"))
-    FeedKeys("caq", "m")
-    FeedKeys("string.format(" .. content .. ")<esc>", "n")
-end)

@@ -1,3 +1,4 @@
+vim.b.did_ftplugin = 1
 local function handler(_, result, ctx)
     if result ~= nil then
         if result.contents ~= nil then

@@ -7,26 +7,17 @@ local ignore = function()
     end, 10)
 end
 return {
-    -- "hrsh7th/nvim-cmp",
-    version = false, -- last release is way too old
+    "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter", "User SearchBegin" },
-    dir = "/Users/xzb/.local/share/nvim/lazy/nvim-cmp",
-    -- enabled = false,
-    -- lazy = false,
-    -- dir = "~/Project/lua/oricmp/nvim-cmp/",
     dependencies = {
-        "onsails/lspkind.nvim",
-        "zbirenbaum/copilot-cmp",
-        { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-nvim-lsp" },
-        { dir = "~/Project/lua/cmp-rg/" },
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-buffer",
-        { dir = "/Users/xzb/.local/share/nvim/lazy/cmp-mini-snippets/" },
-        "echasnovski/mini.snippets",
-        -- "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-nvim-lsp",
         "chrisgrieser/cmp_yanky",
         "uga-rosa/cmp-dictionary",
+        "xzbdmw/cmp-mini-snippets",
+        { dir = "~/Project/lua/cmp-rg/" },
     },
     opts = function()
         local cmp = require("cmp")
@@ -177,29 +168,13 @@ return {
                     if cmp.visible() then
                         cmp.close()
                     end
-                    require("cmp").complete({
-                        config = {
-                            sources = {
-                                {
-                                    name = "rg",
-                                },
-                            },
-                        },
-                    })
+                    require("cmp").complete({ config = { sources = { { name = "rg" } } } })
                 end),
                 ["<C-y>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
                     end
-                    require("cmp").complete({
-                        config = {
-                            sources = {
-                                {
-                                    name = "cmp_yanky",
-                                },
-                            },
-                        },
-                    })
+                    require("cmp").complete({ config = { sources = { { name = "cmp_yanky" } } } })
                 end),
                 ["<C-7>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -346,7 +321,6 @@ return {
                 ghost_text = {
                     hl_group = "CmpGhostText",
                 },
-                -- ghost_text = false,
             },
             sorting = {
                 compare.order,
@@ -475,9 +449,7 @@ return {
                     vim.cmd([[redraw]])
                 end, { "i", "c", "s" }),
             }),
-            sources = cmp.config.sources({
-                -- { name = "buffer" },
-            }),
+            sources = cmp.config.sources({}),
         })
         cmp.setup.cmdline(":", {
             window = {
@@ -552,24 +524,6 @@ return {
                         FeedKeys("<c-c>", "n")
                     end,
                 }),
-                ["<C-f>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end, { "i", "c" }),
-                ["<C-b>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end, { "i", "c" }),
-                ["<C-a>"] = cmp.mapping(function(fallback)
-                    local is_cmdline = vim.fn.getcmdline()
-                    if vim.startswith(is_cmdline, "IncRename") then
-                        local cursor = utils.noice_incsearch_at_start()
-                        local shift = cursor - 3
-                        for _ = 1, shift do
-                            FeedKeys("<left>", "n")
-                        end
-                    else
-                        fallback()
-                    end
-                end, { "i", "c" }),
             }),
             sources = cmp.config.sources({
                 { name = "cmdline" },

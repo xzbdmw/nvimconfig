@@ -5,8 +5,6 @@ return {
     -- optional: provides snippets for the snippet source
     dependencies = { "rafamadriz/friendly-snippets" },
 
-    -- use a release tag to download pre-built binaries
-    version = "v0.*",
     -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     -- build = 'cargo build --release',
     -- On musl libc based systems you need to add this flag
@@ -14,7 +12,6 @@ return {
     config = function()
         require("blink.cmp").setup({
             snippets = {
-                -- Function to use when expanding LSP provided snippets
                 expand = function(snippet)
                     if require("multicursor-nvim").numCursors() > 1 then
                         vim.snippet.expand(snippet)
@@ -29,33 +26,91 @@ return {
             keymap = {
                 preset = "enter",
                 ["<d-d>"] = { "show_documentation" },
-                ["<c-n>"] = {},
-                ["<c-p>"] = {},
+                ["<c-e>"] = { "fallback" },
+                ["<c-c>"] = { "hide" },
             },
             cmdline = {
-                sources = {},
+                keymap = {
+                    preset = "none",
+                    -- stylua: ignore start
+                    ["<c-n>"] = { function() FeedKeys("<down>", "n") end },
+                    ["<c-p>"] = { function() FeedKeys("<up>", "n") end },
+                    ["<Tab>"] = { function() FeedKeys("<CR>", "n") end },
+                    -- stylua: ignore end
+                    ["<down>"] = { "select_next" },
+                    ["<up>"] = { "select_prev" },
+                    ["<cr>"] = {
+                        function()
+                            if vim.fn.getcmdtype() == ":" then
+                                require("blink.cmp").accept()
+                            else
+                                FeedKeys("<cr>", "n")
+                            end
+                        end,
+                    },
+                },
+                completion = {
+                    menu = {
+                        auto_show = true,
+                    },
+                },
+            },
+            fuzzy = {
+                sorts = {
+                    -- (optionally) always prioritize exact matches
+                    "exact",
+
+                    -- pass a function for custom behavior
+                    function(item_a, item_b)
+                        return require("config.cmpformat").sort(item_a.kind, item_b.kind)
+                    end,
+
+                    "score",
+                    "sort_text",
+                },
+            },
+            sources = {
+                default = { "lsp", "buffer", "snippets", "path" },
+                providers = {
+                    lsp = {
+                        name = "LSP",
+                        module = "blink.cmp.sources.lsp",
+                        fallbacks = { "buffer" },
+                        transform_items = function(_, items)
+                            -- filter out text items, since we have the buffer source
+                            return vim.tbl_filter(function(item)
+                                return item.kind ~= require("blink.cmp.types").CompletionItemKind.Text
+                            end, items)
+                        end,
+                    },
+                    path = {
+                        module = "blink.cmp.sources.path",
+                        score_offset = 3,
+                        fallbacks = { "buffer" },
+                    },
+                    buffer = {
+                        opts = {
+                            -- or (recommended) filter to only "normal" buffers
+                            get_bufnrs = function()
+                                return { vim.api.nvim_get_current_buf() }
+                            end,
+                        },
+                    },
+                },
             },
             completion = {
+                ghost_text = { enabled = true },
                 menu = {
                     draw = {
-                        -- We don't need label_description now because label and label_description are already
-                        -- conbined together in label by colorful-menu.nvim.
-                        columns = { { "kind_icon" }, { "label", gap = 2 }, { "provider" } },
+                        columns = { { "kind_icon" }, { "label", gap = 2 } },
                         components = {
                             label = {
-                                -- width = { fill = true, max = 110 },
                                 text = function(ctx)
                                     return require("colorful-menu").blink_components_text(ctx)
                                 end,
                                 highlight = function(ctx)
                                     return require("colorful-menu").blink_components_highlight(ctx)
                                 end,
-                            },
-                            provider = {
-                                text = function(ctx)
-                                    return "[" .. ctx.item.source_name:sub(1, 3):upper() .. "]"
-                                end,
-                                highlight = "BlinkCmpKindLabel",
                             },
                         },
                     },

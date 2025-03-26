@@ -50,13 +50,27 @@ local function my_on_attach(bufnr)
             })
         end
     end
+    local nav = function(direction)
+        local win = require("config.utils").filetype_windowid("NvimTree")
+        local key = direction == "next" and "norm! j" or "norm! k"
+        local buf = vim.api.nvim_win_get_buf(win)
+        vim.api.nvim_buf_call(buf, function()
+            vim.cmd(key)
+            local line = vim.api.nvim_get_current_line()
+            if line:find("󱞩") ~= nil then
+                vim.cmd(key)
+            elseif line:find("󱦰") ~= nil then
+                require("nvim-tree.api").node.open.edit()
+                vim.cmd(key)
+            end
+            require("nvim-tree.api").node.open.edit()
+        end)
+    end
     keymap("n", "]]", function()
-        require("nvim-tree.api").node.navigate.git.next()
-        require("nvim-tree.api").node.open.edit()
+        nav("next")
     end)
     keymap("n", "[[", function()
-        require("nvim-tree.api").node.navigate.git.prev()
-        require("nvim-tree.api").node.open.edit()
+        nav("prev")
     end)
     keymap("n", "A", toggle_arrow_filter, opts("toggle arrow filter"))
     keymap("n", "<leader>A", toggle_arrow_filter)
