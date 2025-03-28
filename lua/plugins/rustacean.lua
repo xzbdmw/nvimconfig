@@ -46,6 +46,9 @@ return {
                             },
                         },
                         inlayHints = {
+                            closingBraceHints = {
+                                enable = false,
+                            },
                             parameterHints = false,
                             closureReturnTypeHints = "with_block",
                         },

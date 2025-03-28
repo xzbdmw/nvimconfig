@@ -10,6 +10,7 @@ vim.o.showbreak = "↪ "
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000
 vim.opt.diffopt:append({ "linematch:60", "indent-heuristic" })
+vim.opt.diffopt:remove({ "linematch:40" })
 vim.o.virtualedit = "block"
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
@@ -45,8 +46,6 @@ vim.g.neovide_text_gamma = 1.5
 vim.o.timeoutlen = 500
 vim.o.swapfile = false
 vim.o.background = "light"
-local str = string.rep(" ", api.nvim_win_get_width(0))
-vim.o.statusline = str
 vim.o.cinkeys = "0{,0},0),0],0#,!^F,o,O,e"
 vim.o.linebreak = true
 vim.g.loaded_matchparen = 1

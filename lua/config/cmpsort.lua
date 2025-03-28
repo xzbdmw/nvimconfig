@@ -83,6 +83,17 @@ M.put_down_snippet = function(entry1, entry2)
     if vim.bo.filetype == "go" then
         return go_sort(kind1, kind2)
     elseif vim.bo.filetype == "rust" then
+        -- visible items comes first
+        local detail1 = vim.tbl_get(entry1.completion_item, "labelDetails", "detail")
+        local detail2 = vim.tbl_get(entry2.completion_item, "labelDetails", "detail")
+        if kind1 == kind2 then
+            if detail1 and not detail2 then
+                return false
+            end
+            if detail2 and not detail1 then
+                return true
+            end
+        end
         return rust_sort(kind1, kind2)
     elseif vim.bo.filetype == "lua" then
         return lua_sort(kind1, kind2)

@@ -36,20 +36,6 @@ function M.auto_add_forl()
     MiniSnippets.expand()
 end
 
-function M.auto_expand_Result()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    local idx
-    _, idx = string.find(line, "Re")
-    if idx == nil or col ~= idx then
-        return
-    end
-    FeedKeys("sult<><c-g>U<left>", "n")
-    if require("cmp").visible() then
-        require("cmp").close()
-    end
-end
-
 function M.auto_add_forj()
     local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()

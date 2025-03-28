@@ -149,7 +149,7 @@ return {
                 end,
             },
             {
-                "<leader>sS",
+                "<leader>fs",
                 function()
                     require("custom.telescope-pikers").prettyWorkspaceSymbols()
                 end,

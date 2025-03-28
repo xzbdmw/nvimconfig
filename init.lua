@@ -26,6 +26,7 @@ vim.g.show_nvim_tree_size = false
 vim.g.disable_flash = false
 vim.g.mc_active = false
 vim.g.sign_padding = true
+vim.g.constran_minisnippets = false
 -- This have to be commented because ghostty use --cmd to set
 -- vim.g.scrollback = true, or it will be overwritten.
 -- vim.g.scrollback = false
@@ -486,8 +487,6 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.auto_add_forr()
             snip.auto_add_fori()
             snip.auto_add_forj()
-        elseif vim.bo.filetype == "rust" then
-            snip.auto_expand_Result()
         end
         snip.auto_add_if()
         snip.auto_add_ret()
@@ -643,13 +642,6 @@ api.nvim_create_autocmd("User", {
     end,
 })
 
-api.nvim_create_autocmd("WinResized", {
-    pattern = "*",
-    callback = function()
-        utils.checkSplitAndSetLaststatus()
-    end,
-})
-
 api.nvim_create_autocmd({ "BufRead" }, {
     pattern = {
         "/Users/xzb/.rustup/toolchains/**/*.rs",
@@ -786,7 +778,6 @@ api.nvim_create_autocmd({ "User" }, {
             end
         end
         require("nvim-tree.api").tree.toggle({ focus = false })
-        vim.o.cmdheight = 0
     end,
 })
 
@@ -851,6 +842,10 @@ api.nvim_create_autocmd("User", {
 api.nvim_create_autocmd("User", {
     pattern = "MiniSnippetsSessionJump",
     callback = function(args)
+        if vim.g.constran_minisnippets then
+            vim.g.constran_minisnippets = false
+            return
+        end
         if args.data.tabstop_to == "0" and #MiniSnippets.session.get(true) > 1 then
             MiniSnippets.session.stop()
         end

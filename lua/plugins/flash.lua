@@ -16,7 +16,14 @@ return {
                 vim.g.treesitter_search = true
                 vim.o.scrolloff = 0
                 vim.g.flash_winbar = vim.wo.winbar
-                require("flash").treesitter()
+                require("flash").treesitter({
+                    filter = function(matches)
+                        for i = #matches, 2, -1 do
+                            matches[i].label = matches[i - 1].label
+                        end
+                        table.remove(matches, 1)
+                    end,
+                })
             end,
             desc = "Flash Treesitter",
         },
@@ -143,9 +150,9 @@ return {
                 -- Enable this to use rainbow colors to highlight labels
                 -- Can be useful for visualizing Treesitter ranges.
                 rainbow = {
-                    enabled = false,
+                    enabled = true,
                     -- number between 1 and 9
-                    shade = 5,
+                    shade = 2,
                 },
                 -- With `format`, you can change how the label is rendered.
                 -- Should return a list of `[text, highlight]` tuples.

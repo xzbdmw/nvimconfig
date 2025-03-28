@@ -1,25 +1,34 @@
 return {
     "echasnovski/mini.snippets",
     keys = function()
+        local jump = function(direction)
+            _G.no_animation(_G.CI)
+            if require("multicursor-nvim").numCursors() > 1 then
+                return
+            end
+
+            local cur = vim.api.nvim_win_get_cursor(0)
+            MiniSnippets.session.jump(direction)
+            vim.schedule(function()
+                if vim.deep_equal(cur, vim.api.nvim_win_get_cursor(0)) then
+                    MiniSnippets.session.jump(direction)
+                end
+            end)
+            if vim.bo.filetype == "lua" then
+                require("cmp.config").set_onetime({ sources = {} })
+            end
+        end
         return {
             {
                 "<C-n>",
                 mode = { "i" },
                 function()
-                    _G.no_animation(_G.CI)
-                    if require("multicursor-nvim").numCursors() > 1 then
-                        return
-                    end
-
-                    local cur = vim.api.nvim_win_get_cursor(0)
-                    MiniSnippets.session.jump("next")
-                    vim.schedule(function()
-                        if vim.deep_equal(cur, vim.api.nvim_win_get_cursor(0)) then
-                            MiniSnippets.session.jump("next")
-                        end
-                    end)
-                    if vim.bo.filetype == "lua" then
-                        require("cmp.config").set_onetime({ sources = {} })
+                    if not require("config.utils").mini_snippets_active_session() then
+                        vim.g.constran_minisnippets = true
+                        jump("next")
+                        jump("prev")
+                    else
+                        jump("next")
                     end
                 end,
                 { silent = true },
@@ -28,21 +37,7 @@ return {
                 "<C-p>",
                 mode = { "i" },
                 function()
-                    _G.no_animation(_G.CI)
-                    if require("multicursor-nvim").numCursors() > 1 then
-                        return
-                    end
-
-                    local cur = vim.api.nvim_win_get_cursor(0)
-                    MiniSnippets.session.jump("prev")
-                    vim.schedule(function()
-                        if vim.deep_equal(cur, vim.api.nvim_win_get_cursor(0)) then
-                            MiniSnippets.session.jump("prev")
-                        end
-                    end)
-                    if vim.bo.filetype == "lua" then
-                        require("cmp.config").set_onetime({ sources = {} })
-                    end
+                    jump("prev")
                 end,
                 { silent = true },
             },

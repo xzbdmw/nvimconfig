@@ -1,3 +1,7 @@
+vim.cmd([[
+setlocal comments=s0:/*!,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
+setlocal commentstring=//\ %s
+]])
 vim.b.did_ftplugin = 1
 vim.keymap.set("x", "<leader>sp", function()
     FeedKeys('<esc>"zyaq', "mx")

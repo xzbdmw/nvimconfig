@@ -534,6 +534,40 @@ function M.mini_snippets_active()
     return false
 end
 
+function M.mini_snippets_active_session()
+    if vim.g.snippet_expand == true then
+        return true
+    end
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local extmarks =
+        vim.api.nvim_buf_get_extmarks(0, vim.api.nvim_create_namespace("MiniSnippetsNodes"), 0, -1, { details = true })
+    for _, mark in ipairs(extmarks) do
+        local detail = mark[4]
+        if
+            (
+                (
+                    detail.hl_group == "MiniSnippetsCurrentReplace"
+                    or (
+                        detail.virt_text ~= nil
+                        and #detail.virt_text > 0
+                        and detail.virt_text[1][2] == "MiniSnippetsCurrentReplace"
+                    )
+                )
+                and mark[3] == cursor[2]
+                and mark[2] + 1 == cursor[1]
+            )
+            or (
+                detail.hl_group == "MiniSnippetsCurrent"
+                and (mark[3] <= cursor[2] and detail.end_col and detail.end_col >= cursor[2])
+                and mark[2] + 1 == cursor[1]
+            )
+        then
+            return true
+        end
+    end
+    return false
+end
+
 function M.has_namespace(name_space, type)
     local ns = api.nvim_create_namespace(name_space)
     local extmark
@@ -594,6 +628,9 @@ function M.normal_tab()
 end
 
 function M.onTypeFormatting()
+    if vim.fn.mode() ~= "i" then
+        return
+    end
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
     local c = vim.api.nvim_buf_get_text(0, row - 1, col - 1, row - 1, col, {})
@@ -921,33 +958,6 @@ function M.record_winbar_enter()
     end, api.nvim_create_namespace("winbar_macro"))
 end
 
-function M.checkSplitAndSetLaststatus()
-    local windows = api.nvim_list_wins()
-    local is_split = false
-    for _, win in ipairs(windows) do
-        local success, win_config = pcall(api.nvim_win_get_config, win)
-        if success then
-            if win_config.relative ~= "" then
-                goto continue
-            end
-        end
-        local win_height = api.nvim_win_get_height(win)
-        ---@diagnostic disable-next-line: deprecated
-        local screen_height = api.nvim_get_option("lines")
-        if win_height + 1 < screen_height then
-            is_split = true
-            break
-        end
-        ::continue::
-    end
-
-    if is_split then
-        vim.cmd("set laststatus=3")
-    else
-        vim.cmd("set laststatus=0")
-    end
-end
-
 function M.setUndotreeWinSize()
     local api = api
     local winList = api.nvim_list_wins()
@@ -1044,6 +1054,7 @@ function CloseFromLazygit()
         and api.nvim_win_is_valid(_G.lazygit_previous_win)
         and api.nvim_get_current_win() ~= _G.lazygit_previous_win
     then
+        _G.lazygit_previous_win = nil
         api.nvim_set_current_win(_G.lazygit_previous_win)
     end
     vim.defer_fn(function()

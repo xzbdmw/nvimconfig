@@ -230,6 +230,32 @@ keymap("n", "<leader><leader>g", function()
 end, opts)
 
 keymap({ "o", "n", "x" }, "<right>", "]", { remap = true })
+keymap({ "n", "x" }, "H", function()
+    local scope = MiniIndentscope.get_scope()
+    local top = scope.border.top
+    local bottom = scope.border.bottom
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    if row == top then
+        vim.cmd("norm! h")
+        vim.cmd("norm H")
+        return
+    end
+    if top == 0 then
+        return
+    end
+    local ns = vim.api.nvim_create_namespace("border")
+    vim.api.nvim_buf_set_extmark(0, ns, top - 1, 0, {
+        end_line = bottom - 1,
+        strict = false,
+        hl_group = "YankyPut",
+    })
+    vim.cmd("norm! m'")
+    vim.api.nvim_win_set_cursor(0, { top, 0 })
+    vim.cmd("norm! ^")
+    vim.defer_fn(function()
+        vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+    end, 150)
+end, opts)
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
@@ -549,10 +575,23 @@ keymap("n", "<D-2>", function()
     FeedKeys("zz", "m")
 end, opts)
 
+keymap("n", "<leader>cw", function()
+    local root = utils.git_root()
+    if root == nil then
+        vim.notify("No roow detected", vim.log.levels.WARN)
+        return
+    end
+    vim.notify("Change cwd to " .. root, vim.log.levels.INFO)
+    vim.api.nvim_set_current_dir(root)
+end, opts)
+
 keymap("i", "<space>", function()
     return "<space>"
 end, { expr = true })
 
+keymap("i", "<c-i>", function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = nil }))
+end, opts)
 keymap("i", "<Tab>", function()
     local cmp = require("cmp")
     if cmp.visible() then
@@ -653,9 +692,6 @@ keymap("n", "<leader>vr", function()
         return "<cmd>vsp<CR><c--><c-->"
     end
 end, { expr = true, remap = true })
-keymap("n", "<", function()
-    return "["
-end, { remap = true, expr = true })
 keymap("n", "<leader>os", function()
     vim.wo.number = not vim.wo.number
     if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
