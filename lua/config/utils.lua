@@ -1054,8 +1054,8 @@ function CloseFromLazygit()
         and api.nvim_win_is_valid(_G.lazygit_previous_win)
         and api.nvim_get_current_win() ~= _G.lazygit_previous_win
     then
-        _G.lazygit_previous_win = nil
         api.nvim_set_current_win(_G.lazygit_previous_win)
+        _G.lazygit_previous_win = nil
     end
     vim.defer_fn(function()
         M.refresh_last_commit()

@@ -92,6 +92,28 @@ keymap({ "i", "n" }, "<c-'>", function()
         return n
     end)
 end)
+-- do
+--     local draw = false
+--     vim.api.nvim_create_autocmd("ModeChanged", {
+--         pattern = "i:n",
+--         callback = function()
+--             draw = true
+--         end,
+--     })
+--     local ns = vim.api.nvim_create_namespace("z")
+--     vim.api.nvim_set_decoration_provider(ns, {
+--         on_win = function()
+--             if vim.fn.mode() == "n" and draw == true then
+--                 draw = false
+--                 vim.api.nvim_buf_set_extmark(0, ns, 0, 1, {
+--                     virt_text_pos = "inline",
+--                     virt_text = { { "VERTTEXT", "Comment" } },
+--                 })
+--             end
+--         end,
+--     })
+-- end
+vim.keymap.set("n", "<d-y>", function() end)
 keymap({ "n" }, "<leader>w", function()
     vim.cmd("write")
 end, opts)
@@ -817,6 +839,7 @@ keymap("i", ";", function()
     end
     return ";<c-g>u"
 end, { expr = true })
+vim.keymap.set("n", "<leader>fl", "/at\\s<CR>", { remap = true })
 keymap("i", "<BS>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         return "<BS>"

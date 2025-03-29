@@ -255,7 +255,7 @@ return {
                     name = "mini.snippets",
                     option = {
                         use_minisnippets_match_rule = false,
-                        only_show_in_line_start = true,
+                        only_show_in_line_start = false,
                     },
                 },
                 { name = "path" },

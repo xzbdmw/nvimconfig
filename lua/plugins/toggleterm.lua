@@ -38,6 +38,11 @@ return {
                 -- We have to set the keymapping here for excluding lazygit.
                 vim.keymap.set("n", "<CR>", function()
                     local cur = vim.api.nvim_win_get_cursor(0)
+                    local word = vim.fn.expand("<cword>")
+                    while word:match("%d") ~= nil do
+                        vim.cmd("norm! b")
+                        word = vim.fn.expand("<cword>")
+                    end
                     local f = vim.fn.findfile(vim.fn.expand("<cfile>"))
                     if f == "" then
                         vim.api.nvim_win_set_cursor(0, { cur[1] + 1, cur[2] })
@@ -63,6 +68,13 @@ return {
                         vim.wo.signcolumn = "yes"
                     end)
                 end, { buffer = 0 })
+                vim.b.minihipatterns_config = {
+                    highlighters = {
+                        -- at ./src/sql/parser/mod.rs:436:9
+                        fixme = { pattern = "at .*:?%d?:?%d?", group = "Links" },
+                    },
+                }
+                require("mini.hipatterns").enable()
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
                     local line = vim.api.nvim_get_current_line()

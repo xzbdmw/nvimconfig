@@ -1,0 +1,6 @@
+{
+  "panicf": {
+    "body": "panic!(\"{}\", format!(\"${1:}\", ${0:}))",
+    "prefix": "panicf"
+  }
+}

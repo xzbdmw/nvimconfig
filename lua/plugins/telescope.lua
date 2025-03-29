@@ -300,6 +300,13 @@ return {
                 mode = { "n", "v" },
             },
             {
+                "<leader>st",
+                function()
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", "todo", vim.bo.filetype)
+                end,
+                mode = { "n", "v" },
+            },
+            {
                 "<C-6>",
                 function()
                     require("custom.telescope-pikers").prettyBuffersPicker(true, "insert")
