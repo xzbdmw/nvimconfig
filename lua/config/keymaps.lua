@@ -128,6 +128,7 @@ _G.has_diagnostic = false
 keymap({ "n" }, "]d", function()
     vim.diagnostic.goto_next({ float = not _G.has_diagnostic })
 end, opts)
+keymap({ "x" }, "R", "r", opts)
 keymap({ "n" }, "[d", function()
     vim.diagnostic.goto_prev({ float = not _G.has_diagnostic })
 end, opts)
@@ -135,11 +136,25 @@ keymap("n", "<leader>ud", function()
     if _G.has_diagnostic then
         vim.diagnostic.config({
             virtual_lines = false,
+            virtual_text = false,
         })
         _G.has_diagnostic = false
     else
         vim.diagnostic.config({
-            virtual_lines = true,
+            virtual_text = {
+                prefix = "",
+                source = "if_many",
+                spacing = 0,
+                severity = {
+                    max = vim.diagnostic.severity.WARN,
+                },
+            },
+            virtual_lines = {
+                severity = {
+                    min = vim.diagnostic.severity.ERROR,
+                },
+            },
+            severity_sort = true,
         })
         _G.has_diagnostic = true
     end
@@ -252,32 +267,6 @@ keymap("n", "<leader><leader>g", function()
 end, opts)
 
 keymap({ "o", "n", "x" }, "<right>", "]", { remap = true })
-keymap({ "n", "x" }, "H", function()
-    local scope = MiniIndentscope.get_scope()
-    local top = scope.border.top
-    local bottom = scope.border.bottom
-    local row = vim.api.nvim_win_get_cursor(0)[1]
-    if row == top then
-        vim.cmd("norm! h")
-        vim.cmd("norm H")
-        return
-    end
-    if top == 0 then
-        return
-    end
-    local ns = vim.api.nvim_create_namespace("border")
-    vim.api.nvim_buf_set_extmark(0, ns, top - 1, 0, {
-        end_line = bottom - 1,
-        strict = false,
-        hl_group = "YankyPut",
-    })
-    vim.cmd("norm! m'")
-    vim.api.nvim_win_set_cursor(0, { top, 0 })
-    vim.cmd("norm! ^")
-    vim.defer_fn(function()
-        vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-    end, 150)
-end, opts)
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
@@ -839,7 +828,9 @@ keymap("i", ";", function()
     end
     return ";<c-g>u"
 end, { expr = true })
-vim.keymap.set("n", "<leader>fl", "/at\\s<CR>", { remap = true })
+vim.keymap.set("n", "<leader>fl", function()
+    vim.api.nvim_input("gg/at\\s<CR>ggn")
+end, opts)
 keymap("i", "<BS>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then
         return "<BS>"

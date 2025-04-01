@@ -77,10 +77,11 @@ return {
                 require("mini.hipatterns").enable()
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
-                    local line = vim.api.nvim_get_current_line()
+                    local term_title = vim.b.term_title
                     if
-                        vim.startswith(line, "╰─────────────────────")
-                        or vim.startswith(line, "│")
+                        vim.startswith(term_title, "fzf")
+                        or vim.startswith(term_title, "lazygit ")
+                        or vim.startswith(term_title, "y ")
                     then
                         return "<esc>"
                     end
@@ -142,7 +143,7 @@ return {
                 -- not natively supported but implemented in this plugin.
                 border = vim.g.neovide and "solid" or "rounded",
                 -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
-                width = function(info)
+                width = function()
                     return math.floor(vim.o.columns * 0.7)
                 end,
                 height = function()

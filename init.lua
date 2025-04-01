@@ -488,6 +488,7 @@ vim.api.nvim_create_autocmd("TextChangedI", {
             snip.auto_add_fori()
             snip.auto_add_forj()
         end
+        snip.auto_self()
         snip.auto_add_if()
         snip.auto_add_ret()
         snip.autotrue()

@@ -107,6 +107,16 @@ function M.lua_auto_pia()
     FeedKeys("<BS><BS><BS>api", "n")
 end
 
+function M.auto_self()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local line = vim.api.nvim_get_current_line()
+    local _, idx = string.find(line, "slef")
+    if idx == nil or col ~= idx then
+        return
+    end
+    FeedKeys("<BS><BS><BS>elf", "n")
+end
+
 function M.lua_auto_add_local()
     local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()

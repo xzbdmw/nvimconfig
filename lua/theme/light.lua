@@ -146,7 +146,7 @@ keymap({ "n" }, "<esc>", function()
 end)
 
 -- illuminate
-keymap("n", "<left>", function()
+keymap("n", "H", function()
     local bufnr = api.nvim_get_current_buf()
     pcall(function()
         require("illuminate.engine").keep_highlight(bufnr)

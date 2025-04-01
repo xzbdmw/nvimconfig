@@ -139,9 +139,6 @@ return {
                         fallback()
                     end
                 end),
-                ["<C-n>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end),
                 ["<C-b>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.close()
@@ -155,6 +152,9 @@ return {
                             },
                         },
                     })
+                end),
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    fallback()
                 end),
                 ["<C-p>"] = cmp.mapping(function(fallback)
                     fallback()
@@ -178,12 +178,6 @@ return {
                         fallback()
                     end
                 end),
-                ["<f13>"] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.close()
-                    end
-                    vim.lsp.buf.signature_help()
-                end),
                 ["<left>"] = cmp.mapping(function(fallback)
                     _G.no_animation(_G.CI)
                     if cmp.visible() then
@@ -203,13 +197,6 @@ return {
                     else
                         fallback()
                     end
-                end),
-                ["<c-cr>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.close()
-                    end
-                    _G.no_animation(_G.CI)
-                    fallback()
                 end),
                 ["<cr>"] = cmp.mapping(function(fallback)
                     TTT = vim.uv.hrtime()
