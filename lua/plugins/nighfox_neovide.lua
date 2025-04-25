@@ -409,6 +409,7 @@ return {
                 ["@lsp.typemod.typeParameter.definition.go"] = { link = "@type" },
                 ["@lsp.type.typeParameter.go"] = { link = "@type" },
                 ["@go.error.go"] = { link = "@interface.name" },
+                ["@lsp.mod.format.go"] = { link = "@printf.printf" },
                 ["@lsp.mod.placeholder.go"] = { link = "@printf.printf" },
                 ["@lsp.typemod.variable.number.go"] = { link = "@variable.member.go" },
                 ["@go.string.go"] = { link = "Keyword" },

@@ -25,9 +25,11 @@ return {
                     -- - SatelliteSearchCurrent (default links to SearchCurrent)
                 },
                 diagnostic = {
-                    enable = false,
-                    signs = { "-", "=", "≡" },
-                    min_severity = vim.diagnostic.severity.WARN,
+                    enable = true,
+                    signs = { "≡" },
+                    overlap = false,
+                    priority = 500,
+                    min_severity = vim.diagnostic.severity.ERROR,
                     -- Highlights:
                     -- - SatelliteDiagnosticError (default links to DiagnosticError)
                     -- - SatelliteDiagnosticWarn (default links to DiagnosticWarn)

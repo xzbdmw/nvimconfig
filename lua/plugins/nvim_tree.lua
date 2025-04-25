@@ -290,7 +290,7 @@ return {
                 no_buffer = false,
                 no_bookmark = false,
                 custom = { [[\.git]], "go.sum", [[\.vscode]], [[\.idea]], [[\.DS_Store]] },
-                exclude = {},
+                exclude = { "config.yaml" },
             },
             on_attach = my_on_attach,
             view = {

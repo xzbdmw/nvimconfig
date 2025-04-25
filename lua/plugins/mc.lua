@@ -161,7 +161,7 @@ return {
             reset_state()
             vim.cmd([[normal! m']])
             local visual = vim.fn.mode():find("[vV]") ~= nil
-            mc.operator({ motion = "iw" })
+            mc.operator({ motion = "iw", visual = visual })
             require("config.utils").restore_mc_view(visual)
         end)
 

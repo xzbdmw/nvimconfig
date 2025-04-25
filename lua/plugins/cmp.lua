@@ -513,6 +513,5 @@ return {
             }),
         })
         require("cmp").setup(opts)
-        require("cmp_dictionary").setup({})
     end,
 }

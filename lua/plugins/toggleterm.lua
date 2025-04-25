@@ -71,16 +71,19 @@ return {
                 vim.b.minihipatterns_config = {
                     highlighters = {
                         -- at ./src/sql/parser/mod.rs:436:9
-                        fixme = { pattern = "at .*:?%d?:?%d?", group = "Links" },
+                        fixme = { pattern = " at .*:?%d?:?%d?", group = "Links" },
                     },
                 }
                 require("mini.hipatterns").enable()
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
                     local term_title = vim.b.term_title
+                    local line = vim.api.nvim_get_current_line()
                     if
-                        vim.startswith(term_title, "fzf")
+                        vim.startswith(line, "│")
+                        or vim.startswith(term_title, "fzf")
                         or vim.startswith(term_title, "lazygit ")
+                        or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")
                     then
                         return "<esc>"

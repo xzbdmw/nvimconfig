@@ -293,9 +293,8 @@ return {
             {
                 "<leader>sw",
                 function()
-                    local filetype = vim.bo.filetype
                     local w = utils.get_cword()
-                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", w, filetype)
+                    require("custom.telescope-pikers").prettyGrepPicker("egrepify", w, "")
                 end,
                 mode = { "n", "v" },
             },

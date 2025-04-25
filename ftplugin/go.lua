@@ -1,3 +1,7 @@
+vim.cmd([[
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+]])
 vim.b.did_ftplugin = 1
 local function handler(_, result, ctx)
     if result ~= nil then

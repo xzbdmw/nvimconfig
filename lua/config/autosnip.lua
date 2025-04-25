@@ -1,53 +1,5 @@
 local M = {}
 
-function M.auto_add_forr()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forr$") == nil) then
-        return
-    end
-    if require("cmp").visible() then
-        require("cmp").close()
-    end
-    MiniSnippets.expand()
-end
-
-function M.auto_add_fori()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*fori$") == nil) then
-        return
-    end
-    if require("cmp").visible() then
-        require("cmp").close()
-    end
-    MiniSnippets.expand()
-end
-
-function M.auto_add_forl()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forl$") == nil) then
-        return
-    end
-    if require("cmp").visible() then
-        require("cmp").close()
-    end
-    MiniSnippets.expand()
-end
-
-function M.auto_add_forj()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    if (#vim.api.nvim_get_current_line() ~= col) or (string.match(line, "^%s*forj$") == nil) then
-        return
-    end
-    if require("cmp").visible() then
-        require("cmp").close()
-    end
-    MiniSnippets.expand()
-end
-
 function M.auto_add_if()
     local col = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()

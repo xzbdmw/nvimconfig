@@ -93,6 +93,7 @@ return {
                 },
                 -- rust_analyzer = {},
                 pylance = {},
+                buf = {},
                 -- harper_ls = {
                 --     settings = {
                 --         ["harper-ls"] = {

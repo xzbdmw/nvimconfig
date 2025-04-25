@@ -26,6 +26,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "InlayHint" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { event = "lsp", find = "Diagnosing" },
                     opts = { skip = true },
                 },

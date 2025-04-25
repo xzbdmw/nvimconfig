@@ -828,8 +828,9 @@ keymap("i", ";", function()
     end
     return ";<c-g>u"
 end, { expr = true })
-vim.keymap.set("n", "<leader>fl", function()
-    vim.api.nvim_input("gg/at\\s<CR>ggn")
+keymap("n", "<leader>fl", function()
+    FeedKeys("/at\\s", "n")
+    FeedKeys("<CR>ggn", "n")
 end, opts)
 keymap("i", "<BS>", function()
     if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then

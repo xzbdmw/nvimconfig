@@ -10,6 +10,7 @@ return {
         formatters_by_ft = {
             lua = { "stylua" },
             fish = { "fish_indent" },
+            proto = { "trim_whitespace" },
             sh = { "shfmt" },
             json = { "fixjson" },
             vue = { "prettier" },

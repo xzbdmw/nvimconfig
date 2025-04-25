@@ -100,12 +100,6 @@ return {
                     if method == "definitions" then
                         vim.cmd("normal! m'")
                         jumpfn(result[1])
-                        -- if #result > 1 then
-                        --     open(result)
-                        --     FeedKeys("<Tab>", "t")
-                        -- else
-                        --     jumpfn(result[1])
-                        -- end
                     elseif method == "implementations" then
                         vim.cmd("normal! m'")
                         open(result)
