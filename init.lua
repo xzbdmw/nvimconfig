@@ -269,7 +269,9 @@ api.nvim_create_autocmd("User", {
 api.nvim_create_autocmd("BufWritePre", {
     pattern = "*.go",
     callback = function()
+        ---@diagnostic disable-next-line: missing-parameter
         local params = vim.lsp.util.make_range_params()
+        ---@diagnostic disable-next-line: inject-field
         params.context = { only = { "source.organizeImports" } }
         local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 100)
         for _, res in pairs(result or {}) do
@@ -305,7 +307,7 @@ api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.schedule(function()
             if vim.bo.filetype == "noice" then
-                vim.keymap.set("n", "K", "5k", { buffer = true })
+                vim.keymap.set("n", "K", "6k", { buffer = true })
                 vim.wo.signcolumn = "no"
             end
         end)
