@@ -400,8 +400,8 @@ return {
                         previewer = false,
                         layout_config = {
                             horizontal = {
-                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.38 or 0.35,
-                                height = 0.7,
+                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.6 or 0.45,
+                                height = 0.8,
                             },
                             mirror = false,
                         },

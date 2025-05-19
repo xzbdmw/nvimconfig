@@ -267,6 +267,7 @@ keymap("n", "<leader><leader>g", function()
 end, opts)
 
 keymap({ "o", "n", "x" }, "<right>", "]", { remap = true })
+keymap({ "o", "n", "x" }, "<left>", "[", { remap = true })
 
 keymap("o", "f", "t", opts)
 keymap("x", "f", "t", opts)
