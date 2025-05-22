@@ -13,6 +13,8 @@ return {
             "help",
             "markdown",
             "vim",
+            "txt",
+            "text",
             "Glance",
             "snacks_picker_input",
             "fugitive",

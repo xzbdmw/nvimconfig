@@ -79,12 +79,19 @@ return {
                     _G.set_cursor_animation(0.0)
                     local term_title = vim.b.term_title
                     local line = vim.api.nvim_get_current_line()
+                    local last_line = vim.api.nvim_buf_get_lines(
+                        0,
+                        vim.api.nvim_buf_line_count(0) - 2,
+                        vim.api.nvim_buf_line_count(0) - 1,
+                        false
+                    )[1]
                     if
                         vim.startswith(line, "│")
                         or vim.startswith(term_title, "fzf")
                         or vim.startswith(term_title, "lazygit ")
                         or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")
+                        or vim.endswith(last_line, "All")
                     then
                         return "<esc>"
                     end
