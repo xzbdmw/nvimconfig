@@ -144,16 +144,18 @@ api.nvim_create_autocmd({ "TabEnter" }, {
             if vim.startswith(name, "/private/var") then
                 FeedKeys("G", "n")
                 vim.wo.scrolloff = 0
-                vim.api.nvim_create_autocmd("TabClosed", {
-                    once = true,
-                    callback = function(d)
-                        if d.file == "2" then
-                            vim.system({ "open", "-a", "Ghostty" }):wait()
-                        end
-                    end,
-                })
             end
         end)
+    end,
+})
+
+api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        ---@diagnostic disable-next-line: invisible
+        if client._log_prefix == "LSP[pylance]" then
+            client.server_capabilities.semanticTokensProvider = nil
+        end
     end,
 })
 
@@ -809,7 +811,7 @@ api.nvim_create_autocmd("User", {
                 end
                 vim.cmd("NvimTreeRefresh")
             end
-            require("smart-open.util").reset_cache()
+            -- require("smart-open.util").reset_cache()
         end, 100)
     end,
 })

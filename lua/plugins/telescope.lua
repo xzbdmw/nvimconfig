@@ -921,7 +921,7 @@ return {
                             [")"] = function()
                                 FeedKeys("\\)", "n")
                             end,
-                            ["<c-q>"] = function(bufnr)
+                            ["<c-a>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 if not require("trouble").is_open("qflist") then
                                     FeedKeys("<leader>uq", "m")
@@ -1007,7 +1007,7 @@ return {
                                 },
                             },
                             ["zz"] = center_results,
-                            ["<c-q>"] = function(bufnr)
+                            ["<c-a>"] = function(bufnr)
                                 actions.smart_send_to_qflist(bufnr)
                                 if not require("trouble").is_open("qflist") then
                                     FeedKeys("<leader>uq", "m")

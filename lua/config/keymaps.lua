@@ -126,12 +126,18 @@ end, opts)
 
 _G.has_diagnostic = false
 keymap({ "n" }, "]d", function()
-    vim.diagnostic.goto_next({ float = not _G.has_diagnostic })
+    vim.diagnostic.goto_next({
+        -- severity = utils.most_severe(),
+        float = not _G.has_diagnostic,
+    })
 end, opts)
-keymap({ "x" }, "R", "r", opts)
 keymap({ "n" }, "[d", function()
-    vim.diagnostic.goto_prev({ float = not _G.has_diagnostic })
+    vim.diagnostic.goto_prev({
+        -- severity = utils.most_severe(),
+        float = not _G.has_diagnostic,
+    })
 end, opts)
+
 keymap("n", "<leader>ud", function()
     if _G.has_diagnostic then
         vim.diagnostic.config({
@@ -227,8 +233,6 @@ end, opts)
 keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
-    vim.cmd("SmartOpenValidate")
-    vim.cmd("SmartOpenRefresh")
 end, opts)
 keymap("n", "g.", "`.", opts)
 
@@ -450,6 +454,9 @@ keymap("n", "<leader>op", function()
     vim.notify("sign padding " .. (vim.g.sign_padding and "enabled" or "disabled"), vim.log.levels.INFO)
     vim.api.nvim__redraw({ statuscolumn = true })
 end, opts)
+keymap("n", "<leader>on", function()
+    vim.o.number = not vim.o.number
+end, opts)
 
 keymap("n", "<leader>ol", function()
     local enabled = vim.o.list
@@ -597,6 +604,18 @@ keymap("n", "<leader>cw", function()
     vim.api.nvim_set_current_dir(root)
 end, opts)
 
+keymap("n", "<leader>cf", function()
+    local filepath = vim.fn.expand("%")
+    vim.fn.setreg("+", filepath)
+    vim.notify("Copied relative path: " .. filepath, vim.log.levels.INFO)
+end, opts)
+
+keymap("n", "<leader>cF", function()
+    local filepath = vim.fn.expand("%:p")
+    vim.fn.setreg("+", filepath)
+    vim.notify("Copied absolute path: " .. filepath, vim.log.levels.INFO)
+end, opts)
+
 keymap("i", "<space>", function()
     return "<space>"
 end, { expr = true })
@@ -728,8 +747,8 @@ end, { expr = true })
 keymap("n", "<leader><up>", function()
     return "<C-w>K"
 end, { expr = true })
-keymap({ "n", "v" }, "J", "6j", opts)
-keymap({ "n", "v" }, "K", "6k", opts)
+keymap({ "n", "v" }, "J", "6gj", opts)
+keymap({ "n", "v" }, "K", "6gk", opts)
 keymap("n", "<C-b>", "<C-v>", opts)
 keymap("i", "<c-b>", "<S-left>", opts)
 keymap("i", "<c-f>", "<S-right>", opts)
@@ -977,6 +996,16 @@ end, { expr = true })
 
 keymap("x", "<bs>", function()
     FeedKeys("holo", "t")
+end, opts)
+
+keymap("x", "<leader>cl", function()
+    FeedKeys("<esc>", "nx")
+    local start_line = vim.fn.line("'<")
+    local end_line = vim.fn.line("'>")
+    local line_text = string.format(" :line %d-%d", start_line, end_line)
+    local filepath = vim.fn.expand("%:p")
+    vim.fn.setreg("+", filepath .. line_text)
+    vim.notify("Copied: " .. filepath .. line_text, vim.log.levels.INFO)
 end, opts)
 
 keymap({ "s", "i", "n" }, "<C-7>", function()

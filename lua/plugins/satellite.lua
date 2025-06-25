@@ -5,7 +5,7 @@ return {
             current_only = true,
             winblend = 0,
             zindex = 230,
-            excluded_filetypes = { "toggleterm", "minifiles", "NvimTree" },
+            excluded_filetypes = { "minifiles", "NvimTree" },
             width = 1,
             handlers = {
                 cursor = {

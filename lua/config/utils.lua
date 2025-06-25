@@ -171,10 +171,28 @@ function Open_git_commit()
     local previous_buf = vim.api.nvim_win_get_buf(previous_win)
     local file_path = root_spec .. "/.git/COMMIT_EDITMSG"
     local filetype = vim.bo[previous_buf].filetype
-    local buf = vim.api.nvim_create_buf(false, false)
-    vim.api.nvim_buf_call(buf, function()
-        vim.cmd("e " .. file_path)
-    end)
+
+    -- Check if there's already a buffer with the COMMIT_EDITMSG file
+    local existing_buf = nil
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_valid(bufnr) then
+            local buf_name = vim.api.nvim_buf_get_name(bufnr)
+            if buf_name == file_path then
+                existing_buf = bufnr
+                break
+            end
+        end
+    end
+
+    local buf
+    if existing_buf then
+        buf = existing_buf
+    else
+        buf = vim.api.nvim_create_buf(false, false)
+        vim.api.nvim_buf_call(buf, function()
+            vim.cmd("e " .. file_path)
+        end)
+    end
     vim.keymap.set("n", "q", function()
         vim.cmd(string.format("bw! %d", buf))
     end, { buffer = buf })
@@ -1677,6 +1695,25 @@ function M.refresh_satellite_search()
     end)
 end
 
+function M.most_severe()
+    local severities = {
+        vim.diagnostic.severity.ERROR,
+        vim.diagnostic.severity.WARN,
+        vim.diagnostic.severity.INFO,
+        vim.diagnostic.severity.HINT,
+    }
+    local bufnr = 0 -- 当前 buffer
+    local severe = nil
+    for _, severity in ipairs(severities) do
+        local diags = vim.diagnostic.get(bufnr, { severity = severity })
+        if #diags > 0 then
+            severe = severity
+            break
+        end
+    end
+    return severe
+end
+
 function M.clear_satellite_search()
     local winid = vim.api.nvim_get_current_win()
     pcall(function()
@@ -1801,6 +1838,9 @@ function M.set_diagnostic_winbar()
         else
             vim.b.diag_winbar = ""
         end
+    end
+    if not vim.g.autoformat then
+        vim.b.diag_winbar = vim.b.diag_winbar .. " 󰉥"
     end
     M.refresh_diagnostic_winbar()
 end

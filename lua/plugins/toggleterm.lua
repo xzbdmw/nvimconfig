@@ -88,6 +88,7 @@ return {
                     if
                         vim.startswith(line, "│")
                         or vim.startswith(term_title, "fzf")
+                        or vim.startswith(term_title, "claude")
                         or vim.startswith(term_title, "lazygit ")
                         or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")

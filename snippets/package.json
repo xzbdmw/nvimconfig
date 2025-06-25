@@ -18,6 +18,12 @@
           "rust"
         ],
         "path": "./rust.json"
+      },
+      {
+        "language": [
+          "python"
+        ],
+        "path": "./python.json"
       }
     ]
   },

@@ -74,11 +74,12 @@ return {
             keymaps = {
                 ["g?"] = "actions.show_help",
                 ["<CR>"] = "actions.select",
+                ["<right>"] = "actions.select",
                 ["="] = "actions.select",
                 ["<C-h>"] = "actions.select_split",
                 ["<leader>sp"] = "actions.preview",
                 ["<C-t>"] = "actions.select_tab",
-                ["Y"] = function()
+                ["<leader>cF"] = function()
                     require("oil.actions").yank_entry.callback()
                     local reg = vim.fn.getreg('"')
                     vim.fn.setreg("+", reg)
@@ -98,6 +99,7 @@ return {
                 -- ["q"] = "actions.close",
                 ["<leader><c-r>"] = "actions.refresh",
                 ["-"] = "actions.parent",
+                ["<left>"] = "actions.parent",
                 -- ["p"] = "actions.parent",
                 ["_"] = "actions.open_cwd",
                 ["`"] = "actions.cd",

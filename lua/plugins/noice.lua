@@ -26,6 +26,14 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "deprecated" },
+                    opts = { skip = true },
+                },
+                {
+                    filter = { find = "height" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { find = "InlayHint" },
                     opts = { skip = true },
                 },

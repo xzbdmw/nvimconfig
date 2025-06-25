@@ -61,7 +61,7 @@ return {
             performance = {
                 debounce = 0,
                 throttle = 1,
-                fetching_timeout = 20000,
+                fetching_timeout = 100,
                 confirm_resolve_timeout = 1,
                 async_budget = 1,
                 max_view_entries = 100,
@@ -254,9 +254,14 @@ return {
                             local bufs = {}
                             for _, win in ipairs(vim.api.nvim_list_wins()) do
                                 local buf = vim.api.nvim_win_get_buf(win)
+                                local byte_size = vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
+                                if byte_size > 1024 * 1024 then -- 1 Megabyte max
+                                    goto continue
+                                end
                                 if vim.bo[buf].filetype ~= "NvimTree" then
                                     bufs[buf] = true
                                 end
+                                ::continue::
                             end
                             return vim.tbl_keys(bufs)
                         end,

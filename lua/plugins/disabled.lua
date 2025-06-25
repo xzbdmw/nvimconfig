@@ -1,5 +1,5 @@
 return {
-    -- { "mfussenegger/nvim-lint", enabled = false },
+    { "mfussenegger/nvim-lint", enabled = false },
     { "folke/todo-comments.nvim", enabled = false },
     -- { "nvim-focus/focus.nvim", enabled = false },
     -- { "echasnovski/mini.indentscope", enabled = false },
