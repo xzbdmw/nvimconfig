@@ -27,7 +27,7 @@ return {
                 diagnostic = {
                     enable = true,
                     signs = { "≡" },
-                    overlap = false,
+                    overlap = true,
                     priority = 500,
                     min_severity = vim.diagnostic.severity.ERROR,
                     -- Highlights:

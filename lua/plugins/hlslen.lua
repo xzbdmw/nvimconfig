@@ -46,7 +46,7 @@ return {
                     return
                 end
                 local cnt = #posList
-                local left = (" [%d"):format(idx)
+                local left = ("[%d"):format(idx)
                 local of = " of"
                 local right = (" %d]"):format(cnt)
                 if not is_cmdline then
@@ -58,8 +58,8 @@ return {
                 end
                 local chunks = {
                     { " " },
-                    { mode, "HlSearchLensCount" },
-                    { cmd, "HlSearchLensNear" },
+                    -- { mode, "HlSearchLensCount" },
+                    -- { cmd, "HlSearchLensNear" },
                     { left, "HlSearchLensCount" },
                     { of, "HlSearchLensCountItalic" },
                     { right, "HlSearchLensCount" },
@@ -79,6 +79,7 @@ return {
                     { right, "HlSearchLensCountNoBg" },
                 }
                 vim.b.search_winbar = "%#HlSearchLensCountNoBg#"
+                    .. " "
                     .. left
                     .. "%#HlSearchLensCountItalicNoBg#"
                     .. of

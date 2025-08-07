@@ -134,7 +134,7 @@ return {
             update_auto_commands()
         end)
 
-        map("v", "<leader>sH", function()
+        map("v", "<leader>sh", function()
             if vim.g.Base_commit ~= "" then
                 vim.notify("Hunks are not in INDEX ", vim.log.levels.WARN)
                 return
@@ -144,7 +144,7 @@ return {
             update_auto_commands()
         end)
 
-        map("n", "<leader>sH", function()
+        map("n", "<leader>sh", function()
             if vim.g.Base_commit ~= "" then
                 vim.notify("Hunks are not in INDEX", vim.log.levels.WARN)
                 return

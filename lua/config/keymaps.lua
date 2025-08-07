@@ -334,10 +334,8 @@ keymap("n", "<leader>uc", function()
     end
 end, opts)
 
-keymap("i", "<C-d>", function()
-    _G.no_animation()
-    return "<esc>cb"
-end, { expr = true, remap = true })
+keymap({ "i", "n" }, "<m-BS>", "<c-w>", opts)
+keymap("i", "<C-d>", "<c-w>", opts)
 keymap("n", "`", function()
     vim.g.gd = true
     vim.defer_fn(function()
@@ -455,7 +453,16 @@ keymap("n", "<leader>op", function()
     vim.api.nvim__redraw({ statuscolumn = true })
 end, opts)
 keymap("n", "<leader>on", function()
-    vim.o.number = not vim.o.number
+    local new_value = not vim.o.number
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_is_valid(win) then
+            local buf = vim.api.nvim_win_get_buf(win)
+            local file_path = api.nvim_buf_get_name(buf)
+            if vim.loop.fs_stat(file_path) then
+                vim.api.nvim_set_option_value("number", new_value, { win = win })
+            end
+        end
+    end
 end, opts)
 
 keymap("n", "<leader>ol", function()
@@ -605,15 +612,17 @@ keymap("n", "<leader>cw", function()
 end, opts)
 
 keymap("n", "<leader>cf", function()
-    local filepath = vim.fn.expand("%")
+    local filepath = "@" .. vim.fn.expand("%") .. " "
     vim.fn.setreg("+", filepath)
+    vim.fn.setreg('"', filepath)
     vim.notify("Copied relative path: " .. filepath, vim.log.levels.INFO)
 end, opts)
 
 keymap("n", "<leader>cF", function()
-    local filepath = vim.fn.expand("%:p")
+    local filepath = vim.fn.expand("%") .. " "
     vim.fn.setreg("+", filepath)
-    vim.notify("Copied absolute path: " .. filepath, vim.log.levels.INFO)
+    vim.fn.setreg('"', filepath)
+    vim.notify("Copied relative path: " .. filepath, vim.log.levels.INFO)
 end, opts)
 
 keymap("i", "<space>", function()
@@ -897,6 +906,7 @@ keymap("n", "<d-w>", "<c-w>", opts)
 -- Command line mapping
 keymap("c", "<C-d>", "<C-w>", opts)
 keymap("c", "<d-v>", '<c-r>"', opts)
+keymap("x", "<d-c>", "y", opts)
 -- cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\V\\%V" : '/'
 keymap("x", "/", [[<esc>/\%V]], { remap = true })
 keymap("x", "A", function()
@@ -910,17 +920,6 @@ keymap("c", "<C-n>", "<down>", opts)
 keymap("c", "<d-w>", "<c-f>", opts)
 keymap("c", "<c-b>", "<S-Left>", opts)
 keymap("c", "<c-a>", "<Home>", opts)
-
--- Terminal mapping
-keymap("t", "<c-f>", function()
-    _G.no_animation(_G.CI)
-    local filetype = vim.bo.filetype
-    if filetype == "lazyterm" then
-        return "<M-right>"
-    else
-        return "<c-f>"
-    end
-end, { expr = true })
 
 keymap("t", "<right>", function()
     _G.no_animation(_G.CI)
@@ -939,12 +938,17 @@ end, { expr = true })
 
 keymap("t", "<c-d>", function()
     _G.no_animation(_G.CI)
-    return "<c-d>"
+    return "<c-w>"
 end, { expr = true })
 
 keymap("t", "<c-b>", function()
     _G.no_animation(_G.CI)
     return "<M-left>"
+end, { expr = true })
+
+keymap("t", "<c-f>", function()
+    _G.no_animation(_G.CI)
+    return "<M-right>"
 end, { expr = true })
 
 keymap("t", "<D-v>", function()
@@ -1003,9 +1007,19 @@ keymap("x", "<leader>cl", function()
     local start_line = vim.fn.line("'<")
     local end_line = vim.fn.line("'>")
     local line_text = string.format(" :line %d-%d", start_line, end_line)
-    local filepath = vim.fn.expand("%:p")
-    vim.fn.setreg("+", filepath .. line_text)
-    vim.notify("Copied: " .. filepath .. line_text, vim.log.levels.INFO)
+    local filepath = vim.fn.expand("%")
+    local final = "@" .. filepath .. line_text .. ""
+    vim.fn.setreg("+", final)
+    vim.notify("Copied: " .. final, vim.log.levels.INFO)
+end, opts)
+
+keymap("n", "<leader>cl", function()
+    local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+    local line_text = string.format(" :line %d-%d", cur_line, cur_line)
+    local filepath = vim.fn.expand("%")
+    local final = "@" .. filepath .. line_text .. " "
+    vim.fn.setreg("+", final)
+    vim.notify("Copied: " .. final, vim.log.levels.INFO)
 end, opts)
 
 keymap({ "s", "i", "n" }, "<C-7>", function()

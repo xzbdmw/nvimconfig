@@ -141,7 +141,8 @@ api.nvim_create_autocmd({ "TabEnter" }, {
     callback = function()
         vim.schedule(function()
             local name = vim.api.nvim_buf_get_name(0)
-            if vim.startswith(name, "/private/var") then
+            if vim.startswith(name, "/private/var") and not vim.b.has_scrolled then
+                vim.b.has_scrolled = true
                 FeedKeys("G", "n")
                 vim.wo.scrolloff = 0
             end

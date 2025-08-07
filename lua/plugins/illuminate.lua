@@ -10,6 +10,8 @@ return {
             "regex",
         },
         filetypes_denylist = {
+            "json",
+            "jsonl",
             "help",
             "markdown",
             "vim",

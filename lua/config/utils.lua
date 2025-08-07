@@ -771,22 +771,20 @@ end
 
 local denied_filetype_winbar = { "undotree", "diff" }
 _G.set_winbar = function(winbar, winid)
-    pcall(function()
-        local tabpage = api.nvim_get_current_tabpage()
-        if tabpage ~= 1 then
-            return
-        end
-        local buf = winid and api.nvim_win_get_buf(winid) or 0
-        winid = winid or api.nvim_get_current_win()
-        local winconfig = api.nvim_win_get_config(winid)
-        if winconfig.relative ~= "" and winconfig.zindex == 11 then -- disable in arrow marks
-            return
-        end
-        if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
-            return
-        end
-        vim.wo[winid].winbar = winbar
-    end)
+    local tabpage = api.nvim_get_current_tabpage()
+    if tabpage ~= 1 then
+        return
+    end
+    local buf = winid and api.nvim_win_get_buf(winid) or 0
+    winid = winid or api.nvim_get_current_win()
+    local winconfig = api.nvim_win_get_config(winid)
+    if winconfig.relative ~= "" and winconfig.zindex == 11 then -- disable in arrow marks
+        return
+    end
+    if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
+        return
+    end
+    vim.wo[winid].winbar = winbar
 end
 
 M.prev_match_win = nil
@@ -1683,16 +1681,14 @@ end
 
 function M.refresh_satellite_search()
     local winid = vim.api.nvim_get_current_win()
-    pcall(function()
-        local bwinid = require("satellite.view").get_or_create_view(winid)
-        for _, handler in ipairs(require("satellite.handlers").handlers) do
-            if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
-                if handler.name == "search" then
-                    handler:render(winid, bwinid)
-                end
+    local bwinid = require("satellite.view").get_or_create_view(winid)
+    for _, handler in ipairs(require("satellite.handlers").handlers) do
+        if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
+            if handler.name == "search" then
+                handler:render(winid, bwinid)
             end
         end
-    end)
+    end
 end
 
 function M.most_severe()
@@ -1716,17 +1712,15 @@ end
 
 function M.clear_satellite_search()
     local winid = vim.api.nvim_get_current_win()
-    pcall(function()
-        local bwinid = require("satellite.view").get_or_create_view(winid)
-        for _, handler in ipairs(require("satellite.handlers").handlers) do
-            if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
-                if handler.name == "search" then
-                    vim.g.search_pos = nil
-                    handler:render(winid, bwinid)
-                end
+    local bwinid = require("satellite.view").get_or_create_view(winid)
+    for _, handler in ipairs(require("satellite.handlers").handlers) do
+        if api.nvim_win_is_valid(winid) and api.nvim_win_is_valid(bwinid) then
+            if handler.name == "search" then
+                vim.g.search_pos = nil
+                handler:render(winid, bwinid)
             end
         end
-    end)
+    end
 end
 
 function M.refresh_term_title()
@@ -2301,6 +2295,14 @@ _G.no_animation = function(length)
     _G.set_cursor_animation(0.0)
     vim.defer_fn(function()
         _G.set_cursor_animation(length)
+    end, 100)
+end
+
+_G.restore_animation = function()
+    local original = vim.g.neovide_cursor_animation_length
+    _G.set_cursor_animation(0.0)
+    vim.defer_fn(function()
+        _G.set_cursor_animation(original)
     end, 100)
 end
 

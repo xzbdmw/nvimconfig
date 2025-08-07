@@ -65,7 +65,7 @@ return {
             { "<leader>uC", false },
             { "<leader>sf", false },
             {
-                "<leader>sh",
+                "<leader>sH",
                 function()
                     return "<cmd>Telescope highlights<cr>"
                 end,

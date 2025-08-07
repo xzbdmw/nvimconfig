@@ -74,6 +74,30 @@ return {
             keymaps = {
                 ["g?"] = "actions.show_help",
                 ["<CR>"] = "actions.select",
+                ["l"] = function()
+                    if vim.api.nvim_get_mode().mode ~= "n" then
+                        FeedKeys("l", "n")
+                        return
+                    end
+                    local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+                    if col == vim.g.oil_min_col then
+                        require("oil.actions").select.callback()
+                    else
+                        FeedKeys("l", "n")
+                    end
+                end,
+                ["h"] = function()
+                    if vim.api.nvim_get_mode().mode ~= "n" then
+                        FeedKeys("h", "n")
+                        return
+                    end
+                    local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+                    if col == vim.g.oil_min_col then
+                        require("oil.actions").parent.callback()
+                    else
+                        FeedKeys("h", "n")
+                    end
+                end,
                 ["<right>"] = "actions.select",
                 ["="] = "actions.select",
                 ["<C-h>"] = "actions.select_split",
@@ -99,7 +123,6 @@ return {
                 -- ["q"] = "actions.close",
                 ["<leader><c-r>"] = "actions.refresh",
                 ["-"] = "actions.parent",
-                ["<left>"] = "actions.parent",
                 -- ["p"] = "actions.parent",
                 ["_"] = "actions.open_cwd",
                 ["`"] = "actions.cd",

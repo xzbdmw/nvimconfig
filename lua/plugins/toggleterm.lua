@@ -89,6 +89,7 @@ return {
                         vim.startswith(line, "│")
                         or vim.startswith(term_title, "fzf")
                         or vim.startswith(term_title, "claude")
+                        or vim.startswith(term_title, "✳")
                         or vim.startswith(term_title, "lazygit ")
                         or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")
@@ -104,7 +105,17 @@ return {
                     vim.bo.scrollback = 100000
                 end, { buffer = true })
                 vim.keymap.set("t", "<c-[>", function()
-                    return "<esc>"
+                    return [[<C-\><C-n>]]
+                end, { buffer = true, expr = true })
+                vim.keymap.set("t", "<c-cr>", function()
+                    FeedKeys("\\", "n")
+                    vim.schedule(function()
+                        FeedKeys("<CR>", "n")
+                    end)
+                end, { buffer = true })
+                vim.keymap.set("t", "<c-s-d>", function()
+                    _G.restore_animation()
+                    return "<c-8>"
                 end, { buffer = true, expr = true })
             end,
             on_close = function()
