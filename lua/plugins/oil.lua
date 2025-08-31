@@ -107,12 +107,25 @@ return {
                     require("oil.actions").yank_entry.callback()
                     local reg = vim.fn.getreg('"')
                     vim.fn.setreg("+", reg)
-                    vim.notify("Copied " .. reg .. "to clipboard!", vim.log.levels.INFO, { title = "Oil" })
+                    vim.notify("Copied " .. reg .. " to clipboard!", vim.log.levels.INFO, { title = "Oil" })
+                end,
+                ["<leader>cf"] = function()
+                    require("oil.actions").yank_entry.callback()
+                    local filepath = vim.fn.getreg('"')
+                    local cwd = vim.uv.cwd()
+                    if cwd ~= nil and vim.startswith(filepath, cwd) then
+                        filepath = filepath:sub(#cwd + 2, #filepath)
+                    end
+                    vim.fn.setreg("+", filepath)
+                    vim.notify("Copied " .. filepath .. " to clipboard!", vim.log.levels.INFO, { title = "Oil" })
                 end,
                 ["<c-cr>"] = function()
                     require("oil.actions").yank_entry.callback()
                     local path = vim.fn.getreg('"')
                     vim.system({ "open", "-R", path }):wait()
+                end,
+                ["z"] = function()
+                    FeedKeys("<leader>z", "m")
                 end,
                 ["<d-cr>"] = function()
                     require("oil.actions").yank_entry.callback()
@@ -124,7 +137,7 @@ return {
                 ["<leader><c-r>"] = "actions.refresh",
                 ["-"] = "actions.parent",
                 -- ["p"] = "actions.parent",
-                ["_"] = "actions.open_cwd",
+                ["H"] = "actions.open_cwd",
                 ["`"] = "actions.cd",
                 ["~"] = "actions.tcd",
                 ["gs"] = "actions.change_sort",

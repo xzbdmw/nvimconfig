@@ -463,6 +463,7 @@ keymap("n", "<leader>on", function()
             end
         end
     end
+    FeedKeys("<leader>op", "m")
 end, opts)
 
 keymap("n", "<leader>ol", function()
@@ -612,17 +613,17 @@ keymap("n", "<leader>cw", function()
 end, opts)
 
 keymap("n", "<leader>cf", function()
-    local filepath = "@" .. vim.fn.expand("%") .. " "
+    local filepath = utils.get_relative_file()
     vim.fn.setreg("+", filepath)
     vim.fn.setreg('"', filepath)
     vim.notify("Copied relative path: " .. filepath, vim.log.levels.INFO)
 end, opts)
 
 keymap("n", "<leader>cF", function()
-    local filepath = vim.fn.expand("%") .. " "
+    local filepath = vim.fn.expand("%:p") .. " "
     vim.fn.setreg("+", filepath)
     vim.fn.setreg('"', filepath)
-    vim.notify("Copied relative path: " .. filepath, vim.log.levels.INFO)
+    vim.notify("Copied abs path: " .. filepath, vim.log.levels.INFO)
 end, opts)
 
 keymap("i", "<space>", function()
@@ -732,16 +733,6 @@ keymap("n", "<leader>vr", function()
         return "<cmd>vsp<CR><c--><c-->"
     end
 end, { expr = true, remap = true })
-keymap("n", "<leader>os", function()
-    vim.wo.number = not vim.wo.number
-    if vim.fn.getwininfo(api.nvim_get_current_win())[1].terminal == 0 then
-        if vim.wo.signcolumn == "no" then
-            vim.wo.signcolumn = "yes"
-        else
-            vim.wo.signcolumn = "no"
-        end
-    end
-end, opts)
 
 keymap("n", "<leader>vd", "<cmd>sp<CR>")
 keymap("n", "<leader><left>", function()
@@ -798,11 +789,23 @@ end, { expr = true })
 
 keymap("n", "<leader>om", function()
     if vim.o.diffopt:find("linematch") ~= nil then
-        vim.opt.diffopt:remove({ "linematch:60" })
+        vim.opt.diffopt:remove({ "linematch:40" })
         vim.notify("remove linematch", vim.log.levels.INFO)
     else
-        vim.opt.diffopt:append({ "linematch:60" })
+        vim.opt.diffopt:append({ "linematch:40" })
         vim.notify("append linematch", vim.log.levels.INFO)
+    end
+end, opts)
+
+keymap("n", "<leader>ow", function()
+    if vim.o.diffopt:find("inline:word") ~= nil then
+        vim.opt.diffopt:remove({ "inline:word" })
+        vim.opt.diffopt:append({ "inline:simple" })
+        vim.notify("remove inline:word", vim.log.levels.INFO)
+    else
+        vim.opt.diffopt:append({ "inline:word" })
+        vim.opt.diffopt:remove({ "inline:simple" })
+        vim.notify("append inline:word", vim.log.levels.INFO)
     end
 end, opts)
 
@@ -814,6 +817,36 @@ keymap("n", "<leader>o<space>", function()
         vim.opt.diffopt:append({ "iwhiteall" })
         vim.notify("append iwhiteall", vim.log.levels.INFO)
     end
+end, opts)
+
+keymap("n", "<S-c-p>", function()
+    FeedKeys("<leader>cF", "m")
+    FeedKeys("<d-k>", "m")
+    vim.defer_fn(function()
+        FeedKeys("a<c-u>uv run parse.py ", "m")
+        FeedKeys("<d-v><CR>", "m")
+        vim.defer_fn(function()
+            FeedKeys("<esc>", "m")
+        end, 20)
+    end, 30)
+end, opts)
+
+local ts_max_lines = 0
+keymap("n", "<leader>os", function()
+    if ts_max_lines == 3 then
+        require("treesitter-context.config").update({
+            max_lines = 0,
+        })
+        ts_max_lines = 0
+    else
+        require("treesitter-context.config").update({
+            max_lines = 3,
+        })
+        ts_max_lines = 3
+    end
+    local buf = vim.api.nvim_get_current_buf()
+    local win = vim.api.nvim_get_current_win()
+    require("treesitter-context").context_force_update(buf, win)
 end, opts)
 
 keymap("n", "<leader>j", function()
@@ -909,12 +942,6 @@ keymap("c", "<d-v>", '<c-r>"', opts)
 keymap("x", "<d-c>", "y", opts)
 -- cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\V\\%V" : '/'
 keymap("x", "/", [[<esc>/\%V]], { remap = true })
-keymap("x", "A", function()
-    return "<esc>a"
-end, { expr = true })
-keymap("x", "I", function()
-    return "o<esc>i"
-end, { expr = true })
 keymap("c", "<C-p>", "<up>", opts)
 keymap("c", "<C-n>", "<down>", opts)
 keymap("c", "<d-w>", "<c-f>", opts)
@@ -1006,18 +1033,18 @@ keymap("x", "<leader>cl", function()
     FeedKeys("<esc>", "nx")
     local start_line = vim.fn.line("'<")
     local end_line = vim.fn.line("'>")
-    local line_text = string.format(" :line %d-%d", start_line, end_line)
-    local filepath = vim.fn.expand("%")
-    local final = "@" .. filepath .. line_text .. ""
+    local line_text = string.format(":line %d-%d", start_line, end_line)
+    local filepath = utils.get_relative_file()
+    local final = filepath .. line_text .. ""
     vim.fn.setreg("+", final)
     vim.notify("Copied: " .. final, vim.log.levels.INFO)
 end, opts)
 
 keymap("n", "<leader>cl", function()
     local cur_line = vim.api.nvim_win_get_cursor(0)[1]
-    local line_text = string.format(" :line %d-%d", cur_line, cur_line)
-    local filepath = vim.fn.expand("%")
-    local final = "@" .. filepath .. line_text .. " "
+    local line_text = string.format(":line %d-%d", cur_line, cur_line)
+    local filepath = utils.get_relative_file()
+    local final = filepath .. line_text .. " "
     vim.fn.setreg("+", final)
     vim.notify("Copied: " .. final, vim.log.levels.INFO)
 end, opts)

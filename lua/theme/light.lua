@@ -6,10 +6,10 @@ keymap("n", "n", function()
         local mode = _G.searchmode
         if mode == "/" then
             vim.cmd("normal! n")
-            vim.cmd("normal z")
+            utils.adjust_view(0, 3)
         else
             vim.cmd("normal! N")
-            vim.cmd("normal z")
+            utils.adjust_view(0, 3)
         end
         local event = require("hlslens.lib.event")
         event:emit("RegionChanged")
@@ -34,10 +34,10 @@ keymap("n", "N", function()
         local mode = _G.searchmode
         if mode ~= "/" then
             vim.cmd("normal! n")
-            vim.cmd("normal z")
+            utils.adjust_view(0, 3)
         else
             vim.cmd("normal! N")
-            vim.cmd("normal z")
+            utils.adjust_view(0, 3)
         end
         local event = require("hlslens.lib.event")
         event:emit("RegionChanged")

@@ -66,6 +66,15 @@ function M.get_cword()
     return w
 end
 
+function M.get_relative_file()
+    local filepath = vim.fn.expand("%:p") .. " "
+    local cwd = vim.uv.cwd()
+    if cwd ~= nil and vim.startswith(filepath, cwd) then
+        filepath = "@" .. filepath:sub(#cwd + 2, #filepath)
+    end
+    return filepath
+end
+
 function M.load_appropriate_theme()
     local bg_color = get_normal_bg_color()
     if bg_color == "#24273a" then
@@ -196,24 +205,6 @@ function Open_git_commit()
     vim.keymap.set("n", "q", function()
         vim.cmd(string.format("bw! %d", buf))
     end, { buffer = buf })
-    local function modify_commit_message(bufnr)
-        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-        local new_lines = {}
-        table.insert(new_lines, "")
-        local start_collecting = false
-
-        for _, line in ipairs(lines) do
-            if line:match("^# Changes to be committed:") then
-                start_collecting = true
-            end
-            if start_collecting then
-                table.insert(new_lines, line)
-            end
-        end
-
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
-    end
-    modify_commit_message(buf)
 
     if filetype == "lazyterm" or filetype == "TelescopePrompt" or filetype == "TelescopeResults" then
         local winid = vim.api.nvim_open_win(buf, true, {

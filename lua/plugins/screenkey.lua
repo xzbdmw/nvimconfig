@@ -1,6 +1,5 @@
 return {
     "NStefan002/screenkey.nvim",
-    lazy = false,
+    enabled = false,
     cmd = "ScreenKey",
-    version = "*", -- or branch = "dev", to use the latest commit
 }

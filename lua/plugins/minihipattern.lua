@@ -11,19 +11,19 @@ return {
             extmark_opts = { priority = 5000 },
         }
 
-        hipatterns.setup({
-            highlighters = { print_dim = print_highlighter },
-        })
-
-        local print_dim_enabled = true
+        local print_dim_enabled = false
 
         vim.keymap.set("n", "<leader>tp", function()
             if print_dim_enabled then
-                MiniHipatterns.config.highlighters.print_dim = nil
+                hipatterns.setup({
+                    highlighters = { print_dim = nil },
+                })
                 print_dim_enabled = false
-                vim.notify("Print dimming disabled")
+                vim.notify("Print dimming disabled", vim.log.levels.WARN)
             else
-                MiniHipatterns.config.highlighters.print_dim = print_highlighter
+                hipatterns.setup({
+                    highlighters = { print_dim = print_highlighter },
+                })
                 print_dim_enabled = true
                 vim.notify("Print dimming enabled")
             end
@@ -31,7 +31,8 @@ return {
             -- Refresh all enabled buffers
             for _, buf_id in ipairs(hipatterns.get_enabled_buffers()) do
                 local byte_size = vim.api.nvim_buf_get_offset(buf_id, vim.api.nvim_buf_line_count(buf_id))
-                if byte_size > 1024 * 1024 then -- 1 Megabyte max
+                local ft = vim.bo[buf_id].filetype
+                if byte_size > 1024 * 1024 or ft == "text" then -- 1 Megabyte max
                     goto continue
                 end
                 hipatterns.disable(buf_id)

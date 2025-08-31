@@ -8,13 +8,6 @@ return {
     -- commit = "a5d16fd7639da37009e7c43eea4a932ccece2162",
     -- commit = "b8b7e52c1517d401d7c519787d5dc4528c41291a",
     keys = {
-        -- {
-        --     "gsa",
-        --     function()
-        --         require("treesitter-context").go_to_context(0)
-        --     end,
-        --     desc = "go to sticky scroll",
-        -- },
         {
             "gs",
             function()
@@ -22,13 +15,6 @@ return {
             end,
             desc = "go to sticky scroll",
         },
-        -- {
-        --     "gsd",
-        --     function()
-        --         require("treesitter-context").go_to_context(1)
-        --     end,
-        --     desc = "go to sticky scroll",
-        -- },
     },
     opts = {
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)

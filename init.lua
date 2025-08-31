@@ -3,6 +3,7 @@ api = vim.api
 
 require("config.lazy")
 local utils = require("config.utils")
+require("config.case-toggle")
 _G.CI = 0.02
 _G.searchmode = "/"
 _G.lazygit_previous_win = nil
@@ -17,6 +18,7 @@ vim.g.stage_title = ""
 vim.g.last_staged_title_path = ""
 vim.g.winbar_macro_beginstate = ""
 vim.g.skip_noice = false
+vim.g.autoformat = false
 vim.g.hlchunk_disable = false
 vim.g.cy = false
 vim.g.search_pos = nil

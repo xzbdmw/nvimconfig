@@ -9,8 +9,7 @@ vim.o.pumheight = 15
 vim.o.showbreak = "↪ "
 vim.o.synmaxcol = 300
 vim.o.scrollback = 100000
-vim.opt.diffopt:append({ "linematch:60", "indent-heuristic" })
-vim.opt.diffopt:remove({ "linematch:40" })
+vim.opt.diffopt:append({ "linematch:40", "indent-heuristic" })
 vim.o.virtualedit = "block"
 vim.o.fillchars = "diff:/,fold:-,foldclose:+,eob: "
 vim.o.sessionoptions = "folds,curdir,help,terminal,winsize,winpos,resize" -- https://github.com/Shatur/neovim-session-manager/issues/47#issuecomment-1195760661
@@ -35,6 +34,7 @@ vim.o.smarttab = false
 vim.o.linespace = 6 -- LG display, defaults write com.apple.dock tilesize -integer 11 font size 18
 vim.o.numberwidth = 1
 vim.o.whichwrap = "b,s,h,l"
+vim.o.conceallevel = 1
 -- vim.o.concealcursor = "nc"
 -- vim.o.statuscolumn = "%s%l"
 vim.o.guicursor = "n-sm-ve:block-Cursor,t-i-c-ci:ver16-Cursor,r-cr-v-o:hor7-Cursor"

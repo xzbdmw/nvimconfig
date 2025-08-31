@@ -58,6 +58,7 @@ return {
             local keymap_ops = { remap = true, silent = true }
             keymap("x", '"', 'ma"', keymap_ops)
             keymap("x", "'", "ma'", keymap_ops)
+            keymap("x", "q", 'ma"', keymap_ops)
             keymap("x", "[[", "ma[", keymap_ops)
             keymap("x", "{", "ma{", keymap_ops)
             keymap("x", "(", "ma(", keymap_ops)
