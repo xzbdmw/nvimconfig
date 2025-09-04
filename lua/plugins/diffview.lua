@@ -261,6 +261,12 @@ return {
                         "n",
                         "<D-1>",
                         function()
+                            if vim.api.nvim_get_current_tabpage() == 1 then
+                                vim.api.nvim_exec_autocmds("TabLeaveUser", {})
+                                FeedKeys("<d-1>", "m")
+                                vim.notify("TabLeaveUser", vim.log.levels.INFO)
+                                return
+                            end
                             local winbar = vim.wo.winbar
                             local fname = vim.split(winbar, " ", { plain = true })[5]
                             fname = vim.fs.basename(fname)
