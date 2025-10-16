@@ -381,7 +381,6 @@ end, { desc = ":help v_star-default", expr = true, silent = true })
 keymap("n", "D", "d$", opts)
 
 keymap("n", "<C-i>", "<C-i>", opts)
-keymap("n", "gg", "ggz", { remap = true })
 keymap({ "n", "x", "o" }, "L", "$", opts)
 
 keymap("c", "<d-s>", function()
@@ -1037,6 +1036,7 @@ keymap("x", "<leader>cl", function()
     local filepath = utils.get_relative_file()
     local final = filepath .. line_text .. ""
     vim.fn.setreg("+", final)
+    vim.fn.setreg('"', final)
     vim.notify("Copied: " .. final, vim.log.levels.INFO)
 end, opts)
 
@@ -1046,6 +1046,7 @@ keymap("n", "<leader>cl", function()
     local filepath = utils.get_relative_file()
     local final = filepath .. line_text .. " "
     vim.fn.setreg("+", final)
+    vim.fn.setreg('"', final)
     vim.notify("Copied: " .. final, vim.log.levels.INFO)
 end, opts)
 

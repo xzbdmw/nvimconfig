@@ -1380,9 +1380,9 @@ function OilDir()
         if path == "" then
             path = "."
         end
-        return "  " .. path, "NvimTreeFolderName"
+        return "  " .. path, "@markup.strong.markdown_inline"
     else
-        return "  " .. path, "LibPath"
+        return "  " .. path, "@markup.strong.markdown_inline"
     end
 end
 

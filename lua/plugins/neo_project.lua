@@ -20,6 +20,7 @@ return {
             "/Users/xzb/Project/Python/engine/sglang/python/sglang",
             "/Users/xzb/Project/Python/engine/vllm/vllm/",
             "/Users/xzb/Project/Python/engine/vllm/vllm_go",
+            "/Users/xzb/Project/Python/woa/*",
             "/Users/xzb/Project/Python/engine/*",
             "/Users/xzb/Project/Python/engine/sglang_visual",
             "/Users/xzb/Project/Rust/my_repo_neovide/neovide/",
