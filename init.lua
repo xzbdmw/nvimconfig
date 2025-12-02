@@ -40,6 +40,35 @@ end
 
 vim.cmd("syntax off")
 
+vim.o.tabline = "%!v:lua.MyTabLine()"
+
+function MyTabLine()
+    local s = ""
+    local max_width = 20 -- Set your max width here
+
+    for i = 1, vim.fn.tabpagenr("$") do
+        local buflist = vim.fn.tabpagebuflist(i)
+        local winnr = vim.fn.tabpagewinnr(i)
+        local bufname = vim.fn.bufname(buflist[winnr])
+        local fname = vim.fn.fnamemodify(bufname, ":t")
+
+        -- for screen.txt'
+        if vim.endswith(fname, "'") then
+            fname = fname:sub(1, #fname - 1)
+        end
+
+        if #fname > max_width then
+            fname = fname:sub(1, max_width - 3) .. "..."
+        end
+
+        s = s .. "%" .. i .. "T"
+        s = s .. (i == vim.fn.tabpagenr() and "%#TabLineSel#" or "%#TabLine#")
+        s = s .. " " .. fname .. " "
+    end
+
+    return s .. "%#TabLineFill#"
+end
+
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.hover = "gh"
 
@@ -145,8 +174,13 @@ api.nvim_create_autocmd({ "TabEnter" }, {
             local name = vim.api.nvim_buf_get_name(0)
             if vim.startswith(name, "/private/var") and not vim.b.has_scrolled then
                 vim.b.has_scrolled = true
-                FeedKeys("G", "n")
-                vim.wo.scrolloff = 0
+                vim.schedule(function()
+                    vim.cmd("tabclose")
+                    vim.cmd("tabnew | term cat " .. vim.fn.shellescape(name))
+                    vim.wo.cursorline = false
+                    vim.wo.number = true
+                    FeedKeys("G", "n")
+                end)
             end
         end)
     end,
