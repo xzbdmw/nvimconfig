@@ -13,6 +13,7 @@ end, opts)
 keymap({ "n" }, "<leader><leader>s", "<cmd>source %<CR>", opts)
 
 keymap("i", "<S-CR>", "<CR>", { remap = true })
+keymap("n", "<D-BS>", "<NOP>", opts)
 keymap({ "i", "n" }, "<c-m>", function()
     local cmp = require("cmp")
     if cmp.visible() then
@@ -26,6 +27,39 @@ keymap("n", "<leader>W", function()
     vim.cmd("wall")
     vim.o.eventignore = origin
     vim.cmd("write")
+end, opts)
+
+keymap("n", "<C-\\>", function()
+    -- Only run this automation on tab 2
+    if vim.fn.tabpagenr() ~= 2 then
+        return
+    end
+
+    local function run_click(seq)
+        vim.system(seq):wait()
+    end
+
+    -- Single cliclick invocation for the full macro.
+    -- Small waits replace the implicit delays from spawning 3 processes.
+    run_click({
+        "cliclick",
+        -- Cmd+P to trigger the UI
+        "kd:cmd", "t:p", "ku:cmd",
+        -- Shift+Ctrl+\\ to copy the path
+        "kd:ctrl,shift", "t:5", "ku:ctrl,shift",
+        -- Ctrl+V to open neovide (user-defined binding)
+        "kd:ctrl", "t:v", "ku:ctrl",
+    })
+
+    -- Use the copied path in a term buffer: :term cat <D-v>
+    local path = vim.fn.getreg("+")
+    if path ~= "" then
+        vim.cmd("noautocmd tabclose | tabnew | term cat " .. vim.fn.shellescape(path))
+        vim.wo.number = true
+        vim.schedule(function ()
+            FeedKeys("G", "m")
+        end)
+    end
 end, opts)
 
 keymap({ "n" }, "g;", function()
@@ -863,14 +897,7 @@ keymap("n", "<leader>j", function()
 end, { expr = true, remap = true })
 
 keymap({ "n", "o" }, "^", "0", opts)
-keymap("i", "<d-z>", "<cmd>undo<CR>", opts)
-keymap("i", "<c-u>", function()
-    vim.o.eventignore = "TextChangedI"
-    vim.schedule(function()
-        vim.o.eventignore = ""
-    end)
-    return "<cmd>undo<CR>"
-end, { expr = true })
+keymap("i", "<d-z>", "<cmd>ndoCR>", opts)
 keymap("i", ",", function()
     if require("multicursor-nvim").numCursors() > 1 then
         return ","

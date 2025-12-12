@@ -1376,11 +1376,11 @@ function OilDir()
     local cwd = vim.fn.getcwd()
     local path = require("oil").get_current_dir()
     if vim.startswith(path, cwd) then
-        path = string.sub(path, #cwd + 2)
-        if path == "" then
-            path = "."
+        local relative = string.sub(path, #cwd + 2)
+        if relative == "" then
+            relative = "."
         end
-        return "  " .. path, "@markup.strong.markdown_inline"
+        return "  %#Comment#" .. cwd .. "/%#@markup.strong.markdown_inline#" .. relative
     else
         return "  " .. path, "@markup.strong.markdown_inline"
     end
@@ -1388,7 +1388,12 @@ end
 
 function M.set_oil_winbar()
     local path, hl = OilDir()
-    local winbar_content = "%#" .. hl .. "#" .. path .. "%*"
+    local winbar_content
+    if hl then
+        winbar_content = "%#" .. hl .. "#" .. path .. "%*"
+    else
+        winbar_content = path .. "%*"
+    end
     api.nvim_set_option_value("winbar", winbar_content, { scope = "local", win = 0 })
 
     vim.keymap.set("n", "q", function()

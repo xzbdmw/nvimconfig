@@ -168,19 +168,23 @@ api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
+
 api.nvim_create_autocmd({ "TabEnter" }, {
-    callback = function()
+    callback = function(data)
         vim.schedule(function()
             local name = vim.api.nvim_buf_get_name(0)
-            if vim.startswith(name, "/private/var") and not vim.b.has_scrolled then
-                vim.b.has_scrolled = true
-                vim.schedule(function()
-                    vim.cmd("tabclose")
-                    vim.cmd("tabnew | term cat " .. vim.fn.shellescape(name))
-                    vim.wo.cursorline = false
-                    vim.wo.number = true
-                    FeedKeys("G", "n")
-                end)
+            if vim.startswith(name, "/private/var") then
+                vim.b.ghostty_file = true
+                FeedKeys("G", "n")
+                vim.wo.scrolloff = 0
+                vim.api.nvim_create_autocmd("TabClosed", {
+                    once = true,
+                    callback = function(d)
+                        if d.file == "2" and vim.b[d.buf].ghostty_file then
+                            vim.system({ "open", "-a", "Ghostty" }):wait()
+                        end
+                    end,
+                })
             end
         end)
     end,
