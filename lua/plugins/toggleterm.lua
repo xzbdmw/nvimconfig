@@ -22,36 +22,44 @@ return {
         local term_cursors = {}
         local term_views = {}
 
-        -- Winbar function for floating terminal: shows all terminal tabs (only when >1)
-        function _G.ToggletermWinbar()
+        -- Build floating window title showing all terminal tabs (only when >1)
+        function _G.ToggletermUpdateTitle()
             local ok, terms = pcall(function()
                 return require("toggleterm.terminal").get_all()
             end)
             if not ok or not terms or #terms <= 1 then
-                return ""
+                -- Reset title to empty when only 1 terminal
+                pcall(function()
+                    vim.api.nvim_win_set_config(0, { title = "" })
+                end)
+                return
             end
 
             local cur_buf = vim.api.nvim_get_current_buf()
-            local parts = {}
-            for _, term in ipairs(terms) do
-                local title = ""
+            local title = {}
+            for idx, term in ipairs(terms) do
+                local name = ""
                 if term.bufnr and vim.api.nvim_buf_is_valid(term.bufnr) then
-                    title = vim.b[term.bufnr].term_title or ""
+                    name = vim.b[term.bufnr].term_title or ""
                 end
-                if title == "" then
-                    title = term.name or ("term " .. term.id)
+                if name == "" then
+                    name = term.name or ("term " .. term.id)
                 end
-                -- Truncate long titles
-                if #title > 20 then
-                    title = title:sub(1, 17) .. "..."
+                if #name > 20 then
+                    name = name:sub(1, 17) .. "..."
+                end
+                if idx > 1 then
+                    table.insert(title, { "|", "FloatBorder" })
                 end
                 if term.bufnr == cur_buf then
-                    table.insert(parts, "%#TabLineSel# " .. title .. " %*")
+                    table.insert(title, { " " .. name .. " ", "TabLineSel" })
                 else
-                    table.insert(parts, "%#TabLine# " .. title .. " %*")
+                    table.insert(title, { " " .. name .. " ", "TabLine" })
                 end
             end
-            return table.concat(parts, "|")
+            pcall(function()
+                vim.api.nvim_win_set_config(0, { title = title, title_pos = "left" })
+            end)
         end
 
         require("toggleterm").setup({
@@ -70,13 +78,8 @@ return {
                     vim.wo.number = true
                 end
                 vim.wo.scrolloff = 0
-                -- Show all terminal tabs in winbar (only when >1 terminals)
-                local terms = require("toggleterm.terminal").get_all()
-                if terms and #terms > 1 then
-                    vim.wo.winbar = "%!v:lua.ToggletermWinbar()"
-                else
-                    vim.wo.winbar = nil
-                end
+                -- Update float title to show terminal tabs
+                _G.ToggletermUpdateTitle()
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
@@ -277,6 +280,9 @@ return {
                     local new_id = max_id + 1
                     term_modes[new_id] = true -- new terminals start in insert
                     vim.cmd(new_id .. "ToggleTerm")
+                    vim.defer_fn(function()
+                        _G.ToggletermUpdateTitle()
+                    end, 150)
                     restore_term_state(new_id)
                 end
                 vim.keymap.set("n", "<D-t>", new_term_tab, { buffer = 0, desc = "New terminal tab" })
