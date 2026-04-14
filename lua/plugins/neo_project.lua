@@ -23,6 +23,8 @@ return {
             -- "/Users/xzb/Project/Python/woa/*",
             "/Users/xzb/Project/tencent/demo/*",
             "/opt/homebrew/lib/python3.11/site-packages/transformers/",
+            "/Users/xzb/Project/obsidian/tencent_notes",
+            "/Users/xzb/Downloads/nvim-macos-arm64/share/nvim/runtime",
             "/Users/xzb/Project/tencent/*",
             "/Users/xzb/Project/Python/engine/*",
             "/Users/xzb/Project/Python/engine/sglang_visual",

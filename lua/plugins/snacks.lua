@@ -1,5 +1,6 @@
 return {
     "folke/snacks.nvim",
+    lazy = false,
     -- enabled = false,
     keys = function()
         local layout_no_prewview = {
@@ -20,6 +21,12 @@ return {
             preview = false,
         }
         return {
+            {
+                "<leader>sG",
+                function()
+                    Snacks.picker.grep({})
+                end,
+            },
             {
                 "<leader>cs",
                 function()
@@ -58,23 +65,6 @@ return {
                 "<leader>y",
                 function()
                     Snacks.terminal.toggle({ cmd = { "yazi", vim.uv.cwd() } })
-                end,
-            },
-            {
-                "<d-o>",
-                function()
-                    TT = vim.uv.hrtime()
-                    Snacks.picker.smart({
-                        filter = {
-                            cwd = true,
-                        },
-                        formatters = {
-                            file = {
-                                filename_first = true, -- display filename before the file path
-                            },
-                        },
-                        layout = layout_no_prewview,
-                    })
                 end,
             },
         }

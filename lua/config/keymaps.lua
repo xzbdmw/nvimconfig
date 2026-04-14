@@ -44,11 +44,17 @@ keymap("n", "<C-\\>", function()
     run_click({
         "cliclick",
         -- Cmd+P to trigger the UI
-        "kd:cmd", "t:p", "ku:cmd",
+        "kd:cmd",
+        "t:p",
+        "ku:cmd",
         -- Shift+Ctrl+\\ to copy the path
-        "kd:ctrl,shift", "t:5", "ku:ctrl,shift",
+        "kd:ctrl,shift",
+        "t:5",
+        "ku:ctrl,shift",
         -- Ctrl+V to open neovide (user-defined binding)
-        "kd:ctrl", "t:v", "ku:ctrl",
+        "kd:ctrl",
+        "t:v",
+        "ku:ctrl",
     })
 
     -- Use the copied path in a term buffer: :term cat <D-v>
@@ -56,7 +62,7 @@ keymap("n", "<C-\\>", function()
     if path ~= "" then
         vim.cmd("noautocmd tabclose | tabnew | term cat " .. vim.fn.shellescape(path))
         vim.wo.number = true
-        vim.schedule(function ()
+        vim.schedule(function()
             FeedKeys("G", "m")
         end)
     end
@@ -448,6 +454,18 @@ keymap({ "n", "v" }, "<D-->", function()
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1
 end, opts)
 keymap({ "n", "v" }, "<D-0>", "<cmd>lua vim.g.neovide_scale_factor = 1<CR>")
+keymap("n", "<leader>uk", function()
+    if vim.g.neovide and type(neovide) == "table" and type(neovide.notify) == "function" then
+        local cwd = vim.fn.getcwd()
+        neovide.notify({
+            title = "Neovide",
+            body = "Notification test",
+            subtitle = cwd,
+        })
+    else
+        vim.notify("Neovide notification API is only available in Neovide", vim.log.levels.WARN)
+    end
+end, opts)
 
 keymap("n", "<leader><c-r>", function()
     vim.cmd(":e!")
@@ -561,6 +579,12 @@ end, { expr = true })
 keymap({ "n", "v", "i" }, "<a-s>", vim.lsp.buf.signature_help, opts)
 
 keymap("n", "<leader>`", "<cmd>tabnext<cr>", opts)
+keymap("n", "<leader>ad", function()
+    local orgin = vim.o.eventignore
+    vim.o.eventignore = "all"
+    vim.cmd("tabfirst | tabonly!")
+    vim.o.eventignore = orgin
+end, opts)
 
 keymap("n", "<leader>uu", function()
     local is_enabled = require("noice.ui")._attached
@@ -830,17 +854,17 @@ keymap("n", "<leader>om", function()
     end
 end, opts)
 
-keymap("n", "<leader>ow", function()
-    if vim.o.diffopt:find("inline:word") ~= nil then
-        vim.opt.diffopt:remove({ "inline:word" })
-        vim.opt.diffopt:append({ "inline:simple" })
-        vim.notify("remove inline:word", vim.log.levels.INFO)
-    else
-        vim.opt.diffopt:append({ "inline:word" })
-        vim.opt.diffopt:remove({ "inline:simple" })
-        vim.notify("append inline:word", vim.log.levels.INFO)
-    end
-end, opts)
+-- keymap("n", "<leader>ow", function()
+--     if vim.o.diffopt:find("inline:word") ~= nil then
+--         vim.opt.diffopt:remove({ "inline:word" })
+--         vim.opt.diffopt:append({ "inline:simple" })
+--         vim.notify("remove inline:word", vim.log.levels.INFO)
+--     else
+--         vim.opt.diffopt:append({ "inline:word" })
+--         vim.opt.diffopt:remove({ "inline:simple" })
+--         vim.notify("append inline:word", vim.log.levels.INFO)
+--     end
+-- end, opts)
 
 keymap("n", "<leader>o<space>", function()
     if vim.o.diffopt:find("iwhiteall") ~= nil then
@@ -853,18 +877,28 @@ keymap("n", "<leader>o<space>", function()
 end, opts)
 
 keymap("n", "<S-c-p>", function()
-    FeedKeys("<leader>cF", "m")
-    FeedKeys("<d-k>", "m")
-    vim.defer_fn(function()
-        FeedKeys("a<c-u>uv run parse.py ", "m")
-        FeedKeys("<d-v><CR>", "m")
-        vim.defer_fn(function()
-            FeedKeys("<esc>", "m")
-        end, 20)
-    end, 30)
+    FeedKeys("<c-\\><c-n>", "n")
+    local codex_pos = vim.fn.searchpos("› ", "bnW")
+    local claude_pos = vim.fn.searchpos("⏺ ", "bnW")
+    local target
+    if codex_pos[1] > 0 and claude_pos[1] > 0 then
+        if codex_pos[1] > claude_pos[1] or (codex_pos[1] == claude_pos[1] and codex_pos[2] > claude_pos[2]) then
+            target = "› "
+        else
+            target = "⏺ "
+        end
+    elseif codex_pos[1] > 0 then
+        target = "› "
+    elseif claude_pos[1] > 0 then
+        target = "⏺ "
+    end
+    if target then
+        vim.fn.search(target, "b")
+    end
+    _G.no_animation()
 end, opts)
 
-local ts_max_lines = 0
+local ts_max_lines = 3
 keymap("n", "<leader>os", function()
     if ts_max_lines == 3 then
         require("treesitter-context.config").update({

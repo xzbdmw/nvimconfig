@@ -135,10 +135,12 @@ return {
                         "vue",
                     },
                 },
+                -- ty = {},
                 gopls = {
                     mason = false,
                     settings = {
                         gopls = {
+                            buildFlags = { "-tags=onnx,demux,qwen3" },
                             usePlaceholders = true,
                             completeFunctionCalls = true,
                             hints = {

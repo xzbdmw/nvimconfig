@@ -1,3 +1,15 @@
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "SessionLoadPre",
+    callback = function()
+        -- vim.g.vim_enter = true
+        -- local tabcount = #api.nvim_list_tabpages()
+        -- if tabcount > 1 then
+        --     vim.cmd("tabclose! " .. 2)
+        -- end
+        -- vim.g.show_nvim_tree_size = false
+        -- pcall(api.nvim_del_augroup_by_name, "diffview_nvim")
+    end,
+})
 vim.uv = vim.loop
 api = vim.api
 
@@ -168,14 +180,15 @@ api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
-
 api.nvim_create_autocmd({ "TabEnter" }, {
     callback = function(data)
         vim.schedule(function()
             local name = vim.api.nvim_buf_get_name(0)
             if vim.startswith(name, "/private/var") then
+                if not vim.b.ghostty_file then
+                    FeedKeys("G", "n")
+                end
                 vim.b.ghostty_file = true
-                FeedKeys("G", "n")
                 vim.wo.scrolloff = 0
                 vim.api.nvim_create_autocmd("TabClosed", {
                     once = true,
@@ -780,18 +793,6 @@ api.nvim_create_autocmd({ "BufReadPre" }, {
 
 vim.cmd([[set viewoptions-=curdir]])
 
-api.nvim_create_autocmd({ "User" }, {
-    pattern = "SessionLoadPre",
-    callback = function()
-        vim.g.vim_enter = true
-        local tabcount = #api.nvim_list_tabpages()
-        if tabcount > 1 then
-            vim.cmd("tabclose! " .. 2)
-        end
-        vim.g.show_nvim_tree_size = false
-        pcall(api.nvim_del_augroup_by_name, "diffview_nvim")
-    end,
-})
 
 api.nvim_create_autocmd({ "User" }, {
     pattern = "SessionLoadPost",
@@ -983,7 +984,6 @@ else
     api.nvim_set_hl(0, "TermCursor", { bg = "#3636DB" })
 end
 
-vim.lsp.set_log_level("error")
 require("vim.lsp.log").set_format_func(vim.inspect)
 
 local should_profile = os.getenv("NVIM_PROFILE")

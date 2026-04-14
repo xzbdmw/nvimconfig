@@ -17,6 +17,43 @@ return {
     },
     config = function()
         local number = false
+        -- Track each terminal's mode, cursor position, and view
+        local term_modes = {}
+        local term_cursors = {}
+        local term_views = {}
+
+        -- Winbar function for floating terminal: shows all terminal tabs (only when >1)
+        function _G.ToggletermWinbar()
+            local ok, terms = pcall(function()
+                return require("toggleterm.terminal").get_all()
+            end)
+            if not ok or not terms or #terms <= 1 then
+                return ""
+            end
+
+            local cur_buf = vim.api.nvim_get_current_buf()
+            local parts = {}
+            for _, term in ipairs(terms) do
+                local title = ""
+                if term.bufnr and vim.api.nvim_buf_is_valid(term.bufnr) then
+                    title = vim.b[term.bufnr].term_title or ""
+                end
+                if title == "" then
+                    title = term.name or ("term " .. term.id)
+                end
+                -- Truncate long titles
+                if #title > 20 then
+                    title = title:sub(1, 17) .. "..."
+                end
+                if term.bufnr == cur_buf then
+                    table.insert(parts, "%#TabLineSel# " .. title .. " %*")
+                else
+                    table.insert(parts, "%#TabLine# " .. title .. " %*")
+                end
+            end
+            return table.concat(parts, "|")
+        end
+
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
             size = function(term)
@@ -33,6 +70,13 @@ return {
                     vim.wo.number = true
                 end
                 vim.wo.scrolloff = 0
+                -- Show all terminal tabs in winbar (only when >1 terminals)
+                local terms = require("toggleterm.terminal").get_all()
+                if terms and #terms > 1 then
+                    vim.wo.winbar = "%!v:lua.ToggletermWinbar()"
+                else
+                    vim.wo.winbar = nil
+                end
                 vim.cmd("redraw!")
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
@@ -68,17 +112,13 @@ return {
                         vim.wo.signcolumn = "yes"
                     end)
                 end, { buffer = 0 })
-                vim.b.minihipatterns_config = {
-                    highlighters = {
-                        -- at ./src/sql/parser/mod.rs:436:9
-                        fixme = { pattern = " at .*:?%d?:?%d?", group = "Links" },
-                    },
-                }
-                require("mini.hipatterns").enable()
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
                     local term_title = vim.b.term_title
                     local line = vim.api.nvim_get_current_line()
+                    local buffer_text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+                    local has_codex_prompt = buffer_text:find("›", 1, true) ~= nil
+                    local has_claude_prompt = buffer_text:find("⏺", 1, true) ~= nil
                     local last_line = vim.api.nvim_buf_get_lines(
                         0,
                         vim.api.nvim_buf_line_count(0) - 2,
@@ -89,6 +129,7 @@ return {
                         vim.startswith(line, "│")
                         or vim.startswith(term_title, "fzf")
                         or vim.startswith(term_title, "claude")
+                        or vim.startswith(term_title, "⠂ Claude Code")
                         or vim.startswith(term_title, "codex")
                         or vim.startswith(term_title, "✳")
                         or vim.startswith(term_title, "Yazi")
@@ -96,6 +137,8 @@ return {
                         or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")
                         or vim.endswith(last_line, "All")
+                        or has_codex_prompt
+                        or has_claude_prompt
                     then
                         return "<esc>"
                     end
@@ -105,6 +148,63 @@ return {
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
                     vim.bo.scrollback = 100000
+                end, { buffer = true })
+                vim.keymap.set("t", "<c-p>", function()
+                    FeedKeys([[<C-\><C-n>]], "n")
+                    require("telescope").extensions["neovim-project"].history({
+                        on_complete = {
+                            function()
+                                if vim.o.lines == 31 or vim.o.lines == 30 then
+                                    require("config.utils").on_complete(
+                                        "                                                          ",
+                                        "                                                          ",
+                                        16
+                                    )
+                                else
+                                    require("config.utils").on_complete(
+                                        "                                                                         ",
+                                        "                                                                         ",
+                                        18
+                                    )
+                                end
+                            end,
+                        },
+                        layout_strategy = "horizontal",
+                        layout_config = {
+                            horizontal = {
+                                width = 0.45,
+                                height = 0.7,
+                            },
+                        },
+                    })
+                    vim.schedule(function()
+                        FeedKeys("<down>", "t")
+                        FeedKeys("a", "t")
+                    end)
+                end, { buffer = true })
+
+                vim.keymap.set("t", "<c-s-p>", function()
+                    local term_title = vim.b.term_title
+                    local has_codex_prompt = table
+                        .concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+                        :find("›", 1, true) ~= nil
+                    if (term_title and vim.startswith(term_title, "codex")) or has_codex_prompt then
+                        FeedKeys("<c-\\><c-n>k", "n")
+                        vim.defer_fn(function()
+                            vim.fn.search("› ", "b")
+                            _G.no_animation()
+                        end, 20)
+                    else
+                        -- › Improve documentation in @filename
+                        FeedKeys("<c-\\><c-n>", "n")
+                        vim.defer_fn(function()
+                            vim.fn.search("⏺ ", "b")
+                            _G.no_animation()
+                        end, 20)
+                    end
+                end, { buffer = true })
+                vim.keymap.set("t", "<c-s-y>", function()
+                    FeedKeys("<c-j>", "n")
                 end, { buffer = true })
                 vim.keymap.set("t", "<c-[>", function()
                     _G.set_cursor_animation(0.0)
@@ -120,6 +220,104 @@ return {
                     _G.restore_animation()
                     return "<c-8>"
                 end, { buffer = true, expr = true })
+                -- Helper: save current terminal's mode, cursor, and view; restore on switch
+                local function save_current_term_state()
+                    local cur_buf = vim.api.nvim_get_current_buf()
+                    local terms = require("toggleterm.terminal").get_all()
+                    for _, term in ipairs(terms) do
+                        if term.bufnr == cur_buf then
+                            term_modes[term.id] = (vim.fn.mode() == "t")
+                            term_cursors[term.id] = vim.api.nvim_win_get_cursor(0)
+                            term_views[term.id] = vim.fn.winsaveview()
+                            break
+                        end
+                    end
+                end
+                local function restore_term_state(target_id)
+                    vim.schedule(function()
+                        if term_modes[target_id] == false then
+                            _G.set_cursor_animation(0.0)
+                            vim.cmd("stopinsert")
+                            if term_views[target_id] then
+                                vim.fn.winrestview(term_views[target_id])
+                            end
+                            if term_cursors[target_id] then
+                                pcall(vim.api.nvim_win_set_cursor, 0, term_cursors[target_id])
+                            end
+                        else
+                            vim.cmd("startinsert")
+                        end
+                    end)
+                end
+                local function switch_term(id)
+                    save_current_term_state()
+                    vim.cmd(id .. "ToggleTerm")
+                    restore_term_state(id)
+                end
+                -- Switch to terminal 1/2/3
+                vim.keymap.set({ "n", "t" }, "<d-1>", function()
+                    switch_term(1)
+                end, { buffer = 0, desc = "Switch to terminal 1" })
+                vim.keymap.set({ "n", "t" }, "<d-2>", function()
+                    switch_term(2)
+                end, { buffer = 0, desc = "Switch to terminal 2" })
+                vim.keymap.set({ "n", "t" }, "<d-3>", function()
+                    switch_term(3)
+                end, { buffer = 0, desc = "Switch to terminal 3" })
+                -- Cmd+T to create a new terminal tab
+                local function new_term_tab()
+                    save_current_term_state()
+                    local terms = require("toggleterm.terminal").get_all()
+                    local max_id = 0
+                    for _, term in ipairs(terms) do
+                        if term.id > max_id then
+                            max_id = term.id
+                        end
+                    end
+                    local new_id = max_id + 1
+                    term_modes[new_id] = true -- new terminals start in insert
+                    vim.cmd(new_id .. "ToggleTerm")
+                    restore_term_state(new_id)
+                end
+                vim.keymap.set("n", "<D-t>", new_term_tab, { buffer = 0, desc = "New terminal tab" })
+                vim.keymap.set("t", "<D-t>", new_term_tab, { buffer = 0, desc = "New terminal tab" })
+                -- Cmd+] / Cmd+[ to go to next/prev terminal
+                local function go_next_term()
+                    local terms = require("toggleterm.terminal").get_all()
+                    if #terms <= 1 then
+                        return
+                    end
+                    save_current_term_state()
+                    local cur_buf = vim.api.nvim_get_current_buf()
+                    for i, term in ipairs(terms) do
+                        if term.bufnr == cur_buf then
+                            local next_idx = (i % #terms) + 1
+                            local target = terms[next_idx]
+                            vim.cmd(target.id .. "ToggleTerm")
+                            restore_term_state(target.id)
+                            return
+                        end
+                    end
+                end
+                local function go_prev_term()
+                    local terms = require("toggleterm.terminal").get_all()
+                    if #terms <= 1 then
+                        return
+                    end
+                    save_current_term_state()
+                    local cur_buf = vim.api.nvim_get_current_buf()
+                    for i, term in ipairs(terms) do
+                        if term.bufnr == cur_buf then
+                            local prev_idx = ((i - 2) % #terms) + 1
+                            local target = terms[prev_idx]
+                            vim.cmd(target.id .. "ToggleTerm")
+                            restore_term_state(target.id)
+                            return
+                        end
+                    end
+                end
+                vim.keymap.set({ "n", "t" }, "<D-]>", go_next_term, { buffer = 0, desc = "Next terminal tab" })
+                vim.keymap.set({ "n", "t" }, "<D-[>", go_prev_term, { buffer = 0, desc = "Prev terminal tab" })
             end,
             on_close = function()
                 if vim.api.nvim_buf_get_name(0):find("#toggleterm") ~= nil then
@@ -179,10 +377,7 @@ return {
                 title_pos = "left",
             },
             winbar = {
-                enabled = true,
-                name_formatter = function(term) --  term: Terminal
-                    return term.name
-                end,
+                enabled = false,
             },
         })
     end,

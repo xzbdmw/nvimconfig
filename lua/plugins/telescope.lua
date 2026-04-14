@@ -369,43 +369,78 @@ return {
                 "<D-e>",
                 function()
                     TTT = vim.uv.hrtime()
-                    require("telescope").extensions.smart_open.smart_open({
-                        on_complete = {
-                            function()
-                                if vim.o.lines == 31 or vim.o.lines == 30 then
-                                    require("config.utils").on_complete(
-                                        "                                                 ",
-                                        "                                                 ",
-                                        16
-                                    )
-                                else
-                                    require("config.utils").on_complete(
-                                        "                                                     ",
-                                        "                                                     ",
-                                        18
-                                    )
-                                end
-                            end,
-                        },
-                        cwd_only = true,
-                        default_text = "'",
-                        show_scores = false,
-                        ignore_patterns = { "*.git/*", "*/tmp/*" },
-                        match_algorithm = "fzf",
-                        disable_devicons = false,
-                        open_buffer_indicators = { previous = "󱝂 ", others = "󰫣 " },
-                        prompt_title = "Smart Open",
-                        initial_mode = "insert",
-                        layout_strategy = "horizontal",
-                        previewer = false,
-                        layout_config = {
-                            horizontal = {
-                                width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.6 or 0.45,
-                                height = 0.8,
+                    local snacks_picker_dirs = {
+                        "/Users/xzb/Project/tencent/asr",
+                        "/Users/xzb/Project/Python/vllm"
+                    }
+                    -- if vim.tbl_contains(snacks_picker_dirs, vim.uv.cwd()) then
+                    if true then
+                        Snacks.picker.smart({
+                            filter = {
+                                cwd = true,
                             },
-                            mirror = false,
-                        },
-                    })
+                            formatters = {
+                                file = {
+                                    filename_first = true, -- display filename before the file path
+                                },
+                            },
+                            layout = {
+                                layout = {
+                                    backdrop = false,
+                                    box = "vertical",
+                                    width = 0.4,
+                                    height = 0.7,
+                                    {
+                                        box = "vertical",
+                                        border = "solid",
+                                        title_pos = "center",
+                                        { win = "input", height = 1, border = "bottom" },
+                                        { win = "list", border = "none" },
+                                        -- { win = "preview", title = "ss", border = "top" },
+                                    },
+                                },
+                                preview = false,
+                            },
+                        })
+                    else
+                        require("telescope").extensions.smart_open.smart_open({
+                            on_complete = {
+                                function()
+                                    if vim.o.lines == 31 or vim.o.lines == 30 then
+                                        require("config.utils").on_complete(
+                                            "                                                 ",
+                                            "                                                 ",
+                                            16
+                                        )
+                                    else
+                                        require("config.utils").on_complete(
+                                            "                                                     ",
+                                            "                                                     ",
+                                            18
+                                        )
+                                    end
+                                end,
+                            },
+                            cwd_only = true,
+                            default_text = "'",
+                            show_scores = false,
+                            ignore_patterns = { "*.git/*", "*/tmp/*" },
+                            match_algorithm = "fzf",
+                            disable_devicons = false,
+                            open_buffer_indicators = { previous = "󱝂 ", others = "󰫣 " },
+                            prompt_title = "Smart Open",
+                            initial_mode = "insert",
+                            layout_strategy = "horizontal",
+                            previewer = false,
+                            layout_config = {
+                                horizontal = {
+                                    width = (vim.o.lines == 31 or vim.o.lines == 30) and 0.6 or 0.45,
+                                    height = 0.8,
+                                },
+                                mirror = false,
+                            },
+                        })
+                    end
                 end,
             },
             {
@@ -1366,7 +1401,7 @@ return {
                 extensions = {},
             })
             require("telescope").load_extension("fzf")
-            require("telescope").load_extension("egrepify")
+            -- require("telescope").load_extension("egrepify")
         end,
     },
 }

@@ -26,6 +26,10 @@ return {
                     opts = { skip = true },
                 },
                 {
+                    filter = { find = "hello" },
+                    opts = { skip = true },
+                },
+                {
                     filter = { find = "height" },
                     opts = { skip = true },
                 },
