@@ -1,4 +1,3 @@
-local f = require("config.cmpsort")
 local utils = require("config.utils")
 local ignore = function()
     vim.o.eventignore = "TextChangedI"
@@ -24,6 +23,7 @@ return {
     },
     opts = function()
         local cmp = require("cmp")
+        local f = require("config.cmpsort")
         local compare = cmp.config.compare
         return {
             enabled = function()
