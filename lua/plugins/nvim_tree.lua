@@ -144,9 +144,10 @@ local function my_on_attach(bufnr)
     keymap("n", "<leader>F", toggle_all_filter)
 end
 return {
-    -- "nvim-tree/nvim-tree.lua",
+    "xzbdmw/nvim-tree.lua",
+    name = "nvim-tree",
+    branch = "xzb",
     version = false,
-    dir = "/Users/xzb/.local/share/nvim/lazy/nvim-tree",
     -- event = "VeryLazy",
     lazy = true,
     -- enabled = false,

@@ -1,6 +1,6 @@
 return {
-    -- "nvim-treesitter/nvim-treesitter-context",
-    dir = "~/Project/lua/nvim-treesitter-context/",
+    "xzbdmw/nvim-treesitter-context",
+    branch = "xzb",
     -- dir = "~/Project/lua/nvim-treesitter-context/",
     lazy = false,
     -- enabled = false,

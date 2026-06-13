@@ -1,5 +1,6 @@
 return {
-    dir = "~/Project/lua/vim-illuminate/",
+    "xzbdmw/vim-illuminate",
+    branch = "xzb",
     keys = {
         { "<a-p>", false },
     },

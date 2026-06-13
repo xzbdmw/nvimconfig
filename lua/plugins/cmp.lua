@@ -18,7 +18,7 @@ return {
         "uga-rosa/cmp-dictionary",
         "echasnovski/mini.snippets",
         "xzbdmw/cmp-mini-snippets",
-        { dir = "~/Project/lua/cmp-rg/" },
+        { "xzbdmw/cmp-rg", branch = "xzb" },
     },
     opts = function()
         local cmp = require("cmp")

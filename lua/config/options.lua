@@ -1,5 +1,5 @@
 vim.g.root_spec = { "cwd" }
-vim.o.shell = "/opt/homebrew/bin/fish"
+vim.o.shell = vim.fn.exepath("fish") ~= "" and vim.fn.exepath("fish") or vim.o.shell
 vim.g.loaded_netrw = 1
 vim.o.cmdheight = 0
 vim.o.syntax = "manual"
@@ -26,7 +26,9 @@ vim.o.writebackup = true
 vim.o.list = false
 vim.o.backupcopy = "yes"
 vim.g.editorconfig = false
-vim.o.backupdir = "/Users/xzb/.local/state/nvim/backup//"
+local backupdir = vim.fn.stdpath("state") .. "/backup"
+vim.fn.mkdir(backupdir, "p")
+vim.o.backupdir = backupdir .. "//"
 vim.o.tabstop = 4
 vim.o.jumpoptions = "stack,view,clean"
 vim.o.smarttab = false

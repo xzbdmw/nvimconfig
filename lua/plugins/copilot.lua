@@ -1,5 +1,5 @@
 return {
-    dir = "/Users/xzb/.local/share/nvim/lazy/copilot/",
+    "zbirenbaum/copilot.lua",
     event = "InsertEnter",
     enabled = false,
     config = function()

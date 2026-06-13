@@ -1,5 +1,6 @@
 return {
-    dir = "~/Project/lua/colorful-menu.nvim/",
+    "xzbdmw/colorful-menu.nvim",
+    branch = "master",
     opts = {
         ls = {
             gopls = {
