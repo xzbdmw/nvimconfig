@@ -474,8 +474,10 @@ local function create_add_command()
 end
 
 return {
-    "coffebar/neovim-project",
-    commit = "db586796f67e206f0494b1d64492b1db8c109589",
+    "xzbdmw/neovim-project",
+    name = "neovim-project",
+    branch = "2",
+    commit = "0be4c9d7ee6d3eba7f04012c0431841d2c32d9bd",
     -- commit = "33a5d6ef5f9e035470c80cbec0bbfe23e776543c",
     opts = {
         filetype_autocmd_timeout = 0,
