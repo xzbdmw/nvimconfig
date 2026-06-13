@@ -54,7 +54,6 @@
   "nvim-lspconfig": { "branch": "lock-4017739cf570", "commit": "4017739cf57037f29e7df40b6e00e16c82d7f15f" },
   "nvim-scissors": { "branch": "main", "commit": "d65cde840766a7ccaf0d59326ad34c81f5ed40f7" },
   "nvim-spider": { "branch": "main", "commit": "bcc9fa38a62637491b75b02e364191553fd858a2" },
-  "nvim-tree": { "branch": "xzb", "commit": "7a9ab46a99bc5b9f4660a9285ad3b0d3e0b831f5" },
   "nvim-tree-pairs": { "branch": "main", "commit": "e7f7b6cc28dda6f3fa271ce63b0d371d5b7641da" },
   "nvim-treesitter": { "branch": "lock-d2039fbfb309", "commit": "d2039fbfb309a73bb704c20d793a6572410adb0f" },
   "nvim-treesitter-context": { "branch": "xzb", "commit": "309f1b7ebf81b89a0f638c064a5b746986740ab5" },

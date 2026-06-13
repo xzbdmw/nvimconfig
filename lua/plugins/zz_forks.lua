@@ -24,7 +24,12 @@ return {
     { "xzbdmw/sibling-swap.nvim", name = "sibling-swap.nvim", branch = "lock-efe1eda6b79a" },
     { "xzbdmw/smart-open.nvim", name = "smart-open.nvim", branch = "lock-6b00faaaff58" },
     { "xzbdmw/substitute.nvim", name = "substitute.nvim", branch = "lock-156f1b750bdf" },
-    { "xzbdmw/telescope-fzf-native.nvim", name = "telescope-fzf-native.nvim", branch = "lock-9ef21b2e6bb6" },
+    {
+        "xzbdmw/telescope-fzf-native.nvim",
+        name = "telescope-fzf-native.nvim",
+        branch = "lock-9ef21b2e6bb6",
+        build = vim.fn.executable("make") == 1 and "make" or nil,
+    },
     { "xzbdmw/telescope-zoxide", name = "telescope-zoxide", branch = "lock-bada7b9d00a5" },
     { "xzbdmw/tokyonight.nvim", name = "tokyonight.nvim", branch = "lock-f4b415bfbce3" },
     { "xzbdmw/vim-startuptime", name = "vim-startuptime", branch = "lock-ac2cccb5be61" },
