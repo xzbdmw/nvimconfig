@@ -48,7 +48,7 @@
   "nvim-autopairs": { "branch": "xzb", "commit": "7162be570bd52ffaba3cf3115c18d36e32c5f7b1" },
   "nvim-bqf": { "branch": "main", "commit": "ebb6d2689e4427452180f17c53f29f7e460236f1" },
   "nvim-bufdel": { "branch": "lock-dd4e4ff68d20", "commit": "dd4e4ff68d20bf252c68e29c1854b922b7bd1949" },
-  "nvim-cmp": { "branch": "dynamic-modified-local-20260614", "commit": "25dcc09f07d0162990c5155c951b1b9ad2b950b8" },
+  "nvim-cmp": { "branch": "dynamic-modified-local-20260614", "commit": "eb353c88ceaf350b5babdc7687796d30c4940477" },
   "nvim-fundo": { "branch": "main", "commit": "ac9c9372c4bf677721e24f144ef29d3a05c2b589" },
   "nvim-hlslens": { "branch": "xzb", "commit": "220e4a067be775a95b4e074adefc754d285bf09f" },
   "nvim-lspconfig": { "branch": "lock-4017739cf570", "commit": "4017739cf57037f29e7df40b6e00e16c82d7f15f" },
