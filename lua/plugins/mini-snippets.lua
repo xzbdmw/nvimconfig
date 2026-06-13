@@ -1,6 +1,6 @@
 return {
     "echasnovski/mini.snippets",
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { { "xzbdmw/friendly-snippets", name = "friendly-snippets", branch = "xzb" } },
     keys = function()
         local jump = function(direction)
             _G.no_animation(_G.CI)

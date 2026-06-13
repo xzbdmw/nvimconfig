@@ -1,5 +1,7 @@
 return {
-    "LazyVim/LazyVim",
+    "xzbdmw/LazyVim",
+    name = "LazyVim",
+    branch = "xzb",
     opts = {
         -- colorscheme = "dayfox",
         colorscheme = "dawnfox",

@@ -1,5 +1,6 @@
 return {
-    "dnlhc/glance.nvim",
+    "xzbdmw/glance.nvim",
+    branch = "xzb",
     cmd = "Glance",
     -- dir = "~/Project/lua/glance.nvim/",
     config = function()

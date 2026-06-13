@@ -1,5 +1,6 @@
 return {
-    "sindrets/diffview.nvim",
+    "xzbdmw/diffview.nvim",
+    branch = "xzb",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
     config = function()
         local orgin_status_col = vim.o.statuscolumn

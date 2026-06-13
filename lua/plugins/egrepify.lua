@@ -1,5 +1,6 @@
 return {
-    "fdschmidt93/telescope-egrepify.nvim",
+    "xzbdmw/telescope-egrepify.nvim",
+    branch = "xzb",
     lazy = true,
     config = function()
         require("telescope").setup({

@@ -1,5 +1,6 @@
 return {
-    "stevearc/oil.nvim",
+    "xzbdmw/oil.nvim",
+    branch = "xzb",
     lazy = false,
     keys = {
         {

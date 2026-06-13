@@ -1,5 +1,6 @@
 return {
-    "saecki/live-rename.nvim",
+    "xzbdmw/live-rename.nvim",
+    branch = "xzb",
     keys = {
         {
             "<leader>rn",

@@ -1,3 +1,4 @@
 return {
-    "emmanueltouzery/agitator.nvim",
+    "xzbdmw/agitator.nvim",
+    branch = "xzb",
 }

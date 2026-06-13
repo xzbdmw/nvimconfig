@@ -3,7 +3,7 @@ return {
     enabled = false,
     lazy = false, -- lazy loading handled internally
     -- optional: provides snippets for the snippet source
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { { "xzbdmw/friendly-snippets", name = "friendly-snippets", branch = "xzb" } },
 
     -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     -- build = 'cargo build --release',

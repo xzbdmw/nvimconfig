@@ -1,5 +1,6 @@
 return {
-    "echasnovski/mini.ai",
+    "xzbdmw/mini.ai",
+    branch = "xzb",
     event = "VeryLazy",
     opts = function()
         local ai = require("mini.ai")

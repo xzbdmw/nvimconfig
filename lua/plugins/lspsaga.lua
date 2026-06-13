@@ -1,8 +1,9 @@
 return {
-    "nvimdev/lspsaga.nvim",
+    "xzbdmw/lspsaga.nvim",
+    branch = "xzb",
     cmd = { "LspSaga code_action" },
     -- event = "LspAttach",
-    commit = "2198c07124bef27ef81335be511c8abfd75db933",
+    commit = "c7c4207d94c90dcd0092c5906de5c1b67512070e",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons",

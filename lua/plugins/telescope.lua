@@ -6,9 +6,11 @@ local builtin = require("telescope.builtin")
 local keymap = vim.keymap.set
 return {
     {
-        "nvim-telescope/telescope.nvim",
+        "xzbdmw/telescope.nvim",
+        name = "telescope.nvim",
+        branch = "xzb-local-20260614",
         -- dir = "~/Project/lua/telescope.nvim/",
-        commit = "221778e93bfaa58bce4be4e055ed2edecc26f799",
+        commit = "7173a81db4d1762c0e638668430fe1c2cf291ee2",
         version = false,
         keys = {
             { "<leader><space>", false },

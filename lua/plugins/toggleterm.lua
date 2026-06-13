@@ -1,5 +1,6 @@
 return {
-    "akinsho/toggleterm.nvim",
+    "xzbdmw/toggleterm.nvim",
+    branch = "xzb",
     keys = {
         {
             "<D-k>",

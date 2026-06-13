@@ -7,15 +7,17 @@ local ignore = function()
     end, 10)
 end
 return {
-    "hrsh7th/nvim-cmp",
+    "xzbdmw/nvim-cmp",
+    name = "nvim-cmp",
+    branch = "dynamic-modified-local-20260614",
     event = { "InsertEnter", "CmdlineEnter", "User SearchBegin" },
     dependencies = {
         "hrsh7th/cmp-path",
-        "hrsh7th/cmp-buffer",
+        { "xzbdmw/cmp-buffer", name = "cmp-buffer", branch = "xzb" },
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-nvim-lsp",
         "chrisgrieser/cmp_yanky",
-        "uga-rosa/cmp-dictionary",
+        { "xzbdmw/cmp-dictionary", name = "cmp-dictionary", branch = "xzb" },
         "echasnovski/mini.snippets",
         "xzbdmw/cmp-mini-snippets",
         { "xzbdmw/cmp-rg", branch = "xzb" },

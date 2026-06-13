@@ -1,5 +1,6 @@
 return {
-    "folke/flash.nvim",
+    "xzbdmw/flash.nvim",
+    branch = "xzb",
     event = "VeryLazy",
     opts = {},
     -- enabled = false,

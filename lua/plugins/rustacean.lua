@@ -1,5 +1,6 @@
 return {
-    "mrcjkb/rustaceanvim",
+    "xzbdmw/rustaceanvim",
+    branch = "xzb",
     init = function()
         local ns = vim.api.nvim_create_namespace("onTypeFormatting")
         vim.on_key(function(_, typed)

@@ -9,7 +9,7 @@ return {
             mode = "x",
         },
     },
-    dependencies = "nvim-telescope/telescope.nvim",
+    dependencies = { { "xzbdmw/telescope.nvim", name = "telescope.nvim", branch = "xzb-local-20260614" } },
     config = function()
         require("scissors").setup({
             snippetDir = "~/.config/nvim/snippets/",

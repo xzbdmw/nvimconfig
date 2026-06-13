@@ -1,5 +1,6 @@
 return {
-    "folke/trouble.nvim",
+    "xzbdmw/trouble.nvim",
+    branch = "xzb",
     -- dir = "~/Project/lua/trouble.nvim/",
     -- branch = "dev", -- IMPORTANT!
     -- commit = "ab7d4a80883df2733204556746dba0714fe966d1",

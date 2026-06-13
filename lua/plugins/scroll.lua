@@ -1,5 +1,6 @@
 return {
-    "Aasim-A/scrollEOF.nvim",
+    "xzbdmw/scrollEOF.nvim",
+    branch = "xzb",
     dependencies = {
         "xzbdmw/neovim-project",
     },

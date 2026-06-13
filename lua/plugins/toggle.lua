@@ -5,7 +5,8 @@ return {
             "<cmd>lua require('alternate-toggler').toggleAlternate()<CR>",
         },
     },
-    "rmagatti/alternate-toggler",
+    "xzbdmw/alternate-toggler",
+    branch = "xzb",
     config = function()
         require("alternate-toggler").setup({
             alternates = {

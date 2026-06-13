@@ -1,5 +1,6 @@
 return {
-    "shellRaining/hlchunk.nvim",
+    "xzbdmw/hlchunk.nvim",
+    branch = "xzb",
     -- event = { "UIEnter" },
     event = "VeryLazy",
     config = function()

@@ -1,5 +1,6 @@
 return {
-    "windwp/nvim-autopairs",
+    "xzbdmw/nvim-autopairs",
+    branch = "xzb",
     -- enabled = false,
     event = "InsertEnter",
     -- enabled = false,

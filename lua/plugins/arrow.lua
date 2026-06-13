@@ -1,5 +1,6 @@
 return {
-    "otavioschwanck/arrow.nvim",
+    "xzbdmw/arrow.nvim",
+    branch = "xzb",
     keys = { { "'" }, { "\\" } },
     lazy = false,
     cond = function()

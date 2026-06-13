@@ -1,5 +1,6 @@
 return {
-    "kevinhwang91/nvim-hlslens",
+    "xzbdmw/nvim-hlslens",
+    branch = "xzb",
     version = false,
     event = "User SearchBegin",
     -- enabled = false,

@@ -1,5 +1,6 @@
 return {
-    "folke/snacks.nvim",
+    "xzbdmw/snacks.nvim",
+    branch = "what",
     lazy = false,
     -- enabled = false,
     keys = function()
