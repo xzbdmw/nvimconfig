@@ -138,9 +138,26 @@ return {
                 -- ty = {},
                 gopls = {
                     mason = false,
+                    init_options = {
+                        semanticTokens = true,
+                    },
+                    capabilities = {
+                        textDocument = {
+                            semanticTokens = {
+                                tokenModifiers = {
+                                    "declaration", "definition", "readonly", "static",
+                                    "deprecated", "abstract", "async", "modification",
+                                    "documentation", "defaultLibrary",
+                                    "array", "bool", "chan", "format", "interface",
+                                    "map", "number", "pointer", "signature", "slice",
+                                    "string", "struct",
+                                },
+                            },
+                        },
+                    },
                     settings = {
                         gopls = {
-                            buildFlags = { "-tags=onnx,demux,qwen3" },
+                            buildFlags = { "-tags=onnx,demux,qwen3,cuda,http" },
                             usePlaceholders = true,
                             completeFunctionCalls = true,
                             hints = {

@@ -8,7 +8,7 @@ _G.set_cursor_animation = function(len)
     if (mode == "n" or mode == "nt") and len > 0 then
         return
     else
-        vim.g.neovide_cursor_animation_length = len
+        vim.g.neovide_cursor_animation_length = 0
     end
 end
 
@@ -70,7 +70,7 @@ function M.get_relative_file()
     local filepath = vim.fn.expand("%:p") .. " "
     local cwd = vim.uv.cwd()
     if cwd ~= nil and vim.startswith(filepath, cwd) then
-        filepath = "@" .. filepath:sub(#cwd + 2, #filepath)
+        filepath = filepath:sub(#cwd + 2, #filepath)
     end
     return filepath
 end
@@ -775,7 +775,7 @@ _G.set_winbar = function(winbar, winid)
     if vim.tbl_contains(denied_filetype_winbar, vim.bo[buf].filetype) then
         return
     end
-    vim.wo[winid].winbar = winbar
+    vim.wo[winid][0].winbar = winbar
 end
 
 M.prev_match_win = nil
@@ -1080,14 +1080,9 @@ function M.gF()
     end
     -- Get the word under the cursor
     local cword = vim.fn.expand("<cWORD>")
-
-    -- Find the start and end of the pattern that matches `\f+:\d+`
-    local st = vim.fn.match(cword, "\\v\\f+:\\d+")
-    local end_pos = vim.fn.matchend(cword, "\\v\\f+:\\d+")
-
-    -- If the pattern was found, extract it
-    if end_pos ~= -1 then
-        cword = string.sub(cword, st + 1, end_pos)
+    local path_with_line = cword:match("([%w%._%-%+/%~@]+:%d+)")
+    if path_with_line then
+        cword = path_with_line
     end
 
     -- Split the cword by ':' to get the file and line parts
@@ -1097,7 +1092,7 @@ function M.gF()
     vim.defer_fn(function()
         local win = vim.api.nvim_get_current_win()
         vim.api.nvim_win_call(win, function()
-            vim.cmd("edit " .. bits[1])
+            vim.cmd("edit " .. vim.fn.fnameescape(bits[1]))
             -- If there's a line number, go to that line
             if bits[2] then
                 vim.cmd(bits[2])

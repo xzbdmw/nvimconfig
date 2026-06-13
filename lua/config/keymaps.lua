@@ -5,7 +5,9 @@ local keymap = vim.keymap.set
 keymap({ "n", "i" }, "<D-s>", function()
     keymap({ "n" }, "<d-k>", "k", opts)
     vim.defer_fn(function()
-        keymap({ "n", "i" }, "<d-k>", "<cmd>ToggleTerm<CR>", opts)
+        keymap({ "n", "i" }, "<d-k>", function()
+            _G.ToggletermSmartToggle()
+        end, opts)
     end, 100)
     vim.cmd("write!")
 end, opts)
@@ -270,7 +272,9 @@ keymap("n", "<leader>h", function()
     vim.fn.winrestview({ leftcol = 0 })
 end, opts)
 
-keymap({ "n", "i" }, "<f16>", "<cmd>ToggleTerm<CR>", opts) -- <D-k>
+keymap({ "n", "i" }, "<f16>", function()
+    _G.ToggletermSmartToggle()
+end, opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
 end, opts)
@@ -475,6 +479,7 @@ keymap("n", "<leader><c-r>", function()
     if vim.wo.signcolumn == "" then
         vim.wo.statuscolumn = [[%!v:lua.require'lazyvim.util'.ui.statuscolumn()]]
     end
+    utils.set_winbar(0)
 end, opts)
 
 keymap("n", "*", function()

@@ -15,7 +15,7 @@ return {
 
             update_on_change = true,
 
-            app = "webview",
+            app = "browser",
 
             -- explained below
 

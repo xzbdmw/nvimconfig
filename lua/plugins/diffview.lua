@@ -87,13 +87,15 @@ return {
                     if ctx ~= nil and ctx.layout_name == "diff2_horizontal" then
                         vim.wo[winid].signcolumn = "no"
                         vim.wo[winid].statuscolumn = ""
+                        local restore_winid = winid
                         vim.api.nvim_create_autocmd("TabLeave", {
                             once = true,
                             callback = function()
                                 vim.schedule(function()
-                                    winid = vim.api.nvim_get_current_win()
-                                    vim.wo[winid].signcolumn = "yes"
-                                    vim.wo[winid].statuscolumn = orgin_status_col
+                                    if vim.api.nvim_win_is_valid(restore_winid) then
+                                        vim.wo[restore_winid].signcolumn = "yes"
+                                        vim.wo[restore_winid].statuscolumn = orgin_status_col
+                                    end
                                 end)
                             end,
                         })

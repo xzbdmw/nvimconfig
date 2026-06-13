@@ -3,7 +3,21 @@ return {
     keys = {
         {
             "<D-k>",
-            "<Cmd>ToggleTerm<CR>",
+            function()
+                local ui = require("toggleterm.ui") -- toggleterm 的窗口/视图工具
+                local terms = require("toggleterm.terminal") -- 终端列表工具
+                local has_open = ui.find_open_windows() -- 当前是否有终端窗口开着
+                if has_open then
+                    -- 关闭前记住当前聚焦的终端 id,绕开插件 fallback-to-1 的逻辑
+                    _G.toggleterm_last_id = terms.get_focused_id() or _G.toggleterm_last_id
+                    vim.cmd("ToggleTerm") -- 关闭当前终端视图
+                elseif _G.toggleterm_last_id and terms.get(_G.toggleterm_last_id) then
+                    -- 用带 id 的命令重开上次那个终端,而不是默认的第一个
+                    vim.cmd(_G.toggleterm_last_id .. "ToggleTerm")
+                else
+                    vim.cmd("ToggleTerm") -- 没有记录时退回默认行为
+                end
+            end,
             mode = { "n", "t" },
         },
     },
@@ -35,6 +49,15 @@ return {
                 return
             end
 
+            -- Create bold highlight for current tab (inherit TabLine bg, bold fg)
+            local tabline_hl = vim.api.nvim_get_hl(0, { name = "TabLine", link = false })
+            vim.api.nvim_set_hl(0, "ToggleTermCurrent", {
+                fg = tabline_hl.fg,
+                bg = tabline_hl.bg,
+                bold = true,
+                italic = true,
+            })
+
             local cur_buf = vim.api.nvim_get_current_buf()
             local title = {}
             for idx, term in ipairs(terms) do
@@ -48,13 +71,16 @@ return {
                 if #name > 20 then
                     name = name:sub(1, 17) .. "..."
                 end
+                local is_current = term.bufnr == cur_buf
                 if idx > 1 then
-                    table.insert(title, { "|", "FloatBorder" })
+                    local prev_is_current = terms[idx - 1].bufnr == cur_buf
+                    local sep_hl = (is_current or prev_is_current) and "Comment" or "TabLineSel"
+                    table.insert(title, { "|", sep_hl })
                 end
-                if term.bufnr == cur_buf then
-                    table.insert(title, { " " .. name .. " ", "TabLineSel" })
+                if is_current then
+                    table.insert(title, { " " .. name .. " ", "ToggleTermCurrent" })
                 else
-                    table.insert(title, { " " .. name .. " ", "TabLine" })
+                    table.insert(title, { " " .. name .. " ", "TabLineSel" })
                 end
             end
             pcall(function()
@@ -151,6 +177,9 @@ return {
                     FeedKeys("<c-l>", "n")
                     vim.bo.scrollback = 1
                     vim.bo.scrollback = 100000
+                end, { buffer = true })
+                vim.keymap.set("t", "<C-_>", function()
+                    vim.api.nvim_chan_send(vim.b.terminal_job_id, "\x1f") -- send raw Ctrl-_ to the terminal process
                 end, { buffer = true })
                 vim.keymap.set("t", "<c-p>", function()
                     FeedKeys([[<C-\><C-n>]], "n")
@@ -252,21 +281,35 @@ return {
                         end
                     end)
                 end
-                local function switch_term(id)
-                    save_current_term_state()
-                    vim.cmd(id .. "ToggleTerm")
-                    restore_term_state(id)
+                -- Switch to terminal by position (1st/2nd/3rd tab in the list)
+                local function switch_term_by_index(idx)
+                    local terms = require("toggleterm.terminal").get_all()
+                    if idx > #terms then
+                        return
+                    end
+                    local target = terms[idx]
+                    if target then
+                        save_current_term_state()
+                        vim.cmd(target.id .. "ToggleTerm")
+                        restore_term_state(target.id)
+                    end
                 end
-                -- Switch to terminal 1/2/3
                 vim.keymap.set({ "n", "t" }, "<d-1>", function()
-                    switch_term(1)
+                    switch_term_by_index(1)
                 end, { buffer = 0, desc = "Switch to terminal 1" })
                 vim.keymap.set({ "n", "t" }, "<d-2>", function()
-                    switch_term(2)
+                    switch_term_by_index(2)
                 end, { buffer = 0, desc = "Switch to terminal 2" })
                 vim.keymap.set({ "n", "t" }, "<d-3>", function()
-                    switch_term(3)
+                    switch_term_by_index(3)
                 end, { buffer = 0, desc = "Switch to terminal 3" })
+                vim.keymap.set({ "n", "t" }, "<d-4>", function()
+                    switch_term_by_index(4)
+                end, { buffer = 0, desc = "Switch to terminal 4" })
+                vim.keymap.set({ "n", "t" }, "<d-5>", function()
+                    switch_term_by_index(5)
+                end, { buffer = 0, desc = "Switch to terminal 5" })
+
                 -- Cmd+T to create a new terminal tab
                 local function new_term_tab()
                     save_current_term_state()
@@ -324,6 +367,15 @@ return {
                 end
                 vim.keymap.set({ "n", "t" }, "<D-]>", go_next_term, { buffer = 0, desc = "Next terminal tab" })
                 vim.keymap.set({ "n", "t" }, "<D-[>", go_prev_term, { buffer = 0, desc = "Prev terminal tab" })
+                -- Cmd+W to close current terminal and focus the previous one
+                local function close_current_term()
+                    vim.cmd("stopinsert")
+                    FeedKeys("<space>bd", "m")
+                    vim.schedule(function()
+                        FeedKeys("<d-k>", "m")
+                    end)
+                end
+                vim.keymap.set({ "n", "t" }, "<D-w>", close_current_term, { buffer = 0, desc = "Close terminal tab" })
             end,
             on_close = function()
                 if vim.api.nvim_buf_get_name(0):find("#toggleterm") ~= nil then
@@ -373,10 +425,10 @@ return {
                 border = vim.g.neovide and "solid" or "rounded",
                 -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
                 width = function()
-                    return math.floor(vim.o.columns * 0.7)
+                    return math.floor(vim.o.columns * 0.8)
                 end,
                 height = function()
-                    return math.floor(vim.o.lines * 0.8)
+                    return math.floor(vim.o.lines * 0.9)
                 end,
                 winblend = 5,
                 zindex = 50,

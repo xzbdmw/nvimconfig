@@ -1,7 +1,6 @@
 return {
     "yorickpeterse/nvim-tree-pairs",
     lazy = false,
-    enabled = false,
     keys = {
         {
             "mm",
