@@ -2,14 +2,14 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     -- bootstrap lazy.nvim
     -- stylua: ignore
-    vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/xzbdmw/lazy.nvim.git", "--branch=xzb",
+    vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/xzbdmw/lazy.nvim.git", "--branch=lock-1dcbff2716b0",
         lazypath })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 require("lazy").setup({
     spec = {
         -- add LazyVim and import its plugins
-        { "xzbdmw/LazyVim", name = "LazyVim", branch = "xzb", import = "lazyvim.plugins" },
+        { "xzbdmw/LazyVim", name = "LazyVim", branch = "lock-a2f43bb5d2f3", import = "lazyvim.plugins" },
         -- import any extras modules here
         -- { import = "lazyvim.plugins.extras.lang.typescript" },
         -- { import = "lazyvim.plugins.extras.lang.json" },

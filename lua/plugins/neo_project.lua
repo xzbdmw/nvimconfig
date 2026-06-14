@@ -476,9 +476,6 @@ end
 return {
     "xzbdmw/neovim-project",
     name = "neovim-project",
-    branch = "2",
-    commit = "0be4c9d7ee6d3eba7f04012c0431841d2c32d9bd",
-    -- commit = "33a5d6ef5f9e035470c80cbec0bbfe23e776543c",
     opts = {
         filetype_autocmd_timeout = 0,
         last_session_on_startup = true,
@@ -564,7 +561,6 @@ return {
     end,
     dependencies = {
         { "Shatur/neovim-session-manager" },
-        { "nvim-tree/nvim-tree" },
         -- { dir = "~/Project/lua/telescope.nvim/" },
     },
     lazy = false,

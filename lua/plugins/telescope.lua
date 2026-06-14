@@ -10,7 +10,6 @@ return {
         name = "telescope.nvim",
         branch = "lock-e6f1cbd66486",
         -- dir = "~/Project/lua/telescope.nvim/",
-        commit = "e6f1cbd66486925a4d0b2495f12971f47dab8402",
         version = false,
         keys = {
             { "<leader><space>", false },
