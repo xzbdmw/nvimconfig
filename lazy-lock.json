@@ -74,7 +74,7 @@
   "sibling-swap.nvim": { "branch": "lock-efe1eda6b79a", "commit": "efe1eda6b79a12218b9d5923f13a29633f86dc54" },
   "smart-open.nvim": { "branch": "lock-6b00faaaff58", "commit": "6b00faaaff582df09bc7c45e10504456db8cf9ec" },
   "smart-splits.nvim": { "branch": "master", "commit": "cd59333ecf787856065f1c0e4cd41b0d9ec9c432" },
-  "snacks.nvim": { "branch": "what", "commit": "089c663b0c267bd1e7ea9cd252636d10d66fdc65" },
+  "snacks.nvim": { "branch": "what", "commit": "fac7e80b79e7a4eaf10aea453bbc5439686d544e" },
   "sqlite.lua": { "branch": "master", "commit": "40701b6151f8883980c1548647116de39b763540" },
   "substitute.nvim": { "branch": "lock-156f1b750bdf", "commit": "156f1b750bdf689f0111e3d3316508bbd4274ea8" },
   "telescope-egrepify.nvim": { "branch": "xzb", "commit": "8cf8dfbabfb845da09afd8ce96a0dedeb5bd1811" },
