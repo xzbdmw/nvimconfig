@@ -3,7 +3,7 @@ return {
     branch = "xzb",
     cmd = { "LspSaga code_action" },
     -- event = "LspAttach",
-    commit = "c7c4207d94c90dcd0092c5906de5c1b67512070e",
+    commit = "c471355d299419fa1347ff30932ebb8404c1de38",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-tree/nvim-web-devicons",

@@ -8,9 +8,9 @@ return {
     {
         "xzbdmw/telescope.nvim",
         name = "telescope.nvim",
-        branch = "xzb-local-20260614",
+        branch = "lock-e6f1cbd66486",
         -- dir = "~/Project/lua/telescope.nvim/",
-        commit = "7173a81db4d1762c0e638668430fe1c2cf291ee2",
+        commit = "e6f1cbd66486925a4d0b2495f12971f47dab8402",
         version = false,
         keys = {
             { "<leader><space>", false },
