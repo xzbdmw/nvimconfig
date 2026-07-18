@@ -1080,6 +1080,7 @@ function M.gF()
     end
     -- Get the word under the cursor
     local cword = vim.fn.expand("<cWORD>")
+    -- 21:38:02 msg_show.lua_print M.gF path_with_line: "GL-CLAP/glclap_model.py:605"
     local path_with_line = cword:match("([%w%._%-%+/%~@]+:%d+)")
     if path_with_line then
         cword = path_with_line
@@ -1088,14 +1089,22 @@ function M.gF()
     -- Split the cword by ':' to get the file and line parts
     local bits = vim.split(cword, ":", { plain = true })
 
-    FeedKeys("<Tab>", "m")
+    if vim.api.nvim_win_get_config(vim.api.nvim_get_current_win()).zindex ~= nil then
+        FeedKeys("<d-k>", "m")
+    else
+        FeedKeys("<Tab>", "m")
+    end
     vim.defer_fn(function()
         local win = vim.api.nvim_get_current_win()
         vim.api.nvim_win_call(win, function()
-            vim.cmd("edit " .. vim.fn.fnameescape(bits[1]))
+            local bufnr = vim.fn.bufadd(bits[1])
+            vim.fn.bufload(bufnr)
+            vim.api.nvim_win_set_buf(win, bufnr)
             -- If there's a line number, go to that line
             if bits[2] then
-                vim.cmd(bits[2])
+                local line = math.min(tonumber(bits[2]), vim.api.nvim_buf_line_count(bufnr))
+                vim.api.nvim_win_set_cursor(win, { line, 0 })
+                FeedKeys("0", "m")
             end
         end)
         FeedKeys("z", "m")

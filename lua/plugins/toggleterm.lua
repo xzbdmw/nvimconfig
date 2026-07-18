@@ -1,3 +1,4 @@
+local utils = require("config.utils")
 return {
     "xzbdmw/toggleterm.nvim",
     branch = "xzb",
@@ -5,19 +6,7 @@ return {
         {
             "<D-k>",
             function()
-                local ui = require("toggleterm.ui") -- toggleterm 的窗口/视图工具
-                local terms = require("toggleterm.terminal") -- 终端列表工具
-                local has_open = ui.find_open_windows() -- 当前是否有终端窗口开着
-                if has_open then
-                    -- 关闭前记住当前聚焦的终端 id,绕开插件 fallback-to-1 的逻辑
-                    _G.toggleterm_last_id = terms.get_focused_id() or _G.toggleterm_last_id
-                    vim.cmd("ToggleTerm") -- 关闭当前终端视图
-                elseif _G.toggleterm_last_id and terms.get(_G.toggleterm_last_id) then
-                    -- 用带 id 的命令重开上次那个终端,而不是默认的第一个
-                    vim.cmd(_G.toggleterm_last_id .. "ToggleTerm")
-                else
-                    vim.cmd("ToggleTerm") -- 没有记录时退回默认行为
-                end
+                require("config.toggleterm").smart_toggle()
             end,
             mode = { "n", "t" },
         },
@@ -38,14 +27,27 @@ return {
         local term_views = {}
 
         -- Build floating window title showing all terminal tabs (only when >1)
-        function _G.ToggletermUpdateTitle()
+        function _G.ToggletermUpdateTitle(winid)
+            winid = winid or vim.api.nvim_get_current_win()
+            if not vim.api.nvim_win_is_valid(winid) then
+                return
+            end
+            local cur_buf = vim.api.nvim_win_get_buf(winid)
+            if vim.bo[cur_buf].filetype ~= "toggleterm" then
+                return
+            end
+            local conf = vim.api.nvim_win_get_config(winid)
+            if conf.border == nil then
+                return
+            end
+
             local ok, terms = pcall(function()
                 return require("toggleterm.terminal").get_all()
             end)
             if not ok or not terms or #terms <= 1 then
                 -- Reset title to empty when only 1 terminal
                 pcall(function()
-                    vim.api.nvim_win_set_config(0, { title = "" })
+                    vim.api.nvim_win_set_config(winid, { title = "" })
                 end)
                 return
             end
@@ -59,7 +61,6 @@ return {
                 italic = true,
             })
 
-            local cur_buf = vim.api.nvim_get_current_buf()
             local title = {}
             for idx, term in ipairs(terms) do
                 local name = ""
@@ -85,9 +86,28 @@ return {
                 end
             end
             pcall(function()
-                vim.api.nvim_win_set_config(0, { title = title, title_pos = "left" })
+                vim.api.nvim_win_set_config(winid, { title = title, title_pos = "left" })
             end)
         end
+
+        local function update_all_toggleterm_titles()
+            for _, winid in ipairs(vim.api.nvim_list_wins()) do
+                _G.ToggletermUpdateTitle(winid)
+            end
+        end
+
+        if _G.toggleterm_title_timer then
+            _G.toggleterm_title_timer:stop()
+            _G.toggleterm_title_timer:close()
+        end
+        _G.toggleterm_title_timer = vim.uv.new_timer()
+        _G.toggleterm_title_timer:start(
+            500,
+            500,
+            vim.schedule_wrap(function()
+                update_all_toggleterm_titles()
+            end)
+        )
 
         require("toggleterm").setup({
             -- size can be a number or function which is passed the current terminal
@@ -111,36 +131,7 @@ return {
                 _G.set_cursor_animation(_G.CI)
                 -- We have to set the keymapping here for excluding lazygit.
                 vim.keymap.set("n", "<CR>", function()
-                    local cur = vim.api.nvim_win_get_cursor(0)
-                    local word = vim.fn.expand("<cword>")
-                    while word:match("%d") ~= nil do
-                        vim.cmd("norm! b")
-                        word = vim.fn.expand("<cword>")
-                    end
-                    local f = vim.fn.findfile(vim.fn.expand("<cfile>"))
-                    if f == "" then
-                        vim.api.nvim_win_set_cursor(0, { cur[1] + 1, cur[2] })
-                        f = vim.fn.findfile(vim.fn.expand("<cfile>"))
-                        if f == "" then
-                            vim.api.nvim_win_set_cursor(0, cur)
-                            return
-                        end
-                    end
-                    FeedKeys("gF", "nx")
-                    local buf = vim.api.nvim_win_get_buf(0)
-                    local line = vim.api.nvim_win_get_cursor(0)[1]
-                    FeedKeys("<c-o>", "nx")
-                    vim.cmd("stopinsert")
-                    vim.api.nvim_win_set_cursor(0, cur)
-                    vim.schedule(function()
-                        vim.cmd("close")
-                        vim.api.nvim_win_set_buf(0, buf)
-                        FeedKeys(line .. "G^", "n")
-                        require("config.utils").adjust_view(0, 3)
-                        vim.wo.number = true
-                        vim.wo.statuscolumn = [[%!v:lua.require'lazyvim.util'.ui.statuscolumn()]]
-                        vim.wo.signcolumn = "yes"
-                    end)
+                    utils.gF()
                 end, { buffer = 0 })
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)

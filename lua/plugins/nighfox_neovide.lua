@@ -107,6 +107,7 @@ return {
                 SatelliteCursor = { bg = "#CFD4CD", fg = "#CFD4CD" },
                 SignCursor = { fg = "#DEDAD5" },
                 SatelliteSearch = { link = "SatelliteQuickfix" },
+                DiffviewFilePanelFileName = { fg = "#000000" },
                 SatelliteQuickfix = { fg = "#7275D2" },
                 AerialLine = { link = "NvimTreeCursorLine" },
                 Substitute = { bg = "#FCF0A1", fg = "#000000", style = "bold" },

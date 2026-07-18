@@ -66,7 +66,10 @@ return {
                 log_options = { -- See ':h diffview-config-log_options'
                     git = {
                         single_file = {
-                            diff_merges = "combined",
+                            -- "combined" + --follow makes git emit numstat lines without
+                            -- matching raw lines on some merges, so diffview drops those
+                            -- commits with a "malformed data" warning
+                            diff_merges = "first-parent",
                         },
                         multi_file = {
                             diff_merges = "first-parent",

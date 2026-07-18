@@ -503,6 +503,7 @@ return {
             "/Users/xzb/Project/Python/engine/*",
             "/Users/xzb/Project/Python/engine/sglang_visual",
             "/Users/xzb/Project/Rust/my_repo_neovide/neovide/",
+            "/Users/xzb/Project/obsidian/tencent_notes",
             "/Users/xzb/Project/Python/PaddleX/Paddle/paddle/",
             "/Users/xzb/Project/Python/PaddleX/paddlex_processors_rust",
             "/Users/xzb/Documents/xzbdmw的副本",

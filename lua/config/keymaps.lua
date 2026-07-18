@@ -1,12 +1,13 @@
 local opts = { noremap = true, silent = true }
 local utils = require("config.utils")
+local toggleterm = require("config.toggleterm")
 local keymap = vim.keymap.set
 
 keymap({ "n", "i" }, "<D-s>", function()
     keymap({ "n" }, "<d-k>", "k", opts)
     vim.defer_fn(function()
         keymap({ "n", "i" }, "<d-k>", function()
-            _G.ToggletermSmartToggle()
+            toggleterm.smart_toggle()
         end, opts)
     end, 100)
     vim.cmd("write!")
@@ -273,7 +274,7 @@ keymap("n", "<leader>h", function()
 end, opts)
 
 keymap({ "n", "i" }, "<f16>", function()
-    _G.ToggletermSmartToggle()
+    toggleterm.smart_toggle()
 end, opts) -- <D-k>
 keymap({ "n" }, "<leader>rr", function()
     require("nvim-tree.actions.reloaders").reload_explorer()
