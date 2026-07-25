@@ -1072,6 +1072,144 @@ function CloseFromLazygit()
     end, 10)
 end
 
+-- Resolve a possibly vague path (e.g. "online_recognizer.go" or "csrc/online_recognizer.go")
+-- into a list of absolute paths that actually exist under cwd.
+local function resolve_path_candidates(path)
+    local cwd = vim.fn.getcwd()
+    path = vim.fs.normalize(path) -- expand ~ and collapse redundant separators
+    local abs = vim.startswith(path, "/") and path or (cwd .. "/" .. path)
+    if vim.loop.fs_stat(abs) then -- the written path is already valid, no search needed
+        return { abs }
+    end
+
+    local base = vim.fs.basename(path) -- only the filename part is reliable when the path is vague
+    if base == "" then
+        return {}
+    end
+
+    local found = {}
+    if vim.fn.executable("fd") == 1 then
+        found = vim.fn.systemlist({ "fd", "--type", "f", "--hidden", "--exclude", ".git", "--glob", base, cwd })
+        if vim.v.shell_error ~= 0 then -- fd failed, fall through to the pure-lua search
+            found = {}
+        end
+    end
+    if #found == 0 then
+        found = vim.fs.find(base, { path = cwd, type = "file", limit = math.huge }) -- recursive downward search
+    end
+
+    if path:find("/", 1, true) then -- keep only files whose tail matches the whole written path
+        local exact = vim.tbl_filter(function(p)
+            return vim.endswith(vim.fs.normalize(p), "/" .. path)
+        end, found)
+        if #exact > 0 then
+            return exact
+        end
+    end
+    return found
+end
+
+-- Of `candidates`, keep the ones that already have a loaded buffer.
+local function already_opened(candidates)
+    local opened = {}
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+            opened[vim.fs.normalize(vim.api.nvim_buf_get_name(buf))] = true -- normalize so "//" and "~" don't break the compare
+        end
+    end
+    return vim.tbl_filter(function(p)
+        return opened[vim.fs.normalize(p)] == true
+    end, candidates)
+end
+
+-- Leave the terminal/float for the "other" window, then hand that window to `cb`.
+local function gF_goto_win(from_float, cb)
+    if from_float then
+        FeedKeys("<d-k>", "m")
+    else
+        FeedKeys("<Tab>", "m")
+    end
+    vim.defer_fn(function()
+        cb(vim.api.nvim_get_current_win()) -- the fed key has been processed, so this is the destination window
+    end, 10)
+end
+
+-- Display `file` in `win`, optionally jumping to `line`.
+local function gF_show(win, file, line)
+    if not vim.api.nvim_win_is_valid(win) then
+        return
+    end
+    if vim.api.nvim_get_current_win() ~= win then
+        vim.api.nvim_set_current_win(win) -- the picker may have left us elsewhere; the FeedKeys below need this window
+    end
+    vim.api.nvim_win_call(win, function()
+        local bufnr = vim.fn.bufadd(file)
+        vim.fn.bufload(bufnr)
+        vim.api.nvim_win_set_buf(win, bufnr)
+        -- If there's a line number, go to that line
+        if line then
+            local lnum = math.min(line, vim.api.nvim_buf_line_count(bufnr))
+            vim.api.nvim_win_set_cursor(win, { lnum, 0 })
+            FeedKeys("0", "m")
+        end
+    end)
+    FeedKeys("z", "m")
+end
+
+-- Ask which of `candidates` to open. Uses snacks directly (instead of vim.ui.select) so the
+-- picker can start in normal mode and preview each candidate at `line`.
+local function gF_select(candidates, line, title, on_choice)
+    local cwd = vim.fn.getcwd()
+    local ok, snacks = pcall(require, "snacks")
+    if not (ok and snacks.picker) then -- fall back to whatever vim.ui.select is
+        vim.ui.select(candidates, {
+            prompt = title,
+            format_item = function(item)
+                return vim.fs.relpath(cwd, item) or item
+            end,
+        }, on_choice)
+        return
+    end
+
+    local items = {}
+    for idx, path in ipairs(candidates) do
+        items[#items + 1] = {
+            idx = idx,
+            file = path,
+            text = vim.fs.relpath(cwd, path) or path, -- what you see and what the filter matches
+            pos = line and { line, 0 } or nil, -- preview lands on the referenced line
+        }
+    end
+
+    local confirmed = false -- picker:close() also fires on_close, so only one of the two may answer
+    snacks.picker.pick({
+        source = "gF",
+        items = items,
+        format = "file",
+        preview = "file",
+        title = title,
+        formatters = { file = { truncate = 200 } }, -- default is 40, which elides the middle of the path
+
+        on_show = function()
+            vim.cmd("stopinsert") -- open in normal mode, the picker's input starts in insert otherwise
+        end,
+        actions = {
+            confirm = function(picker, item)
+                confirmed = true
+                picker:close()
+                vim.schedule(function()
+                    on_choice(item and item.file)
+                end)
+            end,
+        },
+        on_close = function()
+            if not confirmed then
+                on_choice(nil) -- cancelled
+            end
+        end,
+    })
+end
+
 function M.gF()
     local name = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
     if name ~= nil then
@@ -1088,27 +1226,45 @@ function M.gF()
 
     -- Split the cword by ':' to get the file and line parts
     local bits = vim.split(cword, ":", { plain = true })
+    local line = bits[2] and tonumber(bits[2]) or nil
 
-    if vim.api.nvim_win_get_config(vim.api.nvim_get_current_win()).zindex ~= nil then
-        FeedKeys("<d-k>", "m")
-    else
-        FeedKeys("<Tab>", "m")
+    local origin = vim.api.nvim_get_current_win()
+    local from_float = vim.api.nvim_win_get_config(origin).zindex ~= nil
+
+    local candidates = resolve_path_candidates(bits[1])
+    if #candidates == 0 then
+        vim.notify("gF: no file found for " .. bits[1], vim.log.levels.WARN)
+        return
     end
-    vim.defer_fn(function()
-        local win = vim.api.nvim_get_current_win()
-        vim.api.nvim_win_call(win, function()
-            local bufnr = vim.fn.bufadd(bits[1])
-            vim.fn.bufload(bufnr)
-            vim.api.nvim_win_set_buf(win, bufnr)
-            -- If there's a line number, go to that line
-            if bits[2] then
-                local line = math.min(tonumber(bits[2]), vim.api.nvim_buf_line_count(bufnr))
-                vim.api.nvim_win_set_cursor(win, { line, 0 })
-                FeedKeys("0", "m")
-            end
+
+    if #candidates > 1 then
+        local opened = already_opened(candidates)
+        if #opened > 0 then -- prefer files already in a buffer; one of them means no prompt at all
+            candidates = opened
+        end
+    end
+
+    if #candidates == 1 then
+        gF_goto_win(from_float, function(win)
+            gF_show(win, candidates[1], line)
         end)
-        FeedKeys("z", "m")
-    end, 10)
+        return
+    end
+
+    local title = "gF: " .. bits[1] .. (line and (":" .. line) or "")
+    -- Switch windows *before* the picker opens: doing it afterwards races with the picker
+    -- closing and the file ends up in the terminal window.
+    gF_goto_win(from_float, function(win)
+        gF_select(candidates, line, title, function(choice)
+            vim.schedule(function() -- let the picker fully close before touching windows
+                if choice then
+                    gF_show(win, choice, line)
+                elseif vim.api.nvim_win_is_valid(origin) then
+                    vim.api.nvim_set_current_win(origin) -- cancelled: go back where gF was pressed
+                end
+            end)
+        end)
+    end)
 end
 
 function M.refresh_nvim_tree_git()

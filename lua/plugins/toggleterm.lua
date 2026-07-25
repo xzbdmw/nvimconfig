@@ -136,30 +136,15 @@ return {
                 vim.keymap.set("t", "<esc>", function()
                     _G.set_cursor_animation(0.0)
                     local term_title = vim.b.term_title
-                    local line = vim.api.nvim_get_current_line()
                     local buffer_text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-                    local has_codex_prompt = buffer_text:find("›", 1, true) ~= nil
-                    local has_claude_prompt = buffer_text:find("⏺", 1, true) ~= nil
-                    local last_line = vim.api.nvim_buf_get_lines(
-                        0,
-                        vim.api.nvim_buf_line_count(0) - 2,
-                        vim.api.nvim_buf_line_count(0) - 1,
-                        false
-                    )[1]
                     if
-                        vim.startswith(line, "│")
+                        buffer_text:find("→ ", 1, true)
+                        or buffer_text:find("›", 1, true)
+                        or buffer_text:find("⏺", 1, true)
                         or vim.startswith(term_title, "fzf")
-                        or vim.startswith(term_title, "claude")
-                        or vim.startswith(term_title, "⠂ Claude Code")
-                        or vim.startswith(term_title, "codex")
-                        or vim.startswith(term_title, "✳")
                         or vim.startswith(term_title, "Yazi")
                         or vim.startswith(term_title, "lazygit ")
-                        or vim.startswith(line, "╰─────────────────────")
                         or vim.startswith(term_title, "y ")
-                        or vim.endswith(last_line, "All")
-                        or has_codex_prompt
-                        or has_claude_prompt
                     then
                         return "<esc>"
                     end
