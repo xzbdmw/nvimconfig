@@ -883,25 +883,7 @@ keymap("n", "<leader>o<space>", function()
 end, opts)
 
 keymap("n", "<S-c-p>", function()
-    FeedKeys("<c-\\><c-n>", "n")
-    local codex_pos = vim.fn.searchpos("› ", "bnW")
-    local claude_pos = vim.fn.searchpos("⏺ ", "bnW")
-    local target
-    if codex_pos[1] > 0 and claude_pos[1] > 0 then
-        if codex_pos[1] > claude_pos[1] or (codex_pos[1] == claude_pos[1] and codex_pos[2] > claude_pos[2]) then
-            target = "› "
-        else
-            target = "⏺ "
-        end
-    elseif codex_pos[1] > 0 then
-        target = "› "
-    elseif claude_pos[1] > 0 then
-        target = "⏺ "
-    end
-    if target then
-        vim.fn.search(target, "b")
-    end
-    _G.no_animation()
+    require("config.toggleterm").jump_prev_prompt()
 end, opts)
 
 local ts_max_lines = 3

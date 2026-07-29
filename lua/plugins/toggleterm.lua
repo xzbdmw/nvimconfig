@@ -193,31 +193,18 @@ return {
                 end, { buffer = true })
 
                 vim.keymap.set("t", "<c-s-p>", function()
-                    local term_title = vim.b.term_title
-                    local has_codex_prompt = table
-                        .concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-                        :find("›", 1, true) ~= nil
-                    if (term_title and vim.startswith(term_title, "codex")) or has_codex_prompt then
-                        FeedKeys("<c-\\><c-n>k", "n")
-                        vim.defer_fn(function()
-                            vim.fn.search("› ", "b")
-                            _G.no_animation()
-                        end, 20)
-                    else
-                        -- › Improve documentation in @filename
-                        FeedKeys("<c-\\><c-n>", "n")
-                        vim.defer_fn(function()
-                            vim.fn.search("⏺ ", "b")
-                            _G.no_animation()
-                        end, 20)
-                    end
-                end, { buffer = true })
+                    require("config.toggleterm").jump_prev_prompt()
+                end, { buffer = true, desc = "Jump to previous agent prompt" })
                 vim.keymap.set("t", "<c-s-y>", function()
                     FeedKeys("<c-j>", "n")
                 end, { buffer = true })
                 vim.keymap.set("t", "<c-[>", function()
                     _G.set_cursor_animation(0.0)
                     return [[<C-\><C-n>]]
+                end, { buffer = true, expr = true })
+                vim.keymap.set("t", "<c-]>", function()
+                    _G.set_cursor_animation(0.0)
+                    return "<esc>"
                 end, { buffer = true, expr = true })
                 vim.keymap.set("t", "<c-cr>", function()
                     FeedKeys("\\", "n")
