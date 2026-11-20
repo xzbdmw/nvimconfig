@@ -2,7 +2,7 @@ nmap J 6j
 nmap K 6k
 set ignorecase
 set smartcase
-highlight Normal guibg=#FBF7E6
+highlight Normal guibg=#FAF6EE
 lua << EOF
 local lazy_path = vim.fn.stdpath("data") .. "/lazy"
 vim.opt.runtimepath:append(lazy_path .. "/mini.ai")

@@ -6,6 +6,19 @@ return {
             return not vim.g.scrollback
         end,
         init = function()
+            local create_user_command = vim.api.nvim_create_user_command
+            vim.api.nvim_create_user_command = function(name, command, command_opts)
+                if name == "LspRestart" then
+                    -- Restore the API as soon as nvim-lspconfig registers the command.
+                    vim.api.nvim_create_user_command = create_user_command
+                    return create_user_command(name, function(info)
+                        require("config.utils").reload_all_file_buffers()
+                        command(info)
+                    end, command_opts)
+                end
+                return create_user_command(name, command, command_opts)
+            end
+
             -- vim.lsp.handlers["textDocument/signatureHelp"] = require("config.utils").signature_help
             local keys = require("lazyvim.plugins.lsp.keymaps").get()
             -- disable a keymap
@@ -118,7 +131,7 @@ return {
                     },
                 },
                 tsserver = {
-                    enabled = true,
+                    enabled = false,
                     -- cmd = lsp_containers.command("tsserver"),
                     init_options = {
                         plugins = {

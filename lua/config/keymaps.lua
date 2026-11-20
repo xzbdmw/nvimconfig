@@ -483,6 +483,10 @@ keymap("n", "<leader><c-r>", function()
     utils.set_winbar(0)
 end, opts)
 
+keymap("n", "<leader>cr", function()
+    utils.reload_all_file_buffers()
+end, vim.tbl_extend("force", opts, { desc = "Reload all file buffers" }))
+
 keymap("n", "*", function()
     vim.g.type_star = true
     vim.defer_fn(function()

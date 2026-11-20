@@ -75,6 +75,31 @@ function M.get_relative_file()
     return filepath
 end
 
+function M.reload_all_file_buffers()
+    local failures = {}
+    for _, buf in ipairs(api.nvim_list_bufs()) do
+        local path = api.nvim_buf_get_name(buf)
+        local stat = path ~= "" and vim.uv.fs_stat(path) or nil
+        if api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" and stat and stat.type == "file" then
+            -- GitSignsUpdate can make Satellite change windows inside this restricted buffer context.
+            local eventignore = vim.o.eventignore
+            if eventignore ~= "all" and not vim.tbl_contains(vim.split(eventignore, ","), "User") then
+                vim.o.eventignore = eventignore == "" and "User" or eventignore .. ",User"
+            end
+            local ok, err = pcall(api.nvim_buf_call, buf, function()
+                vim.cmd("silent edit!")
+            end)
+            vim.o.eventignore = eventignore
+            if not ok then
+                failures[#failures + 1] = string.format("%s: %s", path, err)
+            end
+        end
+    end
+    if #failures > 0 then
+        vim.notify("Failed to reload file buffers:\n" .. table.concat(failures, "\n"), vim.log.levels.WARN)
+    end
+end
+
 function M.load_appropriate_theme()
     local bg_color = get_normal_bg_color()
     if bg_color == "#24273a" then
